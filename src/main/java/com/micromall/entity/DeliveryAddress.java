@@ -24,7 +24,7 @@ public class DeliveryAddress extends IdEntity {
 	// 是否默认地址
 	private boolean defaul;
 	// 创建时间
-	private Date   createTime;
+	private Date    createTime;
 	// 修改时间
 	private Date    updateTime;
 
