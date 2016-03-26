@@ -1,22 +1,26 @@
 package com.micromall.entity;
 
+import java.util.Date;
+
 /**
  * Created by zhangzx on 16/3/23.
  */
-public class Favorite {
-	private Integer id;
-	// 收藏的商品ID
-	private int     goodsId;
-	private Goods   goods;
-	// 所属用户
-	private int     uid;
+public class Favorite extends IdEntity {
 
-	public Integer getId() {
-		return id;
+	// 所属用户
+	private int   uid;
+	// 收藏的商品ID
+	private int   goodsId;
+	private Goods goods;
+	// 创建时间
+	private Date  createTime;
+
+	public int getUid() {
+		return uid;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setUid(int uid) {
+		this.uid = uid;
 	}
 
 	public int getGoodsId() {
@@ -35,11 +39,11 @@ public class Favorite {
 		this.goods = goods;
 	}
 
-	public int getUid() {
-		return uid;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setUid(int uid) {
-		this.uid = uid;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 }

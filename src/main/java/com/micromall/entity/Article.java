@@ -5,24 +5,16 @@ import java.util.Date;
 /**
  * Created by zhangzx on 16/3/23.
  */
-public class Article {
-	private Integer id;
+public class Article extends IdEntity {
+
 	// 类型
-	private int     type;
+	private int    type;
 	// 标题
-	private String  title;
+	private String title;
 	// 内容
-	private String  content;
-	// 时间
-	private Date    createTime;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	private String content;
+	// 创建时间
+	private Date   createTime;
 
 	public int getType() {
 		return type;

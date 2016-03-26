@@ -5,8 +5,8 @@ import java.util.Date;
 /**
  * Created by zhangzx on 16/3/23.
  */
-public class Coupon {
-	private Integer id;
+public class Coupon extends IdEntity {
+
 	// 金额
 	private int     amount;
 	// 优惠劵描述
@@ -16,19 +16,11 @@ public class Coupon {
 	// 过期时间
 	private Date    expiraTime;
 	// 是否已经使用
-	private boolean use;
+	private boolean used;
 	// 使用时关联的订单编号
 	private String  useOrderNo;
 	// 创建时间
 	private Date    createTime;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public int getAmount() {
 		return amount;
@@ -62,12 +54,12 @@ public class Coupon {
 		this.expiraTime = expiraTime;
 	}
 
-	public boolean isUse() {
-		return use;
+	public boolean isUsed() {
+		return used;
 	}
 
-	public void setUse(boolean use) {
-		this.use = use;
+	public void setUsed(boolean used) {
+		this.used = used;
 	}
 
 	public String getUseOrderNo() {

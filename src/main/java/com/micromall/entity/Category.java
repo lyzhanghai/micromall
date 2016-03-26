@@ -3,20 +3,12 @@ package com.micromall.entity;
 /**
  * Created by zhangzx on 16/3/23.
  */
-public class Category {
-	private Integer id;
+public class Category extends IdEntity {
+
 	// 类目名称
-	private String  name;
+	private String name;
 	// 显示顺序
-	private int     index;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
+	private int    index;
 
 	public String getName() {
 		return name;

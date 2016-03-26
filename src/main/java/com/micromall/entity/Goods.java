@@ -6,9 +6,12 @@ import java.util.Map;
 /**
  * Created by zhangzx on 16/3/21.
  */
-public class Goods {
+public class Goods extends IdEntity {
+
 	// 商品标题
 	private String              title;
+	// 商品主图片
+	private String              mainPicture;
 	// 商品图片数组
 	private String[]            pictures;
 	// 所属类目
@@ -17,10 +20,10 @@ public class Goods {
 	private float               price;
 	// 商品库存
 	private int                 inventory;
-	// 商品状态（上架/不上架）
+	// 商品状态（上架/下架）
 	private int                 status;
 	// 是否促销商品
-	private int                 promotion;
+	private boolean             promotion;
 	// 促销配置
 	private Map<String, String> promotionParams;
 	// 商品描述
@@ -42,6 +45,14 @@ public class Goods {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getMainPicture() {
+		return mainPicture;
+	}
+
+	public void setMainPicture(String mainPicture) {
+		this.mainPicture = mainPicture;
 	}
 
 	public String[] getPictures() {
@@ -84,11 +95,11 @@ public class Goods {
 		this.status = status;
 	}
 
-	public int getPromotion() {
+	public boolean isPromotion() {
 		return promotion;
 	}
 
-	public void setPromotion(int promotion) {
+	public void setPromotion(boolean promotion) {
 		this.promotion = promotion;
 	}
 
