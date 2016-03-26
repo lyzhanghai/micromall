@@ -5,6 +5,7 @@ import com.micromall.entity.LoginUser;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.CookieUtils;
 import com.micromall.utils.URLBuilder;
+import com.micromall.web.RequestContext;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,24 +35,24 @@ public class FrontAuthenticationInterceptor extends HandlerInterceptorAdapter {
 			// 是否为ajax请求？
 			boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 			if (ajax) {
-				response.getWriter().write("\"redirectUrl\":\"" + (weixin ? buildWeixinAuthorizeUrl(request) : CommonEnvConstants
+				response.getWriter().write("\"redirectUrl\":\"" + (weixin ? _buildWeixinAuthorizeUrl(request) : CommonEnvConstants
 						.MOBILE_AUTHORIZE_LOGIN_URL) + "\"");
-				response.getWriter().flush();
 			} else {
-				response.sendRedirect((weixin ? buildWeixinAuthorizeUrl(request) : CommonEnvConstants.MOBILE_AUTHORIZE_LOGIN_URL));
+				response.sendRedirect((weixin ? _buildWeixinAuthorizeUrl(request) : CommonEnvConstants.MOBILE_AUTHORIZE_LOGIN_URL));
 			}
 			return false;
 		}
 		response.addHeader(_AUTHORIZED_HEADER, Boolean.TRUE.toString());
+		RequestContext.setLoginUser(loginUser);
 		return true;
 	}
 
-	private String buildWeixinAuthorizeUrl(HttpServletRequest request) {
-		// 用户授权登陆成功后返回的原页面地址
+	private String _buildWeixinAuthorizeUrl(HttpServletRequest request) {
 		URLBuilder urlBuilder = URLBuilder.createBuilder(CommonEnvConstants.WEIXIN_AUTHORIZE_URL);
 		urlBuilder.param("appid", CommonEnvConstants.WEIXIN_APPID);
 		urlBuilder.param("response_type", "code");
-		urlBuilder.param("scope", "snsapi_base");
+		urlBuilder.param("scope", CommonEnvConstants.WEIXIN_AUTH_SCOPE);
+		// 用户授权登陆成功后返回的原页面地址
 		String return_url = "";
 		if (request.getMethod().equals("GET")) {
 			return_url = request.getRequestURI();
@@ -72,6 +73,7 @@ public class FrontAuthenticationInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+		RequestContext.clean();
 		logger.info("请求 [{}], 参数 [{}], 异常 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), ex.getMessage
 				()});
 	}

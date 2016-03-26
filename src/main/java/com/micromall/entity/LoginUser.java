@@ -1,24 +1,36 @@
 package com.micromall.entity;
 
+import com.micromall.utils.IPUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by zhangzx on 16/3/21.
  */
-public class LoginUser {
+public class LoginUser implements Serializable{
 
 	// 用户id
-	private int    uid;
-	// 用户手机号
-	private String mobile;
-	// 微信用户id<如果绑定了微信>
-	private String wechatId;
+	private int       uid;
 	// 授权登录类型<微信授权登录、手机号登录>
-	private String loginType;
+	private LoginType loginType;
 	// 登录时间
-	private Date   loginTime;
+	private Date      loginTime;
 	// 登录ip
-	private String loginIp;
+	private String    loginIp;
+
+	private LoginUser() {
+	}
+
+	public static LoginUser create(LoginType loginType, Member member, HttpServletRequest request) {
+		LoginUser loginUser = new LoginUser();
+		loginUser.setUid(member.getId());
+		loginUser.setLoginType(loginType);
+		loginUser.setLoginTime(new Date());
+		loginUser.setLoginIp(IPUtils.getIp(request));
+		return loginUser;
+	}
 
 	public int getUid() {
 		return uid;
@@ -28,27 +40,11 @@ public class LoginUser {
 		this.uid = uid;
 	}
 
-	public String getMobile() {
-		return mobile;
-	}
-
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
-	}
-
-	public String getWechatId() {
-		return wechatId;
-	}
-
-	public void setWechatId(String wechatId) {
-		this.wechatId = wechatId;
-	}
-
-	public String getLoginType() {
+	public LoginType getLoginType() {
 		return loginType;
 	}
 
-	public void setLoginType(String loginType) {
+	public void setLoginType(LoginType loginType) {
 		this.loginType = loginType;
 	}
 
@@ -66,5 +62,19 @@ public class LoginUser {
 
 	public void setLoginIp(String loginIp) {
 		this.loginIp = loginIp;
+	}
+
+	@Override
+	public String toString() {
+		return "LoginUser{" +
+				"uid=" + uid +
+				", loginType=" + loginType +
+				", loginTime=" + loginTime +
+				", loginIp='" + loginIp + '\'' +
+				'}';
+	}
+
+	public enum LoginType {
+		Phone, WeChat
 	}
 }

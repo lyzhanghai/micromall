@@ -8,7 +8,7 @@ import java.util.Date;
 public class Member extends IdEntity {
 
 	// 登录手机号（需要绑定手机号）
-	private String mobile;
+	private String phone;
 	// 登录密码（备用）
 	private String password;
 	// 微信id
@@ -33,13 +33,15 @@ public class Member extends IdEntity {
 	private String lastLoginIp;
 	// 用户注册时间
 	private Date   registerTime;
+	// 更新时间
+	private Date   updateTime;
 
-	public String getMobile() {
-		return mobile;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getPassword() {
@@ -136,5 +138,13 @@ public class Member extends IdEntity {
 
 	public void setRegisterTime(Date registerTime) {
 		this.registerTime = registerTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 }
