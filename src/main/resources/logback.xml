@@ -1,0 +1,30 @@
+<configuration debug="true" scan="true" scanPeriod="5 seconds">
+    <!-- 日志输出目录 -->
+    <property name="log.dir" value="${catalina.base:-.}/logs"/>
+
+    <!-- 引入appender定义 -->
+    <include resource="logback-appender.xml"/>
+
+    <!-- ============================= -->
+    <!-- Logger定义 -->
+    <!-- ============================= -->
+    <!-- local project -->
+    <logger name="com.shangyuan" level="info"/>
+    <logger name="org.apache.ibatis" level="warn"/>
+    <logger name="org.mybatis.spring" level="warn"/>
+    <logger name="org.springframework" level="info"/>
+    <!-- 用于输出配置加载信息-->
+    <logger name="org.springframework.core.io.support.PropertiesLoaderSupport" level="info"/>
+    <logger name="org.apache.commons.beanutils" level="warn"/>
+    <logger name="org.apache.commons.configuration" level="warn"/>
+    <logger name="jdbc" level="warn"/>
+    <logger name="jdbc.sqlonly" level="warn"/>
+
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ERROR"/>
+        <appender-ref ref="WARN"/>
+        <appender-ref ref="INFO"/>
+        <appender-ref ref="DEBUG"/>
+    </root>
+</configuration>

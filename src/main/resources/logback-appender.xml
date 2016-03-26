@@ -1,0 +1,98 @@
+<included>
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%date [%level] %logger.%method\(%line\) - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志保存位置 -->
+        <File>${log.dir}/error.log</File>
+        <!-- 日志内容编码 -->
+        <Encoding>UTF-8</Encoding>
+        <!-- 过滤需要输出的级别 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <!-- 每天按照日期命名生成一个新的日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--归档后的日志文件命名规则 -->
+            <FileNamePattern>${log.dir}/error-%d{yyyy-MM-dd}.%i.log.gz</FileNamePattern>
+            <!-- 归档日志文件保留天数，0:表示永不删除 -->
+            <maxHistory>90</maxHistory>
+            <!-- 如果归档日志文件超过了指定的大小，则再次按照[xxx.0.xx, xxx.1.xx, xxx.2.xx]这种模式分割，和FixedWindowRollingPolicy的模式一样 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 归档文件大小限制 -->
+                <maxFileSize>20MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <!-- 日志输出格式化 -->
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <!-- [时间] [级别] [日志名] [方法名] [行号] [日志内容] -->
+            <Pattern>%date [%level] %logger.%method\(%line\) - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.dir}/warn.log</File>
+        <Encoding>UTF-8</Encoding>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.dir}/warn-%d{yyyy-MM-dd}.%i.log.gz</FileNamePattern>
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>20MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%date [%level] %logger.%method\(%line\) - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.dir}/info.log</File>
+        <Encoding>UTF-8</Encoding>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.dir}/info-%d{yyyy-MM-dd}.%i.log.gz</FileNamePattern>
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>20MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%date [%level] %logger.%method\(%line\) - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.dir}/debug.log</File>
+        <Encoding>UTF-8</Encoding>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.dir}/debug-%d{yyyy-MM-dd}.%i.log.gz</FileNamePattern>
+            <maxHistory>90</maxHistory>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>20MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%date [%level] %logger.%method\(%line\) - %msg%n</Pattern>
+        </layout>
+    </appender>
+</included>
