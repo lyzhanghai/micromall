@@ -2,13 +2,15 @@ package com.micromall.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.micromall.core.utils.HttpUtils;
 import com.micromall.entity.LoginUser;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.CookieUtils;
+import com.micromall.utils.HttpUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -30,10 +32,36 @@ public class MemberAuthenticationController {
 
 	private static Logger logger = LoggerFactory.getLogger(MemberAuthenticationController.class);
 
+	private CacheManager cacheManager;
+	private Cache        cache;
+
+	/**
+	 * 密码登录
+	 * @return
+	 */
 	@RequestMapping(value = "/auth/login")
 	public ResponseEntity<?> login() {
 		return ResponseEntity.ok(true);
 	}
+
+	/**
+	 * 发送短信验证码
+	 * @return
+	 */
+	@RequestMapping(value = "/auth/verifycode")
+	public ResponseEntity<?> verifycode() {
+		return ResponseEntity.ok(true);
+	}
+
+	/**
+	 * 短信验证码登录（如用户未注册，则自动注册）
+	 * @return
+	 */
+	@RequestMapping(value = "/auth/loginVerify")
+	public ResponseEntity<?> loginVerify() {
+		return ResponseEntity.ok(true);
+	}
+
 
 	@RequestMapping(value = "/member/register")
 	public ResponseEntity<?> register() {

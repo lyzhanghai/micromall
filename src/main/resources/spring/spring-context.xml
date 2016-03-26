@@ -30,6 +30,15 @@
 
     <bean class="com.micromall.utils.SpringBeanUtils" scope="singleton"/>
 
+    <!-- 缓存 -->
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+        <property name="cacheManager">
+            <bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+                <property name="configLocation" value="classpath:ehcache/ehcache.xml"/>
+            </bean>
+        </property>
+    </bean>
+
     <!-- 定时任务容器配置 -->
     <task:annotation-driven executor="executor" scheduler="scheduler"/>
     <task:executor id="executor" pool-size="5"/>

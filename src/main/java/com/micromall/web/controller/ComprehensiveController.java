@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ComprehensiveController {
 
 	/**
-	 * 商品类目
+	 * 商品类目列表
 	 *
 	 * @return
 	 */
@@ -27,6 +27,16 @@ public class ComprehensiveController {
 	 */
 	@RequestMapping(value = "/advertising")
 	public ResponseEntity<?> advertising() {
+		return ResponseEntity.ok(true);
+	}
+
+	/**
+	 * 文章列表
+	 *
+	 * @return
+	 */
+	@RequestMapping(value = "/articles")
+	public ResponseEntity<?> articles() {
 		return ResponseEntity.ok(true);
 	}
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * 促销
  */
 @Controller
-@RequestMapping(value = "/sales_promotion")
-public class SalesPromotionController {
+@RequestMapping(value = "/promotion")
+public class PromotionController {
 
 }
