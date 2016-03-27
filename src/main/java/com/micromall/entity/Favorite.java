@@ -8,12 +8,18 @@ import java.util.Date;
 public class Favorite extends IdEntity {
 
 	// 所属用户
-	private int   uid;
+	private int    uid;
 	// 收藏的商品ID
-	private int   goodsId;
-	private Goods goods;
+	private int    goodsId;
+	private Goods  goods;
+	// 商品标题
+	private String title;
+	// 商品图片
+	private String picture;
+	// 商品价格
+	private float  price;
 	// 创建时间
-	private Date  createTime;
+	private Date   createTime;
 
 	public int getUid() {
 		return uid;
@@ -37,6 +43,30 @@ public class Favorite extends IdEntity {
 
 	public void setGoods(Goods goods) {
 		this.goods = goods;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getPicture() {
+		return picture;
+	}
+
+	public void setPicture(String picture) {
+		this.picture = picture;
+	}
+
+	public float getPrice() {
+		return price;
+	}
+
+	public void setPrice(float price) {
+		this.price = price;
 	}
 
 	public Date getCreateTime() {

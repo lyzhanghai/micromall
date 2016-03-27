@@ -3,7 +3,6 @@ package com.micromall.web.security;
 import com.alibaba.fastjson.JSON;
 import com.micromall.entity.LoginUser;
 import com.micromall.utils.CommonEnvConstants;
-import com.micromall.utils.CookieUtils;
 import com.micromall.utils.URLBuilder;
 import com.micromall.web.RequestContext;
 import org.apache.commons.lang3.StringUtils;
@@ -22,8 +21,9 @@ public class FrontAuthenticationInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		String sid = CookieUtils.getCookieValue(request, CommonEnvConstants.LOGIN_SESSION_COOKIE_SID);
-		LoginUser loginUser = (sid != null) ? (LoginUser) request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY) : null;
+		/*String sid = CookieUtils.getCookieValue(request, CommonEnvConstants.LOGIN_SESSION_COOKIE_SID);
+		LoginUser loginUser = (sid != null) ? (LoginUser) request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY) : null;*/
+		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY);
 
 		// 用户未登录
 		if (loginUser == null) {

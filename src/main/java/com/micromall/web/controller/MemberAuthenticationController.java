@@ -9,7 +9,6 @@ import com.micromall.service.ShortMessageService;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.CookieUtils;
 import com.micromall.utils.HttpUtils;
-import com.micromall.web.RequestContext;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.resp.Ret;
 import org.apache.commons.lang3.StringUtils;
