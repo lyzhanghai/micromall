@@ -17,6 +17,7 @@ public class ComprehensiveController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/categorys")
+	@Deprecated
 	public ResponseEntity<?> categorys() {
 		return ResponseEntity.ok(true);
 	}

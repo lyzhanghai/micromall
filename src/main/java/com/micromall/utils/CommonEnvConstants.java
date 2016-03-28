@@ -27,10 +27,10 @@ public final class CommonEnvConstants {
 	public static final String WEIXIN_AUTH_SUCCESS_REDIRECT_URL = PropertyConfigurer.getString("weixin.auth.success.redirect_url");
 	/* 微信授权失败，跳转到的页面 */
 	public static final String WEIXIN_AUTH_FAIL_REDIRECT_URL    = PropertyConfigurer.getString("weixin.auth.fail.redirect_url");
-	/* 微信授权请求处理出错，跳转到的页面 */
-	public static final String WEIXIN_AUTH_ERROR_REDIRECT_URL   = PropertyConfigurer.getString("weixin.auth.error.redirect_url");
 	/* 使用手机号的授权登录页面 */
 	public static final String MOBILE_AUTHORIZE_LOGIN_URL       = PropertyConfigurer.getString("mobile.authorize.loginUrl");
+	/* 服务器请求处理出错，跳转到的页面 */
+	public static final String SERVER_ERROR_REDIRECT_URL        = PropertyConfigurer.getString("server.error.redirect_url");
 
 	/** =============== 登录会话session配置 =============== **/
 	/* 登录会话 session cookie sid */
@@ -58,4 +58,6 @@ public final class CommonEnvConstants {
 	public static final String MEMBER_DEFAULT_AVATAR = PropertyConfigurer.getString("member.default.avatar");
 
 
+	/* 首页商品每页显示个数 */
+	public static final int INDEX_GOODS_PERPAGE_SIZE = Integer.valueOf(PropertyConfigurer.getString("index.goods.perpage.size"));
 }

@@ -3,6 +3,7 @@ package com.micromall.web.controller;
 import com.micromall.entity.DeliveryAddress;
 import com.micromall.service.DeliveryAddressService;
 import com.micromall.web.extend.Authentication;
+import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class DeliveryAddressController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/list")
+	@UncaughtException(msg = "加载收货地址列表失败")
 	public ResponseEntity<?> list() {
 		return ResponseEntity.ok(deliveryAddressService.list(getLoginUser().getUid()));
 	}
@@ -43,6 +45,7 @@ public class DeliveryAddressController extends BasisController {
 	 * @param defaul          是设为默认地址
 	 * @return
 	 */
+	@UncaughtException(msg = "保存收货地址信息失败")
 	@RequestMapping(value = "/add_address")
 	public ResponseEntity<?> add_address(String province, String city, String county, String detailedAddress, String consigneeName, String
 			consigneePhone, boolean defaul) {
@@ -72,6 +75,7 @@ public class DeliveryAddressController extends BasisController {
 	 * @param defaul          是设为默认地址
 	 * @return
 	 */
+	@UncaughtException(msg = "保存收货地址信息失败")
 	@RequestMapping(value = "/update_address")
 	public ResponseEntity<?> update_address(int addressId, String province, String city, String county, String detailedAddress, String
 			consigneeName, String consigneePhone, boolean defaul) {
@@ -95,6 +99,7 @@ public class DeliveryAddressController extends BasisController {
 	 * @param addressId 地址id
 	 * @return
 	 */
+	@UncaughtException(msg = "删除收货地址信息失败")
 	@RequestMapping(value = "/delete_address")
 	public ResponseEntity<?> delete_address(int addressId) {
 		return ResponseEntity.ok(deliveryAddressService.deleteAddress(getLoginUser().getUid(), addressId));
@@ -106,6 +111,7 @@ public class DeliveryAddressController extends BasisController {
 	 * @param addressId 地址id
 	 * @return
 	 */
+	@UncaughtException(msg = "加载收货地址信息失败")
 	@RequestMapping(value = "/get_address")
 	public ResponseEntity<?> get_address(int addressId) {
 		return ResponseEntity.ok(deliveryAddressService.getAddress(getLoginUser().getUid(), addressId));
@@ -116,6 +122,7 @@ public class DeliveryAddressController extends BasisController {
 	 *
 	 * @return
 	 */
+	@UncaughtException(msg = "加载收货地址信息失败")
 	@RequestMapping(value = "/get_default_address")
 	public ResponseEntity<?> get_default() {
 		return ResponseEntity.ok(deliveryAddressService.getDefaultAddress(getLoginUser().getUid()));

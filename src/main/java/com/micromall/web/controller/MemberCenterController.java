@@ -7,6 +7,7 @@ import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.UploadUtils;
 import com.micromall.web.RequestContext;
 import com.micromall.web.extend.Authentication;
+import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.resp.Ret;
 import org.apache.commons.lang3.StringUtils;
@@ -41,6 +42,7 @@ public class MemberCenterController extends BasisController {
 	 *
 	 * @return
 	 */
+	@UncaughtException(msg = "加载用户信息失败")
 	@RequestMapping(value = "/userinfo")
 	public ResponseEntity<?> userinfo() {
 		Member member = memberService.get(getLoginUser().getUid());
@@ -52,8 +54,8 @@ public class MemberCenterController extends BasisController {
 		data.put("uid", member.getId());
 		data.put("nickname", member.getNickname());
 		data.put("avatar", member.getAvatar());
-		data.put("level", member.getLevel());
 		// TODO 佣金与销售额计算
+		data.put("level", 0);
 		data.put("commission", 0);
 		data.put("sales", 0);
 
@@ -67,6 +69,7 @@ public class MemberCenterController extends BasisController {
 	 * @param verifycode 验证码
 	 * @return
 	 */
+	@UncaughtException(msg = "手机号绑定失败")
 	@RequestMapping(value = "/auth/bind_phone")
 	public ResponseEntity<?> bind_phone(HttpServletRequest request, HttpServletResponse response, String phone, String verifycode) {
 		// TODO 参数验证
@@ -109,6 +112,7 @@ public class MemberCenterController extends BasisController {
 	 * @param birthday
 	 * @return
 	 */
+	@UncaughtException(msg = "保存用户信息失败")
 	@RequestMapping(value = "/update_basisinfo")
 	public ResponseEntity<?> update_basisinfo(String nickname, String gender, String birthday) {
 		// TODO 参数验证
@@ -122,6 +126,7 @@ public class MemberCenterController extends BasisController {
 	 * @param avatarFile
 	 * @return
 	 */
+	@UncaughtException(msg = "保存用户头像失败")
 	@RequestMapping(value = "/update_avatar")
 	public ResponseEntity<?> update_avatar(MultipartFile avatarFile) {
 		String avatar = UploadUtils.upload(CommonEnvConstants.UPLOAD_MEMBER_IMAGES_DIR, avatarFile);

@@ -4,11 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Created by zhangzx on 16/3/21.
- * 推广
+ * Created by zhangzx on 16/3/28.
  */
 @Controller
-@RequestMapping(value = "/promote")
-public class PromoteController {
-
-}
+@RequestMapping(value = "/distribution")
+public class DistributionController {}

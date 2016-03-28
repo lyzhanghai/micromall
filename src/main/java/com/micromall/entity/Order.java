@@ -1,5 +1,7 @@
 package com.micromall.entity;
 
+import com.micromall.service.vo.OrderCoupon;
+
 import java.util.Date;
 import java.util.List;
 
@@ -7,46 +9,50 @@ import java.util.List;
  * Created by zhangzx on 16/3/23.
  */
 public class Order extends IdEntity {
-	// 订单编号
-	private String           orderNo;
 	// 用户ID
-	private int              uid;
+	private int               uid;
+	// 订单编号
+	private String            orderNo;
 	// 订单总金额
-	private float            totalAmount;
+	private float             totalAmount;
 	// 实付金额
-	private float            realpayAmount;
+	private float             realpayAmount;
 	// 优惠劵抵扣金额（优惠劵抵扣金额+实付金额=订单总金额）
-	private float            deductionAmount;
+	private float             deductionAmount;
 	// 使用的优惠劵
-	private List<Coupon>     coupons;
+	private List<OrderCoupon> coupons;
 	// 买家留言
-	private String           leaveMessage;
+	private String            leaveMessage;
 	// 购买的商品信息（商品信息快照，购买数量）
-	private List<OrderGoods> goodses;
+	private List<OrderGoods>  goodses;
 	// 支付信息（支付渠道、支付金额、支付时间）
-	private PaymentInfo      paymentInfo;
+	private PaymentInfo       paymentInfo;
 	// <预留>退款信息（退款渠道(人工退款/自动退款)、退款金额、退款时间）
-	private RefundInfo       refundInfo;
+	private RefundInfo        refundInfo;
 	// 订单状态（待支付、待发货、待收货、已收货、<申请退款、退款完成：预留>、已关闭）
-	private int              status;
-	// 收货地址信息（省、市、区/县、详细地址、收货人姓名、收货人电话）
-	private DeliveryAddress  deliveryAddress;
+	private int               status;
+	// 收货地址信息（省、市、区/县、详细地址）
+	private String            deliveryAddress;
+	// 收货人姓名
+	private String            consigneeName;
+	// 收货人电话
+	private String            consigneePhone;
 	// 订单创建时间
-	private Date             createTime;
+	private Date              createTime;
 	// 订单支付时间
-	private Date             payTime;
+	private Date              payTime;
 	// 订单发货时间
-	private Date             deliveryTime;
+	private Date              deliveryTime;
 	// 订单确认收货时间
-	private Date             receiveTime;
+	private Date              receiveTime;
 	// <预留>订单申请退款时间
-	private Date             applyRefundTime;
+	private Date              applyRefundTime;
 	// <预留>订单退款完成时间
-	private Date             refundCompleteTime;
+	private Date              refundCompleteTime;
 	// 订单关闭时间
-	private Date             closeTime;
+	private Date              closeTime;
 	// 修改时间
-	private Date             updatTime;
+	private Date              updatTime;
 
 	public String getOrderNo() {
 		return orderNo;
@@ -88,11 +94,11 @@ public class Order extends IdEntity {
 		this.deductionAmount = deductionAmount;
 	}
 
-	public List<Coupon> getCoupons() {
+	public List<OrderCoupon> getCoupons() {
 		return coupons;
 	}
 
-	public void setCoupons(List<Coupon> coupons) {
+	public void setCoupons(List<OrderCoupon> coupons) {
 		this.coupons = coupons;
 	}
 
@@ -136,12 +142,28 @@ public class Order extends IdEntity {
 		this.status = status;
 	}
 
-	public DeliveryAddress getDeliveryAddress() {
+	public String getDeliveryAddress() {
 		return deliveryAddress;
 	}
 
-	public void setDeliveryAddress(DeliveryAddress deliveryAddress) {
+	public void setDeliveryAddress(String deliveryAddress) {
 		this.deliveryAddress = deliveryAddress;
+	}
+
+	public String getConsigneeName() {
+		return consigneeName;
+	}
+
+	public void setConsigneeName(String consigneeName) {
+		this.consigneeName = consigneeName;
+	}
+
+	public String getConsigneePhone() {
+		return consigneePhone;
+	}
+
+	public void setConsigneePhone(String consigneePhone) {
+		this.consigneePhone = consigneePhone;
 	}
 
 	public Date getCreateTime() {

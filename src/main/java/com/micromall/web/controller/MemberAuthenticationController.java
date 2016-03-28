@@ -219,7 +219,7 @@ public class MemberAuthenticationController {
 			}
 		} catch (Exception e) {
 			logger.error("微信登录授权后台处理出错：", e);
-			response.sendRedirect(CommonEnvConstants.WEIXIN_AUTH_ERROR_REDIRECT_URL);
+			response.sendRedirect(CommonEnvConstants.SERVER_ERROR_REDIRECT_URL);
 		}
 	}
 
