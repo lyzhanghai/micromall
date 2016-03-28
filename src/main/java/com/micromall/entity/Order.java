@@ -29,6 +29,8 @@ public class Order extends IdEntity {
 	private PaymentInfo       paymentInfo;
 	// <预留>退款信息（退款渠道(人工退款/自动退款)、退款金额、退款时间）
 	private RefundInfo        refundInfo;
+	// 物流信息
+	private Logistics         logistics;
 	// 订单状态（待支付、待发货、待收货、已收货、<申请退款、退款完成：预留>、已关闭）
 	private int               status;
 	// 收货地址信息（省、市、区/县、详细地址）
@@ -132,6 +134,14 @@ public class Order extends IdEntity {
 
 	public void setRefundInfo(RefundInfo refundInfo) {
 		this.refundInfo = refundInfo;
+	}
+
+	public Logistics getLogistics() {
+		return logistics;
+	}
+
+	public void setLogistics(Logistics logistics) {
+		this.logistics = logistics;
 	}
 
 	public int getStatus() {
