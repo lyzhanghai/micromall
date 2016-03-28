@@ -7,18 +7,20 @@ import java.util.Date;
  */
 public class Coupon extends IdEntity {
 
+	// 所属用户
+	private int     uid;
 	// 金额
 	private int     amount;
 	// 优惠劵描述
 	private String  descr;
-	// 所属用户
-	private int     uid;
 	// 过期时间
 	private Date    expiraTime;
 	// 是否已经使用
 	private boolean used;
 	// 使用时关联的订单编号
-	private String  useOrderNo;
+	private String  usedOrderNo;
+	// 使用时间
+	private Date    usedTime;
 	// 创建时间
 	private Date    createTime;
 
@@ -62,12 +64,20 @@ public class Coupon extends IdEntity {
 		this.used = used;
 	}
 
-	public String getUseOrderNo() {
-		return useOrderNo;
+	public String getUsedOrderNo() {
+		return usedOrderNo;
 	}
 
-	public void setUseOrderNo(String useOrderNo) {
-		this.useOrderNo = useOrderNo;
+	public void setUsedOrderNo(String usedOrderNo) {
+		this.usedOrderNo = usedOrderNo;
+	}
+
+	public Date getUsedTime() {
+		return usedTime;
+	}
+
+	public void setUsedTime(Date usedTime) {
+		this.usedTime = usedTime;
 	}
 
 	public Date getCreateTime() {
