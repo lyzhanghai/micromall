@@ -1,11 +1,20 @@
 package com.micromall.service;
 
 import com.micromall.entity.Member;
+import com.micromall.repository.MemberRepository;
+import com.micromall.service.vo.MemberBasisinfo;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * Created by zhangzx on 16/3/26.
  */
+@Service
 public class MemberService {
+
+	@Resource
+	private MemberRepository memberRepository;
 
 	public boolean updateLoginInfo(Member member) {
 		return false;
@@ -36,6 +45,14 @@ public class MemberService {
 	}
 
 	public boolean updatePhone(int id, String phone) {
+		return false;
+	}
+
+	public boolean updateBasisinfo(int uid, MemberBasisinfo basisinfo) {
+		return false;
+	}
+
+	public boolean updateAvatar(int uid, String avatar) {
 		return false;
 	}
 }

@@ -1,14 +1,15 @@
 package com.micromall.web.controller;
 
-import org.springframework.http.ResponseEntity;
+import com.micromall.web.resp.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Created by zhangzx on 16/3/21.
+ * 公共接口
  */
 @Controller
-public class ComprehensiveController {
+public class ComprehensiveController extends BasisController {
 
 	/**
 	 * 商品类目列表
@@ -25,8 +26,8 @@ public class ComprehensiveController {
 	 *
 	 * @return
 	 */
-	@RequestMapping(value = "/advertising")
-	public ResponseEntity<?> advertising() {
+	@RequestMapping(value = "/ad_config")
+	public ResponseEntity<?> ad_config() {
 		return ResponseEntity.ok(true);
 	}
 

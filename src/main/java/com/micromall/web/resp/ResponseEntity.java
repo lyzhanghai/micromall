@@ -51,6 +51,18 @@ public class ResponseEntity<T> implements Serializable {
 		this.data = data;
 	}
 
+	public static <T> ResponseEntity<T> ok() {
+		return new ResponseEntity<T>(Ret.ok);
+	}
+
+	public static <T> ResponseEntity<T> ok(T data) {
+		return new ResponseEntity<T>(Ret.ok, data);
+	}
+
+	public static <T> ResponseEntity<T> fail(String msg) {
+		return new ResponseEntity<T>(Ret.error, msg);
+	}
+
 	public int getCode() {
 		return code;
 	}

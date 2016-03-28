@@ -3,7 +3,7 @@ package com.micromall.web.resp;
 public enum Ret {
 
 	ok(0, ""),
-	error(1, "请求出错");
+	error(1, "系统异常");
 
 	private int    code;
 	private String message;

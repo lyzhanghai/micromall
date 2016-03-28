@@ -1,16 +1,16 @@
 package com.micromall.web.controller;
 
-import org.springframework.http.ResponseEntity;
+import com.micromall.web.resp.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Created by zhangzx on 16/3/21.
- * 商品（收藏：favorite）
+ * 商品
  */
 @Controller
 @RequestMapping(value = "/goods")
-public class GoodsController {
+public class GoodsController extends BasisController {
 
 	/**
 	 * 分类下的商品列表
@@ -23,7 +23,7 @@ public class GoodsController {
 	}
 
 	/**
-	 * 订单详情
+	 * 商品详情
 	 *
 	 * @return
 	 */

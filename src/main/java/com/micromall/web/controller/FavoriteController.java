@@ -1,8 +1,12 @@
 package com.micromall.web.controller;
 
-import org.springframework.http.ResponseEntity;
+import com.micromall.service.FavoriteService;
+import com.micromall.web.extend.Authentication;
+import com.micromall.web.resp.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.annotation.Resource;
 
 /**
  * Created by zhangzx on 16/3/23.
@@ -10,24 +14,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping(value = "/favorite")
-public class FavoriteController {
+@Authentication
+public class FavoriteController extends BasisController {
+
+	@Resource
+	private FavoriteService favoriteService;
 
 	// 收藏夹商品列表
 	@RequestMapping(value = "/goodses")
 	public ResponseEntity<?> goodses() {
-		return ResponseEntity.ok(true);
+		return ResponseEntity.ok(favoriteService.goodses(getLoginUser().getUid()));
 	}
 
 	// 加入收藏夹
 	@RequestMapping(value = "/join_favorite")
-	public ResponseEntity<?> join_favorite() {
-		return ResponseEntity.ok(true);
+	public ResponseEntity<?> join_favorite(int goodsId) {
+		return ResponseEntity.ok(favoriteService.joinFavorite(getLoginUser().getUid(), goodsId));
 	}
 
 	// 从收藏夹删除
-	@RequestMapping(value = "/delete")
-	public ResponseEntity<?> delete() {
-		return ResponseEntity.ok(true);
+	@RequestMapping(value = "/delete_goods")
+	public ResponseEntity<?> delete_goods(int goodsId) {
+		return ResponseEntity.ok(favoriteService.deleteGoods(getLoginUser().getUid(), goodsId));
 	}
 
 }

@@ -1,17 +1,11 @@
-package com.micromall.entity;
-
-import java.util.Date;
+package com.micromall.service.vo;
 
 /**
  * Created by zhangzx on 16/3/23.
  */
-public class Favorite extends IdEntity {
+public class CartGoods {
 
-	/*uid与goodsId组成唯一索引*/
-
-	// 所属用户
-	private int    uid;
-	// 收藏的商品ID
+	// 商品ID
 	private int    goodsId;
 	// 商品标题
 	private String title;
@@ -19,16 +13,10 @@ public class Favorite extends IdEntity {
 	private String picture;
 	// 商品价格
 	private float  price;
-	// 创建时间
-	private Date   createTime;
-
-	public int getUid() {
-		return uid;
-	}
-
-	public void setUid(int uid) {
-		this.uid = uid;
-	}
+	// 购买数量
+	private int    buyNumber;
+	// 库存量
+	private int    inventory;
 
 	public int getGoodsId() {
 		return goodsId;
@@ -62,11 +50,19 @@ public class Favorite extends IdEntity {
 		this.price = price;
 	}
 
-	public Date getCreateTime() {
-		return createTime;
+	public int getBuyNumber() {
+		return buyNumber;
 	}
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+	public void setBuyNumber(int buyNumber) {
+		this.buyNumber = buyNumber;
+	}
+
+	public int getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(int inventory) {
+		this.inventory = inventory;
 	}
 }

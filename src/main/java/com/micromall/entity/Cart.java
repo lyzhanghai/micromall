@@ -7,21 +7,16 @@ import java.util.Date;
  */
 public class Cart extends IdEntity {
 
-	// 用户支付完后, 从购物车删除商品记录
-	// 接口返回数据包含（商品ID, 商品标题, 商品图片, 商品价格, 商品数量）
-	// 查询时如果遇到下架，或删除的商品，自动从购物车中删除
+	/*uid与goodsId组成唯一索引*/
 
-	// 商品ID
-	private int   goodsId;
-	private Goods goods;
-	// 购买数量
-	private int   buyNumber;
 	// 所属用户
-	private int   uid;
+	private int  uid;
+	// 商品ID
+	private int  goodsId;
+	// 购买数量
+	private int  buyNumber;
 	// 创建时间
-	private Date  createTime;
-	// 修改时间
-	private Date  updateTime;
+	private Date createTime;
 
 	public int getGoodsId() {
 		return goodsId;
@@ -29,14 +24,6 @@ public class Cart extends IdEntity {
 
 	public void setGoodsId(int goodsId) {
 		this.goodsId = goodsId;
-	}
-
-	public Goods getGoods() {
-		return goods;
-	}
-
-	public void setGoods(Goods goods) {
-		this.goods = goods;
 	}
 
 	public int getBuyNumber() {
@@ -63,11 +50,4 @@ public class Cart extends IdEntity {
 		this.createTime = createTime;
 	}
 
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
 }

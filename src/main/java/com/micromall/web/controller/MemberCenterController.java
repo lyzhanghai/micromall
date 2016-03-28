@@ -1,10 +1,12 @@
 package com.micromall.web.controller;
 
-import com.micromall.entity.LoginUser;
 import com.micromall.entity.Member;
 import com.micromall.service.MemberService;
+import com.micromall.service.vo.MemberBasisinfo;
 import com.micromall.utils.CommonEnvConstants;
+import com.micromall.utils.UploadUtils;
 import com.micromall.web.RequestContext;
+import com.micromall.web.extend.Authentication;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.resp.Ret;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +28,8 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/member_center")
-public class MemberCenterController {
+@Authentication
+public class MemberCenterController extends BasisController {
 
 	private static Logger logger = LoggerFactory.getLogger(MemberCenterController.class);
 
@@ -39,11 +43,11 @@ public class MemberCenterController {
 	 */
 	@RequestMapping(value = "/userinfo")
 	public ResponseEntity<?> userinfo() {
-		LoginUser loginUser = RequestContext.getLoginUser();
-		Member member = memberService.get(loginUser.getUid());
+		Member member = memberService.get(getLoginUser().getUid());
 		if (member == null) {
 			return new ResponseEntity<Object>(Ret.error, "用户不存在");
 		}
+
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("uid", member.getId());
 		data.put("nickname", member.getNickname());
@@ -52,9 +56,9 @@ public class MemberCenterController {
 		// TODO 佣金与销售额计算
 		data.put("commission", 0);
 		data.put("sales", 0);
-		return new ResponseEntity<Object>(Ret.ok, data);
-	}
 
+		return ResponseEntity.ok(data);
+	}
 
 	/**
 	 * 绑定手机号
@@ -63,9 +67,9 @@ public class MemberCenterController {
 	 * @param verifycode 验证码
 	 * @return
 	 */
-	@RequestMapping(value = "/auth/bindPhone")
-	public ResponseEntity<?> bindPhone(HttpServletRequest request, HttpServletResponse response, String phone, String verifycode) {
-
+	@RequestMapping(value = "/auth/bind_phone")
+	public ResponseEntity<?> bind_phone(HttpServletRequest request, HttpServletResponse response, String phone, String verifycode) {
+		// TODO 参数验证
 		if (StringUtils.isEmpty(phone)) {
 			return new ResponseEntity<Object>(Ret.error, "请输入手机号码");
 		}
@@ -95,5 +99,35 @@ public class MemberCenterController {
 			logger.error("绑定手机号后台处理出错：", e);
 			return new ResponseEntity<Object>(Ret.error, "手机号绑定失败");
 		}
+	}
+
+	/**
+	 * 基础信息修改
+	 *
+	 * @param nickname
+	 * @param gender
+	 * @param birthday
+	 * @return
+	 */
+	@RequestMapping(value = "/update_basisinfo")
+	public ResponseEntity<?> update_basisinfo(String nickname, String gender, String birthday) {
+		// TODO 参数验证
+		MemberBasisinfo basisinfo = new MemberBasisinfo(nickname, gender, birthday);
+		return ResponseEntity.ok(memberService.updateBasisinfo(getLoginUser().getUid(), basisinfo));
+	}
+
+	/**
+	 * 用户头像修改
+	 *
+	 * @param avatarFile
+	 * @return
+	 */
+	@RequestMapping(value = "/update_avatar")
+	public ResponseEntity<?> update_avatar(MultipartFile avatarFile) {
+		String avatar = UploadUtils.upload(CommonEnvConstants.UPLOAD_MEMBER_IMAGES_DIR, avatarFile);
+		if (StringUtils.isNotEmpty(avatar)) {
+			return ResponseEntity.ok(memberService.updateAvatar(getLoginUser().getUid(), avatar));
+		}
+		return ResponseEntity.ok(false);
 	}
 }

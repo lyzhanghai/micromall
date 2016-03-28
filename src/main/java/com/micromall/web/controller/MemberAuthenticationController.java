@@ -9,8 +9,8 @@ import com.micromall.service.ShortMessageService;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.CookieUtils;
 import com.micromall.utils.HttpUtils;
+import com.micromall.utils.UploadUtils;
 import com.micromall.web.resp.ResponseEntity;
-import com.micromall.web.resp.Ret;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +34,8 @@ import java.util.regex.Pattern;
  */
 @Controller
 public class MemberAuthenticationController {
-	private static final Pattern PHONE_PATTERN          = Pattern.compile("^(\\+\\d+)?1[34578]\\d{9}$");
-	private static final Random  RANDOM                 = new Random();
-	private static final String  VERIFYCODE_LAST_OBTAIN = "VerifycodeLastObtain";
+	private static final Pattern PHONE_PATTERN = Pattern.compile("^(\\+\\d+)?1[34578]\\d{9}$");
+	private static final Random  RANDOM        = new Random();
 
 	private static Logger logger = LoggerFactory.getLogger(MemberAuthenticationController.class);
 
@@ -53,32 +52,27 @@ public class MemberAuthenticationController {
 	 */
 	@RequestMapping(value = "/auth/verifycode")
 	public ResponseEntity<?> verifycode(HttpServletRequest request, String phone) {
+		// TODO 参数验证
 		if (StringUtils.isEmpty(phone)) {
-			return new ResponseEntity<Object>(Ret.error, "请输入手机号码");
+			return ResponseEntity.fail("请输入手机号码");
 		}
 		if (!PHONE_PATTERN.matcher(phone).matches()) {
-			return new ResponseEntity<Object>(Ret.error, "手机号码输入不正确");
+			return ResponseEntity.fail("手机号码输入不正确");
 		}
-
-		/*// 防止重复获取验证码，一分钟只能获取一次
-		if (cacheService.get(VERIFYCODE_LAST_OBTAIN, phone) != null) {
-			return new ResponseEntity<Object>(Ret.error, "请勿重发获取验证码");
-		}
-		cacheService.set(VERIFYCODE_LAST_OBTAIN, phone, "0", CacheService.MINUTE);*/
 
 		String verifycode = String.valueOf((RANDOM.nextInt(9000) + 1000));
+		boolean sendResult = false;
 		try {
-			boolean sendResult = shortMessageService.sendMessage(phone, String.format(CommonEnvConstants.VERIFYCODE_TEMPLATE, verifycode));
+			sendResult = shortMessageService.sendMessage(phone, String.format(CommonEnvConstants.VERIFYCODE_TEMPLATE, verifycode));
 			if (sendResult) {
-				logger.warn("发送短信验证码失败，result={}", sendResult);
+				request.getSession().setAttribute(CommonEnvConstants.VERIFYCODE_KEY + ":" + phone, verifycode);
+				/*cacheService.set(CommonEnvConstants.VERIFYCODE_KEY, phone, verifycode, CacheService.MINUTE * 5);*/
 			}
+			// logger.warn("发送短信验证码失败，result={}", sendResult);
 		} catch (Exception e) {
 			logger.warn("发送短信验证码出错：", e);
 		}
-
-		request.getSession().setAttribute(CommonEnvConstants.VERIFYCODE_KEY, verifycode);
-		/*cacheService.set(CommonEnvConstants.VERIFYCODE_KEY, phone, verifycode, CacheService.MINUTE * 5);*/
-		return new ResponseEntity<Object>(Ret.ok);
+		return ResponseEntity.ok(sendResult);
 	}
 
 	/**
@@ -92,23 +86,24 @@ public class MemberAuthenticationController {
 	public ResponseEntity<?> loginVerify(HttpServletRequest request, HttpServletResponse response, String phone, String verifycode) {
 
 		if (StringUtils.isEmpty(phone)) {
-			return new ResponseEntity<Object>(Ret.error, "请输入手机号码");
+			return ResponseEntity.fail("请输入手机号码");
 		}
 		if (StringUtils.isEmpty(verifycode)) {
-			return new ResponseEntity<Object>(Ret.error, "请输入验证码");
+			return ResponseEntity.fail("请输入验证码");
 		}
 
+		String verifycodeKey = CommonEnvConstants.VERIFYCODE_KEY + ":" + phone;
 		try {
 			// 短信验证码验证
 			/*String _verifycode = cacheService.get(CommonEnvConstants.VERIFYCODE_KEY, phone);*/
-			String _verifycode = (String) request.getSession().getAttribute(CommonEnvConstants.VERIFYCODE_KEY);
+			String _verifycode = (String) request.getSession().getAttribute(verifycodeKey);
 			if (_verifycode == null) {
-				return new ResponseEntity<Object>(Ret.error, "短信验证码已失效");
+				return ResponseEntity.fail("短信验证码已失效");
 			} else if (!_verifycode.equals(verifycode)) {
-				return new ResponseEntity<Object>(Ret.error, "验证码输入错误");
+				return ResponseEntity.fail("验证码输入错误");
 			}
 			/*cacheService.del(CommonEnvConstants.VERIFYCODE_KEY, phone);*/
-			request.getSession().removeAttribute(CommonEnvConstants.VERIFYCODE_KEY);
+			request.getSession().removeAttribute(verifycodeKey);
 
 			Member member = memberService.findByPhone(phone);
 			// 用户未绑定，进行用户绑定操作
@@ -126,10 +121,10 @@ public class MemberAuthenticationController {
 
 			_processLogin(LoginUser.LoginType.Phone, member, request, response);
 
-			return new ResponseEntity<Object>(Ret.ok);
+			return ResponseEntity.ok();
 		} catch (Exception e) {
 			logger.error("手机号登录授权后台处理出错：", e);
-			return new ResponseEntity<Object>(Ret.error, "登录失败");
+			return ResponseEntity.fail("登录失败");
 		}
 	}
 
@@ -195,11 +190,15 @@ public class MemberAuthenticationController {
 					_params.put("lang", "zh_CN");
 
 					org.springframework.http.ResponseEntity<String> responseEntity = HttpUtils.executeRequest(CommonEnvConstants
-							.WEIXIN_USERINFO_TOKEN_URL, _params, String.class);
+							.WEIXIN_USERINFO_URL, _params, String.class);
 					if (responseEntity.getStatusCode() == HttpStatus.OK && StringUtils.isNotEmpty(responseEntity.getBody())) {
 						JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
 						member.setNickname(jsonObject.getString("nickname"));
-						member.setAvatar(jsonObject.getString("headimgurl"));
+						String avatar = UploadUtils.upload(CommonEnvConstants.UPLOAD_MEMBER_IMAGES_DIR, jsonObject.getString("headimgurl"));
+						member.setAvatar(avatar);
+						if (StringUtils.isEmpty(avatar)) {
+							member.setAvatar(CommonEnvConstants.MEMBER_DEFAULT_AVATAR);
+						}
 						String gender = jsonObject.getString("sex");
 						member.setGender("1".equals(gender) ? "男" : "1".equals(gender) ? "女" : null);
 						memberService.updateBasisInfo(member);

@@ -5,9 +5,11 @@ import com.micromall.entity.LoginUser;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.URLBuilder;
 import com.micromall.web.RequestContext;
+import com.micromall.web.extend.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -21,6 +23,18 @@ public class FrontAuthenticationInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		// controller单独采用@PermissionsVerify进行控制
+		if (handler instanceof HandlerMethod) {
+			HandlerMethod handlerMethod = (HandlerMethod) handler;
+			Authentication permissionsVerify = handlerMethod.getMethodAnnotation(Authentication.class);
+			if (permissionsVerify == null) {
+				permissionsVerify = handlerMethod.getBeanType().getAnnotation(Authentication.class);
+			}
+			if (permissionsVerify == null || permissionsVerify.ignore()) {
+				return true;
+			}
+		}
+
 		/*String sid = CookieUtils.getCookieValue(request, CommonEnvConstants.LOGIN_SESSION_COOKIE_SID);
 		LoginUser loginUser = (sid != null) ? (LoginUser) request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY) : null;*/
 		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY);

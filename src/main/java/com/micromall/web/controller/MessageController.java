@@ -1,5 +1,6 @@
 package com.micromall.web.controller;
 
+import com.micromall.web.extend.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping(value = "/message")
-public class MessageController {
+@Authentication
+public class MessageController extends BasisController {
 
 }
