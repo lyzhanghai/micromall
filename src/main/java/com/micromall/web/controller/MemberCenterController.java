@@ -6,7 +6,7 @@ import com.micromall.service.vo.MemberBasisinfo;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.UploadUtils;
 import com.micromall.web.RequestContext;
-import com.micromall.web.extend.Authentication;
+import com.micromall.web.security.Authentication;
 import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.resp.Ret;

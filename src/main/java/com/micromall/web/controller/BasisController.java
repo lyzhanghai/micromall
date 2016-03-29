@@ -1,7 +1,7 @@
 package com.micromall.web.controller;
 
-import com.micromall.entity.LoginUser;
 import com.micromall.web.RequestContext;
+import com.micromall.web.security.LoginUser;
 
 /**
  * Created by zhangzx on 16/3/28.

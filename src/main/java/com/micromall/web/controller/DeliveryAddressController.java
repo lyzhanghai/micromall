@@ -2,7 +2,7 @@ package com.micromall.web.controller;
 
 import com.micromall.entity.DeliveryAddress;
 import com.micromall.service.DeliveryAddressService;
-import com.micromall.web.extend.Authentication;
+import com.micromall.web.security.Authentication;
 import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import org.springframework.stereotype.Controller;

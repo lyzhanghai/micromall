@@ -1,6 +1,7 @@
 package com.micromall.web;
 
-import com.micromall.entity.LoginUser;
+
+import com.micromall.web.security.LoginUser;
 
 import java.util.HashMap;
 import java.util.Map;

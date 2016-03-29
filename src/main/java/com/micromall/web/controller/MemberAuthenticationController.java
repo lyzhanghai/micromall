@@ -2,7 +2,6 @@ package com.micromall.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.micromall.entity.LoginUser;
 import com.micromall.entity.Member;
 import com.micromall.service.MemberService;
 import com.micromall.service.ShortMessageService;
@@ -10,6 +9,7 @@ import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.CookieUtils;
 import com.micromall.utils.HttpUtils;
 import com.micromall.utils.UploadUtils;
+import com.micromall.web.security.LoginUser;
 import com.micromall.web.resp.ResponseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

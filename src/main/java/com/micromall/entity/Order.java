@@ -1,5 +1,6 @@
 package com.micromall.entity;
 
+import com.micromall.service.vo.Logistics;
 import com.micromall.service.vo.OrderCoupon;
 
 import java.util.Date;

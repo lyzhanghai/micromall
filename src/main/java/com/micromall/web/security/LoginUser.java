@@ -1,5 +1,6 @@
-package com.micromall.entity;
+package com.micromall.web.security;
 
+import com.micromall.entity.Member;
 import com.micromall.utils.IPUtils;
 
 import javax.servlet.http.HttpServletRequest;

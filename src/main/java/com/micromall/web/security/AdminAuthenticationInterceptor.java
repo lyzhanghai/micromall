@@ -1,7 +1,6 @@
 package com.micromall.web.security;
 
 import com.alibaba.fastjson.JSON;
-import com.micromall.entity.LoginUser;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.CookieUtils;
 import com.micromall.utils.URLBuilder;

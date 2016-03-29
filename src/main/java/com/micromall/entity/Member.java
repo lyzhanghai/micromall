@@ -17,8 +17,6 @@ public class Member extends IdEntity {
 	private String nickname;
 	// 用户头像
 	private String avatar;
-	// 用户等级
-	private int    level;
 	// 性别
 	private String gender;
 	// 生日
@@ -74,14 +72,6 @@ public class Member extends IdEntity {
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(int level) {
-		this.level = level;
 	}
 
 	public String getGender() {

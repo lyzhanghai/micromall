@@ -1,8 +1,9 @@
 package com.micromall.web.extend;
 
 import com.alibaba.fastjson.JSON;
+import com.micromall.utils.ArgumentValidException;
 import com.micromall.utils.CommonEnvConstants;
-import com.micromall.utils.ServiceException;
+import com.micromall.utils.LogicException;
 import com.micromall.web.resp.ResponseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,21 +19,14 @@ public class HandlerExceptionResolver extends SimpleMappingExceptionResolver {
 
 	@Override
 	protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
-		String message = null;
-		if (handler instanceof HandlerMethod) {
+		String message = "系统异常";
+		if (ex instanceof LogicException || ex instanceof ArgumentValidException) {
+			message = ex.getMessage();
+		} else if (handler instanceof HandlerMethod) {
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			UncaughtException uncaughtException = handlerMethod.getMethodAnnotation(UncaughtException.class);
 			if (uncaughtException != null) {
 				message = uncaughtException.msg();
-			}
-		}
-		if (message != null) {
-			// 自定义异常
-			if (ex instanceof ServiceException) {
-				ServiceException _ex = (ServiceException) ex;
-				message = _ex.getMessage();
-			} else {
-				message = "系统异常";
 			}
 		}
 
