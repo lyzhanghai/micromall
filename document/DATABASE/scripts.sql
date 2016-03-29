@@ -5,14 +5,15 @@ CREATE TABLE `article` (
   `content` text NOT NULL,
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
 
 CREATE TABLE `category` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) NULL,
   `name` varchar(30) NOT NULL,
   `index` smallint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
 
 CREATE TABLE `cart` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -22,7 +23,7 @@ CREATE TABLE `cart` (
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`uid`, `goods_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
 
 CREATE TABLE `coupon` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -36,7 +37,7 @@ CREATE TABLE `coupon` (
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   INDEX (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
 
 CREATE TABLE `delivery_address` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -52,7 +53,7 @@ CREATE TABLE `delivery_address` (
   `update_time` datetime NULL,
   PRIMARY KEY (`id`),
   INDEX (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
 
 CREATE TABLE `favorite` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -64,7 +65,7 @@ CREATE TABLE `favorite` (
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   INDEX (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
 
 CREATE TABLE `goods` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -84,7 +85,7 @@ CREATE TABLE `goods` (
   `create_time` datetime NOT NULL,
   `update_time` datetime NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
 
 CREATE TABLE `member` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -104,7 +105,7 @@ CREATE TABLE `member` (
   PRIMARY KEY (`id`),
   UNIQUE (`phone`),
   UNIQUE (`wechat_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=10000 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=10000 ;
 
 CREATE TABLE `message` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -115,7 +116,7 @@ CREATE TABLE `message` (
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   INDEX (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
 
 CREATE TABLE `orders` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -142,7 +143,7 @@ CREATE TABLE `orders` (
   INDEX (`uid`),
   INDEX (`status`),
   UNIQUE (`order_no`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=10000 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=10000 ;
 
 CREATE TABLE `order_goods` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -157,5 +158,5 @@ CREATE TABLE `order_goods` (
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   INDEX (`order_no`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;
 
