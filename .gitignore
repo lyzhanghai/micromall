@@ -3,5 +3,3 @@ micromall.iml
 target
 properties.txt
 properties
-src/main/resources/config.properties
-src/main/resources/config-dev.properties
