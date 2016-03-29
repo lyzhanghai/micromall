@@ -248,6 +248,7 @@
             <version>0.2.7</version>
         </dependency>
         <!-- ehcache -->
+        <!--
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
@@ -258,10 +259,12 @@
             <artifactId>ehcache</artifactId>
             <version>3.0.0.rc2</version>
         </dependency>
+        -->
 
     </dependencies>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

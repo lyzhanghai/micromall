@@ -79,15 +79,15 @@ public class FrontAuthenticationInterceptor extends HandlerInterceptorAdapter {
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-		logger.info("请求 [{}], 参数 [{}], 结果 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), JSON
-				.toJSONString(modelAndView.getModel())});
+		logger.info("请求 [{}], 参数 [{}] 状态 [200]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
 	}
 
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 		RequestContext.clean();
-		logger.info("请求 [{}], 参数 [{}], 异常 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), ex.getMessage
-				()});
+		if (ex != null) {
+			logger.info("请求 [{}], 参数 [{}], 异常 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), ex
+					.getMessage()});
+		}
 	}
-
 }

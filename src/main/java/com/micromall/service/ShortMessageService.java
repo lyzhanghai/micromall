@@ -1,8 +1,11 @@
 package com.micromall.service;
 
+import org.springframework.stereotype.Service;
+
 /**
  * Created by zhangzx on 16/3/26.
  */
+@Service
 public class ShortMessageService {
 
 	/**

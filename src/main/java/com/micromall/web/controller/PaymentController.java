@@ -4,6 +4,7 @@ import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Created by zhangzx on 16/3/21.
@@ -15,6 +16,7 @@ public class PaymentController {
 
 	@UncaughtException(msg = "支付失败")
 	@RequestMapping(value = "/pay")
+	@ResponseBody
 	public ResponseEntity<?> pay(int orderNo) {
 		return ResponseEntity.ok(true);
 	}

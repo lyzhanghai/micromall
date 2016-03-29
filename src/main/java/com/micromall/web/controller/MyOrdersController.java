@@ -6,6 +6,7 @@ import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -30,6 +31,7 @@ public class MyOrdersController extends BasisController {
 	 */
 	@UncaughtException(msg = "加载订单列表失败")
 	@RequestMapping(value = "/orders")
+	@ResponseBody
 	public ResponseEntity<?> orders(int status, int p) {
 		return ResponseEntity.ok(orderService.findOrders(getLoginUser().getUid(), status, p));
 	}
@@ -42,6 +44,7 @@ public class MyOrdersController extends BasisController {
 	 */
 	@UncaughtException(msg = "加载订单详情失败")
 	@RequestMapping(value = "/details")
+	@ResponseBody
 	public ResponseEntity<?> details(String orderNo) {
 		return ResponseEntity.ok(orderService.getOrderDetails(getLoginUser().getUid(), orderNo));
 	}
@@ -54,6 +57,7 @@ public class MyOrdersController extends BasisController {
 	 */
 	@UncaughtException(msg = "确认收货失败")
 	@RequestMapping(value = "/confirm_delivery")
+	@ResponseBody
 	public ResponseEntity<?> confirm_delivery(String orderNo) {
 		return ResponseEntity.ok(orderService.confirmDelivery(getLoginUser().getUid(), orderNo));
 	}
@@ -66,6 +70,7 @@ public class MyOrdersController extends BasisController {
 	 */
 	@UncaughtException(msg = "关闭订单失败")
 	@RequestMapping(value = "/close")
+	@ResponseBody
 	public ResponseEntity<?> close(String orderNo) {
 		return ResponseEntity.ok(orderService.closeOrder(getLoginUser().getUid(), orderNo));
 	}
@@ -79,6 +84,7 @@ public class MyOrdersController extends BasisController {
 	 */
 	@UncaughtException(msg = "提交订单失败")
 	@RequestMapping(value = "/submit")
+	@ResponseBody
 	public ResponseEntity<?> submit(String goodsIds, String couponId, String leaveMessage, int addressId) {
 		return ResponseEntity.ok(orderService.createOrder());
 	}

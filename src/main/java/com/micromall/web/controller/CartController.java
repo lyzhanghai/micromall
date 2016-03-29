@@ -6,6 +6,7 @@ import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -31,6 +32,7 @@ public class CartController extends BasisController {
 	 */
 	@UncaughtException(msg = "加载商品列表失败")
 	@RequestMapping(value = "/goodses")
+	@ResponseBody
 	public ResponseEntity<?> goodses() {
 		return ResponseEntity.ok(cartService.goodses(getLoginUser().getUid()));
 	}
@@ -44,6 +46,7 @@ public class CartController extends BasisController {
 	 */
 	@UncaughtException(msg = "加入购物车失败")
 	@RequestMapping(value = "/join_cart")
+	@ResponseBody
 	public ResponseEntity<?> join_cart(int goodsId, int buyNumber) {
 		// TODO 参数验证
 		return ResponseEntity.ok(cartService.joinCart(getLoginUser().getUid(), goodsId, buyNumber));
@@ -58,6 +61,7 @@ public class CartController extends BasisController {
 	 */
 	@UncaughtException(msg = "修改购买数量失败")
 	@RequestMapping(value = "/update_buyNumber")
+	@ResponseBody
 	public ResponseEntity<?> update_buyNumber(int goodsId, int buyNumber) {
 		// TODO 参数验证
 		return ResponseEntity.ok(cartService.updateBuyNumber(getLoginUser().getUid(), goodsId, buyNumber));
@@ -71,6 +75,7 @@ public class CartController extends BasisController {
 	 */
 	@UncaughtException(msg = "删除商品失败")
 	@RequestMapping(value = "/delete_goods")
+	@ResponseBody
 	public ResponseEntity<?> delete_goods(int goodsId) {
 		return ResponseEntity.ok(cartService.deleteGoods(getLoginUser().getUid(), goodsId));
 	}

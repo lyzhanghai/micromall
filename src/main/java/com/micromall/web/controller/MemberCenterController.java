@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -44,6 +45,7 @@ public class MemberCenterController extends BasisController {
 	 */
 	@UncaughtException(msg = "加载用户信息失败")
 	@RequestMapping(value = "/userinfo")
+	@ResponseBody
 	public ResponseEntity<?> userinfo() {
 		Member member = memberService.get(getLoginUser().getUid());
 		if (member == null) {
@@ -71,6 +73,7 @@ public class MemberCenterController extends BasisController {
 	 */
 	@UncaughtException(msg = "手机号绑定失败")
 	@RequestMapping(value = "/auth/bind_phone")
+	@ResponseBody
 	public ResponseEntity<?> bind_phone(HttpServletRequest request, HttpServletResponse response, String phone, String verifycode) {
 		// TODO 参数验证
 		if (StringUtils.isEmpty(phone)) {
@@ -114,6 +117,7 @@ public class MemberCenterController extends BasisController {
 	 */
 	@UncaughtException(msg = "保存用户信息失败")
 	@RequestMapping(value = "/update_basisinfo")
+	@ResponseBody
 	public ResponseEntity<?> update_basisinfo(String nickname, String gender, String birthday) {
 		// TODO 参数验证
 		MemberBasisinfo basisinfo = new MemberBasisinfo(nickname, gender, birthday);
@@ -128,6 +132,7 @@ public class MemberCenterController extends BasisController {
 	 */
 	@UncaughtException(msg = "保存用户头像失败")
 	@RequestMapping(value = "/update_avatar")
+	@ResponseBody
 	public ResponseEntity<?> update_avatar(MultipartFile avatarFile) {
 		String avatar = UploadUtils.upload(CommonEnvConstants.UPLOAD_MEMBER_IMAGES_DIR, avatarFile);
 		if (StringUtils.isNotEmpty(avatar)) {

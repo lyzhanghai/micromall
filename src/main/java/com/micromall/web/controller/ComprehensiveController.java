@@ -1,8 +1,16 @@
 package com.micromall.web.controller;
 
+import com.micromall.entity.Article;
+import com.micromall.repository.ArticleRepository;
+import com.micromall.repository.CategoryRepository;
 import com.micromall.web.resp.ResponseEntity;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * Created by zhangzx on 16/3/21.
@@ -11,15 +19,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ComprehensiveController extends BasisController {
 
+	@Resource
+	private CategoryRepository categoryRepository;
+	@Resource
+	private ArticleRepository  articleRepository;
+
 	/**
 	 * 商品类目列表
 	 *
 	 * @return
 	 */
 	@RequestMapping(value = "/categorys")
-	@Deprecated
+	@ResponseBody
 	public ResponseEntity<?> categorys() {
-		return ResponseEntity.ok(true);
+		return ResponseEntity.ok(categoryRepository.selectAll());
 	}
 
 	/**
@@ -28,6 +41,7 @@ public class ComprehensiveController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/ad_config")
+	@ResponseBody
 	public ResponseEntity<?> ad_config() {
 		return ResponseEntity.ok(true);
 	}
@@ -38,8 +52,10 @@ public class ComprehensiveController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/articles")
-	public ResponseEntity<?> articles() {
-		return ResponseEntity.ok(true);
+	@ResponseBody
+	public ResponseEntity<?> articles(int type, int p) {
+		List<Article> pageList = articleRepository.select(type, new RowBounds(p, 10));
+		return ResponseEntity.ok(pageList);
 	}
 
 }

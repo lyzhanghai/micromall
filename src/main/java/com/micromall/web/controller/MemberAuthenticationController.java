@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -51,6 +52,7 @@ public class MemberAuthenticationController {
 	 * @return
 	 */
 	@RequestMapping(value = "/auth/verifycode")
+	@ResponseBody
 	public ResponseEntity<?> verifycode(HttpServletRequest request, String phone) {
 		// TODO 参数验证
 		if (StringUtils.isEmpty(phone)) {
@@ -83,6 +85,7 @@ public class MemberAuthenticationController {
 	 * @return
 	 */
 	@RequestMapping(value = "/auth/loginVerify")
+	@ResponseBody
 	public ResponseEntity<?> loginVerify(HttpServletRequest request, HttpServletResponse response, String phone, String verifycode) {
 
 		if (StringUtils.isEmpty(phone)) {

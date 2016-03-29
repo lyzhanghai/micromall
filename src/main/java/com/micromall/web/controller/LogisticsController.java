@@ -5,6 +5,7 @@ import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -21,6 +22,7 @@ public class LogisticsController {
 
 	@RequestMapping(value = "/records")
 	@UncaughtException(msg = "获取订单物流信息失败")
+	@ResponseBody
 	public ResponseEntity<?> get(String orderNo) {
 		return ResponseEntity.ok(logisticsService.getLogisticsRecords(orderNo));
 	}
