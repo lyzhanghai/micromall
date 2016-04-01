@@ -4,14 +4,15 @@ import java.util.Date;
 
 /**
  * Created by zhangzx on 16/3/23.
+ * 购物车
  */
 public class Cart extends IdEntity {
 
 	/*uid与goodsId组成唯一索引*/
 
-	// 所属用户
+	// 归属用户id
 	private int  uid;
-	// 商品ID
+	// 商品id
 	private int  goodsId;
 	// 购买数量
 	private int  buyNumber;

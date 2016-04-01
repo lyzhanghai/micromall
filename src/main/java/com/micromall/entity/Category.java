@@ -2,6 +2,7 @@ package com.micromall.entity;
 
 /**
  * Created by zhangzx on 16/3/23.
+ * 商品类目
  */
 public class Category extends IdEntity {
 

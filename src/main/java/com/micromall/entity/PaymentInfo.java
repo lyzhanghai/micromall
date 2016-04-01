@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * Created by zhangzx on 16/3/26.
+ * 支付信息
  */
 public class PaymentInfo extends IdEntity {
 

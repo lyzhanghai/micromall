@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * Created by zhangzx on 16/3/23.
+ * 用户优惠券
  */
 public class Coupon extends IdEntity {
 

@@ -5,6 +5,7 @@ import java.util.Map;
 
 /**
  * Created by zhangzx on 16/3/21.
+ * 商品信息
  */
 public class Goods extends IdEntity {
 

@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * Created by zhangzx on 16/3/26.
+ * 订单商品
  */
 public class OrderGoods extends IdEntity {
 	// 归属订单编号

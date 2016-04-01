@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * Created by zhangzx on 16/3/23.
+ * 订单信息
  */
 public class Order extends IdEntity {
 	// 用户ID

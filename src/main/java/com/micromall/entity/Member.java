@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * Created by zhangzx on 16/3/21.
+ * 会员信息
  */
 public class Member extends IdEntity {
 

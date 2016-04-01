@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * Created by zhangzx on 16/3/23.
+ * 用户消息
  */
 public class Message extends IdEntity {
 	// 所属用户

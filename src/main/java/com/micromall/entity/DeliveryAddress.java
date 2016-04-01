@@ -4,6 +4,7 @@ import java.util.Date;
 
 /**
  * Created by zhangzx on 16/3/26.
+ * 用户收货地址
  */
 public class DeliveryAddress extends IdEntity {
 
