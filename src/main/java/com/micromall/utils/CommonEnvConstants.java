@@ -60,4 +60,6 @@ public final class CommonEnvConstants {
 
 	/* 首页商品每页显示个数 */
 	public static final int INDEX_GOODS_PERPAGE_SIZE = Integer.valueOf(PropertyConfigurer.getString("index.goods.perpage.size"));
+
+	public static final int ARTICLE_PAGE_LIMIT = 20;
 }

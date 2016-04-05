@@ -2,11 +2,12 @@ package com.micromall.web.controller;
 
 import com.micromall.entity.Article;
 import com.micromall.repository.ArticleRepository;
-import com.micromall.repository.CategoryRepository;
+import com.micromall.utils.CommonEnvConstants;
 import com.micromall.web.resp.ResponseEntity;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -19,21 +20,22 @@ import java.util.List;
 @Controller
 public class ComprehensiveController extends BasisController {
 
+	/*@Resource
+	private CategoryRepository categoryRepository;*/
 	@Resource
-	private CategoryRepository categoryRepository;
-	@Resource
-	private ArticleRepository  articleRepository;
+	private ArticleRepository articleRepository;
 
 	/**
 	 * 商品类目列表
 	 *
 	 * @return
 	 */
+	/*
 	@RequestMapping(value = "/categorys")
 	@ResponseBody
 	public ResponseEntity<?> categorys() {
 		return ResponseEntity.ok(categoryRepository.selectAll());
-	}
+	}*/
 
 	/**
 	 * 广告配置
@@ -53,8 +55,8 @@ public class ComprehensiveController extends BasisController {
 	 */
 	@RequestMapping(value = "/articles")
 	@ResponseBody
-	public ResponseEntity<?> articles(int type, int p) {
-		List<Article> pageList = articleRepository.select(type, new RowBounds(p, 10));
+	public ResponseEntity<?> articles(int type, @RequestParam(defaultValue = "1") int p) {
+		List<Article> pageList = articleRepository.select(type, new RowBounds(p, CommonEnvConstants.ARTICLE_PAGE_LIMIT));
 		return ResponseEntity.ok(pageList);
 	}
 

@@ -1,11 +1,12 @@
 package com.micromall.web.controller;
 
 import com.micromall.service.MessageService;
-import com.micromall.web.security.Authentication;
 import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
+import com.micromall.web.security.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -29,7 +30,7 @@ public class MessageController extends BasisController {
 	@UncaughtException(msg = "加载消息列表失败")
 	@RequestMapping(value = "/list")
 	@ResponseBody
-	public ResponseEntity<?> list(int p) {
+	public ResponseEntity<?> list(@RequestParam(defaultValue = "1") int p) {
 		return ResponseEntity.ok(messageService.list(getLoginUser().getUid(), p));
 	}
 }

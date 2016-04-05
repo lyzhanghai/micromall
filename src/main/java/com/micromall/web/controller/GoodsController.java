@@ -7,9 +7,12 @@ import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by zhangzx on 16/3/21.
@@ -18,6 +21,14 @@ import javax.annotation.Resource;
 @Controller
 @RequestMapping(value = "/goods")
 public class GoodsController extends BasisController {
+
+	private static final Map<String, String> GOODS_SORT_COLUMN_MAP = new HashMap<String, String>();
+
+	static {
+		GOODS_SORT_COLUMN_MAP.put("price", "");// 价格
+		GOODS_SORT_COLUMN_MAP.put("time", "");// 时间
+		GOODS_SORT_COLUMN_MAP.put("salesVolume", "");//销量
+	}
 
 	@Resource
 	private GoodsService goodsService;
@@ -32,8 +43,9 @@ public class GoodsController extends BasisController {
 	@UncaughtException(msg = "加载商品列表失败")
 	@RequestMapping(value = "/category_get_goods")
 	@ResponseBody
-	public ResponseEntity<?> category_get_goods(int categoryId, String sort, int p) {
-		GoodsSearch search = GoodsSearch.created(sort, p, CommonEnvConstants.INDEX_GOODS_PERPAGE_SIZE);
+	public ResponseEntity<?> category_get_goods(int categoryId, @RequestParam(defaultValue = "") String sort,
+			@RequestParam(defaultValue = "1") int p) {
+		GoodsSearch search = GoodsSearch.created(GOODS_SORT_COLUMN_MAP.get(sort), p, CommonEnvConstants.INDEX_GOODS_PERPAGE_SIZE);
 		search.setCategoryId(categoryId);
 		return ResponseEntity.ok(goodsService.findGoods(search));
 	}
@@ -47,8 +59,8 @@ public class GoodsController extends BasisController {
 	@UncaughtException(msg = "加载商品列表失败")
 	@RequestMapping(value = "/promotion_get_goods")
 	@ResponseBody
-	public ResponseEntity<?> promotion_get_goods(String sort, int p) {
-		GoodsSearch search = GoodsSearch.created(sort, p, CommonEnvConstants.INDEX_GOODS_PERPAGE_SIZE);
+	public ResponseEntity<?> promotion_get_goods(@RequestParam(defaultValue = "") String sort, @RequestParam(defaultValue = "1") int p) {
+		GoodsSearch search = GoodsSearch.created(GOODS_SORT_COLUMN_MAP.get(sort), p, CommonEnvConstants.INDEX_GOODS_PERPAGE_SIZE);
 		search.setPromotion(true);
 		return ResponseEntity.ok(goodsService.findGoods(search));
 	}

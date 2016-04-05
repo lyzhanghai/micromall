@@ -6,6 +6,7 @@ import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -32,7 +33,7 @@ public class MyOrdersController extends BasisController {
 	@UncaughtException(msg = "加载订单列表失败")
 	@RequestMapping(value = "/orders")
 	@ResponseBody
-	public ResponseEntity<?> orders(int status, int p) {
+	public ResponseEntity<?> orders(int status, @RequestParam(defaultValue = "1")int p) {
 		return ResponseEntity.ok(orderService.findOrders(getLoginUser().getUid(), status, p));
 	}
 
