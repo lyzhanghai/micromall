@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class HandlerExceptionResolver extends SimpleMappingExceptionResolver {
+
 	private static Logger logger = LoggerFactory.getLogger(HandlerExceptionResolver.class);
 
 	@Override
@@ -23,7 +24,7 @@ public class HandlerExceptionResolver extends SimpleMappingExceptionResolver {
 		if (ex instanceof LogicException || ex instanceof ArgumentValidException) {
 			message = ex.getMessage();
 		} else if (handler instanceof HandlerMethod) {
-			HandlerMethod handlerMethod = (HandlerMethod) handler;
+			HandlerMethod handlerMethod = (HandlerMethod)handler;
 			UncaughtException uncaughtException = handlerMethod.getMethodAnnotation(UncaughtException.class);
 			if (uncaughtException != null) {
 				message = uncaughtException.msg();

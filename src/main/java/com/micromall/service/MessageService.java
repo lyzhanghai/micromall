@@ -1,7 +1,7 @@
 package com.micromall.service;
 
 import com.micromall.entity.Message;
-import com.micromall.repository.MessageRepository;
+import com.micromall.repository.MessageMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -12,8 +12,9 @@ import java.util.List;
  */
 @Service
 public class MessageService {
+
 	@Resource
-	private MessageRepository messageRepository;
+	private MessageMapper mapper;
 
 	public List<Message> list(int uid, int p) {
 		return null;

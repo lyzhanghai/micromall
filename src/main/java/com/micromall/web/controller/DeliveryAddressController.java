@@ -1,10 +1,10 @@
 package com.micromall.web.controller;
 
-import com.micromall.entity.DeliveryAddress;
-import com.micromall.service.DeliveryAddressService;
-import com.micromall.web.security.Authentication;
+import com.micromall.entity.ShippingAddress;
+import com.micromall.service.ShippingAddressService;
 import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
+import com.micromall.web.security.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 public class DeliveryAddressController extends BasisController {
 
 	@Resource
-	private DeliveryAddressService deliveryAddressService;
+	private ShippingAddressService deliveryAddressService;
 
 	/**
 	 * 收货地址列表
@@ -38,22 +38,23 @@ public class DeliveryAddressController extends BasisController {
 	/**
 	 * 新增收货地址
 	 *
-	 * @param province        省份
-	 * @param city            城市
-	 * @param county          区/县
+	 * @param province 省份
+	 * @param city 城市
+	 * @param county 区/县
 	 * @param detailedAddress 详细地址
-	 * @param consigneeName   收货人姓名
-	 * @param consigneePhone  收货人电话
-	 * @param defaul          是设为默认地址
+	 * @param consigneeName 收货人姓名
+	 * @param consigneePhone 收货人电话
+	 * @param defaul 是设为默认地址
 	 * @return
 	 */
 	@UncaughtException(msg = "保存收货地址信息失败")
 	@RequestMapping(value = "/add_address")
 	@ResponseBody
-	public ResponseEntity<?> add_address(String province, String city, String county, String detailedAddress, String consigneeName, String
-			consigneePhone, boolean defaul) {
+	public ResponseEntity<?> add_address(String province, String city, String county, String detailedAddress, String consigneeName,
+			String consigneePhone, boolean defaul) {
 		// TODO 参数验证
-		DeliveryAddress address = new DeliveryAddress();
+		ShippingAddress address = new ShippingAddress();
+		address.setUid(getLoginUser().getUid());
 		address.setProvince(province);
 		address.setCity(city);
 		address.setCounty(county);
@@ -61,30 +62,31 @@ public class DeliveryAddressController extends BasisController {
 		address.setConsigneeName(consigneeName);
 		address.setConsigneePhone(consigneePhone);
 		address.setDefaul(defaul);
-
-		return ResponseEntity.ok(deliveryAddressService.addAddress(getLoginUser().getUid(), address));
+		deliveryAddressService.addAddress(address);
+		return ResponseEntity.ok(address);
 	}
 
 	/**
 	 * 修改收货地址
 	 *
-	 * @param addressId       地址id
-	 * @param province        省份
-	 * @param city            城市
-	 * @param county          区/县
+	 * @param addressId 地址id
+	 * @param province 省份
+	 * @param city 城市
+	 * @param county 区/县
 	 * @param detailedAddress 详细地址
-	 * @param consigneeName   收货人姓名
-	 * @param consigneePhone  收货人电话
-	 * @param defaul          是设为默认地址
+	 * @param consigneeName 收货人姓名
+	 * @param consigneePhone 收货人电话
+	 * @param defaul 是设为默认地址
 	 * @return
 	 */
 	@UncaughtException(msg = "保存收货地址信息失败")
 	@RequestMapping(value = "/update_address")
 	@ResponseBody
-	public ResponseEntity<?> update_address(int addressId, String province, String city, String county, String detailedAddress, String
-			consigneeName, String consigneePhone, boolean defaul) {
+	public ResponseEntity<?> update_address(int addressId, String province, String city, String county, String detailedAddress, String consigneeName,
+			String consigneePhone, boolean defaul) {
 		// TODO 参数验证
-		DeliveryAddress address = new DeliveryAddress();
+		ShippingAddress address = new ShippingAddress();
+		address.setUid(getLoginUser().getUid());
 		address.setId(addressId);
 		address.setProvince(province);
 		address.setCity(city);
@@ -94,7 +96,7 @@ public class DeliveryAddressController extends BasisController {
 		address.setConsigneePhone(consigneePhone);
 		address.setDefaul(defaul);
 
-		return ResponseEntity.ok(deliveryAddressService.updateAddress(getLoginUser().getUid(), address));
+		return ResponseEntity.ok(deliveryAddressService.updateAddress(address));
 	}
 
 	/**

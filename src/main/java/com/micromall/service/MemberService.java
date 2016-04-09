@@ -1,7 +1,7 @@
 package com.micromall.service;
 
 import com.micromall.entity.Member;
-import com.micromall.repository.MemberRepository;
+import com.micromall.repository.MemberMapper;
 import com.micromall.service.vo.MemberBasisinfo;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 public class MemberService {
 
 	@Resource
-	private MemberRepository memberRepository;
+	private MemberMapper mapper;
 
 	public boolean updateLoginInfo(Member member) {
 		return false;

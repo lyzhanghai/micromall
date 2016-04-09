@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.micromall.repository.GoodsMapper">
+    <resultMap id="BaseResultMap" type="com.micromall.entity.Goods">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="main_image" property="mainImage" jdbcType="VARCHAR"/>
+        <result column="category_id" property="categoryId" jdbcType="INTEGER"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="inventory" property="inventory" jdbcType="INTEGER"/>
+        <result column="shelves" property="shelves" jdbcType="CHAR"/>
+        <result column="type" property="type" jdbcType="TINYINT"/>
+        <result column="promotion" property="promotion" jdbcType="CHAR"/>
+        <result column="sort" property="sort" jdbcType="SMALLINT"/>
+        <result column="sales_volume" property="salesVolume" jdbcType="INTEGER"/>
+        <result column="delete" property="delete" jdbcType="CHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <resultMap id="FullResultMap" type="com.micromall.entity.Goods" extends="BaseResultMap">
+        <result column="images" property="images" jdbcType="LONGVARCHAR"/>
+        <result column="promotion_params" property="promotionParams" jdbcType="LONGVARCHAR"/>
+        <result column="descr" property="descr" jdbcType="LONGVARCHAR"/>
+        <result column="product_params" property="productParams" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, title, main_image, category_id, price, inventory, shelves, type, promotion, sort,
+        sales_volume, delete, create_time, update_time
+    </sql>
+    <sql id="Full_Column_List">
+        images, promotion_params, descr, product_params
+    </sql>
+
+    <sql id="Where_Clause">
+        <if test="criterias != null">
+            <where>
+                <foreach collection="criterias" item="criteria" separator="or">
+                    <if test="criteria.valid">
+                        <trim prefix="(" suffix=")" prefixOverrides="and">
+                            <foreach collection="criteria.criterions" item="criterion">
+                                <choose>
+                                    <when test="criterion.noValue">
+                                        and ${criterion.condition}
+                                    </when>
+                                    <when test="criterion.singleValue">
+                                        and ${criterion.condition} #{criterion.value}
+                                    </when>
+                                    <when test="criterion.betweenValue">
+                                        and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                    </when>
+                                    <when test="criterion.listValue">
+                                        and ${criterion.condition}
+                                        <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                            #{listItem}
+                                        </foreach>
+                                    </when>
+                                </choose>
+                            </foreach>
+                        </trim>
+                    </if>
+                </foreach>
+            </where>
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.micromall.entity.Goods">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into goods (id, title, main_image,
+        category_id, price, inventory,
+        shelves, type, promotion,
+        sort, sales_volume, delete,
+        create_time, update_time, images,
+        promotion_params, descr, product_params
+        )
+        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{mainImage,jdbcType=VARCHAR},
+        #{categoryId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{inventory,jdbcType=INTEGER},
+        #{shelves,jdbcType=CHAR}, #{type,jdbcType=TINYINT}, #{promotion,jdbcType=CHAR},
+        #{sort,jdbcType=SMALLINT}, #{salesVolume,jdbcType=INTEGER}, #{delete,jdbcType=CHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{images,jdbcType=LONGVARCHAR},
+        #{promotionParams,jdbcType=LONGVARCHAR}, #{descr,jdbcType=LONGVARCHAR}, #{productParams,jdbcType=LONGVARCHAR}
+        )
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.micromall.entity.Goods">
+        update goods
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="mainImage != null">
+                main_image = #{mainImage,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=INTEGER},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="inventory != null">
+                inventory = #{inventory,jdbcType=INTEGER},
+            </if>
+            <if test="shelves != null">
+                shelves = #{shelves,jdbcType=CHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=TINYINT},
+            </if>
+            <if test="promotion != null">
+                promotion = #{promotion,jdbcType=CHAR},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=SMALLINT},
+            </if>
+            <if test="salesVolume != null">
+                sales_volume = #{salesVolume,jdbcType=INTEGER},
+            </if>
+            <if test="delete != null">
+                delete = #{delete,jdbcType=CHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="images != null">
+                images = #{images,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="promotionParams != null">
+                promotion_params = #{promotionParams,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="descr != null">
+                descr = #{descr,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="productParams != null">
+                product_params = #{productParams,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from goods
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
+        delete from goods
+        <include refid="Where_Clause"/>
+    </delete>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from goods
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Base_Column_List"/>
+        from goods
+        <include refid="Where_Clause"/>
+    </select>
+
+    <select id="selectMultiByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Base_Column_List"/>
+        from goods
+        <include refid="Where_Clause"/>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="selectPageByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Base_Column_List"/>
+        from goods
+        <include refid="Where_Clause"/>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="countByWhereClause" parameterType="com.micromall.utils.Condition" resultType="java.lang.Integer">
+        select count(*)
+        <include refid="Base_Column_List"/>
+        from goods
+        <include refid="Where_Clause"/>
+    </select>
+
+</mapper>

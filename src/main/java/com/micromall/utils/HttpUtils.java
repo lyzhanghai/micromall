@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class HttpUtils {
+
 	private final static RestTemplate rest   = new RestTemplate();
 	private final static Logger       logger = LoggerFactory.getLogger(HttpUtils.class);
 

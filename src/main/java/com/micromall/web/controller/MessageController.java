@@ -19,6 +19,7 @@ import javax.annotation.Resource;
 @RequestMapping(value = "/message")
 @Authentication
 public class MessageController extends BasisController {
+
 	@Resource
 	private MessageService messageService;
 

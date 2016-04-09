@@ -6,12 +6,13 @@ import java.util.regex.Pattern;
 
 public class ValidateUtils {
 
-	private static final Pattern PHONE_1 = Pattern.compile("^(\\+\\d+)?1[34578]\\d{9}$");
-	private static final Pattern PHONE_2 = Pattern.compile("^((\\+86)?\\d{3,4}-?)?\\d{7,8}$");
-	private static final Pattern DECIMALS = Pattern.compile("(-?\\d+)(\\.\\d+)?");
+	private static final Pattern PHONE_1         = Pattern.compile("^(\\+\\d+)?1[34578]\\d{9}$");
+	private static final Pattern PHONE_2         = Pattern.compile("^((\\+86)?\\d{3,4}-?)?\\d{7,8}$");
+	private static final Pattern DECIMALS        = Pattern.compile("(-?\\d+)(\\.\\d+)?");
 	private static final Pattern POSITIVE_NUMBER = Pattern.compile("^(0|([1-9](\\d+)*))$");
-	private static final Pattern SIMPLE_DATE = Pattern.compile("^([1-9][0-9]{0,3}-(((0?[13578]|1[02])-(0?[1-9]|([12][0-9]|3[01])))|((0?[469]|11)-" +
-			"(0?[1-9]|([12][0-9]|30)))|((0?2)-(0?[1-9]|([12][0-9])))))$");
+	private static final Pattern SIMPLE_DATE     = Pattern.compile(
+			"^([1-9][0-9]{0,3}-(((0?[13578]|1[02])-(0?[1-9]|([12][0-9]|3[01])))|(" + "(0?[469]|11)-"
+					+ "(0?[1-9]|([12][0-9]|30)))|((0?2)-(0?[1-9]|([12][0-9])))))$");
 
 	/**
 	 * <pre>

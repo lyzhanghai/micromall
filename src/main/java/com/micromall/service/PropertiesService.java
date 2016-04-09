@@ -1,6 +1,7 @@
 package com.micromall.service;
 
-import com.micromall.repository.PropertiesRepository;
+import com.micromall.entity.Properties;
+import com.micromall.repository.PropertiesMapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -12,9 +13,10 @@ import javax.annotation.Resource;
 public class PropertiesService {
 
 	@Resource
-	private PropertiesRepository propertiesRepository;
+	private PropertiesMapper mapper;
 
 	public String get(String key) {
-		return propertiesRepository.get(key);
+		Properties properties = mapper.selectByPrimaryKey(key);
+		return properties != null ? properties.getContent() : null;
 	}
 }

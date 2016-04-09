@@ -2,7 +2,6 @@ package com.micromall.payment.service;
 
 import com.micromall.payment.dto.*;
 
-
 public interface PaymentService {
 
 	FundInResult fundIn(FundInRequest request);

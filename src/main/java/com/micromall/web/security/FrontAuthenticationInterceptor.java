@@ -14,8 +14,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 public class FrontAuthenticationInterceptor extends HandlerInterceptorAdapter {
+
 	private static final Logger logger             = LoggerFactory.getLogger(FrontAuthenticationInterceptor.class);
 	private static final String _AUTHORIZED_HEADER = "X-Authorized";
 
@@ -23,7 +23,7 @@ public class FrontAuthenticationInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		// controller单独采用@PermissionsVerify进行控制
 		if (handler instanceof HandlerMethod) {
-			HandlerMethod handlerMethod = (HandlerMethod) handler;
+			HandlerMethod handlerMethod = (HandlerMethod)handler;
 			Authentication permissionsVerify = handlerMethod.getMethodAnnotation(Authentication.class);
 			if (permissionsVerify == null) {
 				permissionsVerify = handlerMethod.getBeanType().getAnnotation(Authentication.class);
@@ -35,7 +35,7 @@ public class FrontAuthenticationInterceptor extends HandlerInterceptorAdapter {
 
 		/*String sid = CookieUtils.getCookieValue(request, CommonEnvConstants.LOGIN_SESSION_COOKIE_SID);
 		LoginUser loginUser = (sid != null) ? (LoginUser) request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY) : null;*/
-		LoginUser loginUser = (LoginUser) request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY);
+		LoginUser loginUser = (LoginUser)request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY);
 
 		// 用户未登录
 		if (loginUser == null) {
@@ -47,8 +47,9 @@ public class FrontAuthenticationInterceptor extends HandlerInterceptorAdapter {
 			// 是否为ajax请求？
 			boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 			if (ajax) {
-				response.getWriter().write("\"redirectUrl\":\"" + (weixin ? _buildWeixinAuthorizeUrl(request) : CommonEnvConstants
-						.MOBILE_AUTHORIZE_LOGIN_URL) + "\"");
+				response.getWriter()
+				        .write("\"redirectUrl\":\"" + (weixin ? _buildWeixinAuthorizeUrl(request) : CommonEnvConstants.MOBILE_AUTHORIZE_LOGIN_URL)
+						        + "\"");
 			} else {
 				response.sendRedirect((weixin ? _buildWeixinAuthorizeUrl(request) : CommonEnvConstants.MOBILE_AUTHORIZE_LOGIN_URL));
 			}
@@ -72,8 +73,8 @@ public class FrontAuthenticationInterceptor extends HandlerInterceptorAdapter {
 				return_url += "?" + request.getQueryString();
 			}
 		}
-		urlBuilder.param("redirect_uri", URLBuilder.createBuilder(CommonEnvConstants.WEIXIN_AUTH_CALLBACK_URL, false).param("return_url",
-				return_url).build());
+		urlBuilder.param("redirect_uri",
+				URLBuilder.createBuilder(CommonEnvConstants.WEIXIN_AUTH_CALLBACK_URL, false).param("return_url", return_url).build());
 		return urlBuilder.build();
 	}
 
@@ -86,8 +87,7 @@ public class FrontAuthenticationInterceptor extends HandlerInterceptorAdapter {
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 		RequestContext.clean();
 		if (ex != null) {
-			logger.info("请求 [{}], 参数 [{}], 异常 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), ex
-					.getMessage()});
+			logger.info("请求 [{}], 参数 [{}], 异常 [{}]", request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), ex.getMessage());
 		}
 	}
 }

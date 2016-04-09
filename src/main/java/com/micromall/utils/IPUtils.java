@@ -5,6 +5,18 @@ import java.util.*;
 
 public class IPUtils {
 
+	/**
+	 * 判断IP是否在指定范围；
+	 *
+	 * @author Zhang Zhongxiang<an_huai@sina.cn>
+	 * @date 2014年5月6日 下午1:51:24
+	 * @param ipSection
+	 * @param ip
+	 * @return boolean
+	 */
+	private static final String REGX_IP  = "((25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)\\.){3}(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)";
+	private static final String REGX_IPB = REGX_IP + "\\-" + REGX_IP;
+
 	public static String getIp(HttpServletRequest request) {
 		if (request == null) {
 			return "unknown";
@@ -41,11 +53,11 @@ public class IPUtils {
 
 	/**
 	 * 将127.0.0.1 形式的IP地址转换成10进制整数，这里没有进行任何错误处理
-	 * 
-	 * @author Zhang Zhongxiang<an_huai@sina.cn>
-	 * @date 2014年5月6日 上午10:16:37
+	 *
 	 * @param strIP
 	 * @return long
+	 * @author Zhang Zhongxiang<an_huai@sina.cn>
+	 * @date 2014年5月6日 上午10:16:37
 	 */
 	public static long ipToLong(String strIP) {
 		long[] ip = new long[4];
@@ -61,12 +73,11 @@ public class IPUtils {
 
 	/**
 	 * 将10进制整数形式转换成127.0.0.1形式的IP地址
-	 * 
+	 *
+	 * @param longIP IP地址的10进制整数表示
+	 * @return String
 	 * @author Zhang Zhongxiang<an_huai@sina.cn>
 	 * @date 2014年5月6日 上午10:16:52
-	 * @param longIP
-	 *            IP地址的10进制整数表示
-	 * @return String
 	 */
 	public static String longToIP(long longIP) {
 		StringBuffer sb = new StringBuffer("");
@@ -80,27 +91,18 @@ public class IPUtils {
 		return sb.toString();
 	}
 
-	/**
-	 * 判断IP是否在指定范围；
-	 * 
-	 * @author Zhang Zhongxiang<an_huai@sina.cn>
-	 * @date 2014年5月6日 下午1:51:24
-	 * @param ipSection
-	 * @param ip
-	 * @return boolean
-	 */
-	private static final String	REGX_IP		= "((25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)\\.){3}(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)";
-	private static final String	REGX_IPB	= REGX_IP + "\\-" + REGX_IP;
-
 	public static boolean ipIsValid(String ipSection, String ip) {
-		if (ipSection == null)
+		if (ipSection == null) {
 			throw new NullPointerException("IP段不能为空！");
-		if (ip == null)
+		}
+		if (ip == null) {
 			throw new NullPointerException("IP不能为空！");
+		}
 		ipSection = ipSection.trim();
 		ip = ip.trim();
-		if (!ipSection.matches(REGX_IPB) || !ip.matches(REGX_IP))
+		if (!ipSection.matches(REGX_IPB) || !ip.matches(REGX_IP)) {
 			return false;
+		}
 		int idx = ipSection.indexOf('-');
 		String[] sips = ipSection.substring(0, idx).split("\\.");
 		String[] sipe = ipSection.substring(idx + 1).split("\\.");
@@ -117,6 +119,14 @@ public class IPUtils {
 			ipe = t;
 		}
 		return ips <= ipt && ipt <= ipe;
+	}
+
+	public static void main(String[] args) {
+		if (ipIsValid("192.168.1.1-192.168.1.10", "192.168.1.2")) {
+			System.out.println("ip属于该网段");
+		} else {
+			System.out.println("ip不属于该网段");
+		}
 	}
 
 	// 格式：127.0.0.1-127.0.0.10;127.0.2.1
@@ -144,12 +154,5 @@ public class IPUtils {
 			}
 		}
 		return false;
-	}
-
-	public static void main(String[] args) {
-		if (ipIsValid("192.168.1.1-192.168.1.10", "192.168.1.2")) {
-			System.out.println("ip属于该网段");
-		} else
-			System.out.println("ip不属于该网段");
 	}
 }

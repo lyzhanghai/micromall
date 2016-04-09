@@ -45,9 +45,9 @@ public interface WechatConfig {
 			"total_fee", "refund_fee", "refund_fee_type", "op_user_id"};
 
 	// 退款可能返回的信息
-	public String[] REFUND_RESULT_PARAMS = {"return_code", "return_msg", "result_code", "err_code", "err_code_des", "appid", "mch_id",
-			"device_info", "nonce_str", "sign", "transaction_id", "out_trade_no", "out_refund_no", "refund_id", "refund_channel", "refund_fee",
-			"total_fee", "fee_type", "cash_fee", "cash_refund_fee", "coupon_refund_fee", "coupon_refund_count"};
+	public String[] REFUND_RESULT_PARAMS = {"return_code", "return_msg", "result_code", "err_code", "err_code_des", "appid", "mch_id", "device_info",
+			"nonce_str", "sign", "transaction_id", "out_trade_no", "out_refund_no", "refund_id", "refund_channel", "refund_fee", "total_fee",
+			"fee_type", "cash_fee", "cash_refund_fee", "coupon_refund_fee", "coupon_refund_count"};
 
 	// 退款查询参数
 	public String[] REFUND_QUERY_PARAMS = {"appid", "mch_id", "device_info", "nonce_str", "sign", "transaction_id", "out_trade_no", "out_refund_no",
@@ -55,8 +55,8 @@ public interface WechatConfig {
 
 	// 退款可能返回的结果参数
 	public String[] REFUND_QUERY_RESULT_PARAMS = {"return_code", "return_msg", "result_code", "err_code", "err_code_des", "appid", "mch_id",
-			"device_info", "nonce_str", "sign", "transaction_id", "out_trade_no", "total_fee", "fee_type", "cash_fee", "cash_fee_type",
-			"refund_fee", "refund_count"};
+			"device_info", "nonce_str", "sign", "transaction_id", "out_trade_no", "total_fee", "fee_type", "cash_fee", "cash_fee_type", "refund_fee",
+			"refund_count"};
 
 	// 入款查询参数
 	public String[] FUND_IN_QUERY_PARAMS = {"appid", "mch_id", "transaction_id", "out_trade_no", "nonce_str", "sign"};

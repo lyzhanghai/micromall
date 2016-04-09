@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LogisticsService {
+
 	public LogisticsRecord getLogisticsRecords(String orderNo) {
 		return null;
 	}

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.micromall.repository.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.micromall.entity.Order">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
+        <result column="total_amount" property="totalAmount" jdbcType="DECIMAL"/>
+        <result column="realpay_amount" property="realpayAmount" jdbcType="DECIMAL"/>
+        <result column="balancepay_amount" property="balancepayAmount" jdbcType="DECIMAL"/>
+        <result column="deduction_amount" property="deductionAmount" jdbcType="DECIMAL"/>
+        <result column="leave_message" property="leaveMessage" jdbcType="VARCHAR"/>
+        <result column="coupons" property="coupons" jdbcType="LONGVARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="shipping_address" property="shippingAddress" jdbcType="VARCHAR"/>
+        <result column="consignee_name" property="consigneeName" jdbcType="VARCHAR"/>
+        <result column="consignee_phone" property="consigneePhone" jdbcType="VARCHAR"/>
+        <result column="postcode" property="postcode" jdbcType="CHAR"/>
+        <result column="delivery_company" property="deliveryCompany" jdbcType="VARCHAR"/>
+        <result column="delivery_number" property="deliveryNumber" jdbcType="VARCHAR"/>
+        <result column="delivery_time" property="deliveryTime" jdbcType="TIMESTAMP"/>
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP"/>
+        <result column="confirm_goods_time" property="confirmGoodsTime" jdbcType="TIMESTAMP"/>
+        <result column="apply_refund_time" property="applyRefundTime" jdbcType="TIMESTAMP"/>
+        <result column="refund_complete_time" property="refundCompleteTime" jdbcType="TIMESTAMP"/>
+        <result column="close_time" property="closeTime" jdbcType="TIMESTAMP"/>
+        <result column="closelog" property="closelog" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, uid, order_no, total_amount, realpay_amount, balancepay_amount, deduction_amount,
+        leave_message, coupons, status, shipping_address, consignee_name, consignee_phone, postcode,
+        delivery_company, delivery_number, delivery_time, pay_time, confirm_goods_time, apply_refund_time,
+        refund_complete_time, close_time, closelog, create_time, update_time
+    </sql>
+
+    <sql id="Where_Clause">
+        <if test="criterias != null">
+            <where>
+                <foreach collection="criterias" item="criteria" separator="or">
+                    <if test="criteria.valid">
+                        <trim prefix="(" suffix=")" prefixOverrides="and">
+                            <foreach collection="criteria.criterions" item="criterion">
+                                <choose>
+                                    <when test="criterion.noValue">
+                                        and ${criterion.condition}
+                                    </when>
+                                    <when test="criterion.singleValue">
+                                        and ${criterion.condition} #{criterion.value}
+                                    </when>
+                                    <when test="criterion.betweenValue">
+                                        and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                    </when>
+                                    <when test="criterion.listValue">
+                                        and ${criterion.condition}
+                                        <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                            #{listItem}
+                                        </foreach>
+                                    </when>
+                                </choose>
+                            </foreach>
+                        </trim>
+                    </if>
+                </foreach>
+            </where>
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.micromall.entity.Order">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into order (id, uid, order_no,
+        total_amount, realpay_amount, balancepay_amount,
+        deduction_amount, leave_message, status,
+        shipping_address, consignee_name, consignee_phone,
+        postcode, delivery_company, delivery_number,
+        delivery_time, pay_time, confirm_goods_time,
+        apply_refund_time, refund_complete_time,
+        close_time, closelog, create_time,
+        update_time, coupons)
+        values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR},
+        #{totalAmount,jdbcType=DECIMAL}, #{realpayAmount,jdbcType=DECIMAL}, #{balancepayAmount,jdbcType=DECIMAL},
+        #{deductionAmount,jdbcType=DECIMAL}, #{leaveMessage,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
+        #{shippingAddress,jdbcType=VARCHAR}, #{consigneeName,jdbcType=VARCHAR}, #{consigneePhone,jdbcType=VARCHAR},
+        #{postcode,jdbcType=CHAR}, #{deliveryCompany,jdbcType=VARCHAR}, #{deliveryNumber,jdbcType=VARCHAR},
+        #{deliveryTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=TIMESTAMP}, #{confirmGoodsTime,jdbcType=TIMESTAMP},
+        #{applyRefundTime,jdbcType=TIMESTAMP}, #{refundCompleteTime,jdbcType=TIMESTAMP},
+        #{closeTime,jdbcType=TIMESTAMP}, #{closelog,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+        #{updateTime,jdbcType=TIMESTAMP}, #{coupons,jdbcType=LONGVARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.micromall.entity.Order">
+        update order
+        <set>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="orderNo != null">
+                order_no = #{orderNo,jdbcType=VARCHAR},
+            </if>
+            <if test="totalAmount != null">
+                total_amount = #{totalAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="realpayAmount != null">
+                realpay_amount = #{realpayAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="balancepayAmount != null">
+                balancepay_amount = #{balancepayAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="deductionAmount != null">
+                deduction_amount = #{deductionAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="leaveMessage != null">
+                leave_message = #{leaveMessage,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="shippingAddress != null">
+                shipping_address = #{shippingAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="consigneeName != null">
+                consignee_name = #{consigneeName,jdbcType=VARCHAR},
+            </if>
+            <if test="consigneePhone != null">
+                consignee_phone = #{consigneePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="postcode != null">
+                postcode = #{postcode,jdbcType=CHAR},
+            </if>
+            <if test="deliveryCompany != null">
+                delivery_company = #{deliveryCompany,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryNumber != null">
+                delivery_number = #{deliveryNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="confirmGoodsTime != null">
+                confirm_goods_time = #{confirmGoodsTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="applyRefundTime != null">
+                apply_refund_time = #{applyRefundTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="refundCompleteTime != null">
+                refund_complete_time = #{refundCompleteTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="closeTime != null">
+                close_time = #{closeTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="closelog != null">
+                closelog = #{closelog,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="coupons != null">
+                coupons = #{coupons,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from order
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
+        delete from order
+        <include refid="Where_Clause"/>
+    </delete>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from order
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Base_Column_List"/>
+        from order
+        <include refid="Where_Clause"/>
+    </select>
+
+    <select id="selectMultiByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Base_Column_List"/>
+        from order
+        <include refid="Where_Clause"/>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="selectPageByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Base_Column_List"/>
+        from order
+        <include refid="Where_Clause"/>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="countByWhereClause" parameterType="com.micromall.utils.Condition" resultType="java.lang.Integer">
+        select count(*)
+        <include refid="Base_Column_List"/>
+        from order
+        <include refid="Where_Clause"/>
+    </select>
+
+</mapper>

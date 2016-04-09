@@ -21,8 +21,7 @@ public class CookieUtils {
 		for (int i = 0; i < cookies.length; i++) {
 			Cookie cookie = cookies[i];
 			if (key.equals(cookie.getName())) {
-				String val = cookie.getValue();
-				return val;
+				return cookie.getValue();
 			}
 		}
 		return null;

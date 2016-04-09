@@ -37,7 +37,7 @@ public class GoodsController extends BasisController {
 	 * 根据类目返回商品列表
 	 *
 	 * @param categoryId 类目id
-	 * @param p          分页页码
+	 * @param p 分页页码
 	 * @return
 	 */
 	@UncaughtException(msg = "加载商品列表失败")

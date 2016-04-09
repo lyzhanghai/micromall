@@ -1,7 +1,9 @@
 package com.micromall.entity;
 
+import com.micromall.entity.ext.GoodsTypes;
+
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Map;
 
 /**
  * Created by zhangzx on 16/3/21.
@@ -10,35 +12,43 @@ import java.util.Map;
 public class Goods extends IdEntity {
 
 	// 商品标题
-	private String              title;
-	// 商品主图片
-	private String              mainPicture;
-	// 商品图片数组
-	private String[]            pictures;
+	private String     title;
+	// 商品主图片（取图片数组第一张图片作为主图）
+	private String     mainImage;
+	// 商品图片数组(JSON)
+	private String     images;
 	// 所属类目
-	private int                 categoryId;
+	private Integer    categoryId;
 	// 商品价格
-	private float               price;
+	private BigDecimal price;
 	// 商品库存
-	private int                 inventory;
-	// 商品状态（上架/下架）
-	private int                 status;
+	private Integer    inventory;
+	// 是否上架
+	private Boolean    shelves;
+	/**
+	 * 商品类型（普通商品、会员充值卡）{@link GoodsTypes}
+	 */
+	private Integer    type;
 	// 是否促销商品
-	private boolean             promotion;
-	// 促销配置
-	private Map<String, String> promotionParams;
+	private Boolean    promotion;
+	/**
+	 * 促销配置(JSON) {@link com.micromall.entity.ext.PromotionConfigKeys}
+	 */
+	private String     promotionParams;
 	// 商品描述
-	private String              descr;
-	// 产品参数
-	private Map<String, String> productParams;
+	private String     descr;
+	// 产品参数(JSON)
+	private String     productParams;
 	// 商品排序
-	private int                 sort;
+	private Integer    sort;
 	// 商品销量
-	private int                 salesVolume;
+	private Integer    salesVolume;
+	// 是否逻辑删除
+	private Boolean    delete;
 	// 创建时间
-	private Date                createTime;
+	private Date       createTime;
 	// 修改时间
-	private Date                updateTime;
+	private Date       updateTime;
 
 	public String getTitle() {
 		return title;
@@ -48,67 +58,75 @@ public class Goods extends IdEntity {
 		this.title = title;
 	}
 
-	public String getMainPicture() {
-		return mainPicture;
+	public String getMainImage() {
+		return mainImage;
 	}
 
-	public void setMainPicture(String mainPicture) {
-		this.mainPicture = mainPicture;
+	public void setMainImage(String mainImage) {
+		this.mainImage = mainImage;
 	}
 
-	public String[] getPictures() {
-		return pictures;
+	public String getImages() {
+		return images;
 	}
 
-	public void setPictures(String[] pictures) {
-		this.pictures = pictures;
+	public void setImages(String images) {
+		this.images = images;
 	}
 
-	public int getCategoryId() {
+	public Integer getCategoryId() {
 		return categoryId;
 	}
 
-	public void setCategoryId(int categoryId) {
+	public void setCategoryId(Integer categoryId) {
 		this.categoryId = categoryId;
 	}
 
-	public float getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 
-	public int getInventory() {
+	public Integer getInventory() {
 		return inventory;
 	}
 
-	public void setInventory(int inventory) {
+	public void setInventory(Integer inventory) {
 		this.inventory = inventory;
 	}
 
-	public int getStatus() {
-		return status;
+	public Boolean isShelves() {
+		return shelves;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setShelves(Boolean shelves) {
+		this.shelves = shelves;
 	}
 
-	public boolean isPromotion() {
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public Boolean isPromotion() {
 		return promotion;
 	}
 
-	public void setPromotion(boolean promotion) {
+	public void setPromotion(Boolean promotion) {
 		this.promotion = promotion;
 	}
 
-	public Map<String, String> getPromotionParams() {
+	public String getPromotionParams() {
 		return promotionParams;
 	}
 
-	public void setPromotionParams(Map<String, String> promotionParams) {
+	public void setPromotionParams(String promotionParams) {
 		this.promotionParams = promotionParams;
 	}
 
@@ -120,28 +138,36 @@ public class Goods extends IdEntity {
 		this.descr = descr;
 	}
 
-	public Map<String, String> getProductParams() {
+	public String getProductParams() {
 		return productParams;
 	}
 
-	public void setProductParams(Map<String, String> productParams) {
+	public void setProductParams(String productParams) {
 		this.productParams = productParams;
 	}
 
-	public int getSort() {
+	public Integer getSort() {
 		return sort;
 	}
 
-	public void setSort(int sort) {
+	public void setSort(Integer sort) {
 		this.sort = sort;
 	}
 
-	public int getSalesVolume() {
+	public Integer getSalesVolume() {
 		return salesVolume;
 	}
 
-	public void setSalesVolume(int salesVolume) {
+	public void setSalesVolume(Integer salesVolume) {
 		this.salesVolume = salesVolume;
+	}
+
+	public Boolean isDelete() {
+		return delete;
+	}
+
+	public void setDelete(Boolean delete) {
+		this.delete = delete;
 	}
 
 	public Date getCreateTime() {

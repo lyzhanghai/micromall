@@ -1,5 +1,7 @@
 package com.micromall.entity;
 
+import com.micromall.entity.ext.MemberLevels;
+
 import java.util.Date;
 
 /**
@@ -9,31 +11,39 @@ import java.util.Date;
 public class Member extends IdEntity {
 
 	// 登录手机号（需要绑定手机号）
-	private String phone;
-	// 登录密码（备用）
-	private String password;
+	private String  phone;
 	// 微信id
-	private String wechatId;
+	private String  wechatId;
 	// 用户昵称
-	private String nickname;
+	private String  nickname;
 	// 用户头像
-	private String avatar;
+	private String  avatar;
+	/**
+	 * 会员级别 {@link MemberLevels}
+	 */
+	private String  level;
 	// 性别
-	private String gender;
+	private String  gender;
 	// 生日
-	private String birthday;
+	private String  birthday;
 	// 推广码
-	private String myPromoteCode;
-	// 注册时填写的推广码
-	private String usePromoteCode;
+	private String  myPromoteCode;
+	// 上级分销商推广码
+	private String  usePromoteCode;
+	// 上级分销商用户id
+	private Integer parentUid;
+	// 是否认证用户
+	private Boolean certified;
+	// 是否逻辑删除
+	private Boolean delete;
 	// 最后登录时间
-	private Date   lastLoginTime;
+	private Date    lastLoginTime;
 	// 最后一次登录IP
-	private String lastLoginIp;
+	private String  lastLoginIp;
 	// 用户注册时间
-	private Date   registerTime;
+	private Date    registerTime;
 	// 更新时间
-	private Date   updateTime;
+	private Date    updateTime;
 
 	public String getPhone() {
 		return phone;
@@ -41,14 +51,6 @@ public class Member extends IdEntity {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getWechatId() {
@@ -73,6 +75,14 @@ public class Member extends IdEntity {
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
 	}
 
 	public String getGender() {
@@ -105,6 +115,34 @@ public class Member extends IdEntity {
 
 	public void setUsePromoteCode(String usePromoteCode) {
 		this.usePromoteCode = usePromoteCode;
+	}
+
+	public Integer getParentUid() {
+		return parentUid;
+	}
+
+	public void setParentUid(Integer parentUid) {
+		this.parentUid = parentUid;
+	}
+
+	public Boolean getCertified() {
+		return certified;
+	}
+
+	public void setCertified(Boolean certified) {
+		this.certified = certified;
+	}
+
+	public Boolean isCertified() {
+		return certified;
+	}
+
+	public boolean isDelete() {
+		return delete;
+	}
+
+	public void setDelete(boolean delete) {
+		this.delete = delete;
 	}
 
 	public Date getLastLoginTime() {

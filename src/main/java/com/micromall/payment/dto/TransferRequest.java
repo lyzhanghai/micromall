@@ -2,7 +2,6 @@ package com.micromall.payment.dto;
 
 import java.util.Date;
 
-
 public class TransferRequest extends BaseRequest {
 
 	// 商品名称

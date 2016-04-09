@@ -13,5 +13,4 @@ public class TransferResult extends BaseResult {
 		this.amount = amount;
 	}
 
-
 }

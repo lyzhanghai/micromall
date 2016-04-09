@@ -1,5 +1,6 @@
 package com.micromall.entity;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -7,24 +8,23 @@ import java.util.Date;
  * 订单商品
  */
 public class OrderGoods extends IdEntity {
-	// 归属订单编号
-	private String orderNo;
-	// 所属用户
-	private int    uid;
+
+	// 所属订单
+	private String     orderNo;
 	// 购买数量
-	private int    buyNumber;
+	private Integer    buyNumber;
 	// 总价格
-	private float  totalPrice;
+	private BigDecimal totalPrice;
 	// 商品ID
-	private int    goodsId;
+	private Integer    goodsId;
 	// 商品标题
-	private String title;
+	private String     title;
 	// 商品图片
-	private String picture;
+	private String     image;
 	// 商品价格
-	private float  price;
+	private BigDecimal price;
 	// 创建时间
-	private Date   createTime;
+	private Date       createTime;
 
 	public String getOrderNo() {
 		return orderNo;
@@ -34,35 +34,27 @@ public class OrderGoods extends IdEntity {
 		this.orderNo = orderNo;
 	}
 
-	public int getUid() {
-		return uid;
-	}
-
-	public void setUid(int uid) {
-		this.uid = uid;
-	}
-
-	public int getBuyNumber() {
+	public Integer getBuyNumber() {
 		return buyNumber;
 	}
 
-	public void setBuyNumber(int buyNumber) {
+	public void setBuyNumber(Integer buyNumber) {
 		this.buyNumber = buyNumber;
 	}
 
-	public float getTotalPrice() {
+	public BigDecimal getTotalPrice() {
 		return totalPrice;
 	}
 
-	public void setTotalPrice(float totalPrice) {
+	public void setTotalPrice(BigDecimal totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 
-	public int getGoodsId() {
+	public Integer getGoodsId() {
 		return goodsId;
 	}
 
-	public void setGoodsId(int goodsId) {
+	public void setGoodsId(Integer goodsId) {
 		this.goodsId = goodsId;
 	}
 
@@ -74,19 +66,19 @@ public class OrderGoods extends IdEntity {
 		this.title = title;
 	}
 
-	public String getPicture() {
-		return picture;
+	public String getImage() {
+		return image;
 	}
 
-	public void setPicture(String picture) {
-		this.picture = picture;
+	public void setImage(String image) {
+		this.image = image;
 	}
 
-	public float getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
 

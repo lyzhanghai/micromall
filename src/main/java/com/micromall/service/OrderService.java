@@ -1,6 +1,6 @@
 package com.micromall.service;
 
-import com.micromall.repository.OrderRepository;
+import com.micromall.repository.OrderMapper;
 import com.micromall.service.vo.ListViewOrder;
 import com.micromall.service.vo.OrderDetails;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,9 @@ import java.util.List;
  */
 @Service
 public class OrderService {
+
 	@Resource
-	private OrderRepository orderRepository;
+	private OrderMapper mapper;
 
 	public List<ListViewOrder> findOrders(int uid, int status, int p) {
 		return null;

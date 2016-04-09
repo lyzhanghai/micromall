@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class URINotFoundMapping extends AbstractController {
+
 	private static final Logger logger = LoggerFactory.getLogger(URINotFoundMapping.class);
 
 	@Override

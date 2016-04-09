@@ -13,5 +13,4 @@ public class VerityRequest extends BaseRequest {
 		this.responseMsg = responseMsg;
 	}
 
-
 }

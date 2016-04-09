@@ -8,28 +8,28 @@ import java.util.Date;
  */
 public class Coupon extends IdEntity {
 
-	// 所属用户
-	private int     uid;
+	// 所属用户id
+	private Integer uid;
 	// 金额
-	private int     amount;
+	private Integer amount;
 	// 优惠劵描述
 	private String  descr;
 	// 过期时间
 	private Date    expiraTime;
 	// 是否已经使用
-	private boolean used;
-	// 使用时关联的订单编号
+	private Boolean used;
+	// 使用的订单号
 	private String  usedOrderNo;
 	// 使用时间
 	private Date    usedTime;
 	// 创建时间
 	private Date    createTime;
 
-	public int getAmount() {
+	public Integer getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(Integer amount) {
 		this.amount = amount;
 	}
 
@@ -41,11 +41,11 @@ public class Coupon extends IdEntity {
 		this.descr = descr;
 	}
 
-	public int getUid() {
+	public Integer getUid() {
 		return uid;
 	}
 
-	public void setUid(int uid) {
+	public void setUid(Integer uid) {
 		this.uid = uid;
 	}
 
@@ -57,11 +57,11 @@ public class Coupon extends IdEntity {
 		this.expiraTime = expiraTime;
 	}
 
-	public boolean isUsed() {
+	public Boolean isUsed() {
 		return used;
 	}
 
-	public void setUsed(boolean used) {
+	public void setUsed(Boolean used) {
 		this.used = used;
 	}
 

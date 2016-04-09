@@ -1,6 +1,7 @@
 package com.micromall.service;
 
-import com.micromall.repository.GoodsRepository;
+import com.micromall.entity.Goods;
+import com.micromall.repository.GoodsMapper;
 import com.micromall.service.vo.GoodsDetails;
 import com.micromall.service.vo.GoodsSearch;
 import com.micromall.service.vo.ListViewGoods;
@@ -14,14 +15,19 @@ import java.util.List;
  */
 @Service
 public class GoodsService {
+
 	@Resource
-	private GoodsRepository goodsRepository;
+	private GoodsMapper mapper;
 
 	public List<ListViewGoods> findGoods(GoodsSearch search) {
 		return null;
 	}
 
 	public GoodsDetails getGoodsDetails(int goodsId) {
+		return null;
+	}
+
+	public Goods getGoodsInfo(int goodsId) {
 		return null;
 	}
 }

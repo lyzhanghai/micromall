@@ -40,8 +40,11 @@ public class ResponseEntity<T> implements Serializable {
 	public ResponseEntity(Ret ret, String msg) {
 		super();
 		this.code = ret.getCode();
-		if (StringUtils.isNotEmpty(msg)) this.msg = msg;
-		else this.msg = ret.getMessage();
+		if (StringUtils.isNotEmpty(msg)) {
+			this.msg = msg;
+		} else {
+			this.msg = ret.getMessage();
+		}
 	}
 
 	public ResponseEntity(T data) {

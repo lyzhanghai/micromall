@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.micromall.repository.WithdrawRecordMapper">
+    <resultMap id="BaseResultMap" type="com.micromall.entity.cash.WithdrawRecord">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="amount" property="amount" jdbcType="DECIMAL"/>
+        <result column="channel" property="channel" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="auditlog" property="auditlog" jdbcType="VARCHAR"/>
+        <result column="apply_time" property="applyTime" jdbcType="TIMESTAMP"/>
+        <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
+        <result column="complete_time" property="completeTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, uid, amount, channel, status, auditlog, apply_time, audit_time, complete_time
+    </sql>
+
+    <sql id="Where_Clause">
+        <if test="criterias != null">
+            <where>
+                <foreach collection="criterias" item="criteria" separator="or">
+                    <if test="criteria.valid">
+                        <trim prefix="(" suffix=")" prefixOverrides="and">
+                            <foreach collection="criteria.criterions" item="criterion">
+                                <choose>
+                                    <when test="criterion.noValue">
+                                        and ${criterion.condition}
+                                    </when>
+                                    <when test="criterion.singleValue">
+                                        and ${criterion.condition} #{criterion.value}
+                                    </when>
+                                    <when test="criterion.betweenValue">
+                                        and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                    </when>
+                                    <when test="criterion.listValue">
+                                        and ${criterion.condition}
+                                        <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                            #{listItem}
+                                        </foreach>
+                                    </when>
+                                </choose>
+                            </foreach>
+                        </trim>
+                    </if>
+                </foreach>
+            </where>
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.micromall.entity.cash.WithdrawRecord">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into withdraw_record (id, uid, amount,channel, status, auditlog,apply_time, audit_time, complete_time
+        )
+        values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL},
+        #{channel,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{auditlog,jdbcType=VARCHAR},
+        #{applyTime,jdbcType=TIMESTAMP}, #{auditTime,jdbcType=TIMESTAMP}, #{completeTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.micromall.entity.cash.WithdrawRecord">
+        update withdraw_record
+        <set>
+            <if test="uid != null">
+                uid = #{uid,jdbcType=INTEGER},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="channel != null">
+                channel = #{channel,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="auditlog != null">
+                auditlog = #{auditlog,jdbcType=VARCHAR},
+            </if>
+            <if test="applyTime != null">
+                apply_time = #{applyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auditTime != null">
+                audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="completeTime != null">
+                complete_time = #{completeTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from withdraw_record
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
+        delete from withdraw_record
+        <include refid="Where_Clause"/>
+    </delete>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from withdraw_record
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Base_Column_List"/>
+        from withdraw_record
+        <include refid="Where_Clause"/>
+    </select>
+
+    <select id="selectMultiByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Base_Column_List"/>
+        from withdraw_record
+        <include refid="Where_Clause"/>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="selectPageByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Base_Column_List"/>
+        from withdraw_record
+        <include refid="Where_Clause"/>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="countByWhereClause" parameterType="com.micromall.utils.Condition" resultType="java.lang.Integer">
+        select count(*)
+        <include refid="Base_Column_List"/>
+        from withdraw_record
+        <include refid="Where_Clause"/>
+    </select>
+
+</mapper>

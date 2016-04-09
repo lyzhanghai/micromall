@@ -2,7 +2,6 @@ package com.micromall.payment.dto;
 
 import java.util.Date;
 
-
 public class RefundRequest extends BaseRequest {
 
 	//原支付订单号

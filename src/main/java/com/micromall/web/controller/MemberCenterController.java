@@ -6,10 +6,10 @@ import com.micromall.service.vo.MemberBasisinfo;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.UploadUtils;
 import com.micromall.web.RequestContext;
-import com.micromall.web.security.Authentication;
 import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.resp.Ret;
+import com.micromall.web.security.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,7 +67,7 @@ public class MemberCenterController extends BasisController {
 	/**
 	 * 绑定手机号
 	 *
-	 * @param phone      手机号
+	 * @param phone 手机号
 	 * @param verifycode 验证码
 	 * @return
 	 */
@@ -86,7 +86,7 @@ public class MemberCenterController extends BasisController {
 		try {
 			// 短信验证码验证
 			/*String _verifycode = cacheService.get(CommonEnvConstants.VERIFYCODE_KEY, phone);*/
-			String _verifycode = (String) request.getSession().getAttribute(CommonEnvConstants.VERIFYCODE_KEY);
+			String _verifycode = (String)request.getSession().getAttribute(CommonEnvConstants.VERIFYCODE_KEY);
 			if (_verifycode == null) {
 				return new ResponseEntity<Object>(Ret.error, "短信验证码已失效");
 			} else if (!_verifycode.equals(verifycode)) {

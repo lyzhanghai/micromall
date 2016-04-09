@@ -13,15 +13,15 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 public class AdminAuthenticationInterceptor extends HandlerInterceptorAdapter {
+
 	private static final Logger logger             = LoggerFactory.getLogger(AdminAuthenticationInterceptor.class);
 	private static final String _AUTHORIZED_HEADER = "X-Authorized";
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		String sid = CookieUtils.getCookieValue(request, CommonEnvConstants.LOGIN_SESSION_COOKIE_SID);
-		LoginUser loginUser = (sid != null) ? (LoginUser) request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY) : null;
+		LoginUser loginUser = (sid != null) ? (LoginUser)request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY) : null;
 
 		// 用户未登录
 		if (loginUser == null) {
@@ -33,8 +33,9 @@ public class AdminAuthenticationInterceptor extends HandlerInterceptorAdapter {
 			// 是否为ajax请求？
 			boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 			if (ajax) {
-				response.getWriter().write("\"redirectUrl\":\"" + (weixin ? buildWeixinAuthorizeUrl(request) : CommonEnvConstants
-						.MOBILE_AUTHORIZE_LOGIN_URL) + "\"");
+				response.getWriter()
+				        .write("\"redirectUrl\":\"" + (weixin ? buildWeixinAuthorizeUrl(request) : CommonEnvConstants.MOBILE_AUTHORIZE_LOGIN_URL)
+						        + "\"");
 				response.getWriter().flush();
 			} else {
 				response.sendRedirect((weixin ? buildWeixinAuthorizeUrl(request) : CommonEnvConstants.MOBILE_AUTHORIZE_LOGIN_URL));
@@ -58,21 +59,20 @@ public class AdminAuthenticationInterceptor extends HandlerInterceptorAdapter {
 				return_url += "?" + request.getQueryString();
 			}
 		}
-		urlBuilder.param("redirect_uri", URLBuilder.createBuilder(CommonEnvConstants.WEIXIN_AUTH_CALLBACK_URL, false).param("return_url",
-				return_url).build());
+		urlBuilder.param("redirect_uri",
+				URLBuilder.createBuilder(CommonEnvConstants.WEIXIN_AUTH_CALLBACK_URL, false).param("return_url", return_url).build());
 		return urlBuilder.build();
 	}
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-		logger.info("请求 [{}], 参数 [{}], 结果 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), JSON
-				.toJSONString(modelAndView.getModel())});
+		logger.info("请求 [{}], 参数 [{}], 结果 [{}]", request.getRequestURI(), JSON.toJSONString(request.getParameterMap()),
+				JSON.toJSONString(modelAndView.getModel()));
 	}
 
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-		logger.info("请求 [{}], 参数 [{}], 异常 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), ex.getMessage
-				()});
+		logger.info("请求 [{}], 参数 [{}], 异常 [{}]", request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), ex.getMessage());
 	}
 
 }

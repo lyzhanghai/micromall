@@ -1,8 +1,10 @@
 package com.micromall.web.controller;
 
-import com.micromall.entity.Article;
-import com.micromall.repository.ArticleRepository;
+import com.micromall.entity.ext.PropKeys;
+import com.micromall.repository.ArticleMapper;
+import com.micromall.service.PropertiesService;
 import com.micromall.utils.CommonEnvConstants;
+import com.micromall.utils.Condition;
 import com.micromall.web.resp.ResponseEntity;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * Created by zhangzx on 16/3/21.
@@ -23,7 +24,9 @@ public class ComprehensiveController extends BasisController {
 	/*@Resource
 	private CategoryRepository categoryRepository;*/
 	@Resource
-	private ArticleRepository articleRepository;
+	private ArticleMapper     mapper;
+	@Resource
+	private PropertiesService propertiesService;
 
 	/**
 	 * 商品类目列表
@@ -45,7 +48,7 @@ public class ComprehensiveController extends BasisController {
 	@RequestMapping(value = "/ad_config")
 	@ResponseBody
 	public ResponseEntity<?> ad_config() {
-		return ResponseEntity.ok(true);
+		return ResponseEntity.ok(propertiesService.get(PropKeys.AD_CONFIG));
 	}
 
 	/**
@@ -56,8 +59,8 @@ public class ComprehensiveController extends BasisController {
 	@RequestMapping(value = "/articles")
 	@ResponseBody
 	public ResponseEntity<?> articles(int type, @RequestParam(defaultValue = "1") int p) {
-		List<Article> pageList = articleRepository.select(type, new RowBounds(p, CommonEnvConstants.ARTICLE_PAGE_LIMIT));
-		return ResponseEntity.ok(pageList);
+		return ResponseEntity.ok(mapper.selectPageByWhereClause(Condition.Criteria.create().andEqualTo("type", type).build("id desc"),
+				new RowBounds(p, CommonEnvConstants.ARTICLE_PAGE_LIMIT)));
 	}
 
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 
 /**
  * Created by zhangzx on 16/3/23.
@@ -40,7 +41,7 @@ public class CartController extends BasisController {
 	/**
 	 * 加入购物车
 	 *
-	 * @param goodsId   商品id
+	 * @param goodsId 商品id
 	 * @param buyNumber 购买数量
 	 * @return
 	 */
@@ -48,14 +49,17 @@ public class CartController extends BasisController {
 	@RequestMapping(value = "/join_cart")
 	@ResponseBody
 	public ResponseEntity<?> join_cart(int goodsId, int buyNumber) {
-		// TODO 参数验证
-		return ResponseEntity.ok(cartService.joinCart(getLoginUser().getUid(), goodsId, buyNumber));
+		if (buyNumber < 1) {
+			return ResponseEntity.fail("购买数量不能小于0");
+		}
+		cartService.joinCart(getLoginUser().getUid(), goodsId, buyNumber);
+		return ResponseEntity.ok();
 	}
 
 	/**
 	 * 修改购买数量
 	 *
-	 * @param goodsId   商品id
+	 * @param goodsId 商品id
 	 * @param buyNumber 购买数量
 	 * @return
 	 */
@@ -63,8 +67,11 @@ public class CartController extends BasisController {
 	@RequestMapping(value = "/update_buyNumber")
 	@ResponseBody
 	public ResponseEntity<?> update_buyNumber(int goodsId, int buyNumber) {
-		// TODO 参数验证
-		return ResponseEntity.ok(cartService.updateBuyNumber(getLoginUser().getUid(), goodsId, buyNumber));
+		if (buyNumber < 1) {
+			return ResponseEntity.fail("购买数量不能小于0");
+		}
+		cartService.updateBuyNumber(getLoginUser().getUid(), goodsId, buyNumber);
+		return ResponseEntity.ok();
 	}
 
 	/**
@@ -77,7 +84,7 @@ public class CartController extends BasisController {
 	@RequestMapping(value = "/delete_goods")
 	@ResponseBody
 	public ResponseEntity<?> delete_goods(int goodsId) {
-		return ResponseEntity.ok(cartService.deleteGoods(getLoginUser().getUid(), goodsId));
+		return ResponseEntity.ok(cartService.deleteGoods(getLoginUser().getUid(), Arrays.asList(goodsId)));
 	}
 
 }

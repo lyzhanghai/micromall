@@ -7,9 +7,11 @@ package com.micromall.entity;
 public class Category extends IdEntity {
 
 	// 类目名称
-	private String name;
+	private String  name;
 	// 显示顺序
-	private int    index;
+	private Integer sort;
+	// 上级类目id
+	private Integer parentId;
 
 	public String getName() {
 		return name;
@@ -19,11 +21,19 @@ public class Category extends IdEntity {
 		this.name = name;
 	}
 
-	public int getIndex() {
-		return index;
+	public Integer getSort() {
+		return sort;
 	}
 
-	public void setIndex(int index) {
-		this.index = index;
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
+	public Integer getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
 	}
 }

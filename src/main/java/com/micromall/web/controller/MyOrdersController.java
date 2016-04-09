@@ -1,9 +1,9 @@
 package com.micromall.web.controller;
 
 import com.micromall.service.OrderService;
-import com.micromall.web.security.Authentication;
 import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
+import com.micromall.web.security.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,13 +27,13 @@ public class MyOrdersController extends BasisController {
 	 * 我的订单列表（包含各种状态的订单）[待付款、已付款/待发货、已收货、已完成]
 	 *
 	 * @param status 订单状态
-	 * @param p      分页页码
+	 * @param p 分页页码
 	 * @return
 	 */
 	@UncaughtException(msg = "加载订单列表失败")
 	@RequestMapping(value = "/orders")
 	@ResponseBody
-	public ResponseEntity<?> orders(int status, @RequestParam(defaultValue = "1")int p) {
+	public ResponseEntity<?> orders(int status, @RequestParam(defaultValue = "1") int p) {
 		return ResponseEntity.ok(orderService.findOrders(getLoginUser().getUid(), status, p));
 	}
 
@@ -77,10 +77,10 @@ public class MyOrdersController extends BasisController {
 	}
 
 	/**
-	 * @param goodsIds     商品id
-	 * @param couponId     使用的优惠券id
+	 * @param goodsIds 商品id
+	 * @param couponId 使用的优惠券id
 	 * @param leaveMessage 留言
-	 * @param addressId    收货地址id
+	 * @param addressId 收货地址id
 	 * @return
 	 */
 	@UncaughtException(msg = "提交订单失败")

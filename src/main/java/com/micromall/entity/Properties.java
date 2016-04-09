@@ -1,6 +1,7 @@
 package com.micromall.entity;
 
 import com.alibaba.fastjson.JSON;
+import com.micromall.entity.ext.PropKeys;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -11,7 +12,12 @@ import java.util.List;
  * 配置信息
  */
 public class Properties {
+
+	/**
+	 * 配置Key {@link PropKeys}
+	 */
 	private String name;
+	// 配置Value
 	private String content;
 
 	public String getName() {

@@ -4,6 +4,7 @@ package com.micromall.service.vo;
  * Created by zhangzx on 16/3/28.
  */
 public class ListViewGoods {
+
 	// 商品ID
 	private int     goodsId;
 	// 商品标题

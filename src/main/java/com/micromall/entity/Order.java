@@ -1,62 +1,74 @@
 package com.micromall.entity;
 
-import com.micromall.service.vo.Logistics;
-import com.micromall.service.vo.OrderCoupon;
-
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by zhangzx on 16/3/23.
  * 订单信息
  */
 public class Order extends IdEntity {
-	// 用户ID
-	private int               uid;
+
+	// 所属用户id
+	private Integer    uid;
 	// 订单编号
-	private String            orderNo;
+	private String     orderNo;
 	// 订单总金额
-	private float             totalAmount;
+	private BigDecimal totalAmount;
 	// 实付金额
-	private float             realpayAmount;
+	private BigDecimal realpayAmount;
+	// 余额支付金额
+	private BigDecimal balancepayAmount;
 	// 优惠劵抵扣金额（优惠劵抵扣金额+实付金额=订单总金额）
-	private float             deductionAmount;
-	// 使用的优惠劵
-	private List<OrderCoupon> coupons;
+	private BigDecimal deductionAmount;
+	// 使用的优惠劵(JSON)
+	private String     coupons;
 	// 买家留言
-	private String            leaveMessage;
-	// 购买的商品信息（商品信息快照，购买数量）
-	private List<OrderGoods>  goodses;
-	// 支付信息（支付渠道、支付金额、支付时间）
-	private PaymentInfo       paymentInfo;
-	// <预留>退款信息（退款渠道(人工退款/自动退款)、退款金额、退款时间）
-	private RefundInfo        refundInfo;
+	private String     leaveMessage;
+	// 订单商品信息
+	// private List<OrderGoods>  goodses;
+	// 支付信息
+	// private PaymentInfo       paymentInfo;
+	// 退款信息
+	// private RefundInfo        refundInfo;
 	// 物流信息
-	private Logistics         logistics;
-	// 订单状态（待支付、待发货、待收货、已收货、<申请退款、退款完成：预留>、已关闭）
-	private int               status;
+	// private List<Logistics> logistics;
+	/**
+	 * 订单状态 {@link com.micromall.entity.ext.OrderStatus}
+	 */
+	private Integer    status;
 	// 收货地址信息（省、市、区/县、详细地址）
-	private String            deliveryAddress;
+	private String     shippingAddress;
 	// 收货人姓名
-	private String            consigneeName;
+	private String     consigneeName;
 	// 收货人电话
-	private String            consigneePhone;
-	// 订单创建时间
-	private Date              createTime;
+	private String     consigneePhone;
+	// 邮政编码
+	private String     postcode;
+	// 发货快递公司
+	private String     deliveryCompany;
+	// 发货快递单号
+	private String     deliveryNumber;
+	// 发货时间
+	private Date       deliveryTime;
 	// 订单支付时间
-	private Date              payTime;
-	// 订单发货时间
-	private Date              deliveryTime;
+	private Date       payTime;
 	// 订单确认收货时间
-	private Date              receiveTime;
-	// <预留>订单申请退款时间
-	private Date              applyRefundTime;
-	// <预留>订单退款完成时间
-	private Date              refundCompleteTime;
+	private Date       confirmGoodsTime;
+	// 订单申请退款时间<预留>
+	@Deprecated
+	private Date       applyRefundTime;
+	// 订单退款完成时间<预留>
+	@Deprecated
+	private Date       refundCompleteTime;
 	// 订单关闭时间
-	private Date              closeTime;
+	private Date       closeTime;
+	// 关闭日志
+	private String     closelog;
+	// 订单创建时间
+	private Date       createTime;
 	// 修改时间
-	private Date              updatTime;
+	private Date       updatTime;
 
 	public String getOrderNo() {
 		return orderNo;
@@ -66,43 +78,51 @@ public class Order extends IdEntity {
 		this.orderNo = orderNo;
 	}
 
-	public int getUid() {
+	public Integer getUid() {
 		return uid;
 	}
 
-	public void setUid(int uid) {
+	public void setUid(Integer uid) {
 		this.uid = uid;
 	}
 
-	public float getTotalAmount() {
+	public BigDecimal getTotalAmount() {
 		return totalAmount;
 	}
 
-	public void setTotalAmount(float totalAmount) {
+	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
 	}
 
-	public float getRealpayAmount() {
+	public BigDecimal getRealpayAmount() {
 		return realpayAmount;
 	}
 
-	public void setRealpayAmount(float realpayAmount) {
+	public void setRealpayAmount(BigDecimal realpayAmount) {
 		this.realpayAmount = realpayAmount;
 	}
 
-	public float getDeductionAmount() {
+	public BigDecimal getBalancepayAmount() {
+		return balancepayAmount;
+	}
+
+	public void setBalancepayAmount(BigDecimal balancepayAmount) {
+		this.balancepayAmount = balancepayAmount;
+	}
+
+	public BigDecimal getDeductionAmount() {
 		return deductionAmount;
 	}
 
-	public void setDeductionAmount(float deductionAmount) {
+	public void setDeductionAmount(BigDecimal deductionAmount) {
 		this.deductionAmount = deductionAmount;
 	}
 
-	public List<OrderCoupon> getCoupons() {
+	public String getCoupons() {
 		return coupons;
 	}
 
-	public void setCoupons(List<OrderCoupon> coupons) {
+	public void setCoupons(String coupons) {
 		this.coupons = coupons;
 	}
 
@@ -114,52 +134,20 @@ public class Order extends IdEntity {
 		this.leaveMessage = leaveMessage;
 	}
 
-	public List<OrderGoods> getGoodses() {
-		return goodses;
-	}
-
-	public void setGoodses(List<OrderGoods> goodses) {
-		this.goodses = goodses;
-	}
-
-	public PaymentInfo getPaymentInfo() {
-		return paymentInfo;
-	}
-
-	public void setPaymentInfo(PaymentInfo paymentInfo) {
-		this.paymentInfo = paymentInfo;
-	}
-
-	public RefundInfo getRefundInfo() {
-		return refundInfo;
-	}
-
-	public void setRefundInfo(RefundInfo refundInfo) {
-		this.refundInfo = refundInfo;
-	}
-
-	public Logistics getLogistics() {
-		return logistics;
-	}
-
-	public void setLogistics(Logistics logistics) {
-		this.logistics = logistics;
-	}
-
-	public int getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(int status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
-	public String getDeliveryAddress() {
-		return deliveryAddress;
+	public String getShippingAddress() {
+		return shippingAddress;
 	}
 
-	public void setDeliveryAddress(String deliveryAddress) {
-		this.deliveryAddress = deliveryAddress;
+	public void setShippingAddress(String shippingAddress) {
+		this.shippingAddress = shippingAddress;
 	}
 
 	public String getConsigneeName() {
@@ -176,6 +164,30 @@ public class Order extends IdEntity {
 
 	public void setConsigneePhone(String consigneePhone) {
 		this.consigneePhone = consigneePhone;
+	}
+
+	public String getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+
+	public String getDeliveryCompany() {
+		return deliveryCompany;
+	}
+
+	public void setDeliveryCompany(String deliveryCompany) {
+		this.deliveryCompany = deliveryCompany;
+	}
+
+	public String getDeliveryNumber() {
+		return deliveryNumber;
+	}
+
+	public void setDeliveryNumber(String deliveryNumber) {
+		this.deliveryNumber = deliveryNumber;
 	}
 
 	public Date getCreateTime() {
@@ -202,12 +214,12 @@ public class Order extends IdEntity {
 		this.deliveryTime = deliveryTime;
 	}
 
-	public Date getReceiveTime() {
-		return receiveTime;
+	public Date getConfirmGoodsTime() {
+		return confirmGoodsTime;
 	}
 
-	public void setReceiveTime(Date receiveTime) {
-		this.receiveTime = receiveTime;
+	public void setConfirmGoodsTime(Date confirmGoodsTime) {
+		this.confirmGoodsTime = confirmGoodsTime;
 	}
 
 	public Date getApplyRefundTime() {
@@ -232,6 +244,14 @@ public class Order extends IdEntity {
 
 	public void setCloseTime(Date closeTime) {
 		this.closeTime = closeTime;
+	}
+
+	public String getCloselog() {
+		return closelog;
+	}
+
+	public void setCloselog(String closelog) {
+		this.closelog = closelog;
 	}
 
 	public Date getUpdatTime() {

@@ -4,6 +4,7 @@ package com.micromall.service.vo;
  * Created by zhangzx on 16/3/28.
  */
 public class GoodsSearch {
+
 	private Boolean promotion;// 是否促销
 	private Integer categoryId;//类目id
 	private String  sort;//排序方式

@@ -1,5 +1,7 @@
 package com.micromall.entity;
 
+import com.micromall.entity.ext.ArticleTypes;
+
 import java.util.Date;
 
 /**
@@ -8,20 +10,22 @@ import java.util.Date;
  */
 public class Article extends IdEntity {
 
-	// 类型
-	private int    type;
+	/**
+	 * 类型 {@link ArticleTypes}
+	 */
+	private Integer type;
 	// 标题
-	private String title;
+	private String  title;
 	// 内容
-	private String content;
+	private String  content;
 	// 创建时间
-	private Date   createTime;
+	private Date    createTime;
 
-	public int getType() {
+	public Integer getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 
@@ -48,4 +52,5 @@ public class Article extends IdEntity {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
+
 }

@@ -21,7 +21,7 @@ public class AccessControlAllowFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		HttpServletResponse resp = (HttpServletResponse) response;
+		HttpServletResponse resp = (HttpServletResponse)response;
 		resp.addHeader("Access-Control-Allow-Origin", "*");
 		resp.addHeader("Access-Control-Allow-Methods", "HEAD, POST, GET");
 		resp.addHeader("Access-Control-Allow-Headers", "accept, origin, x-requested-with, content-type");

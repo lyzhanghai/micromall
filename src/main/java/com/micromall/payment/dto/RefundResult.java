@@ -13,5 +13,4 @@ public class RefundResult extends BaseResult {
 		this.amount = amount;
 	}
 
-
 }

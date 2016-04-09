@@ -9,8 +9,8 @@ import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.CookieUtils;
 import com.micromall.utils.HttpUtils;
 import com.micromall.utils.UploadUtils;
-import com.micromall.web.security.LoginUser;
 import com.micromall.web.resp.ResponseEntity;
+import com.micromall.web.security.LoginUser;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
  */
 @Controller
 public class MemberAuthenticationController {
+
 	private static final Pattern PHONE_PATTERN = Pattern.compile("^(\\+\\d+)?1[34578]\\d{9}$");
 	private static final Random  RANDOM        = new Random();
 
@@ -80,7 +81,7 @@ public class MemberAuthenticationController {
 	/**
 	 * 短信验证码登录（如用户未注册，则自动注册）
 	 *
-	 * @param phone      手机号
+	 * @param phone 手机号
 	 * @param verifycode 验证码
 	 * @return
 	 */
@@ -99,7 +100,7 @@ public class MemberAuthenticationController {
 		try {
 			// 短信验证码验证
 			/*String _verifycode = cacheService.get(CommonEnvConstants.VERIFYCODE_KEY, phone);*/
-			String _verifycode = (String) request.getSession().getAttribute(verifycodeKey);
+			String _verifycode = (String)request.getSession().getAttribute(verifycodeKey);
 			if (_verifycode == null) {
 				return ResponseEntity.fail("短信验证码已失效");
 			} else if (!_verifycode.equals(verifycode)) {
@@ -157,8 +158,8 @@ public class MemberAuthenticationController {
 			String access_token = null;
 			String openid = null;
 			try {
-				org.springframework.http.ResponseEntity<String> responseEntity = HttpUtils.executeRequest(CommonEnvConstants
-						.WEIXIN_ACCESS_TOKEN_URL, _params, String.class);
+				org.springframework.http.ResponseEntity<String> responseEntity = HttpUtils
+						.executeRequest(CommonEnvConstants.WEIXIN_ACCESS_TOKEN_URL, _params, String.class);
 				if (responseEntity.getStatusCode() == HttpStatus.OK && StringUtils.isNotEmpty(responseEntity.getBody())) {
 					JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
 					openid = jsonObject.getString("openid");
@@ -192,8 +193,8 @@ public class MemberAuthenticationController {
 					_params.put("openid", openid);
 					_params.put("lang", "zh_CN");
 
-					org.springframework.http.ResponseEntity<String> responseEntity = HttpUtils.executeRequest(CommonEnvConstants
-							.WEIXIN_USERINFO_URL, _params, String.class);
+					org.springframework.http.ResponseEntity<String> responseEntity = HttpUtils
+							.executeRequest(CommonEnvConstants.WEIXIN_USERINFO_URL, _params, String.class);
 					if (responseEntity.getStatusCode() == HttpStatus.OK && StringUtils.isNotEmpty(responseEntity.getBody())) {
 						JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
 						member.setNickname(jsonObject.getString("nickname"));
@@ -225,7 +226,6 @@ public class MemberAuthenticationController {
 			response.sendRedirect(CommonEnvConstants.SERVER_ERROR_REDIRECT_URL);
 		}
 	}
-
 
 	private void _processLogin(LoginUser.LoginType loginType, Member member, HttpServletRequest request, HttpServletResponse response) {
 		LoginUser loginUser = LoginUser.create(loginType, member, request);

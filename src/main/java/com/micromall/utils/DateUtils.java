@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class DateUtils {
 
 	public static final  String                                      YYYY_MM_DD          = "yyyy-MM-dd";
@@ -24,7 +23,6 @@ public class DateUtils {
 	public static final  String                                      DEFAULT_DATE        = "DAY";
 	private static final Logger                                      logger              = LoggerFactory.getLogger(DateUtils.class);
 	private static       ConcurrentHashMap<String, SimpleDateFormat> dataFormats         = new ConcurrentHashMap<String, SimpleDateFormat>();
-
 
 	private static SimpleDateFormat _DataFormat(String format) {
 		if (!dataFormats.containsKey(format.intern())) {

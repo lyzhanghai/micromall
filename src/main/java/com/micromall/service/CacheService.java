@@ -5,16 +5,18 @@ import java.io.Serializable;
 /**
  * <pre>
  * cache 服务接口，过期时间以秒为单位
- * @ClassName: CacheService
+ *
  * @author Zhang Zhongxiang<an_huai@sina.cn>
+ * @ClassName: CacheService
  * @date 2014年5月6日 下午3:48:05
  */
 public interface CacheService extends Serializable {
-	int	SECOND	= 1;
-	int	MINUTE	= 60 * SECOND;
-	int	HOUR	= 60 * MINUTE;
-	int	DAY		= 24 * HOUR;
-	int	WEEK	= 7 * DAY;
+
+	int SECOND = 1;
+	int MINUTE = 60 * SECOND;
+	int HOUR   = 60 * MINUTE;
+	int DAY    = 24 * HOUR;
+	int WEEK   = 7 * DAY;
 
 	<T> T get(final String key);
 

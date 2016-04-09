@@ -4,6 +4,7 @@ package com.micromall.utils;
  * Created by zhangzx on 16/3/28.
  */
 public class ArgumentValidException extends RuntimeException {
+
 	public ArgumentValidException() {
 		super();
 	}

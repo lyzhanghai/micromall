@@ -7,22 +7,21 @@ import java.util.Date;
  * 用户消息
  */
 public class Message extends IdEntity {
-	// 所属用户
-	private int     uid;
+
+	// 所属用户id
+	private Integer uid;
 	// 标题
 	private String  title;
 	// 内容
 	private String  content;
-	// 是已读
-	private boolean read;
 	// 发送时间
 	private Date    createTime;
 
-	public int getUid() {
+	public Integer getUid() {
 		return uid;
 	}
 
-	public void setUid(int uid) {
+	public void setUid(Integer uid) {
 		this.uid = uid;
 	}
 
@@ -40,14 +39,6 @@ public class Message extends IdEntity {
 
 	public void setContent(String content) {
 		this.content = content;
-	}
-
-	public boolean isRead() {
-		return read;
-	}
-
-	public void setRead(boolean read) {
-		this.read = read;
 	}
 
 	public Date getCreateTime() {

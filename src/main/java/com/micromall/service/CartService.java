@@ -1,10 +1,14 @@
 package com.micromall.service;
 
-import com.micromall.service.vo.CartGoods;
-import com.micromall.repository.CartRepository;
+import com.micromall.entity.CartGoods;
+import com.micromall.repository.CartGoodsMapper;
+import com.micromall.service.vo.CartGoodsDTO;
+import com.micromall.utils.Condition;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,22 +16,32 @@ import java.util.List;
  */
 @Service
 public class CartService {
+
 	@Resource
-	private CartRepository cartRepository;
+	private CartGoodsMapper mapper;
 
-	public List<CartGoods> goodses(int uid) {
-		return null;
+	@Transactional(readOnly = true)
+	public List<CartGoodsDTO> goodses(int uid) {
+		return mapper.list(uid);
 	}
 
-	public boolean joinCart(int uid, int goodsId, int buyNumber) {
-		return false;
+	@Transactional
+	public void joinCart(int uid, int goodsId, int buyNumber) {
+		this._updateCart(uid, goodsId, buyNumber);
 	}
 
-	public boolean updateBuyNumber(int uid, int goodsId, int buyNumber) {
-		return false;
+	@Transactional
+	public void updateBuyNumber(int uid, int goodsId, int buyNumber) {
+		this._updateCart(uid, goodsId, buyNumber);
 	}
 
-	public boolean deleteGoods(int uid, int goodsId) {
-		return false;
+	private void _updateCart(int uid, int goodsId, int buyNumber) {
+		mapper.deleteByWhereClause(Condition.Criteria.create().andEqualTo("uid", uid).andEqualTo("goods_id", goodsId).build());
+		mapper.insert(new CartGoods(uid, goodsId, buyNumber, new Date()));
+	}
+
+	@Transactional
+	public boolean deleteGoods(int uid, List<Integer> goodsIds) {
+		return mapper.deleteByWhereClause(Condition.Criteria.create().andEqualTo("uid", uid).andIn("goods_id", goodsIds).build()) > 0;
 	}
 }

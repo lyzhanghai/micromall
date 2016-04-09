@@ -1,6 +1,5 @@
 package com.micromall.payment;
 
-
 public interface ResultCodeEnum {
 
 	// 处理成功

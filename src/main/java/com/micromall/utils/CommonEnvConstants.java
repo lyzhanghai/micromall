@@ -8,7 +8,9 @@ package com.micromall.utils;
  */
 public final class CommonEnvConstants {
 
-	/** =============== 微信授权/登录配置 =============== **/
+	/**
+	 * =============== 微信授权/登录配置 ===============
+	 **/
 	/* 微信公众号APPID */
 	public static final String WEIXIN_APPID                     = PropertyConfigurer.getString("weixin.appid");
 	/* 微信公众号SECRET_KEY */
@@ -32,13 +34,17 @@ public final class CommonEnvConstants {
 	/* 服务器请求处理出错，跳转到的页面 */
 	public static final String SERVER_ERROR_REDIRECT_URL        = PropertyConfigurer.getString("server.error.redirect_url");
 
-	/** =============== 登录会话session配置 =============== **/
+	/**
+	 * =============== 登录会话session配置 ===============
+	 **/
 	/* 登录会话 session cookie sid */
 	public static final String LOGIN_SESSION_COOKIE_SID = "_sid";
 	/* 登录会话 session key */
 	public static final String LOGIN_SESSION_KEY        = "_login_user";
 
-	/** =============== 短信验证码配置 =============== **/
+	/**
+	 * =============== 短信验证码配置 ===============
+	 **/
 	/* 短信验证码缓存Key */
 	public static final String VERIFYCODE_KEY      = "_Verifycode";
 	/* 短信验证码模板 */
@@ -46,7 +52,9 @@ public final class CommonEnvConstants {
 	/* session 缓存过期时间 */
 	//public static final int    SESSION_CACHE_EXPRIED = CacheService.DAY * 30;
 
-	/** =============== 文件上传目录配置 =============== **/
+	/**
+	 * =============== 文件上传目录配置 ===============
+	 **/
 	/* 用户头像保存目录 */
 	public static final String UPLOAD_MEMBER_IMAGES_DIR = PropertyConfigurer.getString("upload.member_images.dir");
 	/* 商品图片保存目录 */
@@ -56,7 +64,6 @@ public final class CommonEnvConstants {
 
 	/* 用户默认头像 */
 	public static final String MEMBER_DEFAULT_AVATAR = PropertyConfigurer.getString("member.default.avatar");
-
 
 	/* 首页商品每页显示个数 */
 	public static final int INDEX_GOODS_PERPAGE_SIZE = Integer.valueOf(PropertyConfigurer.getString("index.goods.perpage.size"));

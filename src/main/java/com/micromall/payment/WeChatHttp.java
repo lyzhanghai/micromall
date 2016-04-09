@@ -17,7 +17,6 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.security.KeyStore;
 
-
 public class WeChatHttp {
 
 	public static String post(String url, String data) throws Exception {
@@ -33,8 +32,8 @@ public class WeChatHttp {
 		// Trust own CA and all self-signed certs
 		SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, WechatConfig.MCH_ID.toCharArray()).build();
 		// Allow TLSv1 protocol only
-		SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[]{"TLSv1"}, null, SSLConnectionSocketFactory
-				.getDefaultHostnameVerifier());
+		SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[]{"TLSv1"}, null,
+				SSLConnectionSocketFactory.getDefaultHostnameVerifier());
 		CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
 		StringBuilder result = new StringBuilder();
 		try {

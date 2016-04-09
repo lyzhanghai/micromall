@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * Created by zhangzx on 16/3/21.
  */
-public class LoginUser implements Serializable{
+public class LoginUser implements Serializable {
 
 	// 用户id
 	private int       uid;

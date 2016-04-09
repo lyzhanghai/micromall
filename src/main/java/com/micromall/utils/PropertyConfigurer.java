@@ -15,6 +15,7 @@ import java.util.Properties;
  * Created by zhangzx on 15/12/24.
  */
 public class PropertyConfigurer extends PropertyPlaceholderConfigurer {
+
 	private static Logger     logger    = LoggerFactory.getLogger(PropertyConfigurer.class);
 	private static boolean    firstInit = false;
 	private static Properties props     = new Properties();
@@ -26,10 +27,10 @@ public class PropertyConfigurer extends PropertyPlaceholderConfigurer {
 	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props) throws BeansException {
 		super.processProperties(beanFactoryToProcess, props);
 		logger.info("初始化系统配置属性......");
-		this.props.clear();
+		props.clear();
 		Iterator iterator = props.keySet().iterator();
 		while (iterator.hasNext()) {
-			String key = (String) iterator.next();
+			String key = (String)iterator.next();
 			String value = props.getProperty(key);
 			logger.info("{}={}", key, value);
 			if (this.props.containsKey(key)) {

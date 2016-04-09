@@ -1,11 +1,9 @@
 package com.micromall.web;
 
-
 import com.micromall.web.security.LoginUser;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 public class RequestContext {
 
@@ -20,7 +18,7 @@ public class RequestContext {
 	};
 
 	public static LoginUser getLoginUser() {
-		return (LoginUser) threadLocal.get().get(LOGIN_USER_KEY);
+		return (LoginUser)threadLocal.get().get(LOGIN_USER_KEY);
 	}
 
 	public static void setLoginUser(LoginUser loginUser) {
