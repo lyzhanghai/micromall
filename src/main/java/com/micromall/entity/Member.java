@@ -33,7 +33,7 @@ public class Member extends IdEntity {
 	// 上级分销商用户id
 	private Integer parentUid;
 	// 是否认证用户
-	private Boolean certified;
+	private Boolean verified;
 	// 是否逻辑删除
 	private Boolean delete;
 	// 最后登录时间
@@ -125,16 +125,12 @@ public class Member extends IdEntity {
 		this.parentUid = parentUid;
 	}
 
-	public Boolean getCertified() {
-		return certified;
+	public void setVerified(Boolean verified) {
+		this.verified = verified;
 	}
 
-	public void setCertified(Boolean certified) {
-		this.certified = certified;
-	}
-
-	public Boolean isCertified() {
-		return certified;
+	public Boolean isVerified() {
+		return verified;
 	}
 
 	public boolean isDelete() {

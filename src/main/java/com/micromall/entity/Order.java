@@ -63,6 +63,8 @@ public class Order extends IdEntity {
 	private Date       refundCompleteTime;
 	// 订单关闭时间
 	private Date       closeTime;
+	// 超时未支付自动关闭时间
+	private Date       timeoutCloseTime;
 	// 关闭日志
 	private String     closelog;
 	// 订单创建时间
@@ -246,6 +248,14 @@ public class Order extends IdEntity {
 		this.closeTime = closeTime;
 	}
 
+	public Date getTimeoutCloseTime() {
+		return timeoutCloseTime;
+	}
+
+	public void setTimeoutCloseTime(Date timeoutCloseTime) {
+		this.timeoutCloseTime = timeoutCloseTime;
+	}
+
 	public String getCloselog() {
 		return closelog;
 	}
@@ -261,4 +271,5 @@ public class Order extends IdEntity {
 	public void setUpdatTime(Date updatTime) {
 		this.updatTime = updatTime;
 	}
+
 }

@@ -10,6 +10,7 @@ import com.micromall.utils.CookieUtils;
 import com.micromall.utils.HttpUtils;
 import com.micromall.utils.UploadUtils;
 import com.micromall.web.resp.ResponseEntity;
+import com.micromall.web.security.Authentication;
 import com.micromall.web.security.LoginUser;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -34,6 +35,7 @@ import java.util.regex.Pattern;
  * 登录授权认证
  */
 @Controller
+@Authentication(force = false)
 public class MemberAuthenticationController {
 
 	private static final Pattern PHONE_PATTERN = Pattern.compile("^(\\+\\d+)?1[34578]\\d{9}$");

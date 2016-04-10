@@ -6,6 +6,7 @@ import com.micromall.service.PropertiesService;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.Condition;
 import com.micromall.web.resp.ResponseEntity;
+import com.micromall.web.security.Authentication;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
  * 公共接口
  */
 @Controller
+@Authentication(force = false)
 public class ComprehensiveController extends BasisController {
 
 	/*@Resource

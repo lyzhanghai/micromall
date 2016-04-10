@@ -5,20 +5,21 @@ package com.micromall.service.vo;
  */
 public class GoodsSearch {
 
+	private String  query;//搜索关键字
 	private Boolean promotion;// 是否促销
 	private Integer categoryId;//类目id
 	private String  sort;//排序方式
-	private int     p;//分页页码
+	private int     page;//分页页码
 	private int     limit;//每页记录数
 
-	private GoodsSearch(String sort, int p, int limit) {
+	private GoodsSearch(String sort, int page, int limit) {
 		this.sort = sort;
-		this.p = p;
+		this.page = page;
 		this.limit = limit;
 	}
 
-	public static GoodsSearch created(String sort, int p, int limit) {
-		GoodsSearch search = new GoodsSearch(sort, p, limit);
+	public static GoodsSearch created(String sort, int page, int limit) {
+		GoodsSearch search = new GoodsSearch(sort, page, limit);
 		return search;
 	}
 
@@ -26,24 +27,35 @@ public class GoodsSearch {
 		return promotion;
 	}
 
-	public void setPromotion(Boolean promotion) {
+	public GoodsSearch setPromotion(Boolean promotion) {
 		this.promotion = promotion;
+		return this;
 	}
 
 	public Integer getCategoryId() {
 		return categoryId;
 	}
 
-	public void setCategoryId(Integer categoryId) {
+	public GoodsSearch setCategoryId(Integer categoryId) {
 		this.categoryId = categoryId;
+		return this;
+	}
+
+	public String getQuery() {
+		return query;
+	}
+
+	public GoodsSearch setQuery(String query) {
+		this.query = query;
+		return this;
 	}
 
 	public String getSort() {
 		return sort;
 	}
 
-	public int getP() {
-		return p;
+	public int getPage() {
+		return page;
 	}
 
 	public int getLimit() {

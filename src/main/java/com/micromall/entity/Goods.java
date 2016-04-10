@@ -35,6 +35,12 @@ public class Goods extends IdEntity {
 	 * 促销配置(JSON) {@link com.micromall.entity.ext.PromotionConfigKeys}
 	 */
 	private String     promotionParams;
+	// 是否免运费
+	private boolean    freeFreight;
+	// 是否固定运费
+	private boolean    fixedFreight;
+	// 运费
+	private int        freight;
 	// 商品描述
 	private String     descr;
 	// 产品参数(JSON)
@@ -128,6 +134,30 @@ public class Goods extends IdEntity {
 
 	public void setPromotionParams(String promotionParams) {
 		this.promotionParams = promotionParams;
+	}
+
+	public boolean isFreeFreight() {
+		return freeFreight;
+	}
+
+	public void setFreeFreight(boolean freeFreight) {
+		this.freeFreight = freeFreight;
+	}
+
+	public boolean isFixedFreight() {
+		return fixedFreight;
+	}
+
+	public void setFixedFreight(boolean fixedFreight) {
+		this.fixedFreight = fixedFreight;
+	}
+
+	public int getFreight() {
+		return freight;
+	}
+
+	public void setFreight(int freight) {
+		this.freight = freight;
 	}
 
 	public String getDescr() {

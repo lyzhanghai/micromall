@@ -4,7 +4,7 @@ import com.micromall.entity.Goods;
 import com.micromall.repository.GoodsMapper;
 import com.micromall.service.vo.GoodsDetails;
 import com.micromall.service.vo.GoodsSearch;
-import com.micromall.service.vo.ListViewGoods;
+import com.micromall.service.vo.GoodsSearchResult;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,7 +19,7 @@ public class GoodsService {
 	@Resource
 	private GoodsMapper mapper;
 
-	public List<ListViewGoods> findGoods(GoodsSearch search) {
+	public List<GoodsSearchResult> searchGoods(GoodsSearch search) {
 		return null;
 	}
 
@@ -27,7 +27,7 @@ public class GoodsService {
 		return null;
 	}
 
-	public Goods getGoodsInfo(int goodsId) {
+	public Goods getGoodsSimpleInfo(int goodsId) {
 		return null;
 	}
 }

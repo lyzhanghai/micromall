@@ -3,7 +3,7 @@ package com.micromall.service.vo;
 /**
  * Created by zhangzx on 16/3/28.
  */
-public class ListViewGoods {
+public class GoodsSearchResult {
 
 	// 商品ID
 	private int     goodsId;
@@ -17,6 +17,14 @@ public class ListViewGoods {
 	private int     salesVolume;
 	// 是否促销商品
 	private boolean promotion;
+	// 促销配置
+	private String  promotionParams;
+	// 是否免运费
+	private boolean freeFreight;
+	// 是否固定运费
+	private boolean fixedFreight;
+	// 运费
+	private int     freight;
 
 	public int getGoodsId() {
 		return goodsId;
@@ -64,5 +72,37 @@ public class ListViewGoods {
 
 	public void setPromotion(boolean promotion) {
 		this.promotion = promotion;
+	}
+
+	public String getPromotionParams() {
+		return promotionParams;
+	}
+
+	public void setPromotionParams(String promotionParams) {
+		this.promotionParams = promotionParams;
+	}
+
+	public boolean isFreeFreight() {
+		return freeFreight;
+	}
+
+	public void setFreeFreight(boolean freeFreight) {
+		this.freeFreight = freeFreight;
+	}
+
+	public boolean isFixedFreight() {
+		return fixedFreight;
+	}
+
+	public void setFixedFreight(boolean fixedFreight) {
+		this.fixedFreight = fixedFreight;
+	}
+
+	public int getFreight() {
+		return freight;
+	}
+
+	public void setFreight(int freight) {
+		this.freight = freight;
 	}
 }

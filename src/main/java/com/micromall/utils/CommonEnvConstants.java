@@ -29,10 +29,11 @@ public final class CommonEnvConstants {
 	public static final String WEIXIN_AUTH_SUCCESS_REDIRECT_URL = PropertyConfigurer.getString("weixin.auth.success.redirect_url");
 	/* 微信授权失败，跳转到的页面 */
 	public static final String WEIXIN_AUTH_FAIL_REDIRECT_URL    = PropertyConfigurer.getString("weixin.auth.fail.redirect_url");
-	/* 使用手机号的授权登录页面 */
-	public static final String MOBILE_AUTHORIZE_LOGIN_URL       = PropertyConfigurer.getString("mobile.authorize.loginUrl");
 	/* 服务器请求处理出错，跳转到的页面 */
 	public static final String SERVER_ERROR_REDIRECT_URL        = PropertyConfigurer.getString("server.error.redirect_url");
+	/* 使用手机号的授权登录页面 */
+	@Deprecated
+	public static final String MOBILE_AUTHORIZE_LOGIN_URL       = PropertyConfigurer.getString("mobile.authorize.loginUrl");
 
 	/**
 	 * =============== 登录会话session配置 ===============
@@ -56,17 +57,22 @@ public final class CommonEnvConstants {
 	 * =============== 文件上传目录配置 ===============
 	 **/
 	/* 用户头像保存目录 */
-	public static final String UPLOAD_MEMBER_IMAGES_DIR = PropertyConfigurer.getString("upload.member_images.dir");
+	public static final String UPLOAD_MEMBER_IMAGES_DIR      = PropertyConfigurer.getString("upload.member_images.dir");
 	/* 商品图片保存目录 */
-	public static final String UPLOAD_GOODS_IMAGES_DIR  = PropertyConfigurer.getString("upload.goods_images.dir");
+	public static final String UPLOAD_GOODS_IMAGES_DIR       = PropertyConfigurer.getString("upload.goods_images.dir");
 	/* 广告图片保存目录 */
-	public static final String UPLOAD_AD_IMAGES_DIR     = PropertyConfigurer.getString("upload.ad_images.dir");
+	public static final String UPLOAD_AD_IMAGES_DIR          = PropertyConfigurer.getString("upload.ad_images.dir");
+	/* 证件图片保存目录 */
+	public static final String UPLOAD_CERTIFICATE_IMAGES_DIR = PropertyConfigurer.getString("upload.certificate_images.dir");
 
 	/* 用户默认头像 */
 	public static final String MEMBER_DEFAULT_AVATAR = PropertyConfigurer.getString("member.default.avatar");
 
-	/* 首页商品每页显示个数 */
-	public static final int INDEX_GOODS_PERPAGE_SIZE = Integer.valueOf(PropertyConfigurer.getString("index.goods.perpage.size"));
+	/* 商品搜索默认每页显示个数 */
+	public static final int    GOODS_SEARCH_PERPAGE_SIZE = Integer.valueOf(PropertyConfigurer.getString("goods.search.perpage_size"));
+	/* 商品搜索默认排序字段 */
+	public static final String GOODS_SEARCH_DEFAULT_SORT = PropertyConfigurer.getString("goods.search.default_sort");
 
 	public static final int ARTICLE_PAGE_LIMIT = 20;
+
 }
