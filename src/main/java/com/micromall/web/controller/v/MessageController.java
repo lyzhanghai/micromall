@@ -1,9 +1,13 @@
-package com.micromall.web.controller;
+package com.micromall.web.controller.v;
 
-import com.micromall.service.MessageService;
+import com.micromall.repository.MessageMapper;
+import com.micromall.utils.CommonEnvConstants;
+import com.micromall.utils.Condition;
+import com.micromall.web.controller.BasisController;
 import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +25,7 @@ import javax.annotation.Resource;
 public class MessageController extends BasisController {
 
 	@Resource
-	private MessageService messageService;
+	private MessageMapper mapper;
 
 	/**
 	 * 购物车商品列表
@@ -31,7 +35,9 @@ public class MessageController extends BasisController {
 	@UncaughtException(msg = "加载消息列表失败")
 	@RequestMapping(value = "/list")
 	@ResponseBody
-	public ResponseEntity<?> list(@RequestParam(defaultValue = "1") int p) {
-		return ResponseEntity.ok(messageService.list(getLoginUser().getUid(), p));
+	public ResponseEntity<?> list(@RequestParam(defaultValue = "1") int page) {
+		return ResponseEntity.ok(mapper
+				.selectPageByWhereClause(Condition.Criteria.create().andEqualTo("uid", getLoginUser().getUid()).build("id desc"),
+						new RowBounds(page, CommonEnvConstants.USER_MESSAGE_PAGE_LIMIT)));
 	}
 }

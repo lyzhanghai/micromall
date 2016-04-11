@@ -26,16 +26,7 @@ public class CartService {
 	}
 
 	@Transactional
-	public void joinCart(int uid, int goodsId, int buyNumber) {
-		this._updateCart(uid, goodsId, buyNumber);
-	}
-
-	@Transactional
-	public void updateBuyNumber(int uid, int goodsId, int buyNumber) {
-		this._updateCart(uid, goodsId, buyNumber);
-	}
-
-	private void _updateCart(int uid, int goodsId, int buyNumber) {
+	public void updateCartGoods(int uid, int goodsId, int buyNumber) {
 		mapper.deleteByWhereClause(Condition.Criteria.create().andEqualTo("uid", uid).andEqualTo("goods_id", goodsId).build());
 		mapper.insert(new CartGoods(uid, goodsId, buyNumber, new Date()));
 	}

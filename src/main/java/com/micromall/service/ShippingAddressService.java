@@ -25,31 +25,28 @@ public class ShippingAddressService {
 
 	@Transactional
 	public void addAddress(ShippingAddress address) {
+		if (address.isDefaul() != null && address.isDefaul()) {
+			mapper.cleanDefaulAddress(address.getUid());
+		}
 		mapper.insert(address);
 	}
 
 	@Transactional
 	public boolean updateAddress(ShippingAddress address) {
 		if (address.isDefaul() != null && address.isDefaul()) {
-			ShippingAddress _address = this.getDefaultAddress(address.getUid());
-			if (_address != null && !_address.getId().equals(address.getId())) {
-				ShippingAddress update = new ShippingAddress();
-				update.setId(_address.getId());
-				update.setDefaul(false);
-				mapper.updateByPrimaryKey(update);
-			}
+			mapper.cleanDefaulAddress(address.getUid());
 		}
 		return mapper.updateByPrimaryKey(address) > 0;
 	}
 
 	@Transactional
-	public boolean deleteAddress(int uid, int addressId) {
-		return mapper.deleteByWhereClause(Condition.Criteria.create().andEqualTo("uid", uid).andEqualTo("id", addressId).build()) > 0;
+	public boolean deleteAddress(int uid, int id) {
+		return mapper.deleteByWhereClause(Condition.Criteria.create().andEqualTo("uid", uid).andEqualTo("id", id).build()) > 0;
 	}
 
 	@Transactional(readOnly = true)
-	public ShippingAddress getAddress(int uid, int addressId) {
-		return mapper.selectOneByWhereClause(Condition.Criteria.create().andEqualTo("uid", uid).andEqualTo("id", addressId).build());
+	public ShippingAddress getAddress(int uid, int id) {
+		return mapper.selectOneByWhereClause(Condition.Criteria.create().andEqualTo("uid", uid).andEqualTo("id", id).build());
 	}
 
 	@Transactional(readOnly = true)

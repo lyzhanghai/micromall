@@ -31,10 +31,10 @@ public class GoodsController extends BasisController {
 	static {
 		GOODS_SORT_FIELD_MAP.put("price_desc", "price desc");// 按价格排序
 		GOODS_SORT_FIELD_MAP.put("price_asc", "price asc");// 按价格排序
-		GOODS_SORT_FIELD_MAP.put("time_desc", "time desc");//  按时间排序
-		GOODS_SORT_FIELD_MAP.put("time_asc", "time asc");//  按时间排序
-		GOODS_SORT_FIELD_MAP.put("salesVolume_desc", "sales_volume desc");//按销量排序
-		GOODS_SORT_FIELD_MAP.put("salesVolume_asc", "sales_volume asc");//按销量排序
+		GOODS_SORT_FIELD_MAP.put("time_desc", "create_time desc");//  按时间排序
+		GOODS_SORT_FIELD_MAP.put("time_asc", "create_time asc");//  按时间排序
+		GOODS_SORT_FIELD_MAP.put("volume_desc", "sales_volume desc");//按销量排序
+		GOODS_SORT_FIELD_MAP.put("volume_asc", "sales_volume asc");//按销量排序
 	}
 
 	@Resource
@@ -43,13 +43,17 @@ public class GoodsController extends BasisController {
 	/**
 	 * 商品搜索
 	 *
+	 * @param query 搜索关键字
+	 * @param categoryId 商品类目id
+	 * @param promotion 是否促销商品
+	 * @param sort 排序方式
+	 * @param page 分页页码
 	 * @return
 	 */
 	@UncaughtException(msg = "加载商品列表失败")
-	@RequestMapping(value = "/search_goods")
+	@RequestMapping(value = "/search")
 	@ResponseBody
-	public ResponseEntity<?> search_goods(String query, Integer categoryId, Boolean promotion, String sort,
-			@RequestParam(defaultValue = "1") int page) {
+	public ResponseEntity<?> search(String query, Integer categoryId, Boolean promotion, String sort, @RequestParam(defaultValue = "1") int page) {
 		if (StringUtils.isEmpty(sort) || !GOODS_SORT_FIELD_MAP.containsKey(sort)) {
 			sort = CommonEnvConstants.GOODS_SEARCH_DEFAULT_SORT;
 		}
@@ -69,7 +73,7 @@ public class GoodsController extends BasisController {
 	@ResponseBody
 	public ResponseEntity<?> details(int goodsId) {
 		Integer uid = getLoginUser() != null ? getLoginUser().getUid() : null;
-		return ResponseEntity.ok(goodsService.getGoodsDetails(goodsId));
+		return ResponseEntity.ok(goodsService.getGoodsDetails(goodsId, uid));
 	}
 
 }

@@ -75,4 +75,5 @@ public final class CommonEnvConstants {
 
 	public static final int ARTICLE_PAGE_LIMIT = 20;
 
+	public static final int USER_MESSAGE_PAGE_LIMIT = 20;
 }

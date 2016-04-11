@@ -1,7 +1,8 @@
-package com.micromall.web.controller;
+package com.micromall.web.controller.v;
 
 import com.micromall.entity.ShippingAddress;
 import com.micromall.service.ShippingAddressService;
+import com.micromall.web.controller.BasisController;
 import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
@@ -16,9 +17,9 @@ import javax.annotation.Resource;
  * 收货地址
  */
 @Controller
-@RequestMapping(value = "/delivery_address")
+@RequestMapping(value = "/shipping_address")
 @Authentication
-public class DeliveryAddressController extends BasisController {
+public class ShippingAddressController extends BasisController {
 
 	@Resource
 	private ShippingAddressService deliveryAddressService;
@@ -48,7 +49,7 @@ public class DeliveryAddressController extends BasisController {
 	 * @return
 	 */
 	@UncaughtException(msg = "保存收货地址信息失败")
-	@RequestMapping(value = "/add_address")
+	@RequestMapping(value = "/add")
 	@ResponseBody
 	public ResponseEntity<?> add_address(String province, String city, String county, String detailedAddress, String consigneeName,
 			String consigneePhone, boolean defaul) {
@@ -80,7 +81,7 @@ public class DeliveryAddressController extends BasisController {
 	 * @return
 	 */
 	@UncaughtException(msg = "保存收货地址信息失败")
-	@RequestMapping(value = "/update_address")
+	@RequestMapping(value = "/update")
 	@ResponseBody
 	public ResponseEntity<?> update_address(int addressId, String province, String city, String county, String detailedAddress, String consigneeName,
 			String consigneePhone, boolean defaul) {
@@ -102,27 +103,27 @@ public class DeliveryAddressController extends BasisController {
 	/**
 	 * 删除收货地址
 	 *
-	 * @param addressId 地址id
+	 * @param id 地址id
 	 * @return
 	 */
 	@UncaughtException(msg = "删除收货地址信息失败")
-	@RequestMapping(value = "/delete_address")
+	@RequestMapping(value = "/delete")
 	@ResponseBody
-	public ResponseEntity<?> delete_address(int addressId) {
-		return ResponseEntity.ok(deliveryAddressService.deleteAddress(getLoginUser().getUid(), addressId));
+	public ResponseEntity<?> delete_address(int id) {
+		return ResponseEntity.ok(deliveryAddressService.deleteAddress(getLoginUser().getUid(), id));
 	}
 
 	/**
 	 * 获取收货地址
 	 *
-	 * @param addressId 地址id
+	 * @param id 地址id
 	 * @return
 	 */
 	@UncaughtException(msg = "加载收货地址信息失败")
-	@RequestMapping(value = "/get_address")
+	@RequestMapping(value = "/get")
 	@ResponseBody
-	public ResponseEntity<?> get_address(int addressId) {
-		return ResponseEntity.ok(deliveryAddressService.getAddress(getLoginUser().getUid(), addressId));
+	public ResponseEntity<?> get_address(int id) {
+		return ResponseEntity.ok(deliveryAddressService.getAddress(getLoginUser().getUid(), id));
 	}
 
 	/**
@@ -131,7 +132,7 @@ public class DeliveryAddressController extends BasisController {
 	 * @return
 	 */
 	@UncaughtException(msg = "加载收货地址信息失败")
-	@RequestMapping(value = "/get_default_address")
+	@RequestMapping(value = "/get_default")
 	@ResponseBody
 	public ResponseEntity<?> get_default() {
 		return ResponseEntity.ok(deliveryAddressService.getDefaultAddress(getLoginUser().getUid()));

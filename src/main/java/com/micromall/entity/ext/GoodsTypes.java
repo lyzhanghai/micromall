@@ -9,5 +9,6 @@ package com.micromall.entity.ext;
 public class GoodsTypes {
 
 	public static final int 普通商品  = 0;
-	public static final int 会员充值卡 = 1;
+	public static final int 虚拟商品  = 1;
+	public static final int 会员充值卡 = 2;
 }

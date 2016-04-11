@@ -1,30 +1,34 @@
 package com.micromall.service.vo;
 
+import com.micromall.entity.ext.GoodsTypes;
+
+import java.math.BigDecimal;
+
 /**
  * Created by zhangzx on 16/3/28.
  */
 public class GoodsSearchResult {
 
 	// 商品ID
-	private int     goodsId;
+	private int        goodsId;
 	// 商品标题
-	private String  title;
+	private String     title;
 	// 商品图片
-	private String  picture;
+	private String     image;
 	// 商品价格
-	private float   price;
+	private BigDecimal price;
+	/**
+	 * 商品类型（普通商品、会员充值卡）{@link GoodsTypes}
+	 */
+	private int        type;
 	// 商品销量
-	private int     salesVolume;
+	private int        salesVolume;
 	// 是否促销商品
-	private boolean promotion;
+	private boolean    promotion;
 	// 促销配置
-	private String  promotionParams;
-	// 是否免运费
-	private boolean freeFreight;
-	// 是否固定运费
-	private boolean fixedFreight;
+	private String     promotionParams;
 	// 运费
-	private int     freight;
+	private int        freight;
 
 	public int getGoodsId() {
 		return goodsId;
@@ -42,20 +46,28 @@ public class GoodsSearchResult {
 		this.title = title;
 	}
 
-	public String getPicture() {
-		return picture;
+	public String getImage() {
+		return image;
 	}
 
-	public void setPicture(String picture) {
-		this.picture = picture;
+	public void setImage(String image) {
+		this.image = image;
 	}
 
-	public float getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price) {
+	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	public int getSalesVolume() {
@@ -80,22 +92,6 @@ public class GoodsSearchResult {
 
 	public void setPromotionParams(String promotionParams) {
 		this.promotionParams = promotionParams;
-	}
-
-	public boolean isFreeFreight() {
-		return freeFreight;
-	}
-
-	public void setFreeFreight(boolean freeFreight) {
-		this.freeFreight = freeFreight;
-	}
-
-	public boolean isFixedFreight() {
-		return fixedFreight;
-	}
-
-	public void setFixedFreight(boolean fixedFreight) {
-		this.fixedFreight = fixedFreight;
 	}
 
 	public int getFreight() {

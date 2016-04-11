@@ -1,6 +1,7 @@
-package com.micromall.web.controller;
+package com.micromall.web.controller.v;
 
 import com.micromall.service.FavoriteService;
+import com.micromall.web.controller.BasisController;
 import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
@@ -41,9 +42,9 @@ public class FavoriteController extends BasisController {
 	 * @return
 	 */
 	@UncaughtException(msg = "加入收藏夹失败")
-	@RequestMapping(value = "/join_favorite")
+	@RequestMapping(value = "/join")
 	@ResponseBody
-	public ResponseEntity<?> join_favorite(int goodsId) {
+	public ResponseEntity<?> join(int goodsId) {
 		return ResponseEntity.ok(favoriteService.joinFavorite(getLoginUser().getUid(), goodsId));
 	}
 
@@ -54,9 +55,9 @@ public class FavoriteController extends BasisController {
 	 * @return
 	 */
 	@UncaughtException(msg = "删除商品失败")
-	@RequestMapping(value = "/delete_goods")
+	@RequestMapping(value = "/delete")
 	@ResponseBody
-	public ResponseEntity<?> delete_goods(int goodsId) {
+	public ResponseEntity<?> delete(int goodsId) {
 		return ResponseEntity.ok(favoriteService.deleteGoods(getLoginUser().getUid(), goodsId));
 	}
 

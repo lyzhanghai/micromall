@@ -11,6 +11,8 @@
         <result column="shelves" property="shelves" jdbcType="CHAR"/>
         <result column="type" property="type" jdbcType="TINYINT"/>
         <result column="promotion" property="promotion" jdbcType="CHAR"/>
+        <result column="promotion_params" property="promotionParams" jdbcType="LONGVARCHAR"/>
+        <result column="freight" property="freight" jdbcType="INTEGER"/>
         <result column="sort" property="sort" jdbcType="SMALLINT"/>
         <result column="sales_volume" property="salesVolume" jdbcType="INTEGER"/>
         <result column="delete" property="delete" jdbcType="CHAR"/>
@@ -19,16 +21,15 @@
     </resultMap>
     <resultMap id="FullResultMap" type="com.micromall.entity.Goods" extends="BaseResultMap">
         <result column="images" property="images" jdbcType="LONGVARCHAR"/>
-        <result column="promotion_params" property="promotionParams" jdbcType="LONGVARCHAR"/>
         <result column="descr" property="descr" jdbcType="LONGVARCHAR"/>
         <result column="product_params" property="productParams" jdbcType="LONGVARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, title, main_image, category_id, price, inventory, shelves, type, promotion, sort,
-        sales_volume, delete, create_time, update_time
+        id, title, main_image, category_id, price, inventory, shelves, type, promotion,
+        promotion_params, freight, sort, sales_volume, delete, create_time, update_time
     </sql>
     <sql id="Full_Column_List">
-        images, promotion_params, descr, product_params
+        images, descr, product_params
     </sql>
 
     <sql id="Where_Clause">
@@ -47,6 +48,15 @@
                                     </when>
                                     <when test="criterion.betweenValue">
                                         and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                    </when>
+                                    <when test="criterion.leftLikeValue">
+                                        and ${criterion.condition} #{criterion.value}%
+                                    </when>
+                                    <when test="criterion.rightLikeValue">
+                                        and ${criterion.condition} %#{criterion.value}
+                                    </when>
+                                    <when test="criterion.anyLikeValue">
+                                        and ${criterion.condition} %#{criterion.value}%
                                     </when>
                                     <when test="criterion.listValue">
                                         and ${criterion.condition}
@@ -68,18 +78,16 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into goods (id, title, main_image,
-        category_id, price, inventory,
-        shelves, type, promotion,
-        sort, sales_volume, delete,
-        create_time, update_time, images,
-        promotion_params, descr, product_params
+        category_id, price, inventory,shelves, type, promotion,
+        sort, sales_volume, delete,create_time, update_time, images,
+        promotion_params, descr, product_params, freight
         )
         values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{mainImage,jdbcType=VARCHAR},
         #{categoryId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{inventory,jdbcType=INTEGER},
         #{shelves,jdbcType=CHAR}, #{type,jdbcType=TINYINT}, #{promotion,jdbcType=CHAR},
         #{sort,jdbcType=SMALLINT}, #{salesVolume,jdbcType=INTEGER}, #{delete,jdbcType=CHAR},
         #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{images,jdbcType=LONGVARCHAR},
-        #{promotionParams,jdbcType=LONGVARCHAR}, #{descr,jdbcType=LONGVARCHAR}, #{productParams,jdbcType=LONGVARCHAR}
+        #{promotionParams,jdbcType=LONGVARCHAR}, #{descr,jdbcType=LONGVARCHAR}, #{productParams,jdbcType=LONGVARCHAR}, #{freight,jdbcType=INTEGER}
         )
     </insert>
     <update id="updateByPrimaryKey" parameterType="com.micromall.entity.Goods">
@@ -136,6 +144,9 @@
             <if test="productParams != null">
                 product_params = #{productParams,jdbcType=LONGVARCHAR},
             </if>
+            <if test="freight != null">
+                freight = #{freight,jdbcType=INTEGER},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -153,6 +164,14 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
+        from goods
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectFullByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>,
+        <include refid="Full_Column_List"/>
         from goods
         where id = #{id,jdbcType=INTEGER}
     </select>

@@ -1,6 +1,7 @@
 package com.micromall.service.vo;
 
 import com.micromall.entity.ext.GoodsTypes;
+import com.micromall.entity.ext.PromotionConfigKeys;
 
 import java.math.BigDecimal;
 
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
  */
 public class GoodsDetails {
 
+	// 商品id
 	private int        id;
 	// 商品标题
 	private String     title;
@@ -25,7 +27,7 @@ public class GoodsDetails {
 	// 是否促销商品
 	private boolean    promotion;
 	/**
-	 * 促销配置(JSON) {@link com.micromall.entity.ext.PromotionConfigKeys}
+	 * 促销配置(JSON) {@link PromotionConfigKeys}
 	 */
 	private String     promotionParams;
 	// 商品描述
@@ -34,12 +36,10 @@ public class GoodsDetails {
 	private String     productParams;
 	// 商品销量
 	private int        salesVolume;
-	// 是否免运费
-	private boolean    freeFreight;
-	// 是否固定运费
-	private boolean    fixedFreight;
 	// 运费
 	private int        freight;
+	// 是否已经收藏
+	private boolean    favorite;
 
 	public int getId() {
 		return id;
@@ -129,27 +129,19 @@ public class GoodsDetails {
 		this.salesVolume = salesVolume;
 	}
 
-	public boolean isFreeFreight() {
-		return freeFreight;
-	}
-
-	public void setFreeFreight(boolean freeFreight) {
-		this.freeFreight = freeFreight;
-	}
-
-	public boolean isFixedFreight() {
-		return fixedFreight;
-	}
-
-	public void setFixedFreight(boolean fixedFreight) {
-		this.fixedFreight = fixedFreight;
-	}
-
 	public int getFreight() {
 		return freight;
 	}
 
 	public void setFreight(int freight) {
 		this.freight = freight;
+	}
+
+	public boolean isFavorite() {
+		return favorite;
+	}
+
+	public void setFavorite(boolean favorite) {
+		this.favorite = favorite;
 	}
 }

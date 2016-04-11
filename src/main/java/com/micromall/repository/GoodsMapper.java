@@ -14,4 +14,5 @@ public interface GoodsMapper extends BaseMapper<Goods> {
 	@Deprecated
 	List<Goods> selectAllByWhereClause(Condition condition);
 
+	Goods selectFullByPrimaryKey(int goodsId);
 }

@@ -3,6 +3,7 @@ package com.micromall.repository;
 import com.micromall.entity.ShippingAddress;
 import com.micromall.utils.Condition;
 import com.sun.tools.javac.util.List;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
@@ -25,4 +26,7 @@ public interface ShippingAddressMapper extends BaseMapper<ShippingAddress> {
 
 	@Deprecated
 	List<ShippingAddress> selectPageByWhereClause(Condition condition, RowBounds bounds);
+
+	@Update("update shipping_address set defaul='0' where uid = #{uid}")
+	int cleanDefaulAddress(Integer uid);
 }

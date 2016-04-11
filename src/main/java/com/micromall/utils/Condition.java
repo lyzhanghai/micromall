@@ -52,6 +52,10 @@ public class Condition {
 
 	protected abstract static class GeneratedCriteria {
 
+		static final String LIKE_LEFT  = "LEFT";
+		static final String LIKE_RIGHT = "RIGHT";
+		static final String LIKE_ANY   = "ANY";
+
 		protected List<Criterion> criterions;
 		private   Condition       condition;
 
@@ -94,11 +98,42 @@ public class Condition {
 			criterions.add(new Criterion(condition, value));
 		}
 
+		protected void addLikeCriterion(String condition, String like, Object value, String property) {
+			if (value == null) {
+				throw new RuntimeException("Value for " + property + " cannot be null");
+			}
+			criterions.add(new Criterion(condition, like, value));
+		}
+
 		protected void addCriterion(String condition, Object value1, Object value2, String property) {
 			if (value1 == null || value2 == null) {
 				throw new RuntimeException("Between values for " + property + " cannot be null");
 			}
 			criterions.add(new Criterion(condition, value1, value2));
+		}
+
+		/**
+		 * #{field} like #{value}%
+		 */
+		public Criteria andLeftLike(String field, Object value) {
+			addLikeCriterion(field + " like", LIKE_LEFT, value, field);
+			return (Criteria)this;
+		}
+
+		/**
+		 * #{field} like %#{value}
+		 */
+		public Criteria andRightLike(String field, Object value) {
+			addLikeCriterion(field + " like", LIKE_RIGHT, value, field);
+			return (Criteria)this;
+		}
+
+		/**
+		 * #{field} like %#{value}%
+		 */
+		public Criteria andAnyLike(String field, Object value) {
+			addLikeCriterion(field + " like", LIKE_ANY, value, field);
+			return (Criteria)this;
 		}
 
 		/**
@@ -232,24 +267,33 @@ public class Condition {
 
 	public static class Criterion {
 
-		private String condition;
-
-		private Object value;
-
-		private Object secondValue;
-
+		private String  condition;
+		private Object  value;
+		private Object  secondValue;
 		private boolean noValue;
-
 		private boolean singleValue;
-
 		private boolean betweenValue;
-
+		private boolean leftLikeValue;
+		private boolean rightLikeValue;
+		private boolean anyLikeValue;
 		private boolean listValue;
 
 		protected Criterion(String condition) {
 			super();
 			this.condition = condition;
 			this.noValue = true;
+		}
+
+		protected Criterion(String condition, String like, Object value) {
+			this.condition = condition;
+			this.value = value;
+			if (Criteria.LIKE_LEFT.equals(like)) {
+				leftLikeValue = true;
+			} else if (Criteria.LIKE_RIGHT.equals(like)) {
+				rightLikeValue = true;
+			} else if (Criteria.LIKE_ANY.equals(like)) {
+				anyLikeValue = true;
+			}
 		}
 
 		protected Criterion(String condition, Object value) {
@@ -293,6 +337,18 @@ public class Condition {
 
 		public boolean isBetweenValue() {
 			return betweenValue;
+		}
+
+		public boolean isLeftLikeValue() {
+			return leftLikeValue;
+		}
+
+		public boolean isRightLikeValue() {
+			return rightLikeValue;
+		}
+
+		public boolean isAnyLikeValue() {
+			return anyLikeValue;
 		}
 
 		public boolean isListValue() {

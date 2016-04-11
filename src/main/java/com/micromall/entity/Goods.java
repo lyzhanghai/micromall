@@ -36,9 +36,9 @@ public class Goods extends IdEntity {
 	 */
 	private String     promotionParams;
 	// 是否免运费
-	private boolean    freeFreight;
+	//private boolean    freeFreight;
 	// 是否固定运费
-	private boolean    fixedFreight;
+	//private boolean    fixedFreight;
 	// 运费
 	private int        freight;
 	// 商品描述
@@ -134,22 +134,6 @@ public class Goods extends IdEntity {
 
 	public void setPromotionParams(String promotionParams) {
 		this.promotionParams = promotionParams;
-	}
-
-	public boolean isFreeFreight() {
-		return freeFreight;
-	}
-
-	public void setFreeFreight(boolean freeFreight) {
-		this.freeFreight = freeFreight;
-	}
-
-	public boolean isFixedFreight() {
-		return fixedFreight;
-	}
-
-	public void setFixedFreight(boolean fixedFreight) {
-		this.fixedFreight = fixedFreight;
 	}
 
 	public int getFreight() {
