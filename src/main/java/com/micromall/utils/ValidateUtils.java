@@ -6,13 +6,18 @@ import java.util.regex.Pattern;
 
 public class ValidateUtils {
 
-	private static final Pattern PHONE_1         = Pattern.compile("^(\\+\\d+)?1[34578]\\d{9}$");
-	private static final Pattern PHONE_2         = Pattern.compile("^((\\+86)?\\d{3,4}-?)?\\d{7,8}$");
-	private static final Pattern DECIMALS        = Pattern.compile("(-?\\d+)(\\.\\d+)?");
-	private static final Pattern POSITIVE_NUMBER = Pattern.compile("^(0|([1-9](\\d+)*))$");
-	private static final Pattern SIMPLE_DATE     = Pattern.compile(
-			"^([1-9][0-9]{0,3}-(((0?[13578]|1[02])-(0?[1-9]|([12][0-9]|3[01])))|(" + "(0?[469]|11)-"
-					+ "(0?[1-9]|([12][0-9]|30)))|((0?2)-(0?[1-9]|([12][0-9])))))$");
+	private static final Pattern POSTCODE = Pattern.compile("^[1-9]\\d{5}$");
+	private static final Pattern PHONE_1  = Pattern.compile("^(\\+\\d+)?1[34578]\\d{9}$");
+	private static final Pattern PHONE_2  = Pattern.compile("^((\\+86)?\\d{3,4}-?)?\\d{7,8}$");
+	//	private static final Pattern DECIMALS        = Pattern.compile("(-?\\d+)(\\.\\d+)?");
+	//	private static final Pattern POSITIVE_NUMBER = Pattern.compile("^(0|([1-9](\\d+)*))$");
+	//	private static final Pattern SIMPLE_DATE     = Pattern.compile(
+	//			"^([1-9][0-9]{0,3}-(((0?[13578]|1[02])-(0?[1-9]|([12][0-9]|3[01])))|(" + "(0?[469]|11)-"
+	//					+ "(0?[1-9]|([12][0-9]|30)))|((0?2)-(0?[1-9]|([12][0-9])))))$");
+
+	public static boolean illegalPostcode(String postcode) {
+		return !POSTCODE.matcher(postcode).matches();
+	}
 
 	/**
 	 * <pre>
@@ -24,7 +29,7 @@ public class ValidateUtils {
 	 * @return boolean
 	 * @date 2015年6月15日 下午4:07:16
 	 */
-	public static boolean illegalStringLength(int min, int max, String text) {
+	public static boolean illegalTextLength(int min, int max, String text) {
 		if (StringUtils.isEmpty(text)) {
 			if (min > 0) {
 				return true;
@@ -59,39 +64,39 @@ public class ValidateUtils {
 		return !PHONE_1.matcher(text).matches() && !PHONE_2.matcher(text).matches();
 	}
 
-	/**
-	 * <pre>
-	 * 正负浮点数验证，支持：-1，1，1.0，-1.0
-	 *
-	 * @param text
-	 * @return boolean
-	 * @date 2015年6月15日 下午4:21:01
-	 */
-	public static boolean illegalDecimals(String text) {
-		return !DECIMALS.matcher(text).matches();
-	}
-
-	/**
-	 * <pre>
-	 * 正整数
-	 *
-	 * @param text
-	 * @return boolean
-	 * @date 2015年6月15日 下午4:57:57
-	 */
-	public static boolean illegalPositiveNumber(String text) {
-		return !POSITIVE_NUMBER.matcher(text).matches();
-	}
-
-	/**
-	 * 日期（年-月-日）
-	 *
-	 * @param text
-	 * @return
-	 */
-	public static boolean illegalSimpleDate(String text) {
-		return !SIMPLE_DATE.matcher(text).matches();
-	}
+	//	/**
+	//	 * <pre>
+	//	 * 正负浮点数验证，支持：-1，1，1.0，-1.0
+	//	 *
+	//	 * @param text
+	//	 * @return boolean
+	//	 * @date 2015年6月15日 下午4:21:01
+	//	 */
+	//	public static boolean illegalDecimals(String text) {
+	//		return !DECIMALS.matcher(text).matches();
+	//	}
+	//
+	//	/**
+	//	 * <pre>
+	//	 * 正整数
+	//	 *
+	//	 * @param text
+	//	 * @return boolean
+	//	 * @date 2015年6月15日 下午4:57:57
+	//	 */
+	//	public static boolean illegalPositiveNumber(String text) {
+	//		return !POSITIVE_NUMBER.matcher(text).matches();
+	//	}
+	//
+	//	/**
+	//	 * 日期（年-月-日）
+	//	 *
+	//	 * @param text
+	//	 * @return
+	//	 */
+	//	public static boolean illegalSimpleDate(String text) {
+	//		return !SIMPLE_DATE.matcher(text).matches();
+	//	}
 
 	//
 	// public static boolean containValue(String value, String[] values) {

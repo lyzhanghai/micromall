@@ -15,7 +15,7 @@
         <result column="freight" property="freight" jdbcType="INTEGER"/>
         <result column="sort" property="sort" jdbcType="SMALLINT"/>
         <result column="sales_volume" property="salesVolume" jdbcType="INTEGER"/>
-        <result column="delete" property="delete" jdbcType="CHAR"/>
+        <result column="deleted" property="deleted" jdbcType="CHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -26,50 +26,50 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, title, main_image, category_id, price, inventory, shelves, type, promotion,
-        promotion_params, freight, sort, sales_volume, delete, create_time, update_time
+        promotion_params, freight, sort, sales_volume, deleted, create_time, update_time
     </sql>
     <sql id="Full_Column_List">
         images, descr, product_params
     </sql>
 
     <sql id="Where_Clause">
-        <if test="criterias != null">
-            <where>
-                <foreach collection="criterias" item="criteria" separator="or">
-                    <if test="criteria.valid">
-                        <trim prefix="(" suffix=")" prefixOverrides="and">
-                            <foreach collection="criteria.criterions" item="criterion">
-                                <choose>
-                                    <when test="criterion.noValue">
-                                        and ${criterion.condition}
-                                    </when>
-                                    <when test="criterion.singleValue">
-                                        and ${criterion.condition} #{criterion.value}
-                                    </when>
-                                    <when test="criterion.betweenValue">
-                                        and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                    </when>
-                                    <when test="criterion.leftLikeValue">
-                                        and ${criterion.condition} #{criterion.value}%
-                                    </when>
-                                    <when test="criterion.rightLikeValue">
-                                        and ${criterion.condition} %#{criterion.value}
-                                    </when>
-                                    <when test="criterion.anyLikeValue">
-                                        and ${criterion.condition} %#{criterion.value}%
-                                    </when>
-                                    <when test="criterion.listValue">
-                                        and ${criterion.condition}
-                                        <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
-                                            #{listItem}
-                                        </foreach>
-                                    </when>
-                                </choose>
-                            </foreach>
-                        </trim>
-                    </if>
-                </foreach>
-            </where>
+        where deleted = 0
+        <if test="criterias != null and criterias.valid">
+            and
+            <foreach collection="criterias" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criterions" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.leftLikeValue">
+                                    and ${criterion.condition} #{criterion.value}%
+                                </when>
+                                <when test="criterion.rightLikeValue">
+                                    and ${criterion.condition} %#{criterion.value}
+                                </when>
+                                <when test="criterion.anyLikeValue">
+                                    and ${criterion.condition} %#{criterion.value}%
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
         </if>
     </sql>
 
@@ -79,13 +79,13 @@
         </selectKey>
         insert into goods (id, title, main_image,
         category_id, price, inventory,shelves, type, promotion,
-        sort, sales_volume, delete,create_time, update_time, images,
+        sort, sales_volume, deleted,create_time, update_time, images,
         promotion_params, descr, product_params, freight
         )
         values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{mainImage,jdbcType=VARCHAR},
         #{categoryId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{inventory,jdbcType=INTEGER},
         #{shelves,jdbcType=CHAR}, #{type,jdbcType=TINYINT}, #{promotion,jdbcType=CHAR},
-        #{sort,jdbcType=SMALLINT}, #{salesVolume,jdbcType=INTEGER}, #{delete,jdbcType=CHAR},
+        #{sort,jdbcType=SMALLINT}, #{salesVolume,jdbcType=INTEGER}, #{deleted,jdbcType=CHAR},
         #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{images,jdbcType=LONGVARCHAR},
         #{promotionParams,jdbcType=LONGVARCHAR}, #{descr,jdbcType=LONGVARCHAR}, #{productParams,jdbcType=LONGVARCHAR}, #{freight,jdbcType=INTEGER}
         )
@@ -123,12 +123,16 @@
             <if test="salesVolume != null">
                 sales_volume = #{salesVolume,jdbcType=INTEGER},
             </if>
-            <if test="delete != null">
-                delete = #{delete,jdbcType=CHAR},
+            <!--
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=CHAR},
             </if>
+            -->
+            <!--
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
+            -->
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
@@ -148,24 +152,24 @@
                 freight = #{freight,jdbcType=INTEGER},
             </if>
         </set>
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER} and deleted = 0
     </update>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from goods
-        where id = #{id,jdbcType=INTEGER}
-    </delete>
+    <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        update goods set deleted = 1
+        where id = #{id,jdbcType=INTEGER} and deleted = 0
+    </update>
 
-    <delete id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
-        delete from goods
+    <update id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
+        update goods set deleted = 1
         <include refid="Where_Clause"/>
-    </delete>
+    </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from goods
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER} and deleted = 0
     </select>
 
     <select id="selectFullByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -173,7 +177,7 @@
         <include refid="Base_Column_List"/>,
         <include refid="Full_Column_List"/>
         from goods
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER} and deleted = 0
     </select>
 
     <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">

@@ -50,7 +50,7 @@ public class Goods extends IdEntity {
 	// 商品销量
 	private Integer    salesVolume;
 	// 是否逻辑删除
-	private Boolean    delete;
+	private Boolean    deleted;
 	// 创建时间
 	private Date       createTime;
 	// 修改时间
@@ -176,12 +176,12 @@ public class Goods extends IdEntity {
 		this.salesVolume = salesVolume;
 	}
 
-	public Boolean isDelete() {
-		return delete;
+	public Boolean isDeleted() {
+		return deleted;
 	}
 
-	public void setDelete(Boolean delete) {
-		this.delete = delete;
+	public void setDeleted(Boolean delete) {
+		this.deleted = delete;
 	}
 
 	public Date getCreateTime() {

@@ -12,49 +12,49 @@
         <result column="birthday" property="birthday" jdbcType="VARCHAR"/>
         <result column="my_promote_code" property="myPromoteCode" jdbcType="VARCHAR"/>
         <result column="use_promote_code" property="usePromoteCode" jdbcType="VARCHAR"/>
-        <result column="parentUid" property="parentuid" jdbcType="INTEGER"/>
+        <result column="parent_uid" property="parentUid" jdbcType="INTEGER"/>
         <result column="verified" property="verified" jdbcType="CHAR"/>
         <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"/>
         <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR"/>
+        <result column="deleted" property="deleted" jdbcType="CHAR"/>
         <result column="register_time" property="registerTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id, phone, wechat_id, nickname, avatar, level, gender, birthday, my_promote_code,
-        use_promote_code, parentUid, verified, last_login_time, last_login_ip, register_time,
+        use_promote_code, parent_uid, verified, last_login_time, last_login_ip, deleted, register_time,
         update_time
     </sql>
 
     <sql id="Where_Clause">
-        <if test="criterias != null">
-            <where>
-                <foreach collection="criterias" item="criteria" separator="or">
-                    <if test="criteria.valid">
-                        <trim prefix="(" suffix=")" prefixOverrides="and">
-                            <foreach collection="criteria.criterions" item="criterion">
-                                <choose>
-                                    <when test="criterion.noValue">
-                                        and ${criterion.condition}
-                                    </when>
-                                    <when test="criterion.singleValue">
-                                        and ${criterion.condition} #{criterion.value}
-                                    </when>
-                                    <when test="criterion.betweenValue">
-                                        and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                                    </when>
-                                    <when test="criterion.listValue">
-                                        and ${criterion.condition}
-                                        <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
-                                            #{listItem}
-                                        </foreach>
-                                    </when>
-                                </choose>
-                            </foreach>
-                        </trim>
-                    </if>
-                </foreach>
-            </where>
+        <if test="criterias != null and criterias.valid">
+            where deleted = 0
+            <foreach collection="criterias" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criterions" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
         </if>
     </sql>
 
@@ -65,14 +65,14 @@
         insert into member (id, phone, wechat_id,
         nickname, avatar, level,
         gender, birthday, my_promote_code,
-        use_promote_code, parentUid, verified,
-        last_login_time, last_login_ip, register_time,
+        use_promote_code, parent_uid, verified,
+        last_login_time, last_login_ip, deleted, register_time,
         update_time)
         values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{wechatId,jdbcType=VARCHAR},
         #{nickname,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR},
         #{gender,jdbcType=CHAR}, #{birthday,jdbcType=VARCHAR}, #{myPromoteCode,jdbcType=VARCHAR},
-        #{usePromoteCode,jdbcType=VARCHAR}, #{parentuid,jdbcType=INTEGER}, #{verified,jdbcType=CHAR},
-        #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}, #{registerTime,jdbcType=TIMESTAMP},
+        #{usePromoteCode,jdbcType=VARCHAR}, #{parentUid,jdbcType=INTEGER}, #{verified,jdbcType=CHAR},
+        #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}, #{deleted,jdbcType=CHAR}, #{registerTime,jdbcType=TIMESTAMP},
         #{updateTime,jdbcType=TIMESTAMP})
     </insert>
 
@@ -100,14 +100,16 @@
             <if test="birthday != null">
                 birthday = #{birthday,jdbcType=VARCHAR},
             </if>
+            <!--
             <if test="myPromoteCode != null">
                 my_promote_code = #{myPromoteCode,jdbcType=VARCHAR},
             </if>
+            -->
             <if test="usePromoteCode != null">
                 use_promote_code = #{usePromoteCode,jdbcType=VARCHAR},
             </if>
-            <if test="parentuid != null">
-                parentUid = #{parentuid,jdbcType=INTEGER},
+            <if test="parentUid != null">
+                parent_uid = #{parentUid,jdbcType=INTEGER},
             </if>
             <if test="verified != null">
                 verified = #{verified,jdbcType=CHAR},
@@ -118,9 +120,16 @@
             <if test="lastLoginIp != null">
                 last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
             </if>
+            <!--
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=CHAR},
+            </if>
+            -->
+            <!--
             <if test="registerTime != null">
                 register_time = #{registerTime,jdbcType=TIMESTAMP},
             </if>
+            -->
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
@@ -128,21 +137,21 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from member
-        where id = #{id,jdbcType=INTEGER}
-    </delete>
+    <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        update member set deleted = 1
+        where id = #{id,jdbcType=INTEGER} and deleted = 0
+    </update>
 
-    <delete id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
-        delete from member
+    <update id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
+        update member set deleted = 1
         <include refid="Where_Clause"/>
-    </delete>
+    </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from member
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER} and deleted = 0
     </select>
 
     <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">

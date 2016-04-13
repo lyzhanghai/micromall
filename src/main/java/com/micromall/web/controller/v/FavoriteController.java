@@ -29,10 +29,10 @@ public class FavoriteController extends BasisController {
 	 * @return
 	 */
 	@UncaughtException(msg = "加载商品列表失败")
-	@RequestMapping(value = "/goodses")
+	@RequestMapping(value = "/list")
 	@ResponseBody
-	public ResponseEntity<?> goodses() {
-		return ResponseEntity.ok(favoriteService.goodses(getLoginUser().getUid()));
+	public ResponseEntity<?> list() {
+		return ResponseEntity.ok(favoriteService.listGoods(getLoginUser().getUid()));
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class FavoriteController extends BasisController {
 	@RequestMapping(value = "/join")
 	@ResponseBody
 	public ResponseEntity<?> join(int goodsId) {
-		return ResponseEntity.ok(favoriteService.joinFavorite(getLoginUser().getUid(), goodsId));
+		return ResponseEntity.ok(favoriteService.favoriteGoods(getLoginUser().getUid(), goodsId));
 	}
 
 	/**

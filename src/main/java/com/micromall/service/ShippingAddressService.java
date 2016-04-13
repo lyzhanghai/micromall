@@ -25,7 +25,7 @@ public class ShippingAddressService {
 
 	@Transactional
 	public void addAddress(ShippingAddress address) {
-		if (address.isDefaul() != null && address.isDefaul()) {
+		if (address.isDefaul()) {
 			mapper.cleanDefaulAddress(address.getUid());
 		}
 		mapper.insert(address);
@@ -33,7 +33,7 @@ public class ShippingAddressService {
 
 	@Transactional
 	public boolean updateAddress(ShippingAddress address) {
-		if (address.isDefaul() != null && address.isDefaul()) {
+		if (address.isDefaul()) {
 			mapper.cleanDefaulAddress(address.getUid());
 		}
 		return mapper.updateByPrimaryKey(address) > 0;

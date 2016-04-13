@@ -21,6 +21,15 @@ public class Condition {
 		criterias = new ArrayList<Criteria>();
 	}
 
+	public boolean isValid() {
+		for (Criteria criteria : criterias) {
+			if (criteria.isValid()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public String getOrderBy() {
 		return orderBy;
 	}

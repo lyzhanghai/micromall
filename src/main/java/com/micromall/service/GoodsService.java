@@ -13,6 +13,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,6 +29,7 @@ public class GoodsService {
 	@Resource
 	private FavoriteService favoriteService;
 
+	@Transactional(readOnly = true)
 	public List<GoodsSearchResult> searchGoods(GoodsSearch search) {
 		Criteria criteria = Condition.Criteria.create();
 		if (StringUtils.isNotBlank(search.getQuery())) {
@@ -53,9 +55,10 @@ public class GoodsService {
 		return results;
 	}
 
+	@Transactional(readOnly = true)
 	public GoodsDetails getGoodsDetails(int goodsId, Integer uid) {
 		Goods goods = mapper.selectFullByPrimaryKey(goodsId);
-		if (goods != null) {
+		if (null == goods) {
 			return null;
 		}
 		GoodsDetails details = new GoodsDetails();
@@ -68,6 +71,7 @@ public class GoodsService {
 		return details;
 	}
 
+	@Transactional(readOnly = true)
 	public Goods getGoodsInfo(int goodsId) {
 		return mapper.selectByPrimaryKey(goodsId);
 	}

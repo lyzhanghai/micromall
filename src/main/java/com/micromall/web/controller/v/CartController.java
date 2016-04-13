@@ -1,26 +1,16 @@
 package com.micromall.web.controller.v;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.micromall.service.CartService;
-import com.micromall.service.ShippingAddressService;
-import com.micromall.service.vo.CartGoodsDTO;
 import com.micromall.web.controller.BasisController;
 import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by zhangzx on 16/3/23.
@@ -35,9 +25,7 @@ import java.util.Set;
 public class CartController extends BasisController {
 
 	@Resource
-	private CartService            cartService;
-	@Resource
-	private ShippingAddressService shippingAddressService;
+	private CartService cartService;
 
 	/**
 	 * 购物车商品列表
@@ -45,10 +33,10 @@ public class CartController extends BasisController {
 	 * @return
 	 */
 	@UncaughtException(msg = "加载商品列表失败")
-	@RequestMapping(value = "/goodses")
+	@RequestMapping(value = "/list")
 	@ResponseBody
-	public ResponseEntity<?> goodses() {
-		return ResponseEntity.ok(cartService.goodses(getLoginUser().getUid()));
+	public ResponseEntity<?> list() {
+		return ResponseEntity.ok(cartService.listGoods(getLoginUser().getUid()));
 	}
 
 	/**
@@ -64,6 +52,9 @@ public class CartController extends BasisController {
 	public ResponseEntity<?> join(int goodsId, int buyNumber) {
 		if (buyNumber < 1) {
 			return ResponseEntity.fail("购买数量不能小于0");
+		}
+		if (buyNumber > 1000) {
+			return ResponseEntity.fail("购买数量不能大于1000");
 		}
 		cartService.updateCartGoods(getLoginUser().getUid(), goodsId, buyNumber);
 		return ResponseEntity.ok();
@@ -99,51 +90,4 @@ public class CartController extends BasisController {
 	public ResponseEntity<?> delete_goods(int goodsId) {
 		return ResponseEntity.ok(cartService.deleteGoods(getLoginUser().getUid(), Arrays.asList(goodsId)));
 	}
-
-	/**
-	 * 结算
-	 *
-	 * @param goodsIds 商品id
-	 * @return
-	 */
-	@RequestMapping(value = "/settle")
-	@ResponseBody
-	public ResponseEntity<?> settle(String goodsIds) {
-		if (StringUtils.isBlank(goodsIds)) {
-			return ResponseEntity.fail("请选择要结算的商品");
-		}
-
-		List<Map<String, Object>> settleGoodses = Lists.newArrayList();
-		BigDecimal totalPrice = new BigDecimal(0);
-
-		Set<String> _goodsIds = Sets.newHashSet(StringUtils.split(goodsIds, ","));
-		List<CartGoodsDTO> goodsList = cartService.goodses(getLoginUser().getUid());
-
-		for (CartGoodsDTO goods : goodsList) {
-			if (_goodsIds.contains(String.valueOf(goods.getGoodsId()))) {
-				Map<String, Object> _goods = Maps.newHashMap();
-				_goods.put("id", goods.getGoodsId());
-				_goods.put("title", goods.getTitle());
-				_goods.put("image", goods.getImage());
-				_goods.put("price", goods.getPrice());
-				_goods.put("buyNumber", goods.getBuyNumber());
-				BigDecimal _totalPrice = goods.getPrice().multiply(new BigDecimal(goods.getBuyNumber())).setScale(2);
-				_goods.put("totalPrice", _totalPrice);
-				settleGoodses.add(_goods);
-				totalPrice = totalPrice.add(_totalPrice);
-			}
-		}
-		if (settleGoodses.size() != _goodsIds.size()) {
-			return ResponseEntity.fail("商品信息改变，请刷新页面重新结算");
-		}
-		Map<String, Object> data = Maps.newHashMap();
-		data.put("shippingAddress", shippingAddressService.getDefaultAddress(getLoginUser().getUid()));
-		data.put("goodsList", settleGoodses);
-		data.put("totalGoods", settleGoodses.size());
-		data.put("totalPrice", totalPrice);
-		// TODO 优惠计算、邮费
-
-		return ResponseEntity.ok(data);
-	}
-
 }

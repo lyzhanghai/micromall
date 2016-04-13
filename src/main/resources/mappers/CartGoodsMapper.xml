@@ -14,7 +14,7 @@
     </sql>
 
     <sql id="Where_Clause">
-        <if test="criterias != null">
+        <if test="criterias != null and criterias.valid">
             <where>
                 <foreach collection="criterias" item="criteria" separator="or">
                     <if test="criteria.valid">

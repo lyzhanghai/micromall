@@ -76,18 +76,4 @@ public class MyOrdersController extends BasisController {
 		return ResponseEntity.ok(orderService.closeOrder(getLoginUser().getUid(), orderNo));
 	}
 
-	/**
-	 * @param goodsIds 商品id
-	 * @param couponId 使用的优惠券id
-	 * @param leaveMessage 留言
-	 * @param addressId 收货地址id
-	 * @return
-	 */
-	@UncaughtException(msg = "提交订单失败")
-	@RequestMapping(value = "/submit")
-	@ResponseBody
-	public ResponseEntity<?> submit(String goodsIds, String couponId, String leaveMessage, int addressId) {
-		return ResponseEntity.ok(orderService.createOrder());
-	}
-
 }

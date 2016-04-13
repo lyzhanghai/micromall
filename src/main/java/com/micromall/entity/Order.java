@@ -26,7 +26,7 @@ public class Order extends IdEntity {
 	// 买家留言
 	private String     leaveMessage;
 	// 订单商品信息
-	// private List<OrderGoods>  goodses;
+	// private List<OrderGoods>  list;
 	// 支付信息
 	// private PaymentInfo       paymentInfo;
 	// 退款信息

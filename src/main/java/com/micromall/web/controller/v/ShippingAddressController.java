@@ -2,15 +2,19 @@ package com.micromall.web.controller.v;
 
 import com.micromall.entity.ShippingAddress;
 import com.micromall.service.ShippingAddressService;
+import com.micromall.utils.ArgumentValidException;
+import com.micromall.utils.ValidateUtils;
 import com.micromall.web.controller.BasisController;
 import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Date;
 
 /**
  * Created by zhangzx on 16/3/28.
@@ -30,7 +34,7 @@ public class ShippingAddressController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/list")
-	@UncaughtException(msg = "加载收货地址列表失败")
+	@UncaughtException(msg = "加载收货地址信息失败")
 	@ResponseBody
 	public ResponseEntity<?> list() {
 		return ResponseEntity.ok(deliveryAddressService.list(getLoginUser().getUid()));
@@ -52,8 +56,8 @@ public class ShippingAddressController extends BasisController {
 	@RequestMapping(value = "/add")
 	@ResponseBody
 	public ResponseEntity<?> add_address(String province, String city, String county, String detailedAddress, String consigneeName,
-			String consigneePhone, boolean defaul) {
-		// TODO 参数验证
+			String consigneePhone, String postcode, boolean defaul) {
+
 		ShippingAddress address = new ShippingAddress();
 		address.setUid(getLoginUser().getUid());
 		address.setProvince(province);
@@ -62,9 +66,55 @@ public class ShippingAddressController extends BasisController {
 		address.setDetailedAddress(detailedAddress);
 		address.setConsigneeName(consigneeName);
 		address.setConsigneePhone(consigneePhone);
+		address.setPostcode(postcode);
 		address.setDefaul(defaul);
+		address.setCreateTime(new Date());
+		validateAddress(address);
 		deliveryAddressService.addAddress(address);
+
 		return ResponseEntity.ok(address);
+	}
+
+	private void validateAddress(ShippingAddress address) {
+		if (StringUtils.isBlank(address.getProvince())) {
+			throw new ArgumentValidException("省份不能为空");
+		}
+		if (StringUtils.isBlank(address.getCity())) {
+			throw new ArgumentValidException("城市不能为空");
+		}
+		if (StringUtils.isBlank(address.getCounty())) {
+			throw new ArgumentValidException("区县不能为空");
+		}
+		if (StringUtils.isBlank(address.getDetailedAddress())) {
+			throw new ArgumentValidException("详细地址不能为空");
+		}
+		if (StringUtils.isBlank(address.getConsigneeName())) {
+			throw new ArgumentValidException("收货人姓名不能为空");
+		}
+		if (StringUtils.isBlank(address.getConsigneePhone())) {
+			throw new ArgumentValidException("收货人电话不能为空");
+		}
+		if (ValidateUtils.illegalTextLength(1, 15, address.getProvince())) {
+			throw new ArgumentValidException("省份名称长度超过限制");
+		}
+		if (ValidateUtils.illegalTextLength(1, 15, address.getCity())) {
+			throw new ArgumentValidException("城市名称长度超过限制");
+		}
+		if (ValidateUtils.illegalTextLength(1, 15, address.getCounty())) {
+			throw new ArgumentValidException("区县名称长度超过限制");
+		}
+		if (ValidateUtils.illegalTextLength(1, 80, address.getDetailedAddress())) {
+			throw new ArgumentValidException("详细地址长度超过限制");
+		}
+		if (ValidateUtils.illegalTextLength(1, 15, address.getConsigneeName())) {
+			throw new ArgumentValidException("收货人姓名长度超过限制");
+		}
+		if (ValidateUtils.illegalPhone(address.getConsigneePhone())) {
+			throw new ArgumentValidException("收货人电话输入不正确");
+		}
+		if (ValidateUtils.illegalPostcode(address.getPostcode())) {
+			throw new ArgumentValidException("邮政编码输入不正确");
+		}
 	}
 
 	/**
@@ -84,18 +134,21 @@ public class ShippingAddressController extends BasisController {
 	@RequestMapping(value = "/update")
 	@ResponseBody
 	public ResponseEntity<?> update_address(int addressId, String province, String city, String county, String detailedAddress, String consigneeName,
-			String consigneePhone, boolean defaul) {
-		// TODO 参数验证
+			String consigneePhone, String postcode, boolean defaul) {
+
 		ShippingAddress address = new ShippingAddress();
-		address.setUid(getLoginUser().getUid());
 		address.setId(addressId);
+		address.setUid(getLoginUser().getUid());
 		address.setProvince(province);
 		address.setCity(city);
 		address.setCounty(county);
 		address.setDetailedAddress(detailedAddress);
 		address.setConsigneeName(consigneeName);
 		address.setConsigneePhone(consigneePhone);
+		address.setPostcode(postcode);
 		address.setDefaul(defaul);
+		address.setUpdateTime(new Date());
+		validateAddress(address);
 
 		return ResponseEntity.ok(deliveryAddressService.updateAddress(address));
 	}
@@ -126,15 +179,4 @@ public class ShippingAddressController extends BasisController {
 		return ResponseEntity.ok(deliveryAddressService.getAddress(getLoginUser().getUid(), id));
 	}
 
-	/**
-	 * 获取默认收货地址
-	 *
-	 * @return
-	 */
-	@UncaughtException(msg = "加载收货地址信息失败")
-	@RequestMapping(value = "/get_default")
-	@ResponseBody
-	public ResponseEntity<?> get_default() {
-		return ResponseEntity.ok(deliveryAddressService.getDefaultAddress(getLoginUser().getUid()));
-	}
 }
