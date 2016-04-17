@@ -125,4 +125,22 @@
         <include refid="Where_Clause"/>
     </select>
 
+    <select id="listGoods" resultType="com.micromall.entity.CartGoods" parameterType="java.lang.Integer">
+        <![CDATA[
+            SELECT
+                t2.id AS goodsId,
+                t2.title AS title,
+                t2.main_image AS image,
+                t2.price AS price,
+                t1.buy_number AS buyNumber,
+                t2.inventory AS inventory,
+                CASE WHEN t2.deleted != '0' OR t2.shelves != '1' OR t2.inventory <= 0
+                    THEN '1'
+                ELSE '0'
+                END AS 'invalid'
+            FROM cart_goods t1 RIGHT JOIN goods t2 ON t1.goods_id = t2.id
+            WHERE t1.uid = #{uid} ORDER BY t1.id DESC
+        ]]>
+    </select>
+
 </mapper>

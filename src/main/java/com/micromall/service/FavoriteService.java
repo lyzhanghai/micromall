@@ -3,7 +3,8 @@ package com.micromall.service;
 import com.micromall.entity.FavoriteGoods;
 import com.micromall.entity.Goods;
 import com.micromall.repository.FavoriteGoodsMapper;
-import com.micromall.utils.Condition;
+import com.micromall.utils.Condition.Criteria;
+import com.micromall.utils.LogicException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,34 +25,36 @@ public class FavoriteService {
 
 	@Transactional(readOnly = true)
 	public List<FavoriteGoods> listGoods(int uid) {
-		return mapper.selectMultiByWhereClause(Condition.Criteria.create().andEqualTo("uid", uid).build("id desc"));
+		return mapper.listGoods(uid);
 	}
 
 	@Transactional(readOnly = true)
 	public boolean hasFavorite(int uid, int goodsId) {
-		return mapper.countByWhereClause(Condition.Criteria.create().andEqualTo("uid", uid).andEqualTo("goods_id", goodsId).build()) > 0;
+		return mapper.countByWhereClause(Criteria.create().andEqualTo("uid", uid).andEqualTo("goods_id", goodsId).build()) > 0;
 	}
 
 	@Transactional
-	public boolean favoriteGoods(int uid, int goodsId) {
+	public void favoriteGoods(int uid, int goodsId) {
 		Goods goods = goodsService.getGoodsInfo(goodsId);
-		if (goods != null) {
-			mapper.deleteByWhereClause(Condition.Criteria.create().andEqualTo("uid", uid).andEqualTo("goods_id", goodsId).build());
-			FavoriteGoods favoriteGoods = new FavoriteGoods();
-			favoriteGoods.setUid(uid);
-			favoriteGoods.setGoodsId(goodsId);
-			favoriteGoods.setTitle(goods.getTitle());
-			favoriteGoods.setImage(goods.getMainImage());
-			favoriteGoods.setPrice(goods.getPrice());
-			favoriteGoods.setCreateTime(new Date());
-			mapper.insert(favoriteGoods);
-			return true;
+		if (goods == null) {
+			throw new LogicException("收藏的商品不存在");
 		}
-		return false;
+		if (!goods.isShelves()) {
+			throw new LogicException("收藏的商品已经下架");
+		}
+		mapper.deleteByWhereClause(Criteria.create().andEqualTo("uid", uid).andEqualTo("goods_id", goodsId).build());
+		FavoriteGoods favoriteGoods = new FavoriteGoods();
+		favoriteGoods.setUid(uid);
+		favoriteGoods.setGoodsId(goodsId);
+		favoriteGoods.setTitle(goods.getTitle());
+		favoriteGoods.setImage(goods.getMainImage());
+		favoriteGoods.setPrice(goods.getPrice());
+		favoriteGoods.setCreateTime(new Date());
+		mapper.insert(favoriteGoods);
 	}
 
 	@Transactional
-	public boolean deleteGoods(int uid, int goodsId) {
-		return mapper.deleteByWhereClause(Condition.Criteria.create().andEqualTo("uid", uid).andEqualTo("goods_id", goodsId).build()) > 0;
+	public void deleteGoods(int uid, int goodsId) {
+		mapper.deleteByWhereClause(Criteria.create().andEqualTo("uid", uid).andEqualTo("goods_id", goodsId).build());
 	}
 }

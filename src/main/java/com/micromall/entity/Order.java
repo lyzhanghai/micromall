@@ -45,12 +45,14 @@ public class Order extends IdEntity {
 	private String     consigneePhone;
 	// 邮政编码
 	private String     postcode;
+
 	// 发货快递公司
 	private String     deliveryCompany;
 	// 发货快递单号
 	private String     deliveryNumber;
 	// 发货时间
 	private Date       deliveryTime;
+
 	// 订单支付时间
 	private Date       payTime;
 	// 订单确认收货时间

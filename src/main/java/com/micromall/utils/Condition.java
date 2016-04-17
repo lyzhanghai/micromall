@@ -236,7 +236,7 @@ public class Condition {
 		/**
 		 * #{field} not between #{value1} and #{value2}
 		 */
-		public Criteria andIdNotBetween(String field, Object value1, Object value2) {
+		public Criteria andNotBetween(String field, Object value1, Object value2) {
 			addCriterion(field + " not between", value1, value2, field);
 			return (Criteria)this;
 		}

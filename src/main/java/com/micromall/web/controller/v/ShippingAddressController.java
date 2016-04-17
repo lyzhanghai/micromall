@@ -109,7 +109,7 @@ public class ShippingAddressController extends BasisController {
 		if (ValidateUtils.illegalTextLength(1, 15, address.getConsigneeName())) {
 			throw new ArgumentValidException("收货人姓名长度超过限制");
 		}
-		if (ValidateUtils.illegalPhone(address.getConsigneePhone())) {
+		if (ValidateUtils.illegalMobilePhoneNumber(address.getConsigneePhone())) {
 			throw new ArgumentValidException("收货人电话输入不正确");
 		}
 		if (ValidateUtils.illegalPostcode(address.getPostcode())) {

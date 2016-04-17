@@ -35,7 +35,7 @@ public class Member extends IdEntity {
 	// 是否认证用户
 	private Boolean verified;
 	// 是否逻辑删除
-	private Boolean delete;
+	private Boolean deleted;
 	// 最后登录时间
 	private Date    lastLoginTime;
 	// 最后一次登录IP
@@ -133,12 +133,12 @@ public class Member extends IdEntity {
 		return verified;
 	}
 
-	public boolean isDelete() {
-		return delete;
+	public boolean isDeleted() {
+		return deleted;
 	}
 
-	public void setDelete(boolean delete) {
-		this.delete = delete;
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public Date getLastLoginTime() {

@@ -1,5 +1,6 @@
 package com.micromall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.micromall.entity.ext.GoodsTypes;
 
 import java.math.BigDecimal;
@@ -13,17 +14,19 @@ public class Goods extends IdEntity {
 
 	// 商品标题
 	private String     title;
-	// 商品主图片（取图片数组第一张图片作为主图）
+	// 商品主图片（JSON数据，取图片数组第一张图片作为主图）
+	@JsonIgnore
 	private String     mainImage;
 	// 商品图片数组(JSON)
 	private String     images;
 	// 所属类目
+	@JsonIgnore
 	private Integer    categoryId;
 	// 商品价格
 	private BigDecimal price;
 	// 商品库存
 	private Integer    inventory;
-	// 是否上架
+	// 是否上架（商品卖完后自动下架）
 	private Boolean    shelves;
 	/**
 	 * 商品类型（普通商品、会员充值卡）{@link GoodsTypes}
@@ -32,29 +35,36 @@ public class Goods extends IdEntity {
 	// 是否促销商品
 	private Boolean    promotion;
 	/**
-	 * 促销配置(JSON) {@link com.micromall.entity.ext.PromotionConfigKeys}
+	 * 促销配置(JSON数据) {@link com.micromall.entity.ext.PromotionConfigKeys}
 	 */
 	private String     promotionParams;
-	// 是否免运费
-	//private boolean    freeFreight;
-	// 是否固定运费
-	//private boolean    fixedFreight;
+	// TODO 运费模型
+	//private boolean    freeFreight;// 是否免运费
+	//private boolean    fixedFreight;// 是否固定运费
 	// 运费
 	private int        freight;
 	// 商品描述
 	private String     descr;
-	// 产品参数(JSON)
+	// 产品参数(JSON数据)
 	private String     productParams;
 	// 商品排序
+	@JsonIgnore
 	private Integer    sort;
 	// 商品销量
 	private Integer    salesVolume;
 	// 是否逻辑删除
+	@JsonIgnore
 	private Boolean    deleted;
 	// 创建时间
+	@JsonIgnore
 	private Date       createTime;
 	// 修改时间
+	@JsonIgnore
 	private Date       updateTime;
+
+	// -------------前端展示字段------------
+	// 是否已经收藏
+	private boolean favorite;
 
 	public String getTitle() {
 		return title;
@@ -198,5 +208,13 @@ public class Goods extends IdEntity {
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public boolean isFavorite() {
+		return favorite;
+	}
+
+	public void setFavorite(boolean favorite) {
+		this.favorite = favorite;
 	}
 }

@@ -3,7 +3,6 @@ package com.micromall.service;
 import com.google.common.collect.Lists;
 import com.micromall.entity.Goods;
 import com.micromall.repository.GoodsMapper;
-import com.micromall.service.vo.GoodsDetails;
 import com.micromall.service.vo.GoodsSearch;
 import com.micromall.service.vo.GoodsSearchResult;
 import com.micromall.utils.Condition;
@@ -25,15 +24,14 @@ import java.util.List;
 public class GoodsService {
 
 	@Resource
-	private GoodsMapper     mapper;
-	@Resource
-	private FavoriteService favoriteService;
+	private GoodsMapper mapper;
 
 	@Transactional(readOnly = true)
 	public List<GoodsSearchResult> searchGoods(GoodsSearch search) {
 		Criteria criteria = Condition.Criteria.create();
 		if (StringUtils.isNotBlank(search.getQuery())) {
-			criteria.andLeftLike("title", search.getQuery());
+			// criteria.andLeftLike("title", search.getQuery());
+			criteria.andAnyLike("title", search.getQuery());
 		}
 		if (null != search.getPromotion()) {
 			criteria.andEqualTo("promotion", search.getPromotion());
@@ -41,6 +39,10 @@ public class GoodsService {
 		if (null != search.getCategoryId()) {
 			criteria.andEqualTo("category_id", search.getCategoryId());
 		}
+
+		criteria.andEqualTo("shelves", true);// 商品状态为上架
+		criteria.andGreaterThan("inventory", 0);// 库存量大于0
+
 		List<Goods> goodses = mapper.selectPageByWhereClause(criteria.build(search.getSort()), new RowBounds(search.getPage(), search.getLimit()));
 		List<GoodsSearchResult> results = Lists.newArrayList();
 		try {
@@ -53,22 +55,6 @@ public class GoodsService {
 			throw new ServiceException("商品列表加载失败", e);
 		}
 		return results;
-	}
-
-	@Transactional(readOnly = true)
-	public GoodsDetails getGoodsDetails(int goodsId, Integer uid) {
-		Goods goods = mapper.selectFullByPrimaryKey(goodsId);
-		if (null == goods) {
-			return null;
-		}
-		GoodsDetails details = new GoodsDetails();
-		details.setFavorite(favoriteService.hasFavorite(uid, goodsId));
-		try {
-			BeanUtils.copyProperties(details, goods);
-		} catch (Exception e) {
-			throw new ServiceException("商品信息加载失败", e);
-		}
-		return details;
 	}
 
 	@Transactional(readOnly = true)

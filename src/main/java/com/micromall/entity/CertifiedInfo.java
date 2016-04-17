@@ -14,6 +14,8 @@ public class CertifiedInfo extends IdEntity {
 	private Integer uid;
 	// 姓名
 	private String  name;
+	// 手机号
+	private String  phone;
 	// 身份证号码
 	private String  idCarNo;
 	// 身份证正面照片
@@ -43,6 +45,14 @@ public class CertifiedInfo extends IdEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getIdCarNo() {

@@ -21,4 +21,6 @@ public interface FavoriteGoodsMapper extends BaseMapper<FavoriteGoods> {
 
 	@Deprecated
 	List<FavoriteGoods> selectPageByWhereClause(Condition condition, RowBounds bounds);
+
+	List<FavoriteGoods> listGoods(int uid);
 }

@@ -34,14 +34,15 @@ public class BuyController extends BasisController {
 	private ShippingAddressService shippingAddressService;
 
 	/**
-	 * 购物车结算
+	 * 结算
 	 *
 	 * @param goodsIds 商品id
+	 * @param cart 结算来源（1：购物车，2：直接购买）
 	 * @return
 	 */
 	@RequestMapping(value = "/cart/settle")
 	@ResponseBody
-	public ResponseEntity<?> settle(String goodsIds) {
+	public ResponseEntity<?> settle(String goodsIds, Integer cart) {
 		if (StringUtils.isBlank(goodsIds)) {
 			return ResponseEntity.fail("请选择要结算的商品");
 		}

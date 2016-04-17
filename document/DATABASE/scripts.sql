@@ -117,7 +117,8 @@ CREATE TABLE `member` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY (`phone`),
-  UNIQUE KEY (`wechat_id`)
+  UNIQUE KEY (`wechat_id`),
+  UNIQUE KEY (`my_promote_code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='会员信息';
 
 CREATE TABLE `message` (
@@ -212,6 +213,14 @@ CREATE TABLE `withdraw_record` (
   PRIMARY KEY (`id`),
   KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='提现记录';
+
+CREATE TABLE `distribution_relation` (
+  `uid` int(11) NOT NULL COMMENT '所属用户id',
+  `lower_uid` int(11) NOT NULL COMMENT '下级分销用户id',
+  `level` tinyint(4) NOT NULL COMMENT '级别',
+  `create_time` datetime DEFAULT NULL COMMENT '成为分销商时间',
+  UNIQUE KEY (`id`,`lower_uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分销商关系';
 
 /*
 CREATE TABLE `payment_info` (

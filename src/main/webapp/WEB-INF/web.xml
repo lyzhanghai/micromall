@@ -30,6 +30,14 @@
         <filter-name>AccessControlAllowFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <filter>
+        <filter-name>ParametersTrimFilter</filter-name>
+        <filter-class>com.micromall.web.extend.ParametersTrimFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>ParametersTrimFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>

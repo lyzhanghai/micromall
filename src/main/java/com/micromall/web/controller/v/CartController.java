@@ -14,10 +14,7 @@ import java.util.Arrays;
 
 /**
  * Created by zhangzx on 16/3/23.
- * 购物车
- * <p/>
- * 用户支付完后, 从购物车删除商品记录
- * 查询时如果遇到下架，或删除的商品，自动从购物车中删除
+ * 购物车 TODO 【OK】
  */
 @Controller
 @RequestMapping(value = "/cart")
@@ -51,7 +48,7 @@ public class CartController extends BasisController {
 	@ResponseBody
 	public ResponseEntity<?> join(int goodsId, int buyNumber) {
 		if (buyNumber < 1) {
-			return ResponseEntity.fail("购买数量不能小于0");
+			return ResponseEntity.fail("购买数量不能小于1");
 		}
 		if (buyNumber > 1000) {
 			return ResponseEntity.fail("购买数量不能大于1000");
@@ -72,7 +69,7 @@ public class CartController extends BasisController {
 	@ResponseBody
 	public ResponseEntity<?> update_buyNumber(int goodsId, int buyNumber) {
 		if (buyNumber < 1) {
-			return ResponseEntity.fail("购买数量不能小于0");
+			return ResponseEntity.fail("购买数量不能小于1");
 		}
 		cartService.updateCartGoods(getLoginUser().getUid(), goodsId, buyNumber);
 		return ResponseEntity.ok();
@@ -88,6 +85,7 @@ public class CartController extends BasisController {
 	@RequestMapping(value = "/delete_goods")
 	@ResponseBody
 	public ResponseEntity<?> delete_goods(int goodsId) {
-		return ResponseEntity.ok(cartService.deleteGoods(getLoginUser().getUid(), Arrays.asList(goodsId)));
+		cartService.deleteGoods(getLoginUser().getUid(), Arrays.asList(goodsId));
+		return ResponseEntity.ok();
 	}
 }

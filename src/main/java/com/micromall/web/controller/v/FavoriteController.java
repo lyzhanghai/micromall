@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 
 /**
  * Created by zhangzx on 16/3/23.
- * 商品收藏夹
+ * 商品收藏夹 TODO 【OK】
  */
 @Controller
 @RequestMapping(value = "/favorite")
@@ -45,7 +45,8 @@ public class FavoriteController extends BasisController {
 	@RequestMapping(value = "/join")
 	@ResponseBody
 	public ResponseEntity<?> join(int goodsId) {
-		return ResponseEntity.ok(favoriteService.favoriteGoods(getLoginUser().getUid(), goodsId));
+		favoriteService.favoriteGoods(getLoginUser().getUid(), goodsId);
+		return ResponseEntity.ok();
 	}
 
 	/**
@@ -58,7 +59,8 @@ public class FavoriteController extends BasisController {
 	@RequestMapping(value = "/delete")
 	@ResponseBody
 	public ResponseEntity<?> delete(int goodsId) {
-		return ResponseEntity.ok(favoriteService.deleteGoods(getLoginUser().getUid(), goodsId));
+		favoriteService.deleteGoods(getLoginUser().getUid(), goodsId);
+		return ResponseEntity.ok();
 	}
 
 }

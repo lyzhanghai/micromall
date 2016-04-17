@@ -69,9 +69,12 @@ public final class CommonEnvConstants {
 	public static final String MEMBER_DEFAULT_AVATAR = PropertyConfigurer.getString("member.default.avatar");
 
 	/* 商品搜索默认每页显示个数 */
-	public static final int    GOODS_SEARCH_PERPAGE_SIZE = Integer.valueOf(PropertyConfigurer.getString("goods.search.perpage_size"));
+	public static final int    GOODS_SEARCH_PERPAGE_DEFAULT_SIZE = Integer
+			.valueOf(PropertyConfigurer.getString("goods.search" + ".perpage_default_size"));
+	/*商品搜索每页最大显示个数*/
+	public static final int    GOODS_SEARCH_PERPAGE_MAX_SIZE     = Integer.valueOf(PropertyConfigurer.getString("goods.search.perpage_max_size"));
 	/* 商品搜索默认排序字段 */
-	public static final String GOODS_SEARCH_DEFAULT_SORT = PropertyConfigurer.getString("goods.search.default_sort");
+	public static final String GOODS_SEARCH_DEFAULT_SORT         = PropertyConfigurer.getString("goods.search.default_sort");
 
 	/*文章分页默认每页大小*/
 	public static final int ARTICLE_PAGE_LIMIT      = 20;

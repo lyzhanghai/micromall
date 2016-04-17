@@ -5,11 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.micromall.entity.Member;
 import com.micromall.service.MemberService;
 import com.micromall.service.ShortMessageService;
-import com.micromall.utils.CommonEnvConstants;
-import com.micromall.utils.CookieUtils;
-import com.micromall.utils.HttpUtils;
-import com.micromall.utils.UploadUtils;
+import com.micromall.utils.*;
+import com.micromall.utils.Condition.Criteria;
 import com.micromall.web.resp.ResponseEntity;
+import com.micromall.web.resp.Ret;
 import com.micromall.web.security.Authentication;
 import com.micromall.web.security.LoginUser;
 import org.apache.commons.lang3.StringUtils;
@@ -89,10 +88,14 @@ public class MemberAuthenticationController {
 	 */
 	@RequestMapping(value = "/auth/loginVerify")
 	@ResponseBody
-	public ResponseEntity<?> loginVerify(HttpServletRequest request, HttpServletResponse response, String phone, String verifycode) {
+	public ResponseEntity<?> loginVerify(HttpServletRequest request, HttpServletResponse response, String phone, String verifycode,
+			String usePromoteCode) {
 
 		if (StringUtils.isEmpty(phone)) {
 			return ResponseEntity.fail("请输入手机号码");
+		}
+		if (ValidateUtils.illegalMobilePhoneNumber(phone)) {
+			return new ResponseEntity<Object>(Ret.error, "手机号码不正确");
 		}
 		if (StringUtils.isEmpty(verifycode)) {
 			return ResponseEntity.fail("请输入验证码");
@@ -111,13 +114,14 @@ public class MemberAuthenticationController {
 			/*cacheService.del(CommonEnvConstants.VERIFYCODE_KEY, phone);*/
 			request.getSession().removeAttribute(verifycodeKey);
 
-			Member member = memberService.findByPhone(phone);
+			Condition condition = Criteria.create().andEqualTo("phone", phone).build();
+			Member member = memberService.findOneByCriteria(condition);
 			// 用户未绑定，进行用户绑定操作
 			if (member == null) {
 				try {
-					member = memberService.registerForPhone(phone);
+					member = memberService.registerForPhone(phone, usePromoteCode);
 				} catch (Exception e) {
-					member = memberService.findByPhone(phone);
+					member = memberService.findOneByCriteria(condition);
 					if (member == null) {
 						logger.error("手机用户[{}]注册失败", phone);
 						throw e;
@@ -176,13 +180,14 @@ public class MemberAuthenticationController {
 				return;
 			}
 
-			Member member = memberService.findByWechatId(openid);
+			Condition condition = Criteria.create().andEqualTo("wechat_id", openid).build();
+			Member member = memberService.findOneByCriteria(condition);
 			// 用户未绑定，进行用户绑定操作
 			if (member == null) {
 				try {
 					member = memberService.registerForWechatId(openid);
 				} catch (Exception e) {
-					member = memberService.findByWechatId(openid);
+					member = memberService.findOneByCriteria(condition);
 					if (member == null) {
 						logger.error("微信用户[{}]注册失败：", openid);
 						throw e;
@@ -206,8 +211,14 @@ public class MemberAuthenticationController {
 							member.setAvatar(CommonEnvConstants.MEMBER_DEFAULT_AVATAR);
 						}
 						String gender = jsonObject.getString("sex");
-						member.setGender("1".equals(gender) ? "男" : "1".equals(gender) ? "女" : null);
-						memberService.updateBasisInfo(member);
+						member.setGender(("1".equals(gender) || "0".equals(gender)) ? gender : null);
+
+						Member _updateMember = new Member();
+						_updateMember.setId(member.getId());
+						_updateMember.setNickname(member.getNickname());
+						_updateMember.setAvatar(member.getAvatar());
+						_updateMember.setGender(member.getGender());
+						memberService.update(_updateMember);
 					}
 				} catch (Exception e) {
 					logger.error("获取微信用户信息出错：", e);
@@ -233,9 +244,11 @@ public class MemberAuthenticationController {
 		LoginUser loginUser = LoginUser.create(loginType, member, request);
 
 		// 更新登录数据
-		member.setLastLoginIp(loginUser.getLoginIp());
-		member.setLastLoginTime(loginUser.getLoginTime());
-		memberService.updateLoginInfo(member);
+		Member _updateMember = new Member();
+		_updateMember.setId(member.getId());
+		_updateMember.setLastLoginIp(loginUser.getLoginIp());
+		_updateMember.setLastLoginTime(loginUser.getLoginTime());
+		memberService.update(_updateMember);
 
 		// 保存会话session，重定向到用户最开始访问的页面
 		String sid = UUID.randomUUID().toString().replace("-", "");

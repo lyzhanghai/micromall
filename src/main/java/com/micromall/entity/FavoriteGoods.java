@@ -1,5 +1,7 @@
 package com.micromall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -10,6 +12,7 @@ import java.util.Date;
 public class FavoriteGoods extends IdEntity {
 
 	// 所属用户id
+	@JsonIgnore
 	private Integer    uid;
 	// 收藏的商品ID
 	private Integer    goodsId;
@@ -20,10 +23,14 @@ public class FavoriteGoods extends IdEntity {
 	// 商品价格
 	private BigDecimal price;
 	// 创建时间
+	@JsonIgnore
 	private Date       createTime;
 
-	// 是否已下架
-	// private boolean soldout;
+	// -------------前端展示字段------------
+	// 库存量
+	private int     inventory;
+	// 是否已经失效
+	private boolean invalid;
 
 	public Integer getUid() {
 		return uid;
@@ -72,4 +79,21 @@ public class FavoriteGoods extends IdEntity {
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
+
+	public int getInventory() {
+		return inventory;
+	}
+
+	public void setInventory(int inventory) {
+		this.inventory = inventory;
+	}
+
+	public boolean isInvalid() {
+		return invalid;
+	}
+
+	public void setInvalid(boolean invalid) {
+		this.invalid = invalid;
+	}
+
 }

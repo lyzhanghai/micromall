@@ -16,7 +16,7 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
     <context:annotation-config/>
-    <aop:aspectj-autoproxy expose-proxy="true"/>
+    <aop:aspectj-autoproxy expose-proxy="true" proxy-target-class="true"/>
 
     <bean class="com.micromall.utils.PropertyConfigurer">
         <property name="locations">

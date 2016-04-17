@@ -51,7 +51,7 @@
         <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        insert into favorite (id, uid, goods_id,
+        insert into favorite_goods (id, uid, goods_id,
         title, image, price,
         create_time)
         values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER},
@@ -60,7 +60,7 @@
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.micromall.entity.FavoriteGoods">
-        update favorite
+        update favorite_goods
         <set>
             <if test="uid != null">
                 uid = #{uid,jdbcType=INTEGER},
@@ -85,33 +85,33 @@
     </update>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from favorite
+        delete from favorite_goods
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
     <delete id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
-        delete from favorite
+        delete from favorite_goods
         <include refid="Where_Clause"/>
     </delete>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
-        from favorite
+        from favorite_goods
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
         select
         <include refid="Base_Column_List"/>
-        from favorite
+        from favorite_goods
         <include refid="Where_Clause"/>
     </select>
 
     <select id="selectMultiByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
         select
         <include refid="Base_Column_List"/>
-        from favorite
+        from favorite_goods
         <include refid="Where_Clause"/>
         <if test="orderBy != null">
             order by ${orderBy}
@@ -121,7 +121,7 @@
     <select id="selectPageByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
         select
         <include refid="Base_Column_List"/>
-        from favorite
+        from favorite_goods
         <include refid="Where_Clause"/>
         <if test="orderBy != null">
             order by ${orderBy}
@@ -131,8 +131,25 @@
     <select id="countByWhereClause" parameterType="com.micromall.utils.Condition" resultType="java.lang.Integer">
         select count(*)
         <include refid="Base_Column_List"/>
-        from favorite
+        from favorite_goods
         <include refid="Where_Clause"/>
+    </select>
+
+    <select id="listGoods" resultType="com.micromall.entity.FavoriteGoods" parameterType="java.lang.Integer">
+        <![CDATA[
+            SELECT
+                t2.id AS goodsId,
+                t2.title AS title,
+                t2.main_image AS image,
+                t2.price AS price,
+                t2.inventory AS inventory,
+                CASE WHEN t2.deleted != '0' OR t2.shelves != '1' OR t2.inventory <= 0
+                    THEN '1'
+                ELSE '0'
+                END AS 'invalid'
+            FROM favorite_goods t1 RIGHT JOIN goods t2 ON t1.goods_id = t2.id
+            WHERE t1.uid = #{uid} ORDER BY t1.id DESC
+        ]]>
     </select>
 
 </mapper>
