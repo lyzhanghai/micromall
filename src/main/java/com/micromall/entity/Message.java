@@ -1,5 +1,7 @@
 package com.micromall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 /**
@@ -9,6 +11,7 @@ import java.util.Date;
 public class Message extends IdEntity {
 
 	// 所属用户id
+	@JsonIgnore
 	private Integer uid;
 	// 标题
 	private String  title;

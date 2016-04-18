@@ -222,6 +222,20 @@ CREATE TABLE `distribution_relation` (
   UNIQUE KEY (`id`,`lower_uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分销商关系';
 
+
+CREATE TABLE `certified_info` (
+  `uid` int(11) NOT NULL COMMENT '用户id',
+  `name` varchar(30) NOT NULL COMMENT '姓名',
+  `phone` varchar(15) NOT NULL COMMENT '手机号',
+  `id_car_no` varchar(18) NOT NULL COMMENT '身份证号码',
+  `idcar_image1` varchar(255) NOT NULL COMMENT '身份证正面照片',
+  `idcar_image0` varchar(255) NOT NULL COMMENT '身份证背面照片',
+  `status` tinyint(4) NOT NULL COMMENT '审核状态',
+  `auditlog` varchar(300) NULL COMMENT '审核失败原因',
+  `audit_time` datetime NULL COMMENT '审核时间',
+  `create_time` datetime NOT NULL COMMENT '提交时间',
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户认证信息';
 /*
 CREATE TABLE `payment_info` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,

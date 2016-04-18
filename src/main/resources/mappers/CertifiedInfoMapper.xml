@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.micromall.repository.CertifiedInfoMapper">
+    <resultMap id="BaseResultMap" type="com.micromall.entity.CertifiedInfo">
+        <id column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="id_car_no" property="idCarNo" jdbcType="VARCHAR"/>
+        <result column="idcar_image1" property="idcarImage1" jdbcType="VARCHAR"/>
+        <result column="idcar_image0" property="idcarImage0" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="auditlog" property="auditlog" jdbcType="VARCHAR"/>
+        <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uid, name, phone, id_car_no, idcar_image1, idcar_image0, status, auditlog, audit_time,
+        create_time
+    </sql>
+
+    <sql id="Where_Clause">
+        <if test="criterias != null and criterias.valid">
+            <where>
+                <foreach collection="criterias" item="criteria" separator="or">
+                    <if test="criteria.valid">
+                        <trim prefix="(" suffix=")" prefixOverrides="and">
+                            <foreach collection="criteria.criterions" item="criterion">
+                                <choose>
+                                    <when test="criterion.noValue">
+                                        and ${criterion.condition}
+                                    </when>
+                                    <when test="criterion.singleValue">
+                                        and ${criterion.condition} #{criterion.value}
+                                    </when>
+                                    <when test="criterion.betweenValue">
+                                        and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                    </when>
+                                    <when test="criterion.listValue">
+                                        and ${criterion.condition}
+                                        <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">
+                                            #{listItem}
+                                        </foreach>
+                                    </when>
+                                </choose>
+                            </foreach>
+                        </trim>
+                    </if>
+                </foreach>
+            </where>
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.micromall.entity.CertifiedInfo">
+        insert into certified_info (uid, name, phone,
+        id_car_no, idcar_image1, idcar_image0,
+        status, auditlog, audit_time,
+        create_time)
+        values (#{uid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+        #{idCarNo,jdbcType=VARCHAR}, #{idcarImage1,jdbcType=VARCHAR}, #{idcarImage0,jdbcType=VARCHAR},
+        #{status,jdbcType=TINYINT}, #{auditlog,jdbcType=VARCHAR}, #{auditTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.micromall.entity.CertifiedInfo">
+        update certified_info
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="idCarNo != null">
+                id_car_no = #{idCarNo,jdbcType=VARCHAR},
+            </if>
+            <if test="idcarImage1 != null">
+                idcar_image1 = #{idcarImage1,jdbcType=VARCHAR},
+            </if>
+            <if test="idcarImage0 != null">
+                idcar_image0 = #{idcarImage0,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="auditlog != null">
+                auditlog = #{auditlog,jdbcType=VARCHAR},
+            </if>
+            <if test="auditTime != null">
+                audit_time = #{auditTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where uid = #{uid,jdbcType=INTEGER}
+    </update>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from certified_info
+        where uid = #{uid,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
+        delete from certified_info
+        <include refid="Where_Clause"/>
+    </delete>
+
+    <select id="selectByPrimaryKey" resultMap="FullResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Full_Column_List"/>
+        from certified_info
+        where uid = #{uid,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectOneByWhereClause" resultMap="FullResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Full_Column_List"/>
+        from certified_info
+        <include refid="Where_Clause"/>
+    </select>
+
+    <select id="selectMultiByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Base_Column_List"/>
+        from certified_info
+        <include refid="Where_Clause"/>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="selectPageByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Base_Column_List"/>
+        from certified_info
+        <include refid="Where_Clause"/>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="countByWhereClause" parameterType="com.micromall.utils.Condition" resultType="java.lang.Integer">
+        select count(*)
+        <include refid="Base_Column_List"/>
+        from certified_info
+        <include refid="Where_Clause"/>
+    </select>
+</mapper>

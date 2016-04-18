@@ -1,5 +1,7 @@
 package com.micromall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 /**
@@ -8,9 +10,10 @@ import java.util.Date;
  * @author zhangzxiang91@gmail.com
  * @date 2016/04/09.
  */
-public class CertifiedInfo extends IdEntity {
+public class CertifiedInfo {
 
 	// 所属用户id
+	@JsonIgnore
 	private Integer uid;
 	// 姓名
 	private String  name;
@@ -22,14 +25,16 @@ public class CertifiedInfo extends IdEntity {
 	private String  idCarImage1;
 	// 身份证背面照片
 	private String  idCarImage0;
-	// 提交时间
-	private Date    createTime;
-	// 是否通过审核
-	private Boolean valid;
+	// 审核状态
+	private Integer status;
 	// 审核失败原因
 	private String  auditlog;
 	// 审核时间
+	@JsonIgnore
 	private Date    auditTime;
+	// 提交时间
+	@JsonIgnore
+	private Date    createTime;
 
 	public Integer getUid() {
 		return uid;
@@ -87,12 +92,12 @@ public class CertifiedInfo extends IdEntity {
 		this.createTime = createTime;
 	}
 
-	public Boolean isValid() {
-		return valid;
+	public Integer getStatus() {
+		return status;
 	}
 
-	public void setValid(Boolean valid) {
-		this.valid = valid;
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public String getAuditlog() {

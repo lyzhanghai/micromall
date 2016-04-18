@@ -3,9 +3,9 @@ package com.micromall.web.controller.v;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.micromall.entity.CartGoods;
 import com.micromall.service.CartService;
 import com.micromall.service.ShippingAddressService;
-import com.micromall.service.vo.CartGoodsDTO;
 import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
@@ -51,9 +51,9 @@ public class BuyController extends BasisController {
 		BigDecimal totalPrice = new BigDecimal(0);
 
 		Set<String> _goodsIds = Sets.newHashSet(StringUtils.split(goodsIds, ","));
-		List<CartGoodsDTO> goodsList = cartService.listGoods(getLoginUser().getUid());
+		List<CartGoods> goodsList = cartService.listGoods(getLoginUser().getUid());
 
-		for (CartGoodsDTO goods : goodsList) {
+		for (CartGoods goods : goodsList) {
 			if (_goodsIds.contains(String.valueOf(goods.getGoodsId()))) {
 				Map<String, Object> _goods = Maps.newHashMap();
 				_goods.put("id", goods.getGoodsId());
@@ -77,7 +77,7 @@ public class BuyController extends BasisController {
 		data.put("totalPrice", totalPrice);
 		// TODO 优惠计算、邮费
 
-		return ResponseEntity.ok(data);
+		return ResponseEntity.ok();
 	}
 
 	/**

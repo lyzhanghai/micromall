@@ -9,5 +9,5 @@ package com.micromall.entity.ext;
 public class PropKeys {
 
 	// 广告配置
-	public static final String AD_CONFIG = "AD_CONFIG";
+	public static final String INDEX_AD_CONFIG = "INDEX_AD_CONFIG";
 }

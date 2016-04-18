@@ -41,6 +41,7 @@ public class CartService {
 			throw new LogicException("购买数量不能大于商品库存量");
 		}
 
+		// TODO 购物车商品上限控制
 		mapper.deleteByWhereClause(Criteria.create().andEqualTo("uid", uid).andEqualTo("goods_id", goodsId).build());
 		mapper.insert(new CartGoods(uid, goodsId, buyNumber, new Date()));
 	}

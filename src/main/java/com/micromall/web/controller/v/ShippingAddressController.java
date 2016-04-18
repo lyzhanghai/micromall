@@ -11,6 +11,7 @@ import com.micromall.web.security.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -49,14 +50,14 @@ public class ShippingAddressController extends BasisController {
 	 * @param detailedAddress 详细地址
 	 * @param consigneeName 收货人姓名
 	 * @param consigneePhone 收货人电话
-	 * @param defaul 是设为默认地址
+	 * @param defaul 是否设为默认地址
 	 * @return
 	 */
 	@UncaughtException(msg = "保存收货地址信息失败")
 	@RequestMapping(value = "/add")
 	@ResponseBody
 	public ResponseEntity<?> add_address(String province, String city, String county, String detailedAddress, String consigneeName,
-			String consigneePhone, String postcode, boolean defaul) {
+			String consigneePhone, String postcode, @RequestParam(defaultValue = "false") boolean defaul) {
 
 		ShippingAddress address = new ShippingAddress();
 		address.setUid(getLoginUser().getUid());
@@ -127,14 +128,14 @@ public class ShippingAddressController extends BasisController {
 	 * @param detailedAddress 详细地址
 	 * @param consigneeName 收货人姓名
 	 * @param consigneePhone 收货人电话
-	 * @param defaul 是设为默认地址
+	 * @param defaul 是否设为默认地址
 	 * @return
 	 */
 	@UncaughtException(msg = "保存收货地址信息失败")
 	@RequestMapping(value = "/update")
 	@ResponseBody
 	public ResponseEntity<?> update_address(int addressId, String province, String city, String county, String detailedAddress, String consigneeName,
-			String consigneePhone, String postcode, boolean defaul) {
+			String consigneePhone, String postcode, @RequestParam(defaultValue = "false") boolean defaul) {
 
 		ShippingAddress address = new ShippingAddress();
 		address.setId(addressId);
@@ -149,8 +150,10 @@ public class ShippingAddressController extends BasisController {
 		address.setDefaul(defaul);
 		address.setUpdateTime(new Date());
 		validateAddress(address);
-
-		return ResponseEntity.ok(deliveryAddressService.updateAddress(address));
+		if (!deliveryAddressService.updateAddress(address)) {
+			return ResponseEntity.fail("保存收货地址信息失败");
+		}
+		return ResponseEntity.ok();
 	}
 
 	/**
@@ -163,7 +166,8 @@ public class ShippingAddressController extends BasisController {
 	@RequestMapping(value = "/delete")
 	@ResponseBody
 	public ResponseEntity<?> delete_address(int id) {
-		return ResponseEntity.ok(deliveryAddressService.deleteAddress(getLoginUser().getUid(), id));
+		deliveryAddressService.deleteAddress(getLoginUser().getUid(), id);
+		return ResponseEntity.ok();
 	}
 
 	/**

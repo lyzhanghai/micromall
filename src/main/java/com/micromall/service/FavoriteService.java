@@ -42,6 +42,9 @@ public class FavoriteService {
 		if (!goods.isShelves()) {
 			throw new LogicException("收藏的商品已经下架");
 		}
+
+		// TODO 收藏商品上限控制
+
 		mapper.deleteByWhereClause(Criteria.create().andEqualTo("uid", uid).andEqualTo("goods_id", goodsId).build());
 		FavoriteGoods favoriteGoods = new FavoriteGoods();
 		favoriteGoods.setUid(uid);

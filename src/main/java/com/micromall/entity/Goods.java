@@ -5,6 +5,8 @@ import com.micromall.entity.ext.GoodsTypes;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhangzx on 16/3/21.
@@ -13,54 +15,54 @@ import java.util.Date;
 public class Goods extends IdEntity {
 
 	// 商品标题
-	private String     title;
+	private String              title;
 	// 商品主图片（JSON数据，取图片数组第一张图片作为主图）
 	@JsonIgnore
-	private String     mainImage;
+	private String              mainImage;
 	// 商品图片数组(JSON)
-	private String     images;
+	private List<String>        images;
 	// 所属类目
 	@JsonIgnore
-	private Integer    categoryId;
+	private Integer             categoryId;
 	// 商品价格
-	private BigDecimal price;
+	private BigDecimal          price;
 	// 商品库存
-	private Integer    inventory;
+	private Integer             inventory;
 	// 是否上架（商品卖完后自动下架）
-	private Boolean    shelves;
+	private Boolean             shelves;
 	/**
 	 * 商品类型（普通商品、会员充值卡）{@link GoodsTypes}
 	 */
-	private Integer    type;
+	private Integer             type;
 	// 是否促销商品
-	private Boolean    promotion;
+	private Boolean             promotion;
 	/**
 	 * 促销配置(JSON数据) {@link com.micromall.entity.ext.PromotionConfigKeys}
 	 */
-	private String     promotionParams;
+	private Map<String, Object> promotionParams;
 	// TODO 运费模型
 	//private boolean    freeFreight;// 是否免运费
 	//private boolean    fixedFreight;// 是否固定运费
 	// 运费
-	private int        freight;
+	private int                 freight;
 	// 商品描述
-	private String     descr;
+	private String              descr;
 	// 产品参数(JSON数据)
-	private String     productParams;
+	private Map<String, Object> productParams;
 	// 商品排序
 	@JsonIgnore
-	private Integer    sort;
+	private Integer             sort;
 	// 商品销量
-	private Integer    salesVolume;
+	private Integer             salesVolume;
 	// 是否逻辑删除
 	@JsonIgnore
-	private Boolean    deleted;
+	private Boolean             deleted;
 	// 创建时间
 	@JsonIgnore
-	private Date       createTime;
+	private Date                createTime;
 	// 修改时间
 	@JsonIgnore
-	private Date       updateTime;
+	private Date                updateTime;
 
 	// -------------前端展示字段------------
 	// 是否已经收藏
@@ -82,11 +84,11 @@ public class Goods extends IdEntity {
 		this.mainImage = mainImage;
 	}
 
-	public String getImages() {
+	public List<String> getImages() {
 		return images;
 	}
 
-	public void setImages(String images) {
+	public void setImages(List<String> images) {
 		this.images = images;
 	}
 
@@ -138,11 +140,11 @@ public class Goods extends IdEntity {
 		this.promotion = promotion;
 	}
 
-	public String getPromotionParams() {
+	public Map<String, Object> getPromotionParams() {
 		return promotionParams;
 	}
 
-	public void setPromotionParams(String promotionParams) {
+	public void setPromotionParams(Map<String, Object> promotionParams) {
 		this.promotionParams = promotionParams;
 	}
 
@@ -162,11 +164,11 @@ public class Goods extends IdEntity {
 		this.descr = descr;
 	}
 
-	public String getProductParams() {
+	public Map<String, Object> getProductParams() {
 		return productParams;
 	}
 
-	public void setProductParams(String productParams) {
+	public void setProductParams(Map<String, Object> productParams) {
 		this.productParams = productParams;
 	}
 

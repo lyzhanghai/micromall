@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 
 /**
  * Created by zhangzx on 16/3/23.
- * 商品收藏夹 TODO 【OK】
+ * 商品收藏夹
  */
 @Controller
 @RequestMapping(value = "/favorite")

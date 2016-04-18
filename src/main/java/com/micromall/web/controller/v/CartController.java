@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 /**
  * Created by zhangzx on 16/3/23.
- * 购物车 TODO 【OK】
+ * 购物车
  */
 @Controller
 @RequestMapping(value = "/cart")

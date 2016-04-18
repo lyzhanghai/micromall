@@ -1,11 +1,6 @@
 package com.micromall.entity;
 
-import com.alibaba.fastjson.JSON;
 import com.micromall.entity.ext.PropKeys;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by zhangzx on 16/3/30.
@@ -36,17 +31,4 @@ public class Properties {
 		this.content = content;
 	}
 
-	public <T> T toObject(Class<T> clazz) {
-		if (StringUtils.isNotBlank(content)) {
-			return JSON.parseObject(content, clazz);
-		}
-		return null;
-	}
-
-	public <T> List<T> toArray(Class<T> clazz) {
-		if (StringUtils.isNotBlank(content)) {
-			return JSON.parseArray(content, clazz);
-		}
-		return new ArrayList<T>();
-	}
 }

@@ -1,5 +1,7 @@
 package com.micromall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 /**
@@ -9,6 +11,7 @@ import java.util.Date;
 public class Coupon extends IdEntity {
 
 	// 所属用户id
+	@JsonIgnore
 	private Integer uid;
 	// 金额
 	private Integer amount;
@@ -19,10 +22,13 @@ public class Coupon extends IdEntity {
 	// 是否已经使用
 	private Boolean used;
 	// 使用的订单号
+	@JsonIgnore
 	private String  usedOrderNo;
 	// 使用时间
+	@JsonIgnore
 	private Date    usedTime;
 	// 创建时间
+	@JsonIgnore
 	private Date    createTime;
 
 	public Integer getAmount() {

@@ -1,5 +1,7 @@
 package com.micromall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 /**
@@ -9,6 +11,7 @@ import java.util.Date;
 public class ShippingAddress extends IdEntity {
 
 	// 所属用户id
+	@JsonIgnore
 	private Integer uid;
 	// 省
 	private String  province;
@@ -27,8 +30,10 @@ public class ShippingAddress extends IdEntity {
 	// 是否默认地址
 	private Boolean defaul;
 	// 创建时间
+	@JsonIgnore
 	private Date    createTime;
 	// 修改时间
+	@JsonIgnore
 	private Date    updateTime;
 
 	public Integer getUid() {

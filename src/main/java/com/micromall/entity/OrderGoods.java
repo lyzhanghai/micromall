@@ -1,5 +1,7 @@
 package com.micromall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -10,6 +12,7 @@ import java.util.Date;
 public class OrderGoods extends IdEntity {
 
 	// 所属订单
+	@JsonIgnore
 	private String     orderNo;
 	// 购买数量
 	private Integer    buyNumber;
@@ -23,6 +26,7 @@ public class OrderGoods extends IdEntity {
 	private String     image;
 	// 商品价格
 	private BigDecimal price;
+	@JsonIgnore
 	// 创建时间
 	private Date       createTime;
 

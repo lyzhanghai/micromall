@@ -28,7 +28,7 @@ public class MessageController extends BasisController {
 	private MessageMapper mapper;
 
 	/**
-	 * 购物车商品列表
+	 * 用户消息列表
 	 *
 	 * @return
 	 */

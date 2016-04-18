@@ -46,6 +46,11 @@
         <!-- <setting name="jdbcTypeForNull" value="NULL" /> -->
 
     </settings>
+    <typeHandlers>
+        <typeHandler handler="com.micromall.entity.handler.JSONArrayHandler" javaType="[Ljava.lang.String"/>
+        <typeHandler handler="com.micromall.entity.handler.JSONListHandler" javaType="java.util.List"/>
+        <typeHandler handler="com.micromall.entity.handler.JSONMapHandler" javaType="java.util.Map"/>
+    </typeHandlers>
 
     <plugins>
         <!-- 分页插件配置 -->

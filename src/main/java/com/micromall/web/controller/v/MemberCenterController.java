@@ -1,10 +1,13 @@
 package com.micromall.web.controller.v;
 
+import com.micromall.entity.CertifiedInfo;
 import com.micromall.entity.Member;
 import com.micromall.entity.cash.CashAccount;
+import com.micromall.entity.ext.CertifiedStatus;
 import com.micromall.service.CashAccountService;
+import com.micromall.service.CertifiedInfoService;
+import com.micromall.service.LoginSeesionService;
 import com.micromall.service.MemberService;
-import com.micromall.utils.ArgumentValidException;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.utils.UploadUtils;
@@ -39,37 +42,13 @@ public class MemberCenterController extends BasisController {
 	private static Logger logger = LoggerFactory.getLogger(MemberCenterController.class);
 
 	@Resource
-	private MemberService      memberService;
+	private MemberService        memberService;
 	@Resource
-	private CashAccountService cashAccountService;
-
-	/**
-	 * 登录用户信息获取
-	 *
-	 * @return
-	 */
-	@UncaughtException(msg = "加载用户信息失败")
-	@RequestMapping(value = "/userinfo")
-	@ResponseBody
-	public ResponseEntity<?> userinfo() {
-		Member member = memberService.get(getLoginUser().getUid());
-		if (member == null) {
-			// TODO 注销登录
-			return ResponseEntity.fail("用户不存在");
-		}
-
-		CashAccount cashAccount = cashAccountService.getCashAccount(member.getId());
-
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("uid", member.getId());
-		data.put("nickname", member.getNickname());
-		data.put("avatar", member.getAvatar());
-		data.put("level", member.getLevel());
-		data.put("commission", cashAccount.getCommission());
-		data.put("totalSales", cashAccount.getTotalSales());
-
-		return ResponseEntity.ok(data);
-	}
+	private CertifiedInfoService certifiedInfoService;
+	@Resource
+	private CashAccountService   cashAccountService;
+	@Resource
+	private LoginSeesionService  loginSeesionService;
 
 	/**
 	 * 绑定手机号  TODO 暂时不用
@@ -119,11 +98,40 @@ public class MemberCenterController extends BasisController {
 	}
 
 	/**
+	 * 登录用户信息获取
+	 *
+	 * @return
+	 */
+	@UncaughtException(msg = "加载用户信息失败")
+	@RequestMapping(value = "/userinfo")
+	@ResponseBody
+	public ResponseEntity<?> userinfo(HttpServletRequest request) {
+		Member member = memberService.get(getLoginUser().getUid());
+		if (member == null) {
+			loginSeesionService.loginout(request);
+			return ResponseEntity.fail("用户不存在");
+		}
+
+		CashAccount cashAccount = cashAccountService.getCashAccount(member.getId());
+		CertifiedInfo certifiedInfo = certifiedInfoService.getCertifiedInfo(member.getId());
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("uid", member.getId());
+		data.put("nickname", member.getNickname());
+		data.put("avatar", member.getAvatar());
+		data.put("level", member.getLevel());
+		data.put("commission", cashAccount.getCommission());
+		data.put("totalSales", cashAccount.getTotalSales());
+		data.put("certifiedInfo", certifiedInfo);
+
+		return ResponseEntity.ok(data);
+	}
+
+	/**
 	 * 基础信息修改
 	 *
-	 * @param nickname
-	 * @param gender
-	 * @param birthday
+	 * @param nickname 昵称
+	 * @param gender 性别（1:男，0:女）
+	 * @param birthday 生日，格式：1991-09-17
 	 * @return
 	 */
 	@UncaughtException(msg = "保存用户信息失败")
@@ -131,16 +139,16 @@ public class MemberCenterController extends BasisController {
 	@ResponseBody
 	public ResponseEntity<?> update_basisinfo(String nickname, String gender, String birthday) {
 		if (StringUtils.isEmpty(nickname)) {
-			throw new ArgumentValidException("昵称不能为空");
+			ResponseEntity.fail("昵称不能为空");
 		}
 		if (ValidateUtils.illegalTextLength(1, 15, nickname)) {
-			throw new ArgumentValidException("昵称长度超过限制");
+			ResponseEntity.fail("昵称长度超过限制");
 		}
 		if (StringUtils.isNotEmpty(gender) && !"1".equals(gender) && !"0".equals(gender)) {
-			throw new ArgumentValidException("性别输入不正确");
+			ResponseEntity.fail("性别输入不正确");
 		}
 		if (StringUtils.isNotEmpty(birthday) && ValidateUtils.illegalBirthday(birthday)) {
-			throw new ArgumentValidException("生日输入不正确");
+			ResponseEntity.fail("生日输入不正确");
 		}
 
 		Member _updateMember = new Member();
@@ -148,27 +156,32 @@ public class MemberCenterController extends BasisController {
 		_updateMember.setNickname(nickname);
 		_updateMember.setGender(StringUtils.trimToNull(gender));
 		_updateMember.setBirthday(StringUtils.trimToNull(birthday));
-		return ResponseEntity.ok(memberService.update(_updateMember));
+		if (memberService.update(_updateMember)) {
+			return ResponseEntity.ok();
+		}
+		return ResponseEntity.fail("保存用户信息失败");
 	}
 
 	/**
 	 * 用户头像修改
 	 *
-	 * @param avatarFile
+	 * @param file 头像文件
 	 * @return
 	 */
 	@UncaughtException(msg = "保存用户头像失败")
 	@RequestMapping(value = "/update_avatar")
 	@ResponseBody
-	public ResponseEntity<?> update_avatar(MultipartFile avatarFile) {
-		String avatar = UploadUtils.upload(CommonEnvConstants.UPLOAD_MEMBER_IMAGES_DIR, avatarFile);
+	public ResponseEntity<?> update_avatar(MultipartFile file) {
+		String avatar = UploadUtils.upload(CommonEnvConstants.UPLOAD_MEMBER_IMAGES_DIR, file);
 		if (StringUtils.isNotEmpty(avatar)) {
 			Member _updateMember = new Member();
 			_updateMember.setId(getLoginUser().getUid());
 			_updateMember.setAvatar(avatar);
-			return ResponseEntity.ok(memberService.update(_updateMember));
+			if (memberService.update(_updateMember)) {
+				return ResponseEntity.ok();
+			}
 		}
-		return ResponseEntity.ok(false);
+		return ResponseEntity.fail("保存用户头像失败");
 	}
 
 	@UncaughtException(msg = "上传证件信息失败")
@@ -183,11 +196,11 @@ public class MemberCenterController extends BasisController {
 	}
 
 	/**
-	 * @param name
-	 * @param phone
-	 * @param idCarNo
-	 * @param idCarImage1
-	 * @param idCarImage0
+	 * @param name 姓名
+	 * @param phone 手机号
+	 * @param idCarNo 身份证号码
+	 * @param idCarImage1 身份证正面照
+	 * @param idCarImage0 身份证背面照
 	 * @return
 	 */
 	@UncaughtException(msg = "提交用户认证信息失败")
@@ -195,10 +208,10 @@ public class MemberCenterController extends BasisController {
 	@ResponseBody
 	public ResponseEntity<?> certification(String name, String phone, String idCarNo, String idCarImage1, String idCarImage0) {
 		if (StringUtils.isEmpty(name)) {
-			throw new ArgumentValidException("姓名不能为空");
+			ResponseEntity.fail("姓名不能为空");
 		}
 		if (ValidateUtils.illegalTextLength(2, 10, name)) {
-			throw new ArgumentValidException("姓名输入不正确");
+			ResponseEntity.fail("姓名输入不正确");
 		}
 		if (StringUtils.isEmpty(phone)) {
 			return ResponseEntity.fail("请输入手机号码");
@@ -219,6 +232,31 @@ public class MemberCenterController extends BasisController {
 			return ResponseEntity.fail("请上传身份证背面照");
 		}
 
-		return ResponseEntity.ok(false);
+		CertifiedInfo certifiedInfo = certifiedInfoService.getCertifiedInfo(getLoginUser().getUid());
+		boolean exists = true;
+		if (certifiedInfo != null) {
+			exists = false;
+			if (certifiedInfo.getStatus().intValue() == CertifiedStatus.审核通过) {
+				return ResponseEntity.fail("认证信息已经审核通过，不允许修改");
+			}
+			if (certifiedInfo.getStatus().intValue() == CertifiedStatus.审核中) {
+				return ResponseEntity.fail("认证信息正在审核中，不允许修改");
+			}
+		}
+		certifiedInfo.setUid(getLoginUser().getUid());
+		certifiedInfo.setName(name);
+		certifiedInfo.setPhone(phone);
+		certifiedInfo.setIdCarNo(idCarNo);
+		certifiedInfo.setIdCarImage1(idCarImage1);
+		certifiedInfo.setIdCarImage0(idCarImage0);
+		certifiedInfo.setStatus(CertifiedStatus.审核中);
+		if (exists) {
+			certifiedInfoService.insert(certifiedInfo);
+		} else {
+			if (!certifiedInfoService.update(certifiedInfo)) {
+				return ResponseEntity.fail("提交用户认证信息失败");
+			}
+		}
+		return ResponseEntity.ok();
 	}
 }

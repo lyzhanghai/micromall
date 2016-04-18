@@ -20,22 +20,28 @@ public class ShippingAddressService {
 
 	@Transactional(readOnly = true)
 	public List<ShippingAddress> list(int uid) {
-		return mapper.selectMultiByWhereClause(Condition.Criteria.create().andEqualTo("uid", uid).build("id desc"));
+		return mapper.selectMultiByWhereClause(Condition.Criteria.create().andEqualTo("uid", uid).build("defaul desc, id desc"));
+	}
+
+	private void _resetDefaultAddress(ShippingAddress address) {
+		if (address.isDefaul()) {
+			mapper.cleanDefaulAddress(address.getUid());
+		} else {
+			if (mapper.countByWhereClause(Condition.Criteria.create().andEqualTo("uid", address.getUid()).build()) == 0) {
+				address.setDefaul(true);
+			}
+		}
 	}
 
 	@Transactional
 	public void addAddress(ShippingAddress address) {
-		if (address.isDefaul()) {
-			mapper.cleanDefaulAddress(address.getUid());
-		}
+		_resetDefaultAddress(address);
 		mapper.insert(address);
 	}
 
 	@Transactional
 	public boolean updateAddress(ShippingAddress address) {
-		if (address.isDefaul()) {
-			mapper.cleanDefaulAddress(address.getUid());
-		}
+		_resetDefaultAddress(address);
 		return mapper.updateByPrimaryKey(address) > 0;
 	}
 

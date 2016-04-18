@@ -25,7 +25,6 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/goods")
-@Authentication(force = false)
 public class GoodsController extends BasisController {
 
 	private static final Map<String, String> GOODS_SORT_FIELD_MAP = Maps.newHashMap();
@@ -77,6 +76,7 @@ public class GoodsController extends BasisController {
 	 * @param goodsId 商品id
 	 * @return
 	 */
+	@Authentication(force = false)
 	@UncaughtException(msg = "加载商品详情失败")
 	@RequestMapping(value = "/details")
 	@ResponseBody

@@ -1,16 +1,16 @@
-package com.micromall.web.controller;
+package com.micromall.web.controller.v;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.micromall.entity.Member;
+import com.micromall.service.LoginSeesionService;
 import com.micromall.service.MemberService;
-import com.micromall.service.ShortMessageService;
 import com.micromall.utils.*;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.resp.Ret;
 import com.micromall.web.security.Authentication;
-import com.micromall.web.security.LoginUser;
+import com.micromall.web.security.LoginUser.LoginType;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +25,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-import java.util.regex.Pattern;
 
 /**
  * Created by zhangzx on 16/3/21.
@@ -37,47 +34,12 @@ import java.util.regex.Pattern;
 @Authentication(force = false)
 public class MemberAuthenticationController {
 
-	private static final Pattern PHONE_PATTERN = Pattern.compile("^(\\+\\d+)?1[34578]\\d{9}$");
-	private static final Random  RANDOM        = new Random();
-
 	private static Logger logger = LoggerFactory.getLogger(MemberAuthenticationController.class);
 
 	@Resource
-	private ShortMessageService shortMessageService;
-	@Resource
 	private MemberService       memberService;
-
-	/**
-	 * 发送短信验证码
-	 *
-	 * @param phone 手机号码
-	 * @return
-	 */
-	@RequestMapping(value = "/auth/verifycode")
-	@ResponseBody
-	public ResponseEntity<?> verifycode(HttpServletRequest request, String phone) {
-		// TODO 参数验证
-		if (StringUtils.isEmpty(phone)) {
-			return ResponseEntity.fail("请输入手机号码");
-		}
-		if (!PHONE_PATTERN.matcher(phone).matches()) {
-			return ResponseEntity.fail("手机号码输入不正确");
-		}
-
-		String verifycode = String.valueOf((RANDOM.nextInt(9000) + 1000));
-		boolean sendResult = false;
-		try {
-			sendResult = shortMessageService.sendMessage(phone, String.format(CommonEnvConstants.VERIFYCODE_TEMPLATE, verifycode));
-			if (sendResult) {
-				request.getSession().setAttribute(CommonEnvConstants.VERIFYCODE_KEY + ":" + phone, verifycode);
-				/*cacheService.set(CommonEnvConstants.VERIFYCODE_KEY, phone, verifycode, CacheService.MINUTE * 5);*/
-			}
-			// logger.warn("发送短信验证码失败，result={}", sendResult);
-		} catch (Exception e) {
-			logger.warn("发送短信验证码出错：", e);
-		}
-		return ResponseEntity.ok(sendResult);
-	}
+	@Resource
+	private LoginSeesionService loginSeesionService;
 
 	/**
 	 * 短信验证码登录（如用户未注册，则自动注册）
@@ -101,7 +63,7 @@ public class MemberAuthenticationController {
 			return ResponseEntity.fail("请输入验证码");
 		}
 
-		String verifycodeKey = CommonEnvConstants.VERIFYCODE_KEY + ":" + phone;
+		String verifycodeKey = CommonEnvConstants.VERIFYCODE_KEY;
 		try {
 			// 短信验证码验证
 			/*String _verifycode = cacheService.get(CommonEnvConstants.VERIFYCODE_KEY, phone);*/
@@ -129,7 +91,7 @@ public class MemberAuthenticationController {
 				}
 			}
 
-			_processLogin(LoginUser.LoginType.Phone, member, request, response);
+			loginSeesionService.processLogin(LoginType.Phone, member, request, response);
 
 			return ResponseEntity.ok();
 		} catch (Exception e) {
@@ -225,7 +187,7 @@ public class MemberAuthenticationController {
 				}
 			}
 
-			_processLogin(LoginUser.LoginType.WeChat, member, request, response);
+			loginSeesionService.processLogin(LoginType.WeChat, member, request, response);
 
 			// 跳转到来源页面，默认首页
 			String redirect_url = request.getParameter("return_url");
@@ -238,22 +200,5 @@ public class MemberAuthenticationController {
 			logger.error("微信登录授权后台处理出错：", e);
 			response.sendRedirect(CommonEnvConstants.SERVER_ERROR_REDIRECT_URL);
 		}
-	}
-
-	private void _processLogin(LoginUser.LoginType loginType, Member member, HttpServletRequest request, HttpServletResponse response) {
-		LoginUser loginUser = LoginUser.create(loginType, member, request);
-
-		// 更新登录数据
-		Member _updateMember = new Member();
-		_updateMember.setId(member.getId());
-		_updateMember.setLastLoginIp(loginUser.getLoginIp());
-		_updateMember.setLastLoginTime(loginUser.getLoginTime());
-		memberService.update(_updateMember);
-
-		// 保存会话session，重定向到用户最开始访问的页面
-		String sid = UUID.randomUUID().toString().replace("-", "");
-		CookieUtils.addCookie(response, CommonEnvConstants.LOGIN_SESSION_COOKIE_SID, sid);
-		/*cacheService.set(CommonEnvConstants.LOGIN_SESSION_KEY, sid, loginUser, CommonEnvConstants.SESSION_CACHE_EXPRIED);*/
-		request.getSession().setAttribute(CommonEnvConstants.LOGIN_SESSION_KEY, loginUser);
 	}
 }
