@@ -10,42 +10,46 @@ import java.util.Date;
  */
 public class DistributionRelation {
 
-	private int  uid;
-	private int  lowerUid;
-	private int  level;
-	private Date createTime;
+	// 用户id
+	private Integer uid;
+	// 下级分销用户id
+	private Integer lowerUid;
+	// 分销级别
+	private Integer level;
+	// 创建时间
+	private Date    createTime;
 
 	public DistributionRelation() {
 	}
 
-	public DistributionRelation(int uid, int lowerUid, int level, Date createTime) {
+	public DistributionRelation(Integer uid, Integer lowerUid, Integer level, Date createTime) {
 		this.uid = uid;
 		this.lowerUid = lowerUid;
 		this.level = level;
 		this.createTime = createTime;
 	}
 
-	public int getUid() {
+	public Integer getUid() {
 		return uid;
 	}
 
-	public void setUid(int uid) {
+	public void setUid(Integer uid) {
 		this.uid = uid;
 	}
 
-	public int getLowerUid() {
+	public Integer getLowerUid() {
 		return lowerUid;
 	}
 
-	public void setLowerUid(int lowerUid) {
+	public void setLowerUid(Integer lowerUid) {
 		this.lowerUid = lowerUid;
 	}
 
-	public int getLevel() {
+	public Integer getLevel() {
 		return level;
 	}
 
-	public void setLevel(int level) {
+	public void setLevel(Integer level) {
 		this.level = level;
 	}
 

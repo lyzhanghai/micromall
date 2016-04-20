@@ -1,7 +1,13 @@
 package com.micromall.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.micromall.entity.ext.OrderStatus;
+import com.micromall.service.vo.LogisticsRecord;
+
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhangzx on 16/3/23.
@@ -10,69 +16,89 @@ import java.util.Date;
 public class Order extends IdEntity {
 
 	// 所属用户id
-	private Integer    uid;
+	@JsonIgnore
+	private Integer                   uid;
 	// 订单编号
-	private String     orderNo;
+	private String                    orderNo;
 	// 订单总金额
-	private BigDecimal totalAmount;
+	private BigDecimal                totalAmount;
 	// 实付金额
-	private BigDecimal realpayAmount;
+	private BigDecimal                realpayAmount;
 	// 余额支付金额
-	private BigDecimal balancepayAmount;
-	// 优惠劵抵扣金额（优惠劵抵扣金额+实付金额=订单总金额）
-	private BigDecimal deductionAmount;
+	private BigDecimal                balancepayAmount;
+	// 优惠抵扣金额（优惠劵/商品优惠抵扣金额+实付金额=订单总金额）
+	private BigDecimal                deductionAmount;
+	// 运费
+	private Integer                   freight;
+	// 订单优惠信息(JSON)
+	private List<Map<String, Object>> discounts;
 	// 使用的优惠劵(JSON)
-	private String     coupons;
+	@JsonIgnore
+	private List<Map<String, Object>> coupons;
 	// 买家留言
-	private String     leaveMessage;
+	@JsonIgnore
+	private String                    leaveMessage;
+	/**
+	 * 订单当前状态 {@link OrderStatus}
+	 */
+	private Integer                   status;
+	/**
+	 * 订单上一步状态 {@link OrderStatus}
+	 */
+	private Integer                   beforeStatus;
+
+	// ----------------------------- 收货信息
+
+	// 收货地址信息（省、市、区/县、详细地址）
+	private String shippingAddress;
+	// 收货人姓名
+	private String consigneeName;
+	// 收货人电话
+	private String consigneePhone;
+	// 邮政编码
+	private String postcode;
+
+	// ----------------------------- 物流信息
+
+	// 发货快递公司
+	private String deliveryCompany;
+	// 发货快递单号
+	private String deliveryNumber;
+	// 发货时间
+	private Date   deliveryTime;
+
+	// 订单支付时间
+	private Date   payTime;
+	// 订单确认收货时间
+	private Date   confirmGoodsTime;
+	// 订单申请退款时间
+	private Date   applyRefundTime;
+	// 订单退款完成时间
+	private Date   refundCompleteTime;
+	// 订单申请退款原因
+	private Date   refundReason;
+	// 订单关闭时间
+	private Date   closeTime;
+	// 超时未支付自动关闭时间
+	@JsonIgnore
+	private Date   timeoutCloseTime;
+	// 关闭日志
+	private String closelog;
+	// 订单创建时间
+	private Date   createTime;
+	// 修改时间
+	@JsonIgnore
+	private Date   updatTime;
+
+	// -------------前端展示字段------------
 	// 订单商品信息
-	// private List<OrderGoods>  list;
+	private List<OrderGoods>      goodsList;
+	// 物流信息
+	private List<LogisticsRecord> logistics;
 	// 支付信息
 	// private PaymentInfo       paymentInfo;
 	// 退款信息
 	// private RefundInfo        refundInfo;
-	// 物流信息
-	// private List<Logistics> logistics;
-	/**
-	 * 订单状态 {@link com.micromall.entity.ext.OrderStatus}
-	 */
-	private Integer    status;
-	// 收货地址信息（省、市、区/县、详细地址）
-	private String     shippingAddress;
-	// 收货人姓名
-	private String     consigneeName;
-	// 收货人电话
-	private String     consigneePhone;
-	// 邮政编码
-	private String     postcode;
-
-	// 发货快递公司
-	private String     deliveryCompany;
-	// 发货快递单号
-	private String     deliveryNumber;
-	// 发货时间
-	private Date       deliveryTime;
-
-	// 订单支付时间
-	private Date       payTime;
-	// 订单确认收货时间
-	private Date       confirmGoodsTime;
-	// 订单申请退款时间<预留>
-	@Deprecated
-	private Date       applyRefundTime;
-	// 订单退款完成时间<预留>
-	@Deprecated
-	private Date       refundCompleteTime;
-	// 订单关闭时间
-	private Date       closeTime;
-	// 超时未支付自动关闭时间
-	private Date       timeoutCloseTime;
-	// 关闭日志
-	private String     closelog;
-	// 订单创建时间
-	private Date       createTime;
-	// 修改时间
-	private Date       updatTime;
 
 	public String getOrderNo() {
 		return orderNo;
@@ -122,11 +148,27 @@ public class Order extends IdEntity {
 		this.deductionAmount = deductionAmount;
 	}
 
-	public String getCoupons() {
+	public Integer getFreight() {
+		return freight;
+	}
+
+	public void setFreight(Integer freight) {
+		this.freight = freight;
+	}
+
+	public List<Map<String, Object>> getDiscounts() {
+		return discounts;
+	}
+
+	public void setDiscounts(List<Map<String, Object>> discounts) {
+		this.discounts = discounts;
+	}
+
+	public List<Map<String, Object>> getCoupons() {
 		return coupons;
 	}
 
-	public void setCoupons(String coupons) {
+	public void setCoupons(List<Map<String, Object>> coupons) {
 		this.coupons = coupons;
 	}
 
@@ -144,6 +186,14 @@ public class Order extends IdEntity {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Integer getBeforeStatus() {
+		return beforeStatus;
+	}
+
+	public void setBeforeStatus(Integer beforeStatus) {
+		this.beforeStatus = beforeStatus;
 	}
 
 	public String getShippingAddress() {
@@ -242,6 +292,14 @@ public class Order extends IdEntity {
 		this.refundCompleteTime = refundCompleteTime;
 	}
 
+	public Date getRefundReason() {
+		return refundReason;
+	}
+
+	public void setRefundReason(Date refundReason) {
+		this.refundReason = refundReason;
+	}
+
 	public Date getCloseTime() {
 		return closeTime;
 	}
@@ -274,4 +332,19 @@ public class Order extends IdEntity {
 		this.updatTime = updatTime;
 	}
 
+	public List<OrderGoods> getGoodsList() {
+		return goodsList;
+	}
+
+	public void setGoodsList(List<OrderGoods> goodsList) {
+		this.goodsList = goodsList;
+	}
+
+	public List<LogisticsRecord> getLogistics() {
+		return logistics;
+	}
+
+	public void setLogistics(List<LogisticsRecord> logistics) {
+		this.logistics = logistics;
+	}
 }

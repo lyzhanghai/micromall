@@ -5,7 +5,6 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
         <result column="buy_number" property="buyNumber" jdbcType="INTEGER"/>
-        <result column="total_price" property="totalPrice" jdbcType="DECIMAL"/>
         <result column="goods_id" property="goodsId" jdbcType="INTEGER"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="image" property="image" jdbcType="VARCHAR"/>
@@ -14,7 +13,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, order_no, buy_number, total_price, goods_id, title, image, price, create_time
+        id, order_no, buy_number, goods_id, title, image, price, create_time
     </sql>
 
     <sql id="Where_Clause">
@@ -54,11 +53,10 @@
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into order_goods (id, order_no, buy_number,
-        total_price, goods_id, title,
-        image, price, create_time
+        goods_id, title, image, price, create_time
         )
         values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{buyNumber,jdbcType=INTEGER},
-        #{totalPrice,jdbcType=DECIMAL}, #{goodsId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},
+        #{goodsId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},
         #{image,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}
         )
     </insert>
@@ -71,9 +69,6 @@
             </if>
             <if test="buyNumber != null">
                 buy_number = #{buyNumber,jdbcType=INTEGER},
-            </if>
-            <if test="totalPrice != null">
-                total_price = #{totalPrice,jdbcType=DECIMAL},
             </if>
             <if test="goodsId != null">
                 goods_id = #{goodsId,jdbcType=INTEGER},

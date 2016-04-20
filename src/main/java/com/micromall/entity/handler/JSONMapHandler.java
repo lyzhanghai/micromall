@@ -9,6 +9,7 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class JSONMapHandler extends BaseTypeHandler<Map<String, Object>> {
@@ -25,19 +26,19 @@ public class JSONMapHandler extends BaseTypeHandler<Map<String, Object>> {
 	@Override
 	public Map<String, Object> getNullableResult(ResultSet rs, String columnName) throws SQLException {
 		String value = rs.getString(columnName);
-		return StringUtils.isBlank(value) ? null : JSON.parseObject(value);
+		return StringUtils.isBlank(value) ? new HashMap<String, Object>() : JSON.parseObject(value);
 	}
 
 	@Override
 	public Map<String, Object> getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
 		String value = rs.getString(columnIndex);
-		return StringUtils.isBlank(value) ? null : JSON.parseObject(value);
+		return StringUtils.isBlank(value) ? new HashMap<String, Object>() : JSON.parseObject(value);
 	}
 
 	@Override
 	public Map<String, Object> getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
 		String value = cs.getString(columnIndex);
-		return StringUtils.isBlank(value) ? null : JSON.parseObject(value);
+		return StringUtils.isBlank(value) ? new HashMap<String, Object>() : JSON.parseObject(value);
 	}
 
 }

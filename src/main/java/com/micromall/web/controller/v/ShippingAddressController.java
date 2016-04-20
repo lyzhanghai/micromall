@@ -76,6 +76,44 @@ public class ShippingAddressController extends BasisController {
 		return ResponseEntity.ok(address);
 	}
 
+	/**
+	 * 修改收货地址
+	 *
+	 * @param addressId 地址id
+	 * @param province 省份
+	 * @param city 城市
+	 * @param county 区/县
+	 * @param detailedAddress 详细地址
+	 * @param consigneeName 收货人姓名
+	 * @param consigneePhone 收货人电话
+	 * @param defaul 是否设为默认地址
+	 * @return
+	 */
+	@UncaughtException(msg = "保存收货地址信息失败")
+	@RequestMapping(value = "/update")
+	@ResponseBody
+	public ResponseEntity<?> update_address(int addressId, String province, String city, String county, String detailedAddress, String consigneeName,
+			String consigneePhone, String postcode, @RequestParam(defaultValue = "false") boolean defaul) {
+
+		ShippingAddress address = new ShippingAddress();
+		address.setId(addressId);
+		address.setUid(getLoginUser().getUid());
+		address.setProvince(province);
+		address.setCity(city);
+		address.setCounty(county);
+		address.setDetailedAddress(detailedAddress);
+		address.setConsigneeName(consigneeName);
+		address.setConsigneePhone(consigneePhone);
+		address.setPostcode(postcode);
+		address.setDefaul(defaul);
+		address.setUpdateTime(new Date());
+		validateAddress(address);
+		if (!deliveryAddressService.updateAddress(address)) {
+			return ResponseEntity.fail("保存收货地址信息失败");
+		}
+		return ResponseEntity.ok();
+	}
+
 	private void validateAddress(ShippingAddress address) {
 		if (StringUtils.isBlank(address.getProvince())) {
 			throw new ArgumentValidException("省份不能为空");
@@ -116,44 +154,6 @@ public class ShippingAddressController extends BasisController {
 		if (ValidateUtils.illegalPostcode(address.getPostcode())) {
 			throw new ArgumentValidException("邮政编码输入不正确");
 		}
-	}
-
-	/**
-	 * 修改收货地址
-	 *
-	 * @param addressId 地址id
-	 * @param province 省份
-	 * @param city 城市
-	 * @param county 区/县
-	 * @param detailedAddress 详细地址
-	 * @param consigneeName 收货人姓名
-	 * @param consigneePhone 收货人电话
-	 * @param defaul 是否设为默认地址
-	 * @return
-	 */
-	@UncaughtException(msg = "保存收货地址信息失败")
-	@RequestMapping(value = "/update")
-	@ResponseBody
-	public ResponseEntity<?> update_address(int addressId, String province, String city, String county, String detailedAddress, String consigneeName,
-			String consigneePhone, String postcode, @RequestParam(defaultValue = "false") boolean defaul) {
-
-		ShippingAddress address = new ShippingAddress();
-		address.setId(addressId);
-		address.setUid(getLoginUser().getUid());
-		address.setProvince(province);
-		address.setCity(city);
-		address.setCounty(county);
-		address.setDetailedAddress(detailedAddress);
-		address.setConsigneeName(consigneeName);
-		address.setConsigneePhone(consigneePhone);
-		address.setPostcode(postcode);
-		address.setDefaul(defaul);
-		address.setUpdateTime(new Date());
-		validateAddress(address);
-		if (!deliveryAddressService.updateAddress(address)) {
-			return ResponseEntity.fail("保存收货地址信息失败");
-		}
-		return ResponseEntity.ok();
 	}
 
 	/**

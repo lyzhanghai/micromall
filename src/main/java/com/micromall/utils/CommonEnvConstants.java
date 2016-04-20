@@ -76,10 +76,10 @@ public final class CommonEnvConstants {
 	/* 商品搜索默认排序字段 */
 	public static final String GOODS_SEARCH_DEFAULT_SORT         = PropertyConfigurer.getString("goods.search.default_sort");
 
-	/*文章分页默认每页大小*/
-	public static final int ARTICLE_PAGE_LIMIT      = 20;
-	/*用户消息分页默认每页大小*/
-	public static final int USER_MESSAGE_PAGE_LIMIT = 20;
+	/*文章分页每页大小*/
+	public static final int ARTICLE_PAGE_LIMIT      = 10;
+	/*用户消息分页每页大小*/
+	public static final int USER_MESSAGE_PAGE_LIMIT = 10;
 
 	/*可申请提现时间区间*/
 	public static final String WITHDRAW_APPLY_ALLOW_TIME_INTERVAL  = PropertyConfigurer.getString("withdraw.apply.allow.time_interval");

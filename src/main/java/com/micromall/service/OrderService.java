@@ -1,8 +1,8 @@
 package com.micromall.service;
 
+import com.micromall.entity.Order;
 import com.micromall.repository.OrderMapper;
 import com.micromall.service.vo.ListViewOrder;
-import com.micromall.service.vo.OrderDetails;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,7 +21,7 @@ public class OrderService {
 		return null;
 	}
 
-	public OrderDetails getOrderDetails(int uid, String orderNo) {
+	public Order getOrderDetails(int uid, String orderNo) {
 		return null;
 	}
 

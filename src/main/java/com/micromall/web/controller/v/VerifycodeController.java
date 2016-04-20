@@ -45,16 +45,15 @@ public class VerifycodeController {
 			return ResponseEntity.fail("手机号码不正确");
 		}
 
-		String verifycode = String.valueOf((RANDOM.nextInt(9000) + 1000));
 		try {
+			String verifycode = String.valueOf((RANDOM.nextInt(9000) + 1000));
 			boolean sendResult = shortMessageService.sendMessage(phone, String.format(CommonEnvConstants.VERIFYCODE_TEMPLATE, verifycode));
 			if (sendResult) {
-				request.getSession().setAttribute(CommonEnvConstants.VERIFYCODE_KEY + ":" + phone, verifycode);
-				/*cacheService.set(CommonEnvConstants.VERIFYCODE_KEY, phone, verifycode, CacheService.MINUTE * 5);*/
+				request.getSession().setAttribute(CommonEnvConstants.VERIFYCODE_KEY, verifycode);
 				return ResponseEntity.ok();
 			}
 		} catch (Exception e) {
-			logger.warn("发送短信验证码出错：", e);
+			logger.error("发送短信验证码出错：", e);
 		}
 		return ResponseEntity.fail("短信验证码发送失败");
 	}

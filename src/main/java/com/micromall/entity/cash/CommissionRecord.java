@@ -12,9 +12,9 @@ import java.util.Date;
 public class CommissionRecord {
 
 	// 所属用户id
-	private int        uid;
+	private Integer    uid;
 	// 产生佣金下级分销商id
-	private int        lowerUid;
+	private Integer    lowerUid;
 	// 产生佣金的订单
 	private String     orderNo;
 	// 产生佣金的订单
@@ -24,12 +24,20 @@ public class CommissionRecord {
 	// 佣金收入时间
 	private Date       createTime;
 
-	public int getUid() {
+	public Integer getUid() {
 		return uid;
 	}
 
-	public void setUid(int uid) {
+	public void setUid(Integer uid) {
 		this.uid = uid;
+	}
+
+	public Integer getLowerUid() {
+		return lowerUid;
+	}
+
+	public void setLowerUid(Integer lowerUid) {
+		this.lowerUid = lowerUid;
 	}
 
 	public String getOrderNo() {
@@ -46,14 +54,6 @@ public class CommissionRecord {
 
 	public void setOrderAmount(BigDecimal orderAmount) {
 		this.orderAmount = orderAmount;
-	}
-
-	public int getLowerUid() {
-		return lowerUid;
-	}
-
-	public void setLowerUid(int lowerUid) {
-		this.lowerUid = lowerUid;
 	}
 
 	public BigDecimal getCommissionAmount() {

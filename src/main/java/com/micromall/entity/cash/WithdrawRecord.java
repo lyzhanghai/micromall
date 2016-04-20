@@ -2,6 +2,7 @@ package com.micromall.entity.cash;
 
 import com.micromall.entity.IdEntity;
 import com.micromall.entity.ext.WithdrawChannels;
+import com.micromall.entity.ext.WithdrawStatus;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -23,7 +24,7 @@ public class WithdrawRecord extends IdEntity {
 	 */
 	private String     channel;
 	/**
-	 * 提现状态（待审核-->审核通过-->审核失败-->提现中-->提现成功-->提现失败）{@link com.micromall.entity.ext.WithdrawStatus}
+	 * 提现状态（待审核-->审核通过-->审核失败-->提现中-->提现成功-->提现失败）{@link WithdrawStatus}
 	 */
 	private Integer    status;
 	// 审核日志（审核失败会记录失败原因）

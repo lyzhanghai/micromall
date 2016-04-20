@@ -8,7 +8,6 @@ import com.micromall.service.MemberService;
 import com.micromall.utils.*;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.web.resp.ResponseEntity;
-import com.micromall.web.resp.Ret;
 import com.micromall.web.security.Authentication;
 import com.micromall.web.security.LoginUser.LoginType;
 import org.apache.commons.lang3.StringUtils;
@@ -51,53 +50,45 @@ public class MemberAuthenticationController {
 	@RequestMapping(value = "/auth/loginVerify")
 	@ResponseBody
 	public ResponseEntity<?> loginVerify(HttpServletRequest request, HttpServletResponse response, String phone, String verifycode,
-			String usePromoteCode) {
+			String usePromoteCode) throws Exception {
 
 		if (StringUtils.isEmpty(phone)) {
 			return ResponseEntity.fail("请输入手机号码");
 		}
 		if (ValidateUtils.illegalMobilePhoneNumber(phone)) {
-			return new ResponseEntity<Object>(Ret.error, "手机号码不正确");
+			return ResponseEntity.fail("手机号码不正确");
 		}
 		if (StringUtils.isEmpty(verifycode)) {
 			return ResponseEntity.fail("请输入验证码");
 		}
 
 		String verifycodeKey = CommonEnvConstants.VERIFYCODE_KEY;
-		try {
-			// 短信验证码验证
-			/*String _verifycode = cacheService.get(CommonEnvConstants.VERIFYCODE_KEY, phone);*/
-			String _verifycode = (String)request.getSession().getAttribute(verifycodeKey);
-			if (_verifycode == null) {
-				return ResponseEntity.fail("短信验证码已失效");
-			} else if (!_verifycode.equals(verifycode)) {
-				return ResponseEntity.fail("验证码输入错误");
-			}
-			/*cacheService.del(CommonEnvConstants.VERIFYCODE_KEY, phone);*/
-			request.getSession().removeAttribute(verifycodeKey);
+		// 短信验证码验证
+		String _verifycode = (String)request.getSession().getAttribute(verifycodeKey);
+		if (_verifycode == null) {
+			return ResponseEntity.fail("短信验证码已失效");
+		} else if (!_verifycode.equals(verifycode)) {
+			return ResponseEntity.fail("验证码输入错误");
+		}
+		request.getSession().removeAttribute(verifycodeKey);
 
-			Condition condition = Criteria.create().andEqualTo("phone", phone).build();
-			Member member = memberService.findOneByCriteria(condition);
-			// 用户未绑定，进行用户绑定操作
-			if (member == null) {
-				try {
-					member = memberService.registerForPhone(phone, usePromoteCode);
-				} catch (Exception e) {
-					member = memberService.findOneByCriteria(condition);
-					if (member == null) {
-						logger.error("手机用户[{}]注册失败", phone);
-						throw e;
-					}
+		Condition condition = Criteria.create().andEqualTo("phone", phone).build();
+		Member member = memberService.findOneByCriteria(condition);
+		// 用户未绑定，进行用户绑定操作
+		if (member == null) {
+			try {
+				member = memberService.registerForPhone(phone, usePromoteCode);
+			} catch (Exception e) {
+				member = memberService.findOneByCriteria(condition);
+				if (member == null) {
+					logger.error("手机用户[{}]注册失败", phone);
+					throw e;
 				}
 			}
-
-			loginSeesionService.processLogin(LoginType.Phone, member, request, response);
-
-			return ResponseEntity.ok();
-		} catch (Exception e) {
-			logger.error("手机号登录授权后台处理出错：", e);
-			return ResponseEntity.fail("登录失败");
 		}
+
+		loginSeesionService.processLogin(LoginType.Phone, member, request, response);
+		return ResponseEntity.ok();
 	}
 
 	/**

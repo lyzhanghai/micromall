@@ -2,7 +2,7 @@ package com.micromall.web.controller.v;
 
 import com.micromall.repository.MessageMapper;
 import com.micromall.utils.CommonEnvConstants;
-import com.micromall.utils.Condition;
+import com.micromall.utils.Condition.Criteria;
 import com.micromall.web.controller.BasisController;
 import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
@@ -37,7 +37,7 @@ public class MessageController extends BasisController {
 	@ResponseBody
 	public ResponseEntity<?> list(@RequestParam(defaultValue = "1") int page) {
 		return ResponseEntity.ok(mapper
-				.selectPageByWhereClause(Condition.Criteria.create().andEqualTo("uid", getLoginUser().getUid()).build("id desc"),
+				.selectPageByWhereClause(Criteria.create().andEqualTo("uid", getLoginUser().getUid()).build("id desc"),
 						new RowBounds(page, CommonEnvConstants.USER_MESSAGE_PAGE_LIMIT)));
 	}
 }

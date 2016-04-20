@@ -69,7 +69,7 @@ public class CartController extends BasisController {
 	@ResponseBody
 	public ResponseEntity<?> update_buyNumber(int goodsId, int buyNumber) {
 		if (buyNumber < 1) {
-			return ResponseEntity.fail("购买数量不能小于1");
+			return ResponseEntity.fail("购买数量不能小于1件");
 		}
 		cartService.updateCartGoods(getLoginUser().getUid(), goodsId, buyNumber);
 		return ResponseEntity.ok();

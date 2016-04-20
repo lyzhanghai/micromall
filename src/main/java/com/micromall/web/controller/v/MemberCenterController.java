@@ -15,7 +15,6 @@ import com.micromall.utils.ValidateUtils;
 import com.micromall.web.controller.BasisController;
 import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
-import com.micromall.web.resp.Ret;
 import com.micromall.web.security.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -51,7 +50,7 @@ public class MemberCenterController extends BasisController {
 	private LoginSeesionService  loginSeesionService;
 
 	/**
-	 * 绑定手机号  TODO 暂时不用
+	 * 绑定手机号
 	 *
 	 * @param phone 手机号
 	 * @param verifycode 验证码
@@ -71,30 +70,26 @@ public class MemberCenterController extends BasisController {
 			return ResponseEntity.fail("请输入验证码");
 		}
 
-		try {
-			// 短信验证码验证
-			/*String _verifycode = cacheService.get(CommonEnvConstants.VERIFYCODE_KEY, phone);*/
-			String _verifycode = (String)request.getSession().getAttribute(CommonEnvConstants.VERIFYCODE_KEY);
-			if (_verifycode == null) {
-				return ResponseEntity.fail("短信验证码已失效");
-			} else if (!_verifycode.equals(verifycode)) {
-				return ResponseEntity.fail("验证码输入错误");
-			}
-			/*cacheService.del(CommonEnvConstants.VERIFYCODE_KEY, phone);*/
-			request.getSession().removeAttribute(CommonEnvConstants.VERIFYCODE_KEY);
-
-			Member member = memberService.findOneByCriteria(Criteria.create().andEqualTo("phone", phone).build());
-			if (member != null) {
-				return ResponseEntity.fail("该手机号码已被绑定");
-			}
-			Member _updateMember = new Member();
-			_updateMember.setId(getLoginUser().getUid());
-			_updateMember.setPhone(phone);
-			return new ResponseEntity<Object>(Ret.ok, memberService.update(_updateMember));
-		} catch (Exception e) {
-			logger.error("绑定手机号后台处理出错：", e);
-			return ResponseEntity.fail("手机号码绑定失败");
+		// 短信验证码验证
+		String _verifycode = (String)request.getSession().getAttribute(CommonEnvConstants.VERIFYCODE_KEY);
+		if (_verifycode == null) {
+			return ResponseEntity.fail("短信验证码已失效");
+		} else if (!_verifycode.equals(verifycode)) {
+			return ResponseEntity.fail("验证码输入错误");
 		}
+		request.getSession().removeAttribute(CommonEnvConstants.VERIFYCODE_KEY);
+
+		Member member = memberService.findOneByCriteria(Criteria.create().andEqualTo("phone", phone).build());
+		if (member != null) {
+			return ResponseEntity.fail("此手机号码已被占用");
+		}
+		Member _updateMember = new Member();
+		_updateMember.setId(getLoginUser().getUid());
+		_updateMember.setPhone(phone);
+		if (memberService.update(_updateMember)) {
+			return ResponseEntity.ok();
+		}
+		return ResponseEntity.fail("手机号码绑定失败");
 	}
 
 	/**
@@ -102,14 +97,14 @@ public class MemberCenterController extends BasisController {
 	 *
 	 * @return
 	 */
-	@UncaughtException(msg = "加载用户信息失败")
+	@UncaughtException(msg = "获取用户信息失败")
 	@RequestMapping(value = "/userinfo")
 	@ResponseBody
 	public ResponseEntity<?> userinfo(HttpServletRequest request) {
 		Member member = memberService.get(getLoginUser().getUid());
 		if (member == null) {
 			loginSeesionService.loginout(request);
-			return ResponseEntity.fail("用户不存在");
+			return ResponseEntity.fail("获取用户信息失败");
 		}
 
 		CashAccount cashAccount = cashAccountService.getCashAccount(member.getId());
@@ -240,7 +235,7 @@ public class MemberCenterController extends BasisController {
 				return ResponseEntity.fail("认证信息已经审核通过，不允许修改");
 			}
 			if (certifiedInfo.getStatus().intValue() == CertifiedStatus.审核中) {
-				return ResponseEntity.fail("认证信息正在审核中，不允许修改");
+				return ResponseEntity.fail("认证信息正在审核中，请不要重复提交");
 			}
 		}
 		certifiedInfo.setUid(getLoginUser().getUid());

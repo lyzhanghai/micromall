@@ -16,6 +16,7 @@ public class ShortMessageService {
 	 * @return
 	 */
 	public boolean sendMessage(String phone, String content) {
+		// TODO 未实现短信发送
 		return false;
 	}
 }

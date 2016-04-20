@@ -2,6 +2,8 @@ package com.micromall.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.micromall.entity.ext.GoodsTypes;
+import com.micromall.entity.ext.ProductParamsKeys;
+import com.micromall.entity.ext.PromotionConfigKeys;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -37,17 +39,19 @@ public class Goods extends IdEntity {
 	// 是否促销商品
 	private Boolean             promotion;
 	/**
-	 * 促销配置(JSON数据) {@link com.micromall.entity.ext.PromotionConfigKeys}
+	 * 促销配置(JSON数据) {@link PromotionConfigKeys}
 	 */
 	private Map<String, Object> promotionParams;
 	// TODO 运费模型
 	//private boolean    freeFreight;// 是否免运费
 	//private boolean    fixedFreight;// 是否固定运费
 	// 运费
-	private int                 freight;
+	private Integer             freight;
 	// 商品描述
 	private String              descr;
-	// 产品参数(JSON数据)
+	/**
+	 * 产品参数(JSON数据) {@link ProductParamsKeys}
+	 */
 	private Map<String, Object> productParams;
 	// 商品排序
 	@JsonIgnore
@@ -148,11 +152,11 @@ public class Goods extends IdEntity {
 		this.promotionParams = promotionParams;
 	}
 
-	public int getFreight() {
+	public Integer getFreight() {
 		return freight;
 	}
 
-	public void setFreight(int freight) {
+	public void setFreight(Integer freight) {
 		this.freight = freight;
 	}
 

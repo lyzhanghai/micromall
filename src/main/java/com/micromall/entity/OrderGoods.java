@@ -16,8 +16,6 @@ public class OrderGoods extends IdEntity {
 	private String     orderNo;
 	// 购买数量
 	private Integer    buyNumber;
-	// 总价格
-	private BigDecimal totalPrice;
 	// 商品ID
 	private Integer    goodsId;
 	// 商品标题
@@ -44,14 +42,6 @@ public class OrderGoods extends IdEntity {
 
 	public void setBuyNumber(Integer buyNumber) {
 		this.buyNumber = buyNumber;
-	}
-
-	public BigDecimal getTotalPrice() {
-		return totalPrice;
-	}
-
-	public void setTotalPrice(BigDecimal totalPrice) {
-		this.totalPrice = totalPrice;
 	}
 
 	public Integer getGoodsId() {

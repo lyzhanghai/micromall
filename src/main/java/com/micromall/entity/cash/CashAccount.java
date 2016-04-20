@@ -12,7 +12,7 @@ import java.util.Date;
 public class CashAccount {
 
 	// 所属用户id
-	private int        uid;
+	private Integer    uid;
 	// 会员账户余额
 	private BigDecimal balance;
 	// 佣金账户金额
@@ -32,11 +32,11 @@ public class CashAccount {
 	// 更新时间
 	private Date       updateTime;
 
-	public int getUid() {
+	public Integer getUid() {
 		return uid;
 	}
 
-	public void setUid(int uid) {
+	public void setUid(Integer uid) {
 		this.uid = uid;
 	}
 
