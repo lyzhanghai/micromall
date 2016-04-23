@@ -1,4 +1,4 @@
-package com.micromall.entity.cash;
+package com.micromall.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,14 +17,6 @@ public class CashAccount {
 	private BigDecimal balance;
 	// 佣金账户金额
 	private BigDecimal commission;
-	// 可提现佣金
-	// private BigDecimal canWithdraw;
-	// 提现中佣金
-	// private BigDecimal withdrawOf;
-	// 已提现佣金
-	// private BigDecimal hasWithdraw;
-	// 佣金总收入
-	// private BigDecimal commissionIncome;
 	// 销售总额
 	private BigDecimal totalSales;
 	// 创建时间

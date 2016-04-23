@@ -1,5 +1,6 @@
 package com.micromall.repository;
 
+import com.github.pagehelper.Page;
 import com.micromall.utils.Condition;
 import com.sun.tools.javac.util.List;
 import org.apache.ibatis.session.RowBounds;
@@ -26,7 +27,7 @@ public interface BaseMapper<T> {
 
 	List<T> selectMultiByWhereClause(Condition condition);
 
-	List<T> selectPageByWhereClause(Condition condition, RowBounds bounds);
+	Page<T> selectPageByWhereClause(Condition condition, RowBounds bounds);
 
 	int countByWhereClause(Condition condition);
 

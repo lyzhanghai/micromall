@@ -1,8 +1,8 @@
 package com.micromall.repository;
 
+import com.github.pagehelper.Page;
 import com.micromall.entity.Coupon;
 import com.micromall.utils.Condition;
-import com.sun.tools.javac.util.List;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +16,6 @@ public interface CouponMapper extends BaseMapper<Coupon> {
 	int deleteByWhereClause(Condition condition);
 
 	@Deprecated
-	List<Coupon> selectPageByWhereClause(Condition condition, RowBounds bounds);
+	Page<Coupon> selectPageByWhereClause(Condition condition, RowBounds bounds);
 
 }

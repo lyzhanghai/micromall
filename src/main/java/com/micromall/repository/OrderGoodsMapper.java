@@ -1,8 +1,8 @@
 package com.micromall.repository;
 
+import com.github.pagehelper.Page;
 import com.micromall.entity.OrderGoods;
 import com.micromall.utils.Condition;
-import com.sun.tools.javac.util.List;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +29,6 @@ public interface OrderGoodsMapper extends BaseMapper<OrderGoods> {
 	//	List<T> selectMultiByWhereClause(Criteria criteria);
 
 	@Deprecated
-	List<OrderGoods> selectPageByWhereClause(Condition condition, RowBounds bounds);
+	Page<OrderGoods> selectPageByWhereClause(Condition condition, RowBounds bounds);
 
 }

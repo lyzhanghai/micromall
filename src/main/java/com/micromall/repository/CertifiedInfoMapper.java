@@ -4,9 +4,9 @@
  */
 package com.micromall.repository;
 
+import com.github.pagehelper.Page;
 import com.micromall.entity.CertifiedInfo;
 import com.micromall.utils.Condition;
-import com.sun.tools.javac.util.List;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +24,6 @@ public interface CertifiedInfoMapper extends BaseMapper<CertifiedInfo> {
 	int deleteByWhereClause(Condition condition);
 
 	@Deprecated
-	List<CertifiedInfo> selectPageByWhereClause(Condition condition, RowBounds bounds);
+	Page<CertifiedInfo> selectPageByWhereClause(Condition condition, RowBounds bounds);
 
 }

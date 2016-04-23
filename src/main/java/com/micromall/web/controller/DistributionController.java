@@ -55,4 +55,24 @@ public class DistributionController {
 		return ResponseEntity.ok();
 	}
 
+	/**
+	 * 申请提现
+	 * @return
+	 */
+	@RequestMapping(value = "/withdraw/apply")
+	@ResponseBody
+	public ResponseEntity<?> withdraw_apply() {
+		return ResponseEntity.ok();
+	}
+
+	/**
+	 * 提现记录
+	 * @return
+	 */
+	@RequestMapping(value = "/withdraw/list")
+	@ResponseBody
+	public ResponseEntity<?> withdraw_list() {
+		return ResponseEntity.ok();
+	}
+
 }

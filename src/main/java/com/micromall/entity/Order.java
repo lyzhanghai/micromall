@@ -96,9 +96,9 @@ public class Order extends IdEntity {
 	// 物流信息
 	private List<LogisticsRecord> logistics;
 	// 支付信息
-	// private PaymentInfo       paymentInfo;
+	// private PaymentRecord         paymentInfo;
 	// 退款信息
-	// private RefundInfo        refundInfo;
+	// private RefundApplyRecord     refundInfo;
 
 	public String getOrderNo() {
 		return orderNo;

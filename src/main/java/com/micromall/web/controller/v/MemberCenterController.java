@@ -2,7 +2,7 @@ package com.micromall.web.controller.v;
 
 import com.micromall.entity.CertifiedInfo;
 import com.micromall.entity.Member;
-import com.micromall.entity.cash.CashAccount;
+import com.micromall.entity.CashAccount;
 import com.micromall.entity.ext.CertifiedStatus;
 import com.micromall.service.CashAccountService;
 import com.micromall.service.CertifiedInfoService;

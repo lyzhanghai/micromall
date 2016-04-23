@@ -1,5 +1,6 @@
 package com.micromall.repository;
 
+import com.github.pagehelper.Page;
 import com.micromall.entity.CartGoods;
 import com.micromall.entity.FavoriteGoods;
 import com.micromall.utils.Condition;
@@ -20,7 +21,7 @@ public interface FavoriteGoodsMapper extends BaseMapper<FavoriteGoods> {
 	FavoriteGoods selectByPrimaryKey(Integer id);
 
 	@Deprecated
-	List<FavoriteGoods> selectPageByWhereClause(Condition condition, RowBounds bounds);
+	Page<FavoriteGoods> selectPageByWhereClause(Condition condition, RowBounds bounds);
 
 	List<FavoriteGoods> listGoods(int uid);
 }

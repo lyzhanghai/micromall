@@ -1,4 +1,4 @@
-package com.micromall.entity.cash;
+package com.micromall.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;

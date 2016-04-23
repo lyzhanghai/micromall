@@ -36,4 +36,8 @@ public class OrderService {
 	public boolean createOrder() {
 		return false;
 	}
+
+	public boolean applyRefund(int uid, String orderNo) {
+		return false;
+	}
 }

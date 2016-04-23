@@ -4,7 +4,7 @@
  */
 package com.micromall.service;
 
-import com.micromall.entity.cash.CashAccount;
+import com.micromall.entity.CashAccount;
 import com.micromall.repository.CashAccountMapper;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,5 +35,21 @@ public class CashAccountService {
 		cashAccount.setTotalSales(new BigDecimal(0));
 		cashAccount.setCreateTime(new Date());
 		mapper.insert(cashAccount);
+	}
+
+	public int decrementCommission(int uid, BigDecimal amount) {
+		return mapper.decrementCommission(uid, amount, new Date());
+	}
+
+	public int incrementCommission(int uid, BigDecimal amount) {
+		return mapper.incrementCommission(uid, amount, new Date());
+	}
+
+	public int decrementBalance(int uid, BigDecimal amount) {
+		return mapper.decrementBalance(uid, amount, new Date());
+	}
+
+	public int incrementBalance(int uid, BigDecimal amount) {
+		return mapper.incrementBalance(uid, amount, new Date());
 	}
 }

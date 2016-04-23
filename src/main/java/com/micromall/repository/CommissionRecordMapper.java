@@ -1,6 +1,6 @@
 package com.micromall.repository;
 
-import com.micromall.entity.cash.CommissionRecord;
+import com.micromall.entity.CommissionRecord;
 import com.micromall.utils.Condition;
 import com.sun.tools.javac.util.List;
 import org.springframework.stereotype.Repository;

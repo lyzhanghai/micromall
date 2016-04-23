@@ -1,8 +1,8 @@
 package com.micromall.repository;
 
+import com.github.pagehelper.Page;
 import com.micromall.entity.Category;
 import com.micromall.utils.Condition;
-import com.sun.tools.javac.util.List;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +13,6 @@ public interface CategoryMapper extends BaseMapper<Category> {
 	int deleteByWhereClause(Condition condition);
 
 	@Deprecated
-	List<Category> selectPageByWhereClause(Condition condition, RowBounds bounds);
+	Page<Category> selectPageByWhereClause(Condition condition, RowBounds bounds);
 
 }

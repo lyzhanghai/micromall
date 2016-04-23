@@ -83,10 +83,15 @@ public final class CommonEnvConstants {
 
 	/*可申请提现时间区间*/
 	public static final String WITHDRAW_APPLY_ALLOW_TIME_INTERVAL  = PropertyConfigurer.getString("withdraw.apply.allow.time_interval");
-	/*单次提现金额限制*/
-	public static final String WITHDRAW_APPLY_SINGLE_MAX_AMOUNT    = PropertyConfigurer.getString("withdraw.apply.single.max_amount");
+	/*单次提现最小金额限制*/
+	public static final int    WITHDRAW_APPLY_SINGLE_MIN_AMOUNT    = Integer
+			.valueOf(PropertyConfigurer.getString("withdraw.apply.single.min_amount"));
+	/*单次提现最大金额限制*/
+	public static final int    WITHDRAW_APPLY_SINGLE_MAX_AMOUNT    = Integer
+			.valueOf(PropertyConfigurer.getString("withdraw.apply.single.max_amount"));
 	/*订单未支付超时自动关闭时间*/
 	public static final String ORDER_NOTPAY_TIMEOUT_CLOSE_TIME     = PropertyConfigurer.getString("order.notpay.timeout.close_time");
 	/*订单物流已收货超时自动确认收货时间*/
 	public static final String ORDER_TIMEOUT_confirm_delivery_TIME = PropertyConfigurer.getString("order.timeout.confirm_delivery_time");
+
 }

@@ -1,8 +1,8 @@
 package com.micromall.repository;
 
+import com.github.pagehelper.Page;
 import com.micromall.entity.Properties;
 import com.micromall.utils.Condition;
-import com.sun.tools.javac.util.List;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +26,6 @@ public interface PropertiesMapper extends BaseMapper<Properties> {
 	//	List<T> selectMultiByWhereClause(Criteria criteria);
 
 	@Deprecated
-	List<Properties> selectPageByWhereClause(Condition condition, RowBounds bounds);
+	Page<Properties> selectPageByWhereClause(Condition condition, RowBounds bounds);
 
 }

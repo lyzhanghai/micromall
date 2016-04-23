@@ -9,7 +9,9 @@ package com.micromall.entity.ext;
 public class WithdrawChannels {
 
 	// 提现到微信
-	public static final String WECHAT  = "WECHAT";
-	// 提现到余额
-	public static final String BALANCE = "BALANCE";
+	public static final String WECHAT = "WECHAT";
+
+	public static boolean support(String channel) {
+		return WECHAT.equals(channel);
+	}
 }

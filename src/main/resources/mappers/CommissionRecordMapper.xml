@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.micromall.repository.CommissionRecordMapper">
-    <resultMap id="BaseResultMap" type="com.micromall.entity.cash.CommissionRecord">
+    <resultMap id="BaseResultMap" type="com.micromall.entity.CommissionRecord">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="uid" property="uid" jdbcType="INTEGER"/>
         <result column="lower_uid" property="lowerUid" jdbcType="INTEGER"/>
@@ -47,7 +47,7 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.micromall.entity.cash.CommissionRecord">
+    <insert id="insert" parameterType="com.micromall.entity.CommissionRecord">
         <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -59,7 +59,7 @@
         #{createTime,jdbcType=TIMESTAMP})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.micromall.entity.cash.CommissionRecord">
+    <update id="updateByPrimaryKey" parameterType="com.micromall.entity.CommissionRecord">
         update commission_record
         <set>
             <if test="uid != null">

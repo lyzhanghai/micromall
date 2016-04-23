@@ -1,5 +1,6 @@
 package com.micromall.repository;
 
+import com.github.pagehelper.Page;
 import com.micromall.entity.CartGoods;
 import com.micromall.utils.Condition;
 import com.sun.tools.javac.util.List;
@@ -19,7 +20,7 @@ public interface CartGoodsMapper extends BaseMapper<CartGoods> {
 	CartGoods selectByPrimaryKey(Integer id);
 
 	@Deprecated
-	List<CartGoods> selectPageByWhereClause(Condition condition, RowBounds bounds);
+	Page<CartGoods> selectPageByWhereClause(Condition condition, RowBounds bounds);
 
 	List<CartGoods> listGoods(int uid);
 

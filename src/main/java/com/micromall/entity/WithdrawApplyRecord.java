@@ -1,6 +1,6 @@
-package com.micromall.entity.cash;
+package com.micromall.entity;
 
-import com.micromall.entity.IdEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.micromall.entity.ext.WithdrawChannels;
 import com.micromall.entity.ext.WithdrawStatus;
 
@@ -9,13 +9,12 @@ import java.util.Date;
 
 /**
  * Created by zhangzx on 16/3/23.
- * 提现记录
- * 提交提现申请：扣除账户内佣金余额
- * 审核失败、提现失败：返回提现金额到账户佣金余额
+ * 提现申请记录
  */
-public class WithdrawRecord extends IdEntity {
+public class WithdrawApplyRecord extends IdEntity {
 
 	// 所属用户id
+	@JsonIgnore
 	private Integer    uid;
 	// 提现金额
 	private BigDecimal amount;
@@ -24,7 +23,7 @@ public class WithdrawRecord extends IdEntity {
 	 */
 	private String     channel;
 	/**
-	 * 提现状态（待审核-->审核通过-->审核失败-->提现中-->提现成功-->提现失败）{@link WithdrawStatus}
+	 * 提现状态（待审核-->(审核通过 or 审核不通过)-->提现成功）{@link WithdrawStatus}
 	 */
 	private Integer    status;
 	// 审核日志（审核失败会记录失败原因）
@@ -33,7 +32,7 @@ public class WithdrawRecord extends IdEntity {
 	private Date       applyTime;
 	// 审核时间
 	private Date       auditTime;
-	// 提现完成时间，包含提现成功与提现失败
+	// 提现完成时间
 	private Date       completeTime;
 
 	public Integer getUid() {

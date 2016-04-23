@@ -64,6 +64,19 @@ public class MyOrdersController extends BasisController {
 	}
 
 	/**
+	 * 申请退款
+	 *
+	 * @param orderNo 订单号
+	 * @return
+	 */
+	@UncaughtException(msg = "申请退款失败")
+	@RequestMapping(value = "/apply_refund")
+	@ResponseBody
+	public ResponseEntity<?> apply_refund(String orderNo) {
+		return ResponseEntity.ok(orderService.applyRefund(getLoginUser().getUid(), orderNo));
+	}
+
+	/**
 	 * 关闭订单
 	 *
 	 * @param orderNo 订单号

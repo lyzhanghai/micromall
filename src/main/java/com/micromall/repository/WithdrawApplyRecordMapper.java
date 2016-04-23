@@ -1,11 +1,11 @@
 package com.micromall.repository;
 
-import com.micromall.entity.cash.WithdrawRecord;
+import com.micromall.entity.WithdrawApplyRecord;
 import com.micromall.utils.Condition;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface WithdrawRecordMapper extends BaseMapper<WithdrawRecord> {
+public interface WithdrawApplyRecordMapper extends BaseMapper<WithdrawApplyRecord> {
 
 	//	int insert(T record);
 
@@ -20,7 +20,7 @@ public interface WithdrawRecordMapper extends BaseMapper<WithdrawRecord> {
 	//	T selectByPrimaryKey(Object id);
 
 	@Deprecated
-	WithdrawRecord selectOneByWhereClause(Condition condition);
+	WithdrawApplyRecord selectOneByWhereClause(Condition condition);
 
 	//	List<T> selectMultiByWhereClause(Criteria criteria);
 
