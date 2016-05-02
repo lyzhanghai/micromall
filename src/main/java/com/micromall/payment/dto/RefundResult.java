@@ -1,16 +1,8 @@
 package com.micromall.payment.dto;
 
-public class RefundResult extends BaseResult {
-
-	//实际退款金额
-	private Long amount;
-
-	public Long getAmount() {
-		return amount;
-	}
-
-	public void setAmount(Long amount) {
-		this.amount = amount;
-	}
+/**
+ * 退款结果
+ */
+public class RefundResult {
 
 }

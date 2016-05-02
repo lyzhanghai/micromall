@@ -7,7 +7,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <jdk.version>1.6</jdk.version>
+        <jdk.version>1.7</jdk.version>
         <springframework.version>4.1.1.RELEASE</springframework.version>
     </properties>
 
@@ -208,6 +208,11 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.8</version>
+        </dependency>
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6</version>
         </dependency>
         <!-- commons tools End-->
 

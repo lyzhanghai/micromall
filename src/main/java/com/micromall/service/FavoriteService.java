@@ -25,7 +25,7 @@ public class FavoriteService {
 
 	@Transactional(readOnly = true)
 	public List<FavoriteGoods> listGoods(int uid) {
-		return mapper.listGoods(uid);
+		return mapper.selectMemberFavoriteGoods(uid);
 	}
 
 	@Transactional(readOnly = true)

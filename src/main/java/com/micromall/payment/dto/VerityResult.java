@@ -1,5 +1,8 @@
 package com.micromall.payment.dto;
 
-public class VerityResult extends BaseResult {
+/**
+ * 验签结果
+ */
+public class VerityResult {
 
 }

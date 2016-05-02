@@ -1,23 +1,16 @@
 package com.micromall.repository;
 
+import com.github.pagehelper.Page;
 import com.micromall.entity.DistributionRelation;
-import com.micromall.utils.Condition;
-import com.sun.tools.javac.util.List;
+import com.micromall.service.vo.DistributionMember;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DistributionRelationMapper extends BaseMapper<DistributionRelation> {
 
-	@Deprecated
-	int updateByPrimaryKey(DistributionRelation record);
+	Page<DistributionMember> selectLowerMembers(@Param("uid") int uid, @Param("level") Integer level, RowBounds bounds);
 
-	@Deprecated
-	int deleteByPrimaryKey(Object id);
-
-	@Deprecated
-	int deleteByWhereClause(Condition condition);
-
-	@Deprecated
-	DistributionRelation selectByPrimaryKey(Object id);
+	Object lowerMemberStat(int uid);
 }

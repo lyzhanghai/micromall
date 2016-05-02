@@ -20,6 +20,20 @@ public class HttpUtils {
 	private final static RestTemplate rest   = new RestTemplate();
 	private final static Logger       logger = LoggerFactory.getLogger(HttpUtils.class);
 
+	public static <T> ResponseEntity<T> executeRequest(String url, String content, Class<T> clazz) {
+		// 执行请求
+		ResponseEntity<T> responseEntity = null;
+		try {
+			// 执行请求
+			responseEntity = rest.postForEntity(url, content, clazz);
+		} catch (HttpClientErrorException e) {
+			responseEntity = new ResponseEntity<T>(null, e.getResponseHeaders(), e.getStatusCode());
+		} catch (Exception e) {
+			logger.warn("请求出错: URL [{}]", url, e);
+		}
+		return responseEntity;
+	}
+
 	public static <T> ResponseEntity<T> executeRequest(String url, Map<String, String> params, Class<T> clazz) {
 		return executeRequest(url, params, null, clazz);
 	}

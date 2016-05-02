@@ -17,11 +17,11 @@ import com.micromall.utils.Condition;
 import com.micromall.utils.LogicException;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 提现
@@ -43,19 +43,10 @@ public class WithdrawService {
 	 * 提现记录
 	 *
 	 * @param condition
-	 * @return
-	 */
-	public List<WithdrawApplyRecord> records(Condition condition) {
-		return withdrawRecordMapper.selectMultiByWhereClause(condition);
-	}
-
-	/**
-	 * 提现记录
-	 *
-	 * @param condition
 	 * @param bounds
 	 * @return
 	 */
+	@Transactional(readOnly = true)
 	public Page<WithdrawApplyRecord> records(Condition condition, RowBounds bounds) {
 		return withdrawRecordMapper.selectPageByWhereClause(condition, bounds);
 	}
@@ -67,6 +58,7 @@ public class WithdrawService {
 	 * @param amount
 	 * @param channel
 	 */
+	@Transactional
 	public void applyWithdraw(int uid, float amount, String channel) {
 		CashAccount cashAccount = cashAccountService.getCashAccount(uid);
 
@@ -89,6 +81,8 @@ public class WithdrawService {
 				throw new LogicException("申请提现失败");
 			}
 		}
+
+		cashAccount = cashAccountService.getCashAccount(uid);
 
 		// 账户资金变动记录
 		CashRecord cashRecord = new CashRecord();

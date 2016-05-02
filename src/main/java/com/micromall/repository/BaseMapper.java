@@ -3,6 +3,7 @@ package com.micromall.repository;
 import com.github.pagehelper.Page;
 import com.micromall.utils.Condition;
 import com.sun.tools.javac.util.List;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
 /**
@@ -15,7 +16,7 @@ public interface BaseMapper<T> {
 
 	int updateByPrimaryKey(T record);
 
-	// int updateByWhereClause(@Param("record") T record, @Param("condition") Condition condition);
+	int updateByWhereClause(@Param("record") T record, @Param("condition") Condition condition);
 
 	int deleteByPrimaryKey(Object id);
 

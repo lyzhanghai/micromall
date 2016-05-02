@@ -226,4 +226,32 @@
         <include refid="Where_Clause"/>
     </select>
 
+    <select id="distributionOrderAmountSum" parameterType="java.util.Map" resultType="java.util.HashMap">
+        SELECT
+        CASE WHEN status = 0
+        THEN 'waitPay'
+        WHEN status = 1
+        THEN 'waitDelivery'
+        WHEN status = 2
+        THEN 'waitReceive'
+        WHEN status = 3
+        THEN 'complete'
+        WHEN status = 4
+        THEN 'applyRefund'
+        WHEN status = 5
+        THEN 'refund'
+        WHEN status = 6
+        THEN 'closed'
+        ELSE status
+        END               AS 'name',
+        sum(total_amount) AS 'amount'
+        FROM `order`
+        WHERE uid IN (
+        SELECT lower_uid
+        FROM distribution_relation
+        WHERE uid = #{uid} AND level = #{level}
+        )
+        GROUP BY status;
+    </select>
+
 </mapper>

@@ -6,7 +6,7 @@ package com.micromall.entity.ext;
  * @author zhangzxiang91@gmail.com
  * @date 2016/04/09.
  */
-public final class ArticleTypes {
+public class ArticleTypes {
 
 	public static final int HELP = 0;
 }

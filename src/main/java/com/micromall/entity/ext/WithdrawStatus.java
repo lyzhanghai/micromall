@@ -11,6 +11,6 @@ public final class WithdrawStatus {
 	public static final int 待审核   = 0;
 	public static final int 审核通过  = 1;
 	public static final int 审核不通过 = 2;
-	public static final int 提现成功  = 3;
+	// public static final int 提现成功  = 3;
 
 }

@@ -1,12 +1,16 @@
 package com.micromall.web.controller;
 
-import com.google.common.collect.Maps;
+import com.micromall.service.DistributionService;
+import com.micromall.utils.CommonEnvConstants;
 import com.micromall.web.resp.ResponseEntity;
+import com.micromall.web.security.Authentication;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.Map;
+import javax.annotation.Resource;
 
 /**
  * Created by zhangzx on 16/3/28.
@@ -14,65 +18,54 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping(value = "/distribution")
-public class DistributionController {
+@Authentication
+public class DistributionController extends BasisController {
 
-	// 佣金数据
+	@Resource
+	private DistributionService distributionService;
 
-	/**
-	 * 佣金总收入
-	 * 已提现佣金
-	 * 可提现佣金
-	 * 审核中佣金
-	 * 销售总额
-	 * 一级分销商：
-	 * 未付款订单
-	 * 待发货订单
-	 * 待收货订单
-	 * 已完成订单
-	 * 已取消订单
-	 * 二级分销商：
-	 * 未付款订单
-	 * 待发货订单
-	 * 待收货订单
-	 * 已完成订单
-	 * 已取消订单
-	 */
-
-	@RequestMapping(value = "/commission")
+	@RequestMapping(value = "/commission_stat")
 	@ResponseBody
-	public ResponseEntity<?> commission() {
-		Map<String, Object> data = Maps.newHashMap();
-		Map<String, Object> lv1 = Maps.newHashMap();
-		Map<String, Object> lv2 = Maps.newHashMap();
-		data.put("canWithdraw", 0);//可提现佣金
-		data.put("withdrawOf", 0);//提现中佣金(审核中佣金)
-		data.put("hasWithdraw", 0);//已提现佣金
-		data.put("commissionIncome", 0);//佣金总收入
-		data.put("totalSales", 0);//销售总额
-		data.put("lv1", lv1);//一级分销商
-		data.put("lv2", lv2);//一级分销商
-
-		return ResponseEntity.ok();
+	public ResponseEntity<?> commission_stat() {
+		return ResponseEntity.ok(distributionService.commissionStat(getLoginUser().getUid()));
 	}
 
 	/**
-	 * 申请提现
+	 * 下级分销商统计
+	 *
 	 * @return
 	 */
-	@RequestMapping(value = "/withdraw/apply")
+	@RequestMapping(value = "/lower_distributors_stat")
 	@ResponseBody
-	public ResponseEntity<?> withdraw_apply() {
-		return ResponseEntity.ok();
+	public ResponseEntity<?> lower_distributors_stat() {
+		return ResponseEntity.ok(distributionService.lowerDistributorsStat(getLoginUser().getUid()));
 	}
 
 	/**
-	 * 提现记录
+	 * 下级分销商列表
+	 *
+	 * @param level
 	 * @return
 	 */
-	@RequestMapping(value = "/withdraw/list")
+	@RequestMapping(value = "/lower_distributors_list")
 	@ResponseBody
-	public ResponseEntity<?> withdraw_list() {
-		return ResponseEntity.ok();
+	public ResponseEntity<?> lower_distributors_list(String level, @RequestParam(defaultValue = "1") int page) {
+		Integer _level = null;
+		if (level != null) {
+			switch (level) {
+				case "lv1":
+					_level = 1;
+					break;
+				case "lv2":
+					_level = 2;
+					break;
+				default:
+					return ResponseEntity.fail("参数错误");
+			}
+		}
+
+		return ResponseEntity.ok(distributionService
+				.lowerDistributorsList(getLoginUser().getUid(), _level, new RowBounds(page, CommonEnvConstants.FRONT_DEFAULT_PAGE_LIMIT)));
 	}
 
 }

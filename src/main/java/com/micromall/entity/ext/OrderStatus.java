@@ -13,6 +13,6 @@ public class OrderStatus {
 	public static final int 待收货  = 2;
 	public static final int 已收货  = 3;
 	public static final int 申请退款 = 4;
-	public static final int 已退款  = 7;
-	public static final int 已关闭  = 8;
+	public static final int 已退款  = 5;
+	public static final int 已关闭  = 6;
 }

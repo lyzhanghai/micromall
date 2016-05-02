@@ -25,7 +25,7 @@ public class CartService {
 
 	@Transactional(readOnly = true)
 	public List<CartGoods> listGoods(int uid) {
-		return mapper.listGoods(uid);
+		return mapper.selectMemberCartGoods(uid);
 	}
 
 	@Transactional

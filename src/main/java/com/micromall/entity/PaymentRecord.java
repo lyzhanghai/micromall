@@ -13,18 +13,28 @@ public class PaymentRecord extends IdEntity {
 	private String     orderNo;
 	// 订单金额
 	private BigDecimal amount;
-	// 支付类型
-	private String     payType;
+	// 支付渠道
+	private String     payChannel;
+	// 支付方式
+	private String     payMethod;
+	// 支付平台
+	private String     platformType;
 	// 第三方支付平台交易流水号
-	private String     trade_no;
+	private String     tradeNo;
+	// 异步通知地址
+	private String     backNotifyUrl;
 	// 前端通知地址
 	private String     frontNotifyUrl;
-	// 支付通知状态
-	private String     notifyStatus;
+	// 支付IP
+	private String     payIp;
 	// 扩展数据
 	private String     extend;
 	// 支付状态
-	private String     status;
+	private String     payStatus;
+	// 支付通知状态
+	private String     notifyStatus;
+	// 退款状态
+	private String     refundStatus;
 	// 创建时间
 	private Date       createTime;
 	// 修改时间
@@ -46,20 +56,44 @@ public class PaymentRecord extends IdEntity {
 		this.amount = amount;
 	}
 
-	public String getPayType() {
-		return payType;
+	public String getPayChannel() {
+		return payChannel;
 	}
 
-	public void setPayType(String payType) {
-		this.payType = payType;
+	public void setPayChannel(String payChannel) {
+		this.payChannel = payChannel;
 	}
 
-	public String getTrade_no() {
-		return trade_no;
+	public String getPayMethod() {
+		return payMethod;
 	}
 
-	public void setTrade_no(String trade_no) {
-		this.trade_no = trade_no;
+	public void setPayMethod(String payMethod) {
+		this.payMethod = payMethod;
+	}
+
+	public String getPlatformType() {
+		return platformType;
+	}
+
+	public void setPlatformType(String platformType) {
+		this.platformType = platformType;
+	}
+
+	public String getTradeNo() {
+		return tradeNo;
+	}
+
+	public void setTradeNo(String tradeNo) {
+		this.tradeNo = tradeNo;
+	}
+
+	public String getBackNotifyUrl() {
+		return backNotifyUrl;
+	}
+
+	public void setBackNotifyUrl(String backNotifyUrl) {
+		this.backNotifyUrl = backNotifyUrl;
 	}
 
 	public String getFrontNotifyUrl() {
@@ -70,12 +104,12 @@ public class PaymentRecord extends IdEntity {
 		this.frontNotifyUrl = frontNotifyUrl;
 	}
 
-	public String getNotifyStatus() {
-		return notifyStatus;
+	public String getPayIp() {
+		return payIp;
 	}
 
-	public void setNotifyStatus(String notifyStatus) {
-		this.notifyStatus = notifyStatus;
+	public void setPayIp(String payIp) {
+		this.payIp = payIp;
 	}
 
 	public String getExtend() {
@@ -86,12 +120,28 @@ public class PaymentRecord extends IdEntity {
 		this.extend = extend;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getPayStatus() {
+		return payStatus;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setPayStatus(String payStatus) {
+		this.payStatus = payStatus;
+	}
+
+	public String getNotifyStatus() {
+		return notifyStatus;
+	}
+
+	public void setNotifyStatus(String notifyStatus) {
+		this.notifyStatus = notifyStatus;
+	}
+
+	public String getRefundStatus() {
+		return refundStatus;
+	}
+
+	public void setRefundStatus(String refundStatus) {
+		this.refundStatus = refundStatus;
 	}
 
 	public Date getCreateTime() {

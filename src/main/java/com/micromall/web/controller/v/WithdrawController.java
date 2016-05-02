@@ -13,12 +13,12 @@ import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.Calendar;
 
 /**
@@ -116,7 +116,8 @@ public class WithdrawController extends BasisController {
 					criteria.andEqualTo("status", WithdrawStatus.待审核);
 					break;
 				case "through":
-					criteria.andIn("status", Arrays.asList(WithdrawStatus.审核通过, WithdrawStatus.提现成功));
+					criteria.andEqualTo("status", WithdrawStatus.审核通过);
+					// criteria.andIn("status", Arrays.asList(WithdrawStatus.审核通过, WithdrawStatus.提现成功));
 					break;
 				case "not_through":
 					criteria.andEqualTo("status", WithdrawStatus.审核不通过);
@@ -126,7 +127,7 @@ public class WithdrawController extends BasisController {
 
 			}
 		}
-		return ResponseEntity.ok(withdrawService.records(criteria.build("id desc")));
+		return ResponseEntity.ok(withdrawService.records(criteria.build("id desc"), new RowBounds()));
 	}
 
 }

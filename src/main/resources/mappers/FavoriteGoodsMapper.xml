@@ -135,7 +135,7 @@
         <include refid="Where_Clause"/>
     </select>
 
-    <select id="listGoods" resultType="com.micromall.entity.FavoriteGoods" parameterType="java.lang.Integer">
+    <select id="selectMemberFavoriteGoods" resultType="com.micromall.entity.FavoriteGoods" parameterType="java.lang.Integer">
         <![CDATA[
             SELECT
                 t2.id AS goodsId,

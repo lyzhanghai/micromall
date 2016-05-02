@@ -52,7 +52,7 @@ public class ComprehensiveController extends BasisController {
 	@ResponseBody
 	public ResponseEntity<?> articles(int type, @RequestParam(defaultValue = "1") int page) {
 		return ResponseEntity.ok(mapper.selectPageByWhereClause(Condition.Criteria.create().andEqualTo("type", type).build("id desc"),
-				new RowBounds(page, CommonEnvConstants.ARTICLE_PAGE_LIMIT)));
+				new RowBounds(page, CommonEnvConstants.FRONT_DEFAULT_PAGE_LIMIT)));
 	}
 
 }

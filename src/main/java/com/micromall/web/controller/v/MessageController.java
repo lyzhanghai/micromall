@@ -38,6 +38,6 @@ public class MessageController extends BasisController {
 	public ResponseEntity<?> list(@RequestParam(defaultValue = "1") int page) {
 		return ResponseEntity.ok(mapper
 				.selectPageByWhereClause(Criteria.create().andEqualTo("uid", getLoginUser().getUid()).build("id desc"),
-						new RowBounds(page, CommonEnvConstants.USER_MESSAGE_PAGE_LIMIT)));
+						new RowBounds(page, CommonEnvConstants.FRONT_DEFAULT_PAGE_LIMIT)));
 	}
 }
