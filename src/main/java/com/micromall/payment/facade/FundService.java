@@ -1,7 +1,3 @@
-/*
- * Copyright (C), 2014-2015, 杭州小卡科技有限公司
- * Created by ciwei@xiaokakeji.com on 2016/04/27.
- */
 package com.micromall.payment.facade;
 
 import com.micromall.payment.dto.*;
