@@ -1,6 +1,6 @@
 package com.micromall.repository;
 
-import com.micromall.entity.WithdrawApplyRecord;
+import com.micromall.repository.entity.WithdrawApplyRecord;
 import com.micromall.utils.Condition;
 import org.springframework.stereotype.Repository;
 

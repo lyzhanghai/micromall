@@ -1,7 +1,7 @@
 package com.micromall.service;
 
-import com.micromall.entity.Member;
-import com.micromall.entity.ext.MemberLevels;
+import com.micromall.repository.entity.Member;
+import com.micromall.repository.entity.common.MemberLevels;
 import com.micromall.repository.MemberMapper;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.Condition;

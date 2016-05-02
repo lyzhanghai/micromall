@@ -1,7 +1,7 @@
 package com.micromall.web.controller.v;
 
 import com.google.common.collect.Maps;
-import com.micromall.entity.Goods;
+import com.micromall.repository.entity.Goods;
 import com.micromall.service.FavoriteService;
 import com.micromall.service.GoodsService;
 import com.micromall.service.vo.GoodsSearch;

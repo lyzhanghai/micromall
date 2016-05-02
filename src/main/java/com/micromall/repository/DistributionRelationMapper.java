@@ -1,7 +1,7 @@
 package com.micromall.repository;
 
 import com.github.pagehelper.Page;
-import com.micromall.entity.DistributionRelation;
+import com.micromall.repository.entity.DistributionRelation;
 import com.micromall.service.vo.DistributionMember;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;

@@ -1,6 +1,6 @@
 package com.micromall.web.controller.v;
 
-import com.micromall.entity.ext.PropKeys;
+import com.micromall.repository.entity.common.PropKeys;
 import com.micromall.repository.ArticleMapper;
 import com.micromall.service.PropertiesService;
 import com.micromall.utils.CommonEnvConstants;

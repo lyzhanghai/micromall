@@ -1,6 +1,6 @@
 package com.micromall.web.controller.v;
 
-import com.micromall.entity.ShippingAddress;
+import com.micromall.repository.entity.ShippingAddress;
 import com.micromall.service.ShippingAddressService;
 import com.micromall.utils.ArgumentValidException;
 import com.micromall.utils.ValidateUtils;

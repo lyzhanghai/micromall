@@ -1,6 +1,6 @@
 package com.micromall.repository;
 
-import com.micromall.entity.Goods;
+import com.micromall.repository.entity.Goods;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

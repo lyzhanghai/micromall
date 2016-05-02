@@ -1,6 +1,6 @@
 package com.micromall.service;
 
-import com.micromall.entity.ShippingAddress;
+import com.micromall.repository.entity.ShippingAddress;
 import com.micromall.repository.ShippingAddressMapper;
 import com.micromall.utils.Condition.Criteria;
 import org.springframework.stereotype.Service;

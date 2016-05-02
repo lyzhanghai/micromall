@@ -1,6 +1,6 @@
 package com.micromall.repository;
 
-import com.micromall.entity.ShippingAddress;
+import com.micromall.repository.entity.ShippingAddress;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 

@@ -3,10 +3,10 @@ package com.micromall.payment.facade.impl;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.micromall.payment.dto.*;
-import com.micromall.payment.dto.ext.MessageConstant;
-import com.micromall.payment.dto.ext.PayMethod;
-import com.micromall.payment.dto.ext.PayMethod.Wechat;
-import com.micromall.payment.dto.ext.ResultCodeEnum;
+import com.micromall.payment.dto.common.MessageConstant;
+import com.micromall.payment.dto.common.PayMethod;
+import com.micromall.payment.dto.common.PayMethod.Wechat;
+import com.micromall.payment.dto.common.ResultCode;
 import com.micromall.payment.utils.MoneyUtils;
 import com.micromall.payment.utils.WechatConfig;
 import com.micromall.payment.utils.XmlUtils;
@@ -41,7 +41,7 @@ public class WechatFundService extends FundServiceFacadeImpl {
 			tradeType = "JSAPI";
 			openid = request.getExtendParams().get(WechatConfig.OPENID_KEY);
 			if (StringUtils.isEmpty(openid)) {
-				result.setResultCode(ResultCodeEnum.UNKNOWN_ERROR);
+				result.setResultCode(ResultCode.UNKNOWN_ERROR);
 				result.setResultMessage(MessageConstant.REMOTE_SERVICE_ERROR);
 				return result;
 			}
@@ -99,7 +99,7 @@ public class WechatFundService extends FundServiceFacadeImpl {
 			return result;
 		}
 
-		result.setResultCode(ResultCodeEnum.SUCCESS);
+		result.setResultCode(ResultCode.SUCCESS);
 		result.setResult(_get_paydata(response, request.getPayMethod()));
 		return result;
 	}

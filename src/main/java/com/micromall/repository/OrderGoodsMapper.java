@@ -1,6 +1,6 @@
 package com.micromall.repository;
 
-import com.micromall.entity.OrderGoods;
+import com.micromall.repository.entity.OrderGoods;
 import org.springframework.stereotype.Repository;
 
 @Repository

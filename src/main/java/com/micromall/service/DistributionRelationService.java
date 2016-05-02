@@ -1,7 +1,7 @@
 package com.micromall.service;
 
-import com.micromall.entity.DistributionRelation;
-import com.micromall.entity.Member;
+import com.micromall.repository.entity.DistributionRelation;
+import com.micromall.repository.entity.Member;
 import com.micromall.repository.DistributionRelationMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

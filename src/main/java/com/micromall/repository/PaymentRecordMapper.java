@@ -1,6 +1,6 @@
 package com.micromall.repository;
 
-import com.micromall.entity.PaymentRecord;
+import com.micromall.repository.entity.PaymentRecord;
 import org.springframework.stereotype.Repository;
 
 @Repository

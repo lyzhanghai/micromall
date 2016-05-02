@@ -1,8 +1,8 @@
 package com.micromall.payment.dto;
 
-import com.micromall.payment.dto.ext.PayChannel;
-import com.micromall.payment.dto.ext.PayMethod;
-import com.micromall.payment.dto.ext.PlatformType;
+import com.micromall.payment.dto.common.PayChannel;
+import com.micromall.payment.dto.common.PayMethod;
+import com.micromall.payment.dto.common.PlatformType;
 
 import java.math.BigDecimal;
 import java.util.Date;

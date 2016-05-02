@@ -1,6 +1,6 @@
 package com.micromall.payment.dto;
 
-import com.micromall.payment.dto.ext.ResultCodeEnum;
+import com.micromall.payment.dto.common.ResultCode;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ import java.util.Map;
 public class PaymentResult {
 
 	private String              result;
-	private ResultCodeEnum      resultCode;
+	private ResultCode          resultCode;
 	private String              resultMessage;
 	private Map<String, String> extendResult;
 
@@ -22,11 +22,11 @@ public class PaymentResult {
 		this.result = result;
 	}
 
-	public ResultCodeEnum getResultCode() {
+	public ResultCode getResultCode() {
 		return resultCode;
 	}
 
-	public void setResultCode(ResultCodeEnum resultCode) {
+	public void setResultCode(ResultCode resultCode) {
 		this.resultCode = resultCode;
 	}
 

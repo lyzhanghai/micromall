@@ -1,6 +1,6 @@
 package com.micromall.repository;
 
-import com.micromall.entity.CashAccount;
+import com.micromall.repository.entity.CashAccount;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;

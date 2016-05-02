@@ -1,7 +1,7 @@
 package com.micromall.service;
 
-import com.micromall.entity.CartGoods;
-import com.micromall.entity.Goods;
+import com.micromall.repository.entity.CartGoods;
+import com.micromall.repository.entity.Goods;
 import com.micromall.repository.CartGoodsMapper;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.utils.LogicException;

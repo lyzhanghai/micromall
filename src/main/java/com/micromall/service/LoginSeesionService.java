@@ -1,6 +1,6 @@
 package com.micromall.service;
 
-import com.micromall.entity.Member;
+import com.micromall.repository.entity.Member;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.CookieUtils;
 import com.micromall.web.security.LoginUser;

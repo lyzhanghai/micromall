@@ -1,7 +1,7 @@
 package com.micromall.service;
 
 import com.alibaba.fastjson.JSON;
-import com.micromall.entity.Properties;
+import com.micromall.repository.entity.Properties;
 import com.micromall.repository.PropertiesMapper;
 import org.springframework.stereotype.Service;
 

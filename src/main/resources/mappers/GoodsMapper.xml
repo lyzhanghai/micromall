@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.micromall.repository.GoodsMapper">
-    <resultMap id="BaseResultMap" type="com.micromall.entity.Goods">
+    <resultMap id="BaseResultMap" type="com.micromall.repository.entity.Goods">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="main_image" property="mainImage" jdbcType="VARCHAR"/>
@@ -19,7 +19,7 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
-    <resultMap id="FullResultMap" type="com.micromall.entity.Goods" extends="BaseResultMap">
+    <resultMap id="FullResultMap" type="com.micromall.repository.entity.Goods" extends="BaseResultMap">
         <result column="images" property="images" jdbcType="LONGVARCHAR"/>
         <result column="descr" property="descr" jdbcType="LONGVARCHAR"/>
         <result column="product_params" property="productParams" jdbcType="LONGVARCHAR"/>
@@ -73,7 +73,7 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.micromall.entity.Goods">
+    <insert id="insert" parameterType="com.micromall.repository.entity.Goods">
         <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -90,7 +90,7 @@
         #{promotionParams,jdbcType=LONGVARCHAR}, #{descr,jdbcType=LONGVARCHAR}, #{productParams,jdbcType=LONGVARCHAR}, #{freight,jdbcType=INTEGER}
         )
     </insert>
-    <update id="updateByPrimaryKey" parameterType="com.micromall.entity.Goods">
+    <update id="updateByPrimaryKey" parameterType="com.micromall.repository.entity.Goods">
         update goods
         <set>
             <if test="title != null">

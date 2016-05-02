@@ -1,7 +1,7 @@
 package com.micromall.service.vo;
 
-import com.micromall.entity.OrderGoods;
-import com.micromall.entity.ext.OrderStatus;
+import com.micromall.repository.entity.OrderGoods;
+import com.micromall.repository.entity.common.OrderStatus;
 
 import java.math.BigDecimal;
 import java.util.List;

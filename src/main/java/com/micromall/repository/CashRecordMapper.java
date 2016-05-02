@@ -1,6 +1,6 @@
 package com.micromall.repository;
 
-import com.micromall.entity.CashRecord;
+import com.micromall.repository.entity.CashRecord;
 import org.springframework.stereotype.Repository;
 
 @Repository

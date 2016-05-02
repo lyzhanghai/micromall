@@ -1,6 +1,6 @@
 package com.micromall.repository;
 
-import com.micromall.entity.CartGoods;
+import com.micromall.repository.entity.CartGoods;
 import com.sun.tools.javac.util.List;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.micromall.payment.utils;
 
-import com.micromall.payment.dto.ext.PayChannel;
+import com.micromall.payment.dto.common.PayChannel;
 
 public interface WechatConfig {
 

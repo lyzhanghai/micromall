@@ -1,7 +1,7 @@
 package com.micromall.service;
 
 import com.google.common.collect.Lists;
-import com.micromall.entity.Goods;
+import com.micromall.repository.entity.Goods;
 import com.micromall.repository.GoodsMapper;
 import com.micromall.service.vo.GoodsSearch;
 import com.micromall.service.vo.GoodsSearchResult;

@@ -1,12 +1,12 @@
 package com.micromall.service;
 
 import com.github.pagehelper.Page;
-import com.micromall.entity.CashAccount;
-import com.micromall.entity.CashRecord;
-import com.micromall.entity.WithdrawApplyRecord;
-import com.micromall.entity.ext.CashChangeTypes;
-import com.micromall.entity.ext.CashTypes;
-import com.micromall.entity.ext.WithdrawStatus;
+import com.micromall.repository.entity.CashAccount;
+import com.micromall.repository.entity.CashRecord;
+import com.micromall.repository.entity.WithdrawApplyRecord;
+import com.micromall.repository.entity.common.CashChangeTypes;
+import com.micromall.repository.entity.common.CashTypes;
+import com.micromall.repository.entity.common.WithdrawStatus;
 import com.micromall.repository.CashRecordMapper;
 import com.micromall.repository.WithdrawApplyRecordMapper;
 import com.micromall.utils.Condition;

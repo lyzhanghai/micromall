@@ -1,6 +1,6 @@
 package com.micromall.service.vo;
 
-import com.micromall.entity.ext.MemberLevels;
+import com.micromall.repository.entity.common.MemberLevels;
 
 /**
  * @author zhangzxiang91@gmail.com

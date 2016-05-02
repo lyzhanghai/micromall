@@ -1,12 +1,12 @@
 package com.micromall.payment.facade.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.micromall.entity.PaymentRecord;
+import com.micromall.repository.entity.PaymentRecord;
 import com.micromall.payment.dto.*;
-import com.micromall.payment.dto.ext.PayChannel;
-import com.micromall.payment.dto.ext.ResultCodeEnum;
+import com.micromall.payment.dto.common.PayChannel;
+import com.micromall.payment.dto.common.ResultCode;
 import com.micromall.payment.facade.FundService;
-import com.micromall.payment.utils.PaymentStatus;
+import com.micromall.payment.dto.common.PaymentStatus;
 import com.micromall.repository.PaymentRecordMapper;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.utils.SpringBeanUtils;
@@ -43,54 +43,54 @@ public class FundServiceFacadeImpl implements FundService {
 		// 1.校验输入项
 		if (null == request.getPayChannel()) {
 			result.setResultMessage("缺少必需的参数(payChannel)");
-			result.setResultCode(ResultCodeEnum.INVALID_PARAM);
+			result.setResultCode(ResultCode.INVALID_PARAM);
 			return result;
 		}
 		if (null == request.getPayMethod()) {
 			result.setResultMessage("缺少必需的参数(payMethod)");
-			result.setResultCode(ResultCodeEnum.INVALID_PARAM);
+			result.setResultCode(ResultCode.INVALID_PARAM);
 			return result;
 		}
 		if (null == request.getPlatformType()) {
 			result.setResultMessage("缺少必需的参数(platformType)");
-			result.setResultCode(ResultCodeEnum.INVALID_PARAM);
+			result.setResultCode(ResultCode.INVALID_PARAM);
 			return result;
 		}
 		if (StringUtils.isEmpty(request.getOrderNo())) {
 			result.setResultMessage("缺少必需的参数(orderNo)");
-			result.setResultCode(ResultCodeEnum.INVALID_PARAM);
+			result.setResultCode(ResultCode.INVALID_PARAM);
 			return result;
 		}
 		if (request.getAmount() == null) {
 			result.setResultMessage("缺少必需的参数(amount)");
-			result.setResultCode(ResultCodeEnum.INVALID_PARAM);
+			result.setResultCode(ResultCode.INVALID_PARAM);
 			return result;
 		}
 		if (request.getAmount().compareTo(new BigDecimal(0)) <= 0) {
 			result.setResultMessage("订单金额参数不正确");
-			result.setResultCode(ResultCodeEnum.INVALID_PARAM);
+			result.setResultCode(ResultCode.INVALID_PARAM);
 			return result;
 		}
 		if (StringUtils.isEmpty(request.getBackNotifyUrl())) {
 			result.setResultMessage("缺少必需的参数(backNotifyUrl)");
-			result.setResultCode(ResultCodeEnum.INVALID_PARAM);
+			result.setResultCode(ResultCode.INVALID_PARAM);
 			return result;
 		}
 		if (StringUtils.isEmpty(request.getGoodsName())) {
 			result.setResultMessage("缺少必需的参数(goodsName)");
-			result.setResultCode(ResultCodeEnum.INVALID_PARAM);
+			result.setResultCode(ResultCode.INVALID_PARAM);
 			return result;
 		}
 		if (StringUtils.isEmpty(request.getPayIp())) {
 			result.setResultMessage("缺少必需的参数(payIp)");
-			result.setResultCode(ResultCodeEnum.INVALID_PARAM);
+			result.setResultCode(ResultCode.INVALID_PARAM);
 			return result;
 		}
 
 		// 2.判断渠道是否存在
 		if (!_Fund_Services.containsKey(request.getPayChannel())) {
 			result.setResultMessage("支付渠道不可用");
-			result.setResultCode(ResultCodeEnum.PAY_CHANNEL_NOT_AVAILABLE);
+			result.setResultCode(ResultCode.PAY_CHANNEL_NOT_AVAILABLE);
 			return result;
 		}
 
@@ -100,7 +100,7 @@ public class FundServiceFacadeImpl implements FundService {
 
 		if (paymentRecord != null) {
 			result.setResultMessage("已经支付成功，请勿重复支付");
-			result.setResultCode(ResultCodeEnum.REPEAT_PAYMENT);
+			result.setResultCode(ResultCode.REPEAT_PAYMENT);
 			return result;
 		}
 

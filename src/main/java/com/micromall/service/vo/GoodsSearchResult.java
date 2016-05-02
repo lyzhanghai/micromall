@@ -1,6 +1,6 @@
 package com.micromall.service.vo;
 
-import com.micromall.entity.ext.GoodsTypes;
+import com.micromall.repository.entity.common.GoodsTypes;
 
 import java.math.BigDecimal;
 

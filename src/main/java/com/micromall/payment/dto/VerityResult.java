@@ -5,4 +5,13 @@ package com.micromall.payment.dto;
  */
 public class VerityResult {
 
+	private String returnData;
+
+	public String getReturnData() {
+		return returnData;
+	}
+
+	public void setReturnData(String returnData) {
+		this.returnData = returnData;
+	}
 }

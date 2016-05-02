@@ -1,6 +1,6 @@
 package com.micromall.service;
 
-import com.micromall.entity.CertifiedInfo;
+import com.micromall.repository.entity.CertifiedInfo;
 import com.micromall.repository.CertifiedInfoMapper;
 import org.springframework.stereotype.Service;
 

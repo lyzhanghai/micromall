@@ -2,7 +2,7 @@ package com.micromall.web.controller.v;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.micromall.entity.Member;
+import com.micromall.repository.entity.Member;
 import com.micromall.service.LoginSeesionService;
 import com.micromall.service.MemberService;
 import com.micromall.utils.*;

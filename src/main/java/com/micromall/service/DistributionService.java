@@ -1,8 +1,8 @@
 package com.micromall.service;
 
 import com.google.common.collect.Maps;
-import com.micromall.entity.CashAccount;
-import com.micromall.entity.ext.WithdrawStatus;
+import com.micromall.repository.entity.CashAccount;
+import com.micromall.repository.entity.common.WithdrawStatus;
 import com.micromall.repository.CommissionRecordMapper;
 import com.micromall.repository.DistributionRelationMapper;
 import com.micromall.repository.OrderMapper;

@@ -1,6 +1,6 @@
 package com.micromall.repository;
 
-import com.micromall.entity.CertifiedInfo;
+import com.micromall.repository.entity.CertifiedInfo;
 import org.springframework.stereotype.Repository;
 
 /**

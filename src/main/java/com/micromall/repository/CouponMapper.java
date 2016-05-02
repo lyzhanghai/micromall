@@ -1,6 +1,6 @@
 package com.micromall.repository;
 
-import com.micromall.entity.Coupon;
+import com.micromall.repository.entity.Coupon;
 import org.springframework.stereotype.Repository;
 
 @Repository

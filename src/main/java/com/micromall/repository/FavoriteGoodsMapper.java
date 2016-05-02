@@ -1,6 +1,6 @@
 package com.micromall.repository;
 
-import com.micromall.entity.FavoriteGoods;
+import com.micromall.repository.entity.FavoriteGoods;
 import com.sun.tools.javac.util.List;
 import org.springframework.stereotype.Repository;
 

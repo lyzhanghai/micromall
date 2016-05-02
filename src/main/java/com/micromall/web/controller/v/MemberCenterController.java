@@ -1,9 +1,9 @@
 package com.micromall.web.controller.v;
 
-import com.micromall.entity.CertifiedInfo;
-import com.micromall.entity.Member;
-import com.micromall.entity.CashAccount;
-import com.micromall.entity.ext.CertifiedStatus;
+import com.micromall.repository.entity.CertifiedInfo;
+import com.micromall.repository.entity.Member;
+import com.micromall.repository.entity.CashAccount;
+import com.micromall.repository.entity.common.CertifiedStatus;
 import com.micromall.service.CashAccountService;
 import com.micromall.service.CertifiedInfoService;
 import com.micromall.service.LoginSeesionService;

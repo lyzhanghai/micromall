@@ -1,6 +1,6 @@
 package com.micromall.service;
 
-import com.micromall.entity.CashAccount;
+import com.micromall.repository.entity.CashAccount;
 import com.micromall.repository.CashAccountMapper;
 import org.springframework.transaction.annotation.Transactional;
 

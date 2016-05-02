@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.micromall.repository.MemberMapper">
-    <resultMap id="BaseResultMap" type="com.micromall.entity.Member">
+    <resultMap id="BaseResultMap" type="com.micromall.repository.entity.Member">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="wechat_id" property="wechatId" jdbcType="VARCHAR"/>
@@ -58,7 +58,7 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.micromall.entity.Member">
+    <insert id="insert" parameterType="com.micromall.repository.entity.Member">
         <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -76,7 +76,7 @@
         #{updateTime,jdbcType=TIMESTAMP})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.micromall.entity.Member">
+    <update id="updateByPrimaryKey" parameterType="com.micromall.repository.entity.Member">
         update member
         <set>
             <if test="phone != null">

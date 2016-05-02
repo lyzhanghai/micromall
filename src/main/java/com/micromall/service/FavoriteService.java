@@ -1,7 +1,7 @@
 package com.micromall.service;
 
-import com.micromall.entity.FavoriteGoods;
-import com.micromall.entity.Goods;
+import com.micromall.repository.entity.FavoriteGoods;
+import com.micromall.repository.entity.Goods;
 import com.micromall.repository.FavoriteGoodsMapper;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.utils.LogicException;

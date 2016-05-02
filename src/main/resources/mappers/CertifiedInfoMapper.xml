@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.micromall.repository.CertifiedInfoMapper">
-    <resultMap id="BaseResultMap" type="com.micromall.entity.CertifiedInfo">
+    <resultMap id="BaseResultMap" type="com.micromall.repository.entity.CertifiedInfo">
         <id column="uid" property="uid" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
@@ -51,7 +51,7 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.micromall.entity.CertifiedInfo">
+    <insert id="insert" parameterType="com.micromall.repository.entity.CertifiedInfo">
         insert into certified_info (uid, name, phone,
         id_car_no, idcar_image1, idcar_image0,
         status, auditlog, audit_time,
@@ -62,7 +62,7 @@
         #{createTime,jdbcType=TIMESTAMP})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.micromall.entity.CertifiedInfo">
+    <update id="updateByPrimaryKey" parameterType="com.micromall.repository.entity.CertifiedInfo">
         update certified_info
         <set>
             <if test="name != null">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.micromall.repository.CartGoodsMapper">
-    <resultMap id="BaseResultMap" type="com.micromall.entity.CartGoods">
+    <resultMap id="BaseResultMap" type="com.micromall.repository.entity.CartGoods">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="uid" property="uid" jdbcType="INTEGER"/>
         <result column="goods_id" property="goodsId" jdbcType="INTEGER"/>
@@ -45,7 +45,7 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.micromall.entity.CartGoods">
+    <insert id="insert" parameterType="com.micromall.repository.entity.CartGoods">
         <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
             SELECT LAST_INSERT_ID()
         </selectKey>
@@ -55,7 +55,7 @@
         #{buyNumber,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.micromall.entity.CartGoods">
+    <update id="updateByPrimaryKey" parameterType="com.micromall.repository.entity.CartGoods">
         update cart_goods
         <set>
             <if test="uid != null">
@@ -125,7 +125,7 @@
         <include refid="Where_Clause"/>
     </select>
 
-    <select id="selectMemberCartGoods" resultType="com.micromall.entity.CartGoods" parameterType="java.lang.Integer">
+    <select id="selectMemberCartGoods" resultType="com.micromall.repository.entity.CartGoods" parameterType="java.lang.Integer">
         <![CDATA[
             SELECT
                 t2.id AS goodsId,

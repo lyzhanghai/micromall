@@ -1,6 +1,6 @@
 package com.micromall.repository;
 
-import com.micromall.entity.CommissionRecord;
+import com.micromall.repository.entity.CommissionRecord;
 import org.apache.ibatis.annotations.ResultType;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;

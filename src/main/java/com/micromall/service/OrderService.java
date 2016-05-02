@@ -1,6 +1,6 @@
 package com.micromall.service;
 
-import com.micromall.entity.Order;
+import com.micromall.repository.entity.Order;
 import com.micromall.repository.OrderMapper;
 import com.micromall.service.vo.ListViewOrder;
 import org.springframework.stereotype.Service;
