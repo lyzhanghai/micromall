@@ -58,7 +58,7 @@
         </selectKey>
     </insert>
 
-    <update id="update" parameterType="com.daze.open.pojo.PaymentNotifyInfo">
+    <update id="update" parameterType="com.micromall.repository.entity.PaymentNotify">
         UPDATE t_payment_notify_info
         set
         <if test="notifyUrl != null and notifyUrl !=''   ">
@@ -95,7 +95,7 @@
     </update>
 
 
-    <select id="find" parameterType="java.util.Map" resultType="com.daze.open.pojo.PaymentNotifyInfo">
+    <select id="find" parameterType="java.util.Map" resultType="com.micromall.repository.entity.PaymentNotify">
         SELECT
         <include refid="all_column"/>
         FROM t_payment_notify_info
