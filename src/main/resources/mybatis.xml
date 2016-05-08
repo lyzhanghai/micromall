@@ -47,7 +47,6 @@
 
     </settings>
     <typeHandlers>
-        <typeHandler handler="com.micromall.repository.handler.JSONArrayHandler" javaType="[Ljava.lang.String"/>
         <typeHandler handler="com.micromall.repository.handler.JSONListHandler" javaType="java.util.List"/>
         <typeHandler handler="com.micromall.repository.handler.JSONMapHandler" javaType="java.util.Map"/>
     </typeHandlers>
