@@ -38,6 +38,22 @@
         <property name="propertiesDir" value="${payment.properties.dir}"></property>
     </bean>
 
+    <bean id="paymentNotifyTaskThreadPool"
+          class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 核心线程数 -->
+        <property name="corePoolSize" value="2"/>
+        <!-- 最大线程数 -->
+        <property name="maxPoolSize" value="10"/>
+        <!-- 队列最大长度 >=mainExecutor.maxSize -->
+        <property name="queueCapacity" value="300"/>
+        <!-- 线程池维护线程所允许的空闲时间 -->
+        <property name="keepAliveSeconds" value="300"/>
+        <!-- 线程池对拒绝任务(无线程可用)的处理策略 -->
+        <property name="rejectedExecutionHandler">
+            <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy"/>
+        </property>
+    </bean>
+
     <!-- 定时任务容器配置 -->
     <task:annotation-driven executor="executor" scheduler="scheduler"/>
     <task:executor id="executor" pool-size="5"/>

@@ -3,6 +3,7 @@ package com.micromall.service.vo;
 import com.micromall.repository.entity.common.GoodsTypes;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * Created by zhangzx on 16/3/28.
@@ -10,25 +11,25 @@ import java.math.BigDecimal;
 public class GoodsSearchResult {
 
 	// 商品ID
-	private int        goodsId;
+	private int                 goodsId;
 	// 商品标题
-	private String     title;
+	private String              title;
 	// 商品图片
-	private String     image;
+	private String              image;
 	// 商品价格
-	private BigDecimal price;
+	private BigDecimal          price;
 	/**
 	 * 商品类型（普通商品、会员充值卡）{@link GoodsTypes}
 	 */
-	private int        type;
+	private int                 type;
 	// 商品销量
-	private int        salesVolume;
+	private int                 salesVolume;
 	// 是否促销商品
-	private boolean    promotion;
+	private boolean             promotion;
 	// 促销配置
-	private String     promotionParams;
+	private Map<String, Object> promotionParams;
 	// 运费
-	private int        freight;
+	private int                 freight;
 
 	public int getGoodsId() {
 		return goodsId;
@@ -86,11 +87,11 @@ public class GoodsSearchResult {
 		this.promotion = promotion;
 	}
 
-	public String getPromotionParams() {
+	public Map<String, Object> getPromotionParams() {
 		return promotionParams;
 	}
 
-	public void setPromotionParams(String promotionParams) {
+	public void setPromotionParams(Map<String, Object> promotionParams) {
 		this.promotionParams = promotionParams;
 	}
 

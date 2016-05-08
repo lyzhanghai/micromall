@@ -9,10 +9,9 @@ public class VerityRequest {
 
 	// 支付渠道
 	private PayChannel payChannel;
-	//
 	private String     requestData;
-	private String requestIp;
-	private String notifyType;
+	private String     requestIp;
+	private String     notifyType;
 
 	public PayChannel getPayChannel() {
 		return payChannel;
@@ -30,19 +29,19 @@ public class VerityRequest {
 		this.requestData = requestData;
 	}
 
-	public void setRequestIp(String requestIp) {
-		this.requestIp = requestIp;
-	}
-
 	public String getRequestIp() {
 		return requestIp;
 	}
 
-	public void setNotifyType(String notifyType) {
-		this.notifyType = notifyType;
+	public void setRequestIp(String requestIp) {
+		this.requestIp = requestIp;
 	}
 
 	public String getNotifyType() {
 		return notifyType;
+	}
+
+	public void setNotifyType(String notifyType) {
+		this.notifyType = notifyType;
 	}
 }

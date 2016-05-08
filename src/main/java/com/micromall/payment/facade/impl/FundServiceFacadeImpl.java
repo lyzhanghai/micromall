@@ -1,13 +1,14 @@
 package com.micromall.payment.facade.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.micromall.repository.entity.PaymentRecord;
 import com.micromall.payment.dto.*;
+import com.micromall.payment.dto.common.NotifyType;
 import com.micromall.payment.dto.common.PayChannel;
+import com.micromall.payment.dto.common.PaymentStatus;
 import com.micromall.payment.dto.common.ResultCode;
 import com.micromall.payment.facade.FundService;
-import com.micromall.payment.dto.common.PaymentStatus;
 import com.micromall.repository.PaymentRecordMapper;
+import com.micromall.repository.entity.PaymentRecord;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.utils.SpringBeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -153,6 +154,84 @@ public class FundServiceFacadeImpl implements FundService {
 
 	@Override
 	public VerityResult verity(VerityRequest request) {
-		return null;
+		VerityResult result = _Fund_Services.get(request.getPayChannel()).verity(request);
+		try {
+			// 判断是否调用成功
+			if (result.getResultCode() == ResultCode.SUCCESS) {
+				// 入款通知处理
+				if (request.getNotifyType().equals(NotifyType.FUND_IN_NOTIFY)) {
+					// 判断订单是否已经支付，如果已经支付就不做处理
+					Criteria criteria = Criteria.create();
+					criteria.andEqualTo("status", PaymentStatus.SUCCESS);
+					criteria.andEqualTo("order_no", result.getOrderNo());
+					criteria.andEqualTo("deleted", false);
+					PaymentRecord paymentRecord = paymentRecordMapper.selectOneByWhereClause(criteria.build());
+
+					if (paymentRecord != null) {
+						return result;
+					}
+
+					// 获取原订单
+					criteria.andEqualTo("", request.getPayChannel().getCode());
+					// fundInfo.setAmount(Long.valueOf(result.getExtendsion().get(ExtendsionKey.AMOUNT)));
+					paymentRecord = paymentRecordMapper.selectOneByWhereClause(criteria.build());
+					if (paymentRecord == null) {
+						throw new Exception("原始订单不存在");
+					}
+
+					/*// 判断订单的状态,如果是成功或者关闭了就不做处理
+					if (paymentRecord.getPayStatus().equals(PaymentStatus.SUCCESS) || paymentRecord.getPayStatus().equals(PaymentStatus.CLOSE)) {
+						return result;
+					}
+					// 判断金额是否一致
+					if (!paymentRecord.getAmount().toPlainString().equals(result.getExtendsion().get(ExtendsionKey.AMOUNT))) {
+						throw new Exception("金额不一致");
+					}
+					// 对于成功的订单切包含余额的，需要对余额进行扣款处理
+					if (result.getResultCode().equals(ResultCodeEnum.SUCCESS)) {
+						if (fundInfo.getExtendsion() != null && fundInfo.getExtendsion().indexOf(ExtendsionKey.BALANCE) >= 0) {
+							cashChange(JSONUtils.fromJson(fundInfo.getExtendsion(), HashMap.class), fundInfo.getAmount(), FundTypeEnum.FUND_IN);
+						}
+
+					}
+					// 订单金额一致修改数据库信息
+					fundInfo.setStatus(result.getResultCode().equals(ResultCodeEnum.SUCCESS) ? FundInStatus.SUCCESS : FundInStatus.CLOSE);
+					fundInfo.setReturnOrderNo(result.getInstReturnNo());
+					String payType = null;
+					if (StringUtils.isEmpty(fundInfo.getExtendsion())) {
+						fundInfo.setExtendsion(JSONUtils.toJson(result.getExtendsion()));
+					} else {
+						Map<String, String> extendsion = JSONUtils.fromJson(fundInfo.getExtendsion(), HashMap.class);
+						for (String key : result.getExtendsion().keySet()) {
+							if (extendsion.containsKey(key)) {
+								extendsion.put("resp" + key, result.getExtendsion().get(key));
+							} else {
+								extendsion.put(key, String.valueOf(result.getExtendsion().get(key)));
+							}
+						}
+						fundInfo.setExtendsion(JSONUtils.toJson(extendsion));
+						if (extendsion.containsKey(ExtendsionKey.PAY_TYPE)) {
+							payType = extendsion.get(ExtendsionKey.PAY_TYPE);
+						}
+					}
+
+					String content = NotifyUtils
+							.notifyContent(fundInfo.getOutOrderNo(), "" + fundInfo.getAmount(), fundInfo.getStatus(), fundInfo.getInstCode(),
+									fundInfo.getChannelCode(), payType, result.getExtendsion().containsKey(ExtendsionKey.BUYER_MAIL) ?
+											result.getExtendsion().get(ExtendsionKey.BUYER_MAIL) :
+											"");
+					logger.info("通知内容{}", content);
+					// 发送通知
+					fundInfo.setNotifyStatus(NotifyUtils
+							.notifyPE(fundInfo.getBackednNotifyUrl(), fundInfo.getInstOrderNo(), content, NotifyType.FUND_IN_NOTIFY,
+									paymentTradeNotifyInfoService));
+					// 更新订单信息
+					this.paymentFundInInfoService.updateById(fundInfo);*/
+				}
+			}
+		} catch (Exception e) {
+			result.setResultMessage(e.getMessage());
+		}
+		return result;
 	}
 }

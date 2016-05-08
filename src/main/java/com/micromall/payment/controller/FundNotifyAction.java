@@ -45,18 +45,18 @@ public class FundNotifyAction {
 			@PathVariable("notifyType") String notifyType) {
 		VerityRequest verityRequest = new VerityRequest();
 		verityRequest.setPayChannel(PayChannel.valueOfCode(channel));
-		verityRequest.setRequestData(readRequestData(request, channel));
+		verityRequest.setRequestData(_read_RequestData(request, channel));
 		verityRequest.setRequestIp(IPUtils.getIp(request));
 		verityRequest.setNotifyType(notifyType);
-		VerityResult result = fundServiceFacade.verity(verityRequest);
 
+		VerityResult result = fundServiceFacade.verity(verityRequest);
 		if (StringUtils.isNotEmpty(result.getReturnData())) {
 			this.write(response, result.getReturnData());
 		}
 		return;
 	}
 
-	private String readRequestData(HttpServletRequest request, String channel) {
+	private String _read_RequestData(HttpServletRequest request, String channel) {
 		try {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream(), "utf-8"));
 			StringBuilder builder = new StringBuilder();

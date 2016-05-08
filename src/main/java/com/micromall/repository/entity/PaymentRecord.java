@@ -35,6 +35,8 @@ public class PaymentRecord extends IdEntity {
 	private String     notifyStatus;
 	// 退款状态
 	private String     refundStatus;
+	// 是否删除
+	private Boolean    deleted;
 	// 创建时间
 	private Date       createTime;
 	// 修改时间
@@ -142,6 +144,14 @@ public class PaymentRecord extends IdEntity {
 
 	public void setRefundStatus(String refundStatus) {
 		this.refundStatus = refundStatus;
+	}
+
+	public Boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public Date getCreateTime() {
