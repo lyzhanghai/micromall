@@ -68,5 +68,6 @@
         <property name="basePackage" value="com.micromall"/>
         <property name="annotationClass" value="org.springframework.stereotype.Repository"/>
     </bean>
+    <!-- mybaits End -->
 
 </beans>

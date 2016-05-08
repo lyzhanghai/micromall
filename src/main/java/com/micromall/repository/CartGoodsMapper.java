@@ -1,8 +1,9 @@
 package com.micromall.repository;
 
 import com.micromall.repository.entity.CartGoods;
-import com.sun.tools.javac.util.List;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface CartGoodsMapper extends BaseMapper<CartGoods> {

@@ -27,7 +27,7 @@ public class PropertyConfigurer extends PropertyPlaceholderConfigurer {
 	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props) throws BeansException {
 		super.processProperties(beanFactoryToProcess, props);
 		logger.info("初始化系统配置属性......");
-		props.clear();
+		// this.props.clear();
 		Iterator iterator = props.keySet().iterator();
 		while (iterator.hasNext()) {
 			String key = (String)iterator.next();

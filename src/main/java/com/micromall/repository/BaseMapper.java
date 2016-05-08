@@ -2,8 +2,9 @@ package com.micromall.repository;
 
 import com.github.pagehelper.Page;
 import com.micromall.utils.Condition;
-import com.sun.tools.javac.util.List;
 import org.apache.ibatis.session.RowBounds;
+
+import java.util.List;
 
 /**
  * @author zhangzxiang91@gmail.com
