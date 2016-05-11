@@ -9,7 +9,6 @@ import com.micromall.repository.entity.PaymentRecord;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.utils.IPUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,7 +23,7 @@ import java.io.InputStreamReader;
  * Created by zhangzx on 16/3/25.
  * 支付回调通知
  */
-@Controller
+//@Controller
 public class FundNotifyAction {
 
 	@Resource

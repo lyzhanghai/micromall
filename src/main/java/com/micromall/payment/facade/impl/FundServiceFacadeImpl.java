@@ -14,6 +14,7 @@ import com.micromall.utils.SpringBeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,9 +24,11 @@ import java.util.Map;
  * @author zhangzxiang91@gmail.com
  * @date 2016/04/27.
  */
+//@Service
 public class FundServiceFacadeImpl implements FundService {
 
 	private final Map<PayChannel, FundService> _Fund_Services = new HashMap<>();
+	@Resource
 	private PaymentRecordMapper paymentRecordMapper;
 
 	@PostConstruct
