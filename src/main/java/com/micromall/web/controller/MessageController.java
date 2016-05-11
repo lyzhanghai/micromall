@@ -1,7 +1,6 @@
 package com.micromall.web.controller;
 
 import com.micromall.repository.MessageMapper;
-import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
@@ -30,8 +29,8 @@ public class MessageController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/message/list")
-	public ResponseEntity<?> list(@RequestParam(defaultValue = "1") int page) {
+	public ResponseEntity<?> list(@RequestParam(defaultValue = "1") int page, Integer limit) {
 		return ResponseEntity.ok(mapper.selectPageByWhereClause(Criteria.create().andEqualTo("uid", getLoginUser().getUid()).build("id desc"),
-				new RowBounds(page, CommonEnvConstants.FRONT_DEFAULT_PAGE_LIMIT)));
+				new RowBounds(page, resizeLimit(limit))));
 	}
 }

@@ -20,8 +20,8 @@ public class ResponseEntity<T> implements Serializable {
 	private T      data;
 
 	public ResponseEntity() {
-		this.code = Ret.ok.getCode();
-		this.msg = Ret.ok.getMessage();
+		this.code = Ret.Ok.getCode();
+		this.msg = Ret.Ok.getMessage();
 	}
 
 	public ResponseEntity(Ret ret, T data) {
@@ -49,21 +49,21 @@ public class ResponseEntity<T> implements Serializable {
 
 	public ResponseEntity(T data) {
 		super();
-		this.code = Ret.ok.getCode();
-		this.msg = Ret.ok.getMessage();
+		this.code = Ret.Ok.getCode();
+		this.msg = Ret.Ok.getMessage();
 		this.data = data;
 	}
 
 	public static <T> ResponseEntity<T> ok() {
-		return new ResponseEntity<T>(Ret.ok);
+		return new ResponseEntity<T>(Ret.Ok);
 	}
 
 	public static <T> ResponseEntity<T> ok(T data) {
-		return new ResponseEntity<T>(Ret.ok, data);
+		return new ResponseEntity<T>(Ret.Ok, data);
 	}
 
 	public static <T> ResponseEntity<T> fail(String msg) {
-		return new ResponseEntity<T>(Ret.error, msg);
+		return new ResponseEntity<T>(Ret.Error, msg);
 	}
 
 	public int getCode() {

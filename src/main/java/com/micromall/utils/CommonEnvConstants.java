@@ -79,15 +79,16 @@ public final class CommonEnvConstants {
 	public static final String MEMBER_DEFAULT_AVATAR = PropertyConfigurer.getString("member.default.avatar");
 
 	/* 商品搜索默认每页显示个数 */
-	public static final int    GOODS_SEARCH_PERPAGE_DEFAULT_SIZE = Integer
-			.valueOf(PropertyConfigurer.getString("goods.search" + ".perpage_default_size"));
+	// public static final int    GOODS_SEARCH_PERPAGE_DEFAULT_SIZE = Integer.valueOf(PropertyConfigurer.getString("goods.search" + "
+	// .perpage_default_size"));
 	/*商品搜索每页最大显示个数*/
-	public static final int    GOODS_SEARCH_PERPAGE_MAX_SIZE     = Integer.valueOf(PropertyConfigurer.getString("goods.search.perpage_max_size"));
+	// public static final int    GOODS_SEARCH_PERPAGE_MAX_SIZE     = Integer.valueOf(PropertyConfigurer.getString("goods.search.perpage_max_size"));
 	/* 商品搜索默认排序字段 */
-	public static final String GOODS_SEARCH_DEFAULT_SORT         = PropertyConfigurer.getString("goods.search.default_sort");
+	public static final String GOODS_SEARCH_DEFAULT_SORT = PropertyConfigurer.getString("goods.search.default_sort");
 
 	/*前端默认分页大小*/
-	public static final int FRONT_DEFAULT_PAGE_LIMIT = Integer.valueOf(PropertyConfigurer.getString("front.default.page_limit"));
+	// public static final int FRONT_DEFAULT_PAGE_LIMIT = Integer.valueOf(PropertyConfigurer.getString("front.default.page_limit"));
+	public static final int GLOBAL_PERPAGE_MAX_LIMIT_SIZE = Integer.valueOf(PropertyConfigurer.getString("global.perpage.max_limit_size"));
 
 	/*可申请提现时间区间*/
 	public static final String WITHDRAW_APPLY_ALLOW_TIME_INTERVAL  = PropertyConfigurer.getString("withdraw.apply.allow.time_interval");

@@ -57,11 +57,11 @@ public class GoodsController extends BasisController {
 		if (StringUtils.isEmpty(sort) || !GOODS_SORT_FIELD_MAP.containsKey(sort)) {
 			sort = CommonEnvConstants.GOODS_SEARCH_DEFAULT_SORT;
 		}
-		if (limit == null || limit > CommonEnvConstants.GOODS_SEARCH_PERPAGE_MAX_SIZE) {
-			limit = CommonEnvConstants.GOODS_SEARCH_PERPAGE_DEFAULT_SIZE;
+		if (limit <= 0 || limit > CommonEnvConstants.GLOBAL_PERPAGE_MAX_LIMIT_SIZE) {
+			limit = CommonEnvConstants.GLOBAL_PERPAGE_MAX_LIMIT_SIZE;
 		}
 
-		GoodsSearch search = GoodsSearch.created(GOODS_SORT_FIELD_MAP.get(sort), page, limit);
+		GoodsSearch search = GoodsSearch.created(GOODS_SORT_FIELD_MAP.get(sort), page, resizeLimit(limit));
 		search.setQuery(query).setCategoryId(categoryId).setPromotion(promotion);
 		return ResponseEntity.ok(goodsService.searchGoods(search));
 	}

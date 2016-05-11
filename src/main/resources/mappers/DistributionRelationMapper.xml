@@ -65,13 +65,13 @@
         <include refid="Where_Clause"/>
     </delete>
 
-    <select id="selectByPrimaryKey" resultMap="FullResultMap" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
 
     </select>
 
-    <select id="selectOneByWhereClause" resultMap="FullResultMap" parameterType="com.micromall.utils.Condition">
+    <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
         select
-        <include refid="Full_Column_List"/>
+        <include refid="Base_Column_List"/>
         from distribution_relation
         <include refid="Where_Clause"/>
     </select>

@@ -72,7 +72,7 @@ public class CartController extends BasisController {
 	 * @param goodsId 商品id
 	 * @return
 	 */
-	@RequestMapping(value = "/cart/delete_goods")
+	@RequestMapping(value = "/cart/delete")
 	public ResponseEntity<?> delete_goods(int goodsId) {
 		cartService.deleteGoods(getLoginUser().getUid(), Arrays.asList(goodsId));
 		return ResponseEntity.ok();

@@ -31,6 +31,7 @@ public class Goods extends IdEntity {
 	// 商品库存
 	private Integer             inventory;
 	// 是否上架（商品卖完后自动下架）
+	@JsonIgnore
 	private Boolean             shelves;
 	/**
 	 * 商品类型（普通商品、会员充值卡）{@link GoodsTypes}
@@ -69,6 +70,8 @@ public class Goods extends IdEntity {
 	private Date                updateTime;
 
 	// -------------前端展示字段------------
+	// 所属类目
+	private String             categoryName;
 	// 是否已经收藏
 	private boolean favorite;
 
@@ -214,6 +217,14 @@ public class Goods extends IdEntity {
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
 
 	public boolean isFavorite() {
