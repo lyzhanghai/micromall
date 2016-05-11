@@ -1,0 +1,21 @@
+/*轮播图垂直居中*/
+.carousel-middle .carousel-course li {
+  text-align: center;
+  height: 100%;
+  vertical-align: middle;
+}
+.carousel-middle .carousel-course .pic-lay {
+  display: table-cell;
+  vertical-align: middle;
+  max-height: 25rem;
+}
+.carousel-middle .carousel-course .item-img {
+  max-height: 100%;
+  max-width: 100%;
+}
+.carousel-middle .carousel-course img {
+  width: auto;
+  display: inline-block;
+  max-height: 100%;
+  max-width: 100%;
+}

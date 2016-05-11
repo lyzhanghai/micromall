@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>{{partner}}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="initial-scale=1, width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1, user-scalable=no" media="(device-height: 568px)">
+    <meta name="renderer" content="webkit">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="full-screen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="yes"/>
+    <meta name="description" content="原来国外这么便宜！100%正品保障，抢先下载还能领券哦！" />
+    <meta property="qc:admins" content="713116756205656745636" />
+
+    <link rel="shortcut icon" href="{{partner == '折疯了' ? 'img/favicon.ico' : 'img/partner/favicon.ico' }}" type="image/x-icon" />
+
+    <link rel="stylesheet" href="../../css/theme.css"/>
+</head>
+<body>
+<div class="app">
+    <div class="app-state" id="app-state" style="min-height: 640px;">
+        <div class="order-list creat-order-lay">
+            <div class="creat-order-main">
+                <div class="creat-order-top">
+                    <ul>
+                        <li>
+                            <a href="javascript:;">
+                                <div class="top-bg"></div>
+                                <i class="iconzfl icon-dingwei left"></i>
+                                <div class="top-info-lay">
+                                    <div class="top-info">
+                                      <span>
+                                        陈明康
+                                      </span>
+                                      <span>
+                                        18267178423
+                                      </span>
+                                    </div>
+                                    <p>
+                                        浙江省西湖区杭州市文一西路1号元茂大厦2003
+                                    </p>
+                                </div>
+                                <i class="iconzfl icon-youjiantou right"></i>
+                                <div class="top-bg bottom-bg"></div>
+                            </a>
+                        </li>
+                        <!-- end ngIf: !!address.name -->
+                    </ul>
+                </div>
+                <div class="order-list order-list-right-info">
+                    <!-- ngRepeat: item in createDetail.shopOfOrderPOJOs -->
+                    <div class="creat-order-item">
+                        <ul>
+                            <!-- ngRepeat: childItem in item.itemOrders -->
+                            <li>
+                                <div class="item-lay">
+                                    <a href="#/detail&amp;2531191" class="item-img">
+                                        <div class="img-lay">
+                                            <img ng-src="http://img.zhefengle.com/fc6901c7b23c2479004321b557cb538c.jpg?imageView2/2/w/610/interlace/1/q/93"
+                                                 src="http://img.zhefengle.com/fc6901c7b23c2479004321b557cb538c.jpg?imageView2/2/w/610/interlace/1/q/93">
+                                        </div>
+                                    </a>
+                                    <div class="item-info">
+                                        <div class="item-title ng-binding">
+                                            瑞士军表(Swiss Military) 男士休闲手表
+                                        </div>
+                                        <div class="bottom">
+                                            <div class="left">
+                                                <em>￥2174</em>
+                                                <s>￥21711</s>
+                                            </div>
+                                            <div class="right">
+                                            <span>
+                                              数量:1件
+                                            </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-lay">
+                                    <a href="#/detail&amp;2531191" class="item-img">
+                                        <div class="img-lay">
+                                            <img ng-src="http://img.zhefengle.com/fc6901c7b23c2479004321b557cb538c.jpg?imageView2/2/w/610/interlace/1/q/93"
+                                                 src="http://img.zhefengle.com/fc6901c7b23c2479004321b557cb538c.jpg?imageView2/2/w/610/interlace/1/q/93">
+                                        </div>
+                                    </a>
+                                    <div class="item-info">
+                                        <div class="item-title ng-binding">
+                                            瑞士军表(Swiss Military) 男士休闲手表
+                                        </div>
+                                        <div class="bottom">
+                                            <div class="left">
+                                                <em>￥2174</em>
+                                                <s>￥21711</s>
+                                            </div>
+                                            <div class="right">
+                                            <span>
+                                              数量:1件
+                                            </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- end ngRepeat: childItem in item.itemOrders -->
+                        </ul>
+                    </div>
+                    <!-- end ngRepeat: item in createDetail.shopOfOrderPOJOs -->
+                </div>
+                <div class="panel-list">
+                    <div class="section">
+                        <div class="wrapper">
+                            <span class="w-3-5rem ta-r">总重量:</span>
+                            <div class="right">￥522</div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="wrapper">
+                            <span class="w-3-5rem ta-r">配送方式:</span>
+                            <div class="right">快递￥522</div>
+                        </div>
+                    </div>
+                    <div class="section">
+                        <div class="wrapper">
+                            <span class="w-3-5rem ta-r">用户留言:</span>
+                            <div class="words-lay">
+                                <input type="text" placeholder="选填,可填写您和买家达成一致要求" class="words">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="fix-bottom fix-bottom-show">
+                <div class="shop-balance shop-pay-info">
+                    <div class="fix-bm-al">
+                        <div class="shop-info">
+                            合计:<em>￥0</em>
+                        </div>
+                        <button class="submit">
+                            结算
+                        </button>
+                    </div>
+                </div>
+                <div class="fix-bottom-main">
+                    <a href="#/index" class="active"><i class="iconzfl icon-shouyexuanzhong"></i><p>首页</p></a>
+                    <a href="#/type" class=""><i class="iconzfl icon-sousuolianxiang"></i><p>商品</p></a>
+                    <a href="#/circle/loveSunList" class="fix-love-lun-tab ">
+                        <div class="bottom-main">
+                            <i class="iconzfl icon-aishaiweidianji"></i>
+                            <span class="">0</span>
+                        </div>
+                        <p>我的</p>
+                    </a>
+                    <a href="#/user/info" class=""><i class="iconzfl icon-gerenzhongxin"></i><p>购物车</p></a>
+                </div>
+            </div>
+        </div>
+        <!-- ngIf: shopData.length==0 -->
+    </div>
+</div>
+</body>
+<script src="../../js/weight/bodySize.js"></script>
+</html>

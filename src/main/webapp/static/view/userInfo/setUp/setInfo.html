@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>基本资料</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="initial-scale=1, width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1, user-scalable=no" media="(device-height: 568px)">
+    <meta name="renderer" content="webkit">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="full-screen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="address=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="yes"/>
+    <meta name="description" content="原来国外这么便宜！100%正品保障，抢先下载还能领券哦！" />
+    <meta property="qc:admins" content="713116756205656745636" />
+
+    <link rel="shortcut icon" href="{{partner == '折疯了' ? 'img/favicon.ico' : 'img/partner/favicon.ico' }}" type="image/x-icon" />
+
+    <link rel="stylesheet" href="../../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../../css/theme.css"/>
+</head>
+<body>
+<div class="app">
+    <div class="app-state" id="app-state">
+        <div class="examine-state">
+            您的资料还未完善或者审核失败，请继续完善您的信息！
+        </div>
+        <div class="examine-state in-examine">
+            您的资料还在审核中，请耐心等待！
+        </div>
+        <div class="examine-state examine-success">
+            您的资料已经审核通过，如有变更请重新更新资料提交审核！
+        </div>
+        <form name="setInfoForm" class="form-info-main set-info-main">
+            <div class="set-info-lay" style="position: relative;">
+                <div class="info-lay info-name up-img-lay" id="up-img-lay">
+                    <span class="info-text-name">
+                      基本资料:
+                    </span>
+                    <div class="up-img">
+                        <div class="img">
+                            <img src="http://7u2fm4.com1.z0.glb.clouddn.com/492c98ab-6f9b-809a-7ce0-0ba127897611?imageView2/2/w/120/interlace/1/q/93">
+                            <i class="iconfont icon-qianjin right"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-lay">
+                    <label class="info-name">
+                        <span class="info-text-name">
+                          昵称:
+                        </span>
+                        <div class="set-input">
+                            <input type="text">
+                        </div>
+                    </label>
+                </div>
+                <div class="info-lay">
+                    <div class="info-name info-radio">
+                        <span class="info-text-name">
+                          性别:
+                        </span>
+                        <div class="set-input">
+                            <label class="checkbox-four">
+                                <input type="radio" value="2" name="sex" class="iconfont icon-xuanzhong"
+                                       checked="">
+                                女
+                            </label>
+                            <label class="checkbox-four">
+                                <input type="radio" value="1" name="sex" class="iconfont icon-xuanzhong"
+                                       checked="">
+                                男
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="set-info-lay">
+                <div class="add-title">
+                    身份信息（提现佣金必备）
+                </div>
+                <div class="info-lay error-right">
+                    <div class="info-name error-label">
+                        <span class="info-text-name">
+                            手机:
+                        </span>
+                        <div class="set-input">
+                            <input type="text" name="phone" placeholder="请输入手机号码">
+                            <!--<div class="error ng-scope ng-hide" ng-show="addRess.phone.$error.phone &amp;&amp; addRess.formVaild">-->
+                            <!--手机格式不正确-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="info-lay error-right">
+                    <label class="info-name error-label">
+                      <span class="info-text-name">
+                        姓名:
+                      </span>
+                        <div class="set-input">
+                            <input type="text" name="userName" placeholder="姓名">
+                        </div>
+                    </label>
+                </div>
+                <div class="info-lay error-right">
+                    <label class="info-name error-label">
+                      <span class="info-text-name">
+                        身份证:
+                      </span>
+                        <div class="set-input">
+                            <input type="text" name="userName" placeholder="身份证">
+                        </div>
+                    </label>
+                </div>
+                <div class="add-identity">
+                    <div class="identity-main">
+                        <div class="left">
+                            <a href="javascript:;">
+                                <img src="http://7u2fm4.com1.z0.glb.clouddn.com/492c98ab-6f9b-809a-7ce0-0ba127897611?imageView2/2/w/120/interlace/1/q/93">
+                                <input class="file-img" type="file">
+                            </a>
+                            <p>
+                                身份证正面
+                            </p>
+                        </div>
+                        <div class="right">
+                            <a href="javascript:;">
+                                <img src="http://7u2fm4.com1.z0.glb.clouddn.com/492c98ab-6f9b-809a-7ce0-0ba127897611?imageView2/2/w/120/interlace/1/q/93">
+                                <input class="file-img" type="file">
+                            </a>
+                            <p>
+                                身份证背面
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="base-input-lay submit2">
+                <button form-submit="submit()" class="submit submit-margin">
+                    保&nbsp;&nbsp;存
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- ngIf: indexTab -->
+    <div class="fix-bottom fix-bottom-show" ng-if="indexTab">
+        <div class="fix-bottom-main">
+            <a href="#/index" class="">
+                <i class="iconfont icon-shouye">
+                </i>
+                <p>
+                    首页
+                </p>
+            </a>
+            <a href="#/type" class="">
+                <i class="iconfont icon-sousuolianxiang">
+                </i>
+                <p>
+                    分类搜索
+                </p>
+            </a>
+            <a href="#/circle/loveSunList" class="fix-love-lun-tab ">
+                <div class="bottom-main">
+                    <i class="iconfont icon-aishaiweidianji">
+                    </i>
+                <span class="">
+                  0
+                </span>
+                </div>
+                <p>
+                    晒单
+                </p>
+            </a>
+            <a href="#/user/info" class="active">
+                <i class="iconfont icon-gerenzhongxinactive">
+                </i>
+                <p>
+                    个人中心
+                </p>
+            </a>
+        </div>
+    </div>
+    <!-- end ngIf: indexTab -->
+</div>
+</div>
+</body>
+<script src="../../../js/weight/bodySize.js"></script>
+</html>

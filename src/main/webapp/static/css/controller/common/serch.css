@@ -1,0 +1,43 @@
+.curtain-lay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99999;
+  max-width: 750px;
+  display: none;
+  height: 100%;
+}
+.curtain-lay .curtain-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+.curtain-show {
+  display: block;
+}
+.lenovo-list {
+  position: relative;
+  z-index: 99;
+  width: 100%;
+  padding: 0 0.5rem;
+}
+.lenovo-list li {
+  display: block;
+  border-bottom: 1px solid #dddddd;
+}
+.lenovo-list li a {
+  font-size: 0.85rem;
+  height: 1rem;
+  line-height: 1rem;
+  display: block;
+}
+.lenovo-list li i {
+  font-size: 0.425rem;
+  margin-right: 0.125rem;
+  display: inline-block;
+  vertical-align: top;
+  color: #999999;
+}

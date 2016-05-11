@@ -1,0 +1,79 @@
+// 基础库css
+@import "lessLibs/reset";
+@import "lessLibs/mixins";
+@import "lessLibs/variables";   //变量
+
+// 各个模块
+@import "model/load";
+@import "model/common";
+@import "model/htlist";
+@import "model/arrowBox";
+@import "model/carousel";
+@import "model/checkbox";
+@import "model/orderList";
+@import "model/formInfo";
+@import "model/header";
+@import "model/footer";
+@import "model/friendList";
+@import "model/navTab";
+@import "model/backTop";
+
+
+@import "controller/common/userConter/friend/search";
+@import "controller/common/serch";
+
+
+@import "controller/order/creatOrder";
+@import "controller/order/logistic";
+@import "controller/order/pay";
+@import "controller/order/statusList";
+@import "controller/order/statusDetail";
+
+@import "controller/site/siteList";
+@import "controller/site/siteAddEdit";
+
+@import "controller/userConter/friend/info";
+
+@import "controller/userConter/setUp/aboutMy";
+@import "controller/userConter/setUp/setInfo";
+@import "controller/userConter/setUp/upPass";
+
+@import "controller/userConter/coupons";
+@import "controller/userConter/inviteCode";
+@import "controller/userConter/login";
+@import "controller/userConter/myMessage";
+@import "controller/userConter/sepUp";
+@import "controller/userConter/userInfo";
+@import "controller/userConter/member";
+@import "controller/userConter/collect";
+
+@import "controller/userConter/distributor/distributorOrder";
+@import "controller/userConter/distributor/distributorDraw";
+@import "controller/userConter/distributor/distributorRecord";
+
+
+@import "controller/detail.less";
+@import "controller/index.less";
+@import "controller/shopCart.less";
+@import "controller/tabHtlist.less";
+
+// 页面
+@import "controller/index";
+
+
+@import "media.less";
+//首页
+body {
+  .es-transition;
+  background: #f5f5f5;
+  margin: 0 auto;
+}
+html {
+  min-height: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+.app {
+  overflow-x: hidden;
+}

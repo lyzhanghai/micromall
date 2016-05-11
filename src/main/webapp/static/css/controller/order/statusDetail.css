@@ -1,0 +1,172 @@
+/*订单状态详情*/
+.statr-info-lay {
+  padding-bottom: 2.5rem;
+}
+.statr-info-lay .time {
+  text-align: left;
+  line-height: 2.5rem;
+  height: 2.5rem;
+  padding: 0 .5rem;
+  background: #fff;
+}
+.statr-info-lay .time span {
+  font-size: .65rem;
+  color: #333333;
+}
+.statr-info-lay .time .start {
+  float: right;
+  color: #e30039;
+  font-size: .7rem;
+}
+.statr-info-lay .user-info {
+  padding: .5rem;
+  background: #fff;
+  border: 1px solid #eeeeee;
+  border-left: none;
+  border-right: none;
+  line-height: 2rem;
+}
+.statr-info-lay .user-info .info {
+  text-align: left;
+  margin-bottom: .25rem;
+}
+.statr-info-lay .user-info .info span {
+  color: #333333;
+  font-size: .7rem;
+  line-height: .7rem;
+  padding-left: 0rem;
+}
+.statr-info-lay .user-info p {
+  color: #999999;
+  font-size: .7rem;
+  line-height: .7rem;
+}
+.statr-info-lay .panel-list {
+  background: #fff;
+  margin: 0.25rem 0;
+  padding-bottom: 0;
+}
+.statr-info-lay .panel-list .wrapper {
+  padding: 0.65rem 0.5rem;
+  border-bottom: 1px solid #eeeeee;
+  color: #999999;
+}
+.statr-info-lay .panel-list .wrapper span {
+  color: #333333;
+  font-size: .7rem;
+  margin-left: 0.25rem;
+  right: 0.5rem;
+}
+.statr-info-lay .order-list {
+  margin-top: .5rem;
+}
+.statr-info-lay li .item-lay .overseas {
+  width: 1.5rem;
+  text-align: center;
+  height: 0.75rem;
+  border-radius: 5px;
+  line-height: 0.75rem;
+  margin-top: 0.25rem;
+  display: inline-block;
+  color: #55c78e;
+  border: 1px solid #55c78e;
+}
+.statr-info-lay li .logistics-info li {
+  overflow: inherit;
+  margin-top: 0;
+  border-bottom: none;
+}
+.statr-info-lay li .logistics-lay {
+  margin: 0 -0.25rem;
+  border-top: 1px solid #eeeeee;
+  margin-top: 0.25rem;
+}
+.start-logistics .log-title {
+  padding: 0 0.25rem;
+  background: #fff;
+  border-bottom: 1px solid #eeeeee;
+  margin-top: 0.25rem;
+}
+.start-logistics .log-title a {
+  display: inline-block;
+  height: 1rem;
+  line-height: 1rem;
+  font-size: 0.8rem;
+  border-bottom: #fff;
+}
+.start-logistics .logistics-lay li:last-child .bg {
+  height: 50%;
+}
+.start-logistics .logistics-lay li:last-child .element .bg {
+  display: block;
+}
+.start-logistics .more {
+  color: #333333;
+  display: block;
+  text-align: center;
+  padding: 0.25rem 0;
+  background: #fff;
+  font-size: 0.75rem;
+  border-top: 1px solid #eeeeee;
+}
+.statr-info-lay .start-order {
+  padding: 0.25rem;
+  border-bottom: 1px solid #eeeeee;
+}
+.statr-info-lay .start-order h4 {
+  font-weight: normal;
+  font-size: 0.8rem;
+}
+.statr-info-lay .start-order p {
+  font-size: 0.75rem;
+  color: #999999;
+  line-height: 0.55rem;
+}
+.statr-info-lay .order-list li {
+  height: auto;
+  min-height: 3.4rem;
+  overflow: visible;
+}
+.statr-info-lay .order-list li .item-lay {
+  overflow: visible;
+  height: auto;
+  min-height: 1.7rem;
+}
+.statr-info-lay .order-list li .item-info {
+  position: initial;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  min-height: 3.4rem;
+  height: auto;
+}
+.statr-info-lay .order-list li .item-info .item-title {
+  overflow: visible;
+  height: auto;
+  min-height: 1.25rem;
+  max-height: initial;
+}
+.statr-info-lay .panel-list img {
+  width: 1.675rem;
+  vertical-align: middle;
+  margin-right: 0.125rem;
+  margin-top: -0.2rem;
+}
+.statr-info-lay .order-source {
+  border-top: 1px solid #eeeeee;
+}
+.statr-info-lay .return-price-text {
+  padding: .5rem;
+  font-size: 0.8rem;
+  color: #777171;
+}
+.statr-mass p {
+  padding: 0.5rem;
+  font-size: .7rem;
+  color: #6b6b6b;
+  line-height: 1rem;
+}
+.row-arr-box .right s {
+  margin-left: 0.25rem;
+}

@@ -1,0 +1,114 @@
+/*设置基本信息  新增地址也用到*/
+.set-info-lay {
+  margin-top: 0.5rem;
+}
+.set-info-main {
+  padding: 0 0.5rem;
+  font-size: 0;
+  background: #fff;
+  border: 1px solid #ededed;
+  border-left: none;
+  border-right: none;
+}
+.set-info-main .info-lay {
+  position: relative;
+  border-bottom: 1px solid #ededed;
+}
+.set-info-main .info-name {
+  width: 100%;
+  display: block;
+  font-size: 0.75rem;
+  height: 2.8rem;
+  line-height: 2.8rem;
+  position: relative;
+}
+.set-info-main .info-name span {
+  width: 3.75rem;
+  display: inline-block;
+  text-align: left;
+  font-size: 0.75rem;
+}
+.set-info-main .info-name .info-text-name {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  text-align: left;
+}
+.set-info-main .info-name input[type="text"],
+.set-info-main .info-name input[type="password"] {
+  font-size: .65rem;
+  border: none;
+  padding: 0.35rem 0;
+  width: 100%;
+}
+.set-info-main .info-name select {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid #ededed;
+  background: #fff;
+  border-radius: 0;
+  font-size: .75rem;
+  margin-right: .25rem;
+}
+.set-info-main .info-name .set-input {
+  padding: 0 1rem 0 4.5rem;
+}
+.set-info-main .info-lay:last-child {
+  border-bottom: none;
+}
+.set-info-main .position-lay .set-input {
+  padding-right: 2.125rem;
+}
+.set-info-main .info-radio .checkbox-four {
+  float: none;
+}
+.set-info-main .info-radio label {
+  margin: 0 .5rem;
+}
+.set-info-main .info-radio label input {
+  margin: 0 0.125rem;
+  width: .8rem;
+  height: .8rem;
+  line-height: .8rem;
+}
+.set-info-main .info-position i {
+  display: block;
+  font-size: 0.375rem;
+  height: 0.5rem;
+}
+.set-info-main .info-position {
+  position: absolute;
+  right: 0;
+  top: 20%;
+  height: 60%;
+  width: 1.5rem;
+  text-align: center;
+  color: #999999;
+  border-left: 1px solid #ececec;
+  line-height: 0.25rem;
+}
+.set-info-main .up-img-lay {
+  height: 3.75rem;
+  text-align: right;
+  width: auto;
+}
+.set-info-main .up-img-lay .info-text-name {
+  line-height: 3.75rem;
+}
+.set-info-main .up-img-lay .up-img {
+  display: inline-block;
+  height: 3rem;
+  margin-top: 0.35rem;
+}
+.set-info-main .up-img-lay .up-img .img {
+  display: table-cell;
+  height: 3rem;
+  vertical-align: middle;
+  margin-top: 0.5rem;
+}
+.set-info-main .up-img-lay .up-img img {
+  max-width: 3rem;
+  max-height: 3rem;
+  display: inline-block;
+  vertical-align: middle;
+}

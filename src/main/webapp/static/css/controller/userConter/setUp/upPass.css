@@ -1,0 +1,10 @@
+/**
+ * Created by chenmingkang on 16/3/29.
+ */
+/*修改密码*/
+.up-pass-lay {
+  margin-top: 0.5rem;
+}
+.up-pass-lay .info-name input[type="text"] {
+  width: 100%;
+}

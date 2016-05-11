@@ -1,0 +1,137 @@
+/**
+ * Created by chenmingkang on 16/3/28.
+ */
+
+
+/*input checkbox公用 圆圈*/
+.checkbox-four {
+  float: left;
+  display: inline-block;
+  height: 0.5rem;
+  line-height: 0;
+}
+
+.checkbox-four label {
+  display: inline-block;
+  margin-right: 0.25rem;
+}
+
+.checkbox-four input {
+  display: inline-block;
+  font-size: 1rem;
+  width: .9rem;
+  height: .9rem;
+  line-height: .9rem;
+  border-radius: 50%;
+  background: #fff;
+  text-align: center;
+  border: 1px solid rgb(159, 163, 182);
+  -webkit-transition: all .5s ease;
+  -moz-transition: all .5s ease;
+  -o-transition: all .5s ease;
+  -ms-transition: all .5s ease;
+  transition: all .5s ease;
+  position: relative;
+  z-index: 999;
+  color: #fff;
+  overflow: hidden;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.checkbox-four input:checked {
+  background: @gray-base;
+  border-color: @gray-base;
+  color: @gray-base;
+  &:before {
+    color: @gray-base;
+    background: #fff;
+    border-radius: 50%;
+    margin: -.05rem 0 0 -.07rem;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+
+/*******STYLE 3*******/
+.ui-switch {
+  position: absolute;
+  right: 0.25rem;
+  top: 50%;
+  margin-top: -0.325rem;
+  width: 1rem;
+  height: 0.5rem;
+}
+
+.ui-switch input {
+  width: 1rem;
+  height: 0.6rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  border: 0;
+  background: 0 0;
+  -webkit-appearance: none;
+  outline: 0;
+}
+
+.ui-switch input:before {
+  content: '';
+  width: 1.125rem;
+  height: 0.55rem;
+  border: 1px solid #dfdfdf;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  -webkit-background-clip: content-box;
+  background-clip: content-box
+}
+
+.ui-switch input.off:checked:before, .ui-switch input.on:before {
+  border-color: #64bd63;
+  -webkit-box-shadow: #64bd63 0 0 0 0.16rem inset;
+  box-shadow: #64bd63 0 0 0 0.16rem inset;
+  background-color: #64bd63;
+  transition: border .4s, box-shadow .4s, background-color 1.2s;
+  -webkit-transition: border .4s, -webkit-box-shadow .4s, background-color 1.2s;
+  background-color: #64bd63;
+}
+
+.ui-switch input.off:checked:after, .ui-switch input.on:after {
+  left: 0.65rem
+}
+
+.ui-switch input.on:checked:before, .ui-switch input.off:before {
+  border-color: #dfdfdf;
+  -webkit-box-shadow: #dfdfdf 0 0 0 0 inset;
+  box-shadow: #dfdfdf 0 0 0 0 inset;
+  background-color: #fdfdfd;
+  transition: border .4s, box-shadow .4s;
+  -webkit-transition: border .4s, -webkit-box-shadow .4s;
+}
+
+.ui-switch input.on:checked:after, .ui-switch input.off:after {
+  left: 0px
+}
+
+.ui-switch input:after {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  -webkit-transform: translateY(-50%);
+  border-radius: 100%;
+  background-color: #fff;
+  -webkit-box-shadow: 0 0.01rem 0.03rem rgba(0, 0, 0, .4);
+  box-shadow: 0 0.01rem 0.03rem rgba(0, 0, 0, .4);
+  -webkit-transition: left .2s;
+  transition: left .2s
+}

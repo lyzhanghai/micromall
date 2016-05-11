@@ -1,0 +1,158 @@
+
+/*瀑布流样式*/
+.htlist {
+  font-size: 0;
+  padding: 0 .4rem .4rem .4rem;
+  background: #fff;
+  border-bottom: 1px solid @gray-e5;
+}
+
+.htlist ul {
+  display: block;
+  vertical-align: top;
+  width: 100%;
+  overflow: hidden;
+}
+
+.htlist li {
+  position: relative;
+  margin-top: .4rem;
+  vertical-align: top;
+  width: 50%;
+  float: left;
+  text-align: center;
+}
+
+.htlist li .list-out-lay {
+  position: relative;
+  text-align: center;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.htlist li .list-out-lay .list-out-img {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.htlist li .list-out-lay .list-out-img .ht-img{
+  max-height:  100%;max-width: 100%;
+}
+
+.htlist li .img-list {
+  max-width: 100%;
+  display: inline-block;
+}
+
+.htlist li:nth-child(odd) {
+  padding-right: .2rem;
+}
+
+.htlist li:nth-child(even) {
+  padding-left: .2rem;
+}
+
+.htlist .list-item {
+  display: block;
+  background: #fff;
+  text-align: center;
+}
+.htlist a { /*min-height: 2rem;max-height: 7.5rem;max-width: 100%;*/
+  background: #fff;
+  padding: 0 .2rem;
+  border: 1px solid #eee;
+  display: block;
+}
+
+.htlist a .list-item { /*min-height: 2rem;max-height: 7.5rem;max-width: 100%;*/
+  width: auto;
+  max-width: 100%;
+  display: inline-block;
+}
+
+.htlist ul.tow-list li {
+  padding-right: 0;
+}
+
+.htlist ul.tow-list li .list-item {
+  margin: 0 0.15rem 0 0.075rem;
+}
+
+.htlist h4,
+.htlist .main-title {
+  font-size: .7rem;
+  line-height: 1rem;
+  color: #444;
+  font-weight: normal;
+  height: 2rem;
+  overflow: hidden;
+  display: block;
+  margin-bottom: .2rem;
+}
+
+.htlist li .left {
+  float: left;
+}
+
+.htlist li .right {
+  float: right;
+}
+
+.htlist .price {
+  color: #df4444;
+  font-size: .7rem;
+  height: 1rem;
+  line-height: 1rem;
+  overflow: hidden;
+}
+
+.htlist .main {
+  padding: 0 .5rem .25rem .5rem;
+  text-align: left;
+}
+
+.htlist li i {
+  font-size: .8rem;
+  margin-right: .1rem;
+}
+
+.htlist li p {
+  color: #aaaaaa;
+  font-size: .65rem;
+  //line-height: 1.5rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.htlist li .list-out {
+  position: absolute;
+  bottom: .5rem;
+  right: .5rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  display: table;
+}
+
+.htlist li .list-out .bj {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #a3a3a3;
+  opacity: 0.6;
+  border-radius: 50%;
+}
+
+.htlist li .list-out h1 {
+  font-size: 0.75rem;
+  font-weight: normal;
+  color: #fff;
+  z-index: 9;
+  position: relative;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+}
