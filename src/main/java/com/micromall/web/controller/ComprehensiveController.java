@@ -1,4 +1,4 @@
-package com.micromall.web.controller.v;
+package com.micromall.web.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -12,10 +12,9 @@ import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,7 +24,8 @@ import java.util.Map;
  * Created by zhangzx on 16/3/21.
  * 公共接口
  */
-@Controller
+@RestController
+@RequestMapping(value = "/api")
 @Authentication(force = false)
 public class ComprehensiveController extends BasisController {
 
@@ -40,7 +40,6 @@ public class ComprehensiveController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/index_ad_config")
-	@ResponseBody
 	public ResponseEntity<?> index_ad_config() {
 		Map<String, Object> map = Maps.newHashMap();
 		List<Map<String, Object>> banner = Lists.newArrayList();
@@ -72,7 +71,6 @@ public class ComprehensiveController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/articles")
-	@ResponseBody
 	public ResponseEntity<?> articles(int type, @RequestParam(defaultValue = "1") int page) {
 		return ResponseEntity.ok(mapper.selectPageByWhereClause(Condition.Criteria.create().andEqualTo("type", type).build("id desc"),
 				new RowBounds(page, CommonEnvConstants.FRONT_DEFAULT_PAGE_LIMIT)));

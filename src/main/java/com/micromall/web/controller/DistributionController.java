@@ -5,10 +5,10 @@ import com.micromall.utils.CommonEnvConstants;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -16,8 +16,8 @@ import javax.annotation.Resource;
  * Created by zhangzx on 16/3/28.
  * 分销
  */
-@Controller
-@RequestMapping(value = "/distribution")
+@RestController
+@RequestMapping(value = "/api/distribution")
 @Authentication
 public class DistributionController extends BasisController {
 

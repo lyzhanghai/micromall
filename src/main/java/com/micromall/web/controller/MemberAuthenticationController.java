@@ -1,4 +1,4 @@
-package com.micromall.web.controller.v;
+package com.micromall.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -14,9 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +28,8 @@ import java.util.Map;
  * Created by zhangzx on 16/3/21.
  * 登录授权认证
  */
-@Controller
+@RestController
+@RequestMapping(value = "/api")
 @Authentication(force = false)
 public class MemberAuthenticationController {
 
@@ -48,7 +48,6 @@ public class MemberAuthenticationController {
 	 * @return
 	 */
 	@RequestMapping(value = "/auth/loginVerify")
-	@ResponseBody
 	public ResponseEntity<?> loginVerify(HttpServletRequest request, HttpServletResponse response, String phone, String verifycode,
 			String usePromoteCode) throws Exception {
 
@@ -104,7 +103,8 @@ public class MemberAuthenticationController {
 			String code = request.getParameter("code");
 			if (StringUtils.isEmpty(code)) {
 				logger.error("微信用户授权失败：缺少<code>");
-				response.sendRedirect(CommonEnvConstants.WEIXIN_AUTH_FAIL_REDIRECT_URL);
+				// response.sendRedirect(CommonEnvConstants.WEIXIN_AUTH_FAIL_REDIRECT_URL);
+				request.getRequestDispatcher(CommonEnvConstants.WEIXIN_AUTH_FAIL_REDIRECT_URL).forward(request, response);
 				return;
 			}
 
@@ -129,7 +129,8 @@ public class MemberAuthenticationController {
 			}
 			if (StringUtils.isEmpty(openid) || StringUtils.isEmpty(access_token)) {
 				logger.error("微信用户授权失败：openid={}, access_token={}", openid, access_token);
-				response.sendRedirect(CommonEnvConstants.WEIXIN_AUTH_FAIL_REDIRECT_URL);
+				// response.sendRedirect(CommonEnvConstants.WEIXIN_AUTH_FAIL_REDIRECT_URL);
+				request.getRequestDispatcher(CommonEnvConstants.WEIXIN_AUTH_FAIL_REDIRECT_URL).forward(request, response);
 				return;
 			}
 

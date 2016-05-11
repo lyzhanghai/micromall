@@ -1,4 +1,4 @@
-package com.micromall.web.controller.v;
+package com.micromall.web.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -8,13 +8,11 @@ import com.micromall.repository.entity.Goods;
 import com.micromall.service.CartService;
 import com.micromall.service.GoodsService;
 import com.micromall.service.ShippingAddressService;
-import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -27,7 +25,8 @@ import java.util.UUID;
  * @author zhangzxiang91@gmail.com
  * @date 2016/04/11.
  */
-@Controller
+@RestController
+@RequestMapping(value = "/api")
 @Authentication
 public class BuyController extends BasisController {
 
@@ -47,7 +46,6 @@ public class BuyController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/cart/settle")
-	@ResponseBody
 	public ResponseEntity<?> settle(String goodsIds, Integer buyNumber, boolean cart) {
 		if (StringUtils.isEmpty(goodsIds)) {
 			return ResponseEntity.fail(cart ? "请选择要结算的商品" : "请选择要购买的商品");
@@ -121,7 +119,6 @@ public class BuyController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/buy")
-	@ResponseBody
 	public ResponseEntity<?> buy(String settleId) {
 
 		return ResponseEntity.ok();
@@ -134,7 +131,6 @@ public class BuyController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/pay")
-	@ResponseBody
 	public ResponseEntity<?> pay(String orderNo) {
 
 		return ResponseEntity.ok();

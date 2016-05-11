@@ -8,6 +8,11 @@ package com.micromall.utils;
  */
 public final class CommonEnvConstants {
 
+	/* 运行环境 */
+	public static final Environment ENV               = new Environment(PropertyConfigurer.getString("app.environment"));
+	/* 开发模式下模拟登录用户id */
+	public static final int         DEBUG_AUTH_USERID = Integer.valueOf(PropertyConfigurer.getString("debug.auth.userid"));
+
 	/**
 	 * =============== 微信授权/登录配置 ===============
 	 **/
@@ -31,9 +36,14 @@ public final class CommonEnvConstants {
 	public static final String WEIXIN_AUTH_FAIL_REDIRECT_URL    = PropertyConfigurer.getString("weixin.auth.fail.redirect_url");
 	/* 服务器请求处理出错，跳转到的页面 */
 	public static final String SERVER_ERROR_REDIRECT_URL        = PropertyConfigurer.getString("server.error.redirect_url");
+
+	/**
+	 * =============== 手机号码登录配置 ===============
+	 **/
+	/* 是否支持手机号码登录 */
+	public static final boolean MOBILE_LOGIN_USABLE        = Boolean.valueOf(PropertyConfigurer.getString("mobile.login.usable"));
 	/* 使用手机号的授权登录页面 */
-	@Deprecated
-	public static final String MOBILE_AUTHORIZE_LOGIN_URL       = PropertyConfigurer.getString("mobile.authorize.loginUrl");
+	public static final String  MOBILE_AUTHORIZE_LOGIN_URL = PropertyConfigurer.getString("mobile.authorize.loginUrl");
 
 	/**
 	 * =============== 登录会话session配置 ===============
@@ -92,4 +102,20 @@ public final class CommonEnvConstants {
 	/*订单物流已收货超时自动确认收货时间*/
 	public static final String ORDER_TIMEOUT_confirm_delivery_TIME = PropertyConfigurer.getString("order.timeout.confirm_delivery_time");
 
+	public static class Environment {
+
+		private String environment;
+
+		public Environment(String environment) {
+			this.environment = environment;
+		}
+
+		public boolean isDistEnv() {
+			return "dist".equals(environment);
+		}
+
+		public boolean isDevEnv() {
+			return "dev".equals(environment);
+		}
+	}
 }

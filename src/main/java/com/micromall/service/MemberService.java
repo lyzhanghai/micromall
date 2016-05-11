@@ -81,6 +81,12 @@ public class MemberService {
 		return member;
 	}
 
+	public static void main(String[] args) {
+		System.out.println(Base64.encodeBase64String(("#" + "879777").getBytes()));
+		System.out.println(Base64.encodeBase64String(("#" + "168288").getBytes()));
+		System.out.println(Base64.encodeBase64String(("#" + "100001").getBytes()));
+	}
+
 	@Transactional(readOnly = true)
 	public Member findOneByCriteria(Condition condition) {
 		return mapper.selectOneByWhereClause(condition);

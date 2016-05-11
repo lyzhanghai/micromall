@@ -1,18 +1,15 @@
-package com.micromall.web.controller.v;
+package com.micromall.web.controller;
 
 import com.micromall.repository.entity.ShippingAddress;
 import com.micromall.service.ShippingAddressService;
 import com.micromall.utils.ArgumentValidException;
 import com.micromall.utils.ValidateUtils;
-import com.micromall.web.controller.BasisController;
-import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -21,24 +18,22 @@ import java.util.Date;
  * Created by zhangzx on 16/3/28.
  * 收货地址
  */
-@Controller
-@RequestMapping(value = "/shipping_address")
+@RestController
+@RequestMapping(value = "/api")
 @Authentication
 public class ShippingAddressController extends BasisController {
 
 	@Resource
-	private ShippingAddressService deliveryAddressService;
+	private ShippingAddressService shippingAddressService;
 
 	/**
 	 * 收货地址列表
 	 *
 	 * @return
 	 */
-	@RequestMapping(value = "/list")
-	@UncaughtException(msg = "加载收货地址信息失败")
-	@ResponseBody
+	@RequestMapping(value = "/address/list")
 	public ResponseEntity<?> list() {
-		return ResponseEntity.ok(deliveryAddressService.list(getLoginUser().getUid()));
+		return ResponseEntity.ok(shippingAddressService.list(getLoginUser().getUid()));
 	}
 
 	/**
@@ -53,9 +48,7 @@ public class ShippingAddressController extends BasisController {
 	 * @param defaul 是否设为默认地址
 	 * @return
 	 */
-	@UncaughtException(msg = "保存收货地址信息失败")
-	@RequestMapping(value = "/add")
-	@ResponseBody
+	@RequestMapping(value = "/address/add")
 	public ResponseEntity<?> add_address(String province, String city, String county, String detailedAddress, String consigneeName,
 			String consigneePhone, String postcode, @RequestParam(defaultValue = "false") boolean defaul) {
 
@@ -71,7 +64,7 @@ public class ShippingAddressController extends BasisController {
 		address.setDefaul(defaul);
 		address.setCreateTime(new Date());
 		validateAddress(address);
-		deliveryAddressService.addAddress(address);
+		shippingAddressService.addAddress(address);
 
 		return ResponseEntity.ok(address);
 	}
@@ -89,9 +82,7 @@ public class ShippingAddressController extends BasisController {
 	 * @param defaul 是否设为默认地址
 	 * @return
 	 */
-	@UncaughtException(msg = "保存收货地址信息失败")
-	@RequestMapping(value = "/update")
-	@ResponseBody
+	@RequestMapping(value = "/address/update")
 	public ResponseEntity<?> update_address(int addressId, String province, String city, String county, String detailedAddress, String consigneeName,
 			String consigneePhone, String postcode, @RequestParam(defaultValue = "false") boolean defaul) {
 
@@ -108,10 +99,33 @@ public class ShippingAddressController extends BasisController {
 		address.setDefaul(defaul);
 		address.setUpdateTime(new Date());
 		validateAddress(address);
-		if (!deliveryAddressService.updateAddress(address)) {
+		if (!shippingAddressService.updateAddress(address)) {
 			return ResponseEntity.fail("保存收货地址信息失败");
 		}
 		return ResponseEntity.ok();
+	}
+
+	/**
+	 * 删除收货地址
+	 *
+	 * @param id 地址id
+	 * @return
+	 */
+	@RequestMapping(value = "/address/delete")
+	public ResponseEntity<?> delete_address(int id) {
+		shippingAddressService.deleteAddress(getLoginUser().getUid(), id);
+		return ResponseEntity.ok();
+	}
+
+	/**
+	 * 获取收货地址
+	 *
+	 * @param id 地址id
+	 * @return
+	 */
+	@RequestMapping(value = "/address/get")
+	public ResponseEntity<?> get_address(int id) {
+		return ResponseEntity.ok(shippingAddressService.getAddress(getLoginUser().getUid(), id));
 	}
 
 	private void validateAddress(ShippingAddress address) {
@@ -155,32 +169,4 @@ public class ShippingAddressController extends BasisController {
 			throw new ArgumentValidException("邮政编码输入不正确");
 		}
 	}
-
-	/**
-	 * 删除收货地址
-	 *
-	 * @param id 地址id
-	 * @return
-	 */
-	@UncaughtException(msg = "删除收货地址信息失败")
-	@RequestMapping(value = "/delete")
-	@ResponseBody
-	public ResponseEntity<?> delete_address(int id) {
-		deliveryAddressService.deleteAddress(getLoginUser().getUid(), id);
-		return ResponseEntity.ok();
-	}
-
-	/**
-	 * 获取收货地址
-	 *
-	 * @param id 地址id
-	 * @return
-	 */
-	@UncaughtException(msg = "加载收货地址信息失败")
-	@RequestMapping(value = "/get")
-	@ResponseBody
-	public ResponseEntity<?> get_address(int id) {
-		return ResponseEntity.ok(deliveryAddressService.getAddress(getLoginUser().getUid(), id));
-	}
-
 }

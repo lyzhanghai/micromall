@@ -1,4 +1,4 @@
-package com.micromall.web.controller.v;
+package com.micromall.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -8,15 +8,12 @@ import com.micromall.repository.entity.common.WithdrawStatus;
 import com.micromall.service.WithdrawService;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.Condition.Criteria;
-import com.micromall.web.controller.BasisController;
-import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Calendar;
@@ -25,8 +22,8 @@ import java.util.Calendar;
  * Created by zhangzx on 16/3/28.
  * 提现
  */
-@Controller
-@RequestMapping(value = "/withdraw")
+@RestController
+@RequestMapping(value = "/api")
 @Authentication
 public class WithdrawController extends BasisController {
 
@@ -40,9 +37,7 @@ public class WithdrawController extends BasisController {
 	 * @param channel 提现渠道
 	 * @return
 	 */
-	@UncaughtException(msg = "申请提现失败")
-	@RequestMapping(value = "/apply")
-	@ResponseBody
+	@RequestMapping(value = "/withdraw/apply")
 	public ResponseEntity<?> apply(float amount, String channel) {
 		if (amount < CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MIN_AMOUNT) {
 			return ResponseEntity.fail("提现金额不得低于" + CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MIN_AMOUNT + "元");
@@ -105,9 +100,7 @@ public class WithdrawController extends BasisController {
 	 * @param status audit:审核中，through:已通过，not_through:未通过
 	 * @return
 	 */
-	@UncaughtException(msg = "加载提现记录失败")
-	@RequestMapping(value = "/records")
-	@ResponseBody
+	@RequestMapping(value = "/withdraw/records")
 	public ResponseEntity<?> records(String status) {
 		Criteria criteria = Criteria.create().andEqualTo("uid", getLoginUser());
 		if (status != null) {

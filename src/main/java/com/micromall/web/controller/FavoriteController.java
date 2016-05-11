@@ -1,13 +1,10 @@
-package com.micromall.web.controller.v;
+package com.micromall.web.controller;
 
 import com.micromall.service.FavoriteService;
-import com.micromall.web.controller.BasisController;
-import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -15,8 +12,8 @@ import javax.annotation.Resource;
  * Created by zhangzx on 16/3/23.
  * 商品收藏夹
  */
-@Controller
-@RequestMapping(value = "/favorite")
+@RestController
+@RequestMapping(value = "/api")
 @Authentication
 public class FavoriteController extends BasisController {
 
@@ -28,9 +25,7 @@ public class FavoriteController extends BasisController {
 	 *
 	 * @return
 	 */
-	@UncaughtException(msg = "加载商品列表失败")
-	@RequestMapping(value = "/list")
-	@ResponseBody
+	@RequestMapping(value = "/favorite/list")
 	public ResponseEntity<?> list() {
 		return ResponseEntity.ok(favoriteService.listGoods(getLoginUser().getUid()));
 	}
@@ -41,9 +36,7 @@ public class FavoriteController extends BasisController {
 	 * @param goodsId 商品id
 	 * @return
 	 */
-	@UncaughtException(msg = "加入收藏夹失败")
-	@RequestMapping(value = "/join")
-	@ResponseBody
+	@RequestMapping(value = "/favorite/join")
 	public ResponseEntity<?> join(int goodsId) {
 		favoriteService.favoriteGoods(getLoginUser().getUid(), goodsId);
 		return ResponseEntity.ok();
@@ -55,9 +48,7 @@ public class FavoriteController extends BasisController {
 	 * @param goodsId 商品id
 	 * @return
 	 */
-	@UncaughtException(msg = "删除商品失败")
-	@RequestMapping(value = "/delete")
-	@ResponseBody
+	@RequestMapping(value = "/favorite/delete")
 	public ResponseEntity<?> delete(int goodsId) {
 		favoriteService.deleteGoods(getLoginUser().getUid(), goodsId);
 		return ResponseEntity.ok();
