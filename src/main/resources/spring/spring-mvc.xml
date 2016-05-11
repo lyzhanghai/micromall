@@ -53,23 +53,24 @@
 
     <mvc:interceptors>
         <!-- 前端-身份验证拦截器 -->
-        <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/**/*.css"/>
-            <mvc:exclude-mapping path="/**/*.jpg"/>
-            <mvc:exclude-mapping path="/**/*.png"/>
-            <mvc:exclude-mapping path="/**/*.js"/>
-            <mvc:exclude-mapping path="/static/**"/>
-            <mvc:exclude-mapping path="/images/**"/>
-            <mvc:exclude-mapping path="/admin/**"/>
-            <bean class="com.micromall.web.security.FrontAuthenticationInterceptor">
-                <property name="excludes">
-                    <list>
-                        <value>/**/*.html</value>
-                    </list>
-                </property>
-            </bean>
-        </mvc:interceptor>
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/**"/>-->
+            <!--<mvc:exclude-mapping path="/**/*.css"/>-->
+            <!--<mvc:exclude-mapping path="/**/*.jpg"/>-->
+            <!--<mvc:exclude-mapping path="/**/*.png"/>-->
+            <!--<mvc:exclude-mapping path="/**/*.js"/>-->
+            <!--<mvc:exclude-mapping path="/static/**"/>-->
+            <!--<mvc:exclude-mapping path="/images/**"/>-->
+            <!--<mvc:exclude-mapping path="/admin/**"/>-->
+            <!--<mvc:exclude-mapping path="/articles"/>-->
+            <!--<bean class="com.micromall.web.security.FrontAuthenticationInterceptor">-->
+                <!--<property name="excludes">-->
+                    <!--<list>-->
+                        <!--<value>/**/*.html</value>-->
+                    <!--</list>-->
+                <!--</property>-->
+            <!--</bean>-->
+        <!--</mvc:interceptor>-->
         <!-- 后台-身份验证拦截器 -->
         <mvc:interceptor>
             <mvc:mapping path="/admin/**"/>

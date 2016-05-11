@@ -21,12 +21,8 @@
     <bean class="com.micromall.utils.PropertyConfigurer">
         <property name="locations">
             <list>
-                <!--
-                <value>classpath:/config.properties</value>
-                <value>classpath:/config-${env.profiles}.properties</value>
-                -->
-                <value>file:/Users/zhangzx/work/my-work/micromall/document/properties/config.properties</value>
-                <value>file:/Users/zhangzx/work/my-work/micromall/document/properties/config-${env.profiles}.properties</value>
+                <value>${config.dir}/config.properties</value>
+                <value>${config.dir}/config-${env.profiles}.properties</value>
             </list>
         </property>
         <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
