@@ -2,6 +2,7 @@ package com.micromall.service;
 
 import com.micromall.repository.entity.CashAccount;
 import com.micromall.repository.CashAccountMapper;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -12,6 +13,7 @@ import java.util.Date;
  * @author zhangzxiang91@gmail.com
  * @date 2016/04/17.
  */
+@Service
 public class CashAccountService {
 
 	@Resource
