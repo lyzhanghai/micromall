@@ -83,11 +83,11 @@ public class ShippingAddressController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/address/update")
-	public ResponseEntity<?> update_address(int addressId, String province, String city, String county, String detailedAddress, String consigneeName,
+	public ResponseEntity<?> update_address(int id, String province, String city, String county, String detailedAddress, String consigneeName,
 			String consigneePhone, String postcode, @RequestParam(defaultValue = "false") boolean defaul) {
 
 		ShippingAddress address = new ShippingAddress();
-		address.setId(addressId);
+		address.setId(id);
 		address.setUid(getLoginUser().getUid());
 		address.setProvince(province);
 		address.setCity(city);
@@ -165,7 +165,7 @@ public class ShippingAddressController extends BasisController {
 		if (ValidateUtils.illegalMobilePhoneNumber(address.getConsigneePhone())) {
 			throw new ArgumentValidException("收货人电话输入不正确");
 		}
-		if (ValidateUtils.illegalPostcode(address.getPostcode())) {
+		if (address.getPostcode()!=null && ValidateUtils.illegalPostcode(address.getPostcode())) {
 			throw new ArgumentValidException("邮政编码输入不正确");
 		}
 	}

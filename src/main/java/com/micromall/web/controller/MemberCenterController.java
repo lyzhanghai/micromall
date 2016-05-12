@@ -12,7 +12,6 @@ import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.utils.UploadUtils;
 import com.micromall.utils.ValidateUtils;
-import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +29,7 @@ import java.util.Map;
  * 会员中心
  */
 @RestController
-@RequestMapping(value = "/api/member")
+	@RequestMapping(value = "/api/member")
 @Authentication
 public class MemberCenterController extends BasisController {
 
