@@ -1,12 +1,105 @@
-CREATE TABLE `article` (
+CREATE TABLE `member` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `type` tinyint(4) NOT NULL COMMENT '类型',
-  `title` varchar(90) DEFAULT NULL COMMENT '标题',
-  `content` text NOT NULL COMMENT '内容',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `phone` varchar(11) DEFAULT NULL COMMENT '登录手机号（需要绑定手机号）',
+  `wechat_id` varchar(60) DEFAULT NULL COMMENT '微信id',
+  `nickname` varchar(60) NOT NULL COMMENT '用户昵称',
+  `avatar` varchar(255) NOT NULL COMMENT '用户头像',
+  `level` varchar(10) NOT NULL COMMENT '会员级别',
+  `gender` char(1) DEFAULT NULL COMMENT '性别',
+  `birthday` varchar(10) DEFAULT NULL COMMENT '生日',
+  `my_promote_code` varchar(20) NULL COMMENT '推广码',
+  `use_promote_code` varchar(20) DEFAULT NULL COMMENT '上级分销商推广码',
+  `parent_uid` int(11) DEFAULT NULL COMMENT '上级分销商用户id',
+  `verified` char(1) NOT NULL COMMENT '是否认证用户',
+  `deleted` char(1) NOT NULL COMMENT '是否逻辑删除',
+  `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
+  `last_login_ip` varchar(60) DEFAULT NULL COMMENT '最后一次登录IP',
+  `register_time` datetime NOT NULL COMMENT '用户注册时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  KEY (`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章';
+  UNIQUE KEY (`phone`),
+  UNIQUE KEY (`wechat_id`),
+  UNIQUE KEY (`my_promote_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='会员信息';
+
+
+CREATE TABLE `cash_account` (
+  `uid` int(11) NOT NULL COMMENT '所属用户id',
+  `balance` decimal(10,2) NOT NULL COMMENT '会员账户余额',
+  `commission` decimal(10,2) NOT NULL COMMENT '佣金账户金额',
+  `total_sales` decimal(10,2) NOT NULL COMMENT '销售总额',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资金账户信息';
+
+
+CREATE TABLE `distribution_relation` (
+  `uid` int(11) NOT NULL COMMENT '所属用户id',
+  `lower_uid` int(11) NOT NULL COMMENT '下级分销用户id',
+  `level` tinyint(4) NOT NULL COMMENT '级别',
+  `create_time` datetime DEFAULT NULL COMMENT '成为分销商时间',
+  UNIQUE KEY (`id`,`lower_uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分销商关系';
+
+
+CREATE TABLE `goods` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(90) NOT NULL COMMENT '商品标题',
+  `main_image` varchar(255) NOT NULL COMMENT '商品主图片',
+  `images` text NOT NULL COMMENT '商品图片数组',
+  `category_id` int(11) NOT NULL COMMENT '所属类目',
+  `price` decimal(10,2) NOT NULL COMMENT '商品价格',
+  `inventory` mediumint(9) NOT NULL COMMENT '商品库存',
+  `shelves` char(1) NOT NULL COMMENT '是否上架',
+  `type` tinyint(4) NOT NULL COMMENT '商品类型（普通商品、会员充值卡）',
+  `promotion` char(1) NOT NULL COMMENT '是否促销商品',
+  `promotion_params` text COMMENT '促销配置',
+  `freight` mediumint(9) NOT NULL COMMENT '运费',
+  `descr` text NOT NULL COMMENT '商品描述',
+  `product_params` text NULL COMMENT '产品参数',
+  `sort` smallint(6) NOT NULL COMMENT '商品排序',
+  `sales_volume` int(11) NOT NULL COMMENT '商品销量',
+  `deleted` char(1) NOT NULL COMMENT '是否逻辑删除',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品信息';
+
+
+CREATE TABLE `properties` (
+  `name` varchar(90) NOT NULL COMMENT '配置Key',
+  `content` text NOT NULL COMMENT '配置Value',
+  PRIMARY KEY (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置信息';
+
+CREATE TABLE `message` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL COMMENT '所属用户id',
+  `title` varchar(90) NOT NULL COMMENT '标题',
+  `content` text NOT NULL COMMENT '内容',
+  `create_time` datetime NOT NULL COMMENT '发送时间',
+  PRIMARY KEY (`id`),
+  KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户消息';
+
+CREATE TABLE `shipping_address` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL COMMENT '所属用户id',
+  `province` varchar(30) NOT NULL COMMENT '省',
+  `city` varchar(30) NOT NULL COMMENT '市',
+  `county` varchar(30) NULL COMMENT '区/县',
+  `detailed_address` varchar(240) NOT NULL COMMENT '详细地址',
+  `consignee_name` varchar(30) NOT NULL COMMENT '收货人姓名',
+  `consignee_phone` varchar(15) NOT NULL COMMENT '收货人电话',
+  `postcode` char(6) DEFAULT NULL COMMENT '邮政编码',
+  `defaul` char(1) NOT NULL COMMENT '是否默认地址',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`id`),
+  KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户收货地址';
+
 
 CREATE TABLE `cart_goods` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -18,15 +111,39 @@ CREATE TABLE `cart_goods` (
   UNIQUE KEY (`uid`,`goods_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='购物车商品';
 
-CREATE TABLE `cash_account` (
+
+CREATE TABLE `favorite_goods` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL COMMENT '所属用户id',
-  `balance` decimal(10,2) NOT NULL COMMENT '会员账户余额',
-  `commission` decimal(10,2) NOT NULL COMMENT '佣金账户金额',
-  `total_sales` decimal(10,2) NOT NULL COMMENT '销售总额',
+  `goods_id` int(11) NOT NULL COMMENT '收藏的商品ID',
+  `title` varchar(90) NOT NULL COMMENT '商品标题',
+  `image` varchar(255) NOT NULL COMMENT '商品图片',
+  `price` decimal(10,2) NOT NULL COMMENT '商品价格',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  PRIMARY KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='资金账户信息';
+  PRIMARY KEY (`id`),
+  UNIQUE KEY (`uid`,`goods_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户商品收藏';
+
+
+
+
+
+-- ======================================================================================
+
+
+
+
+
+CREATE TABLE `article` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` tinyint(4) NOT NULL COMMENT '类型',
+  `title` varchar(90) DEFAULT NULL COMMENT '标题',
+  `content` text NOT NULL COMMENT '内容',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY (`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章';
+
 
 CREATE TABLE `category` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -62,74 +179,7 @@ CREATE TABLE `coupon` (
   KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户优惠券';
 
-CREATE TABLE `favorite_goods` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `uid` int(11) NOT NULL COMMENT '所属用户id',
-  `goods_id` int(11) NOT NULL COMMENT '收藏的商品ID',
-  `title` varchar(90) NOT NULL COMMENT '商品标题',
-  `image` varchar(255) NOT NULL COMMENT '商品图片',
-  `price` decimal(10,2) NOT NULL COMMENT '商品价格',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY (`uid`,`goods_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户商品收藏';
 
-CREATE TABLE `goods` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(90) NOT NULL COMMENT '商品标题',
-  `main_image` varchar(255) NOT NULL COMMENT '商品主图片',
-  `images` text NOT NULL COMMENT '商品图片数组',
-  `category_id` int(11) NOT NULL COMMENT '所属类目',
-  `price` decimal(10,2) NOT NULL COMMENT '商品价格',
-  `inventory` mediumint(9) NOT NULL COMMENT '商品库存',
-  `shelves` char(1) NOT NULL COMMENT '是否上架',
-  `type` tinyint(4) NOT NULL COMMENT '商品类型（普通商品、会员充值卡）',
-  `promotion` char(1) NOT NULL COMMENT '是否促销商品',
-  `promotion_params` text COMMENT '促销配置',
-  `freight` mediumint(9) NOT NULL COMMENT '运费',
-  `descr` text COMMENT '商品描述',
-  `product_params` text COMMENT '产品参数',
-  `sort` smallint(6) NOT NULL COMMENT '商品排序',
-  `sales_volume` int(11) NOT NULL COMMENT '商品销量',
-  `deleted` char(1) NOT NULL COMMENT '是否逻辑删除',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品信息';
-
-CREATE TABLE `member` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `phone` varchar(11) DEFAULT NULL COMMENT '登录手机号（需要绑定手机号）',
-  `wechat_id` varchar(60) DEFAULT NULL COMMENT '微信id',
-  `nickname` varchar(60) NOT NULL COMMENT '用户昵称',
-  `avatar` varchar(255) NOT NULL COMMENT '用户头像',
-  `level` varchar(10) NOT NULL COMMENT '会员级别',
-  `gender` char(1) DEFAULT NULL COMMENT '性别',
-  `birthday` varchar(10) DEFAULT NULL COMMENT '生日',
-  `my_promote_code` varchar(20) NOT NULL COMMENT '推广码',
-  `use_promote_code` varchar(20) DEFAULT NULL COMMENT '上级分销商推广码',
-  `parentUid` int(11) DEFAULT NULL COMMENT '上级分销商用户id',
-  `verified` char(1) NOT NULL COMMENT '是否认证用户',
-  `delete` char(1) NOT NULL COMMENT '是否逻辑删除',
-  `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
-  `last_login_ip` varchar(60) DEFAULT NULL COMMENT '最后一次登录IP',
-  `register_time` datetime NOT NULL COMMENT '用户注册时间',
-  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY (`phone`),
-  UNIQUE KEY (`wechat_id`),
-  UNIQUE KEY (`my_promote_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT='会员信息';
-
-CREATE TABLE `message` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `uid` int(11) NOT NULL COMMENT '所属用户id',
-  `title` varchar(90) NOT NULL COMMENT '标题',
-  `content` text NOT NULL COMMENT '内容',
-  `create_time` datetime NOT NULL COMMENT '发送时间',
-  PRIMARY KEY (`id`),
-  KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户消息';
 
 CREATE TABLE `order` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -180,28 +230,6 @@ CREATE TABLE `order_goods` (
   KEY (`order_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单商品';
 
-CREATE TABLE `properties` (
-  `name` varchar(90) NOT NULL COMMENT '配置Key',
-  `content` text NOT NULL COMMENT '配置Value',
-  PRIMARY KEY (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置信息';
-
-CREATE TABLE `shipping_address` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `uid` int(11) NOT NULL COMMENT '所属用户id',
-  `province` varchar(30) NOT NULL COMMENT '省',
-  `city` varchar(30) NOT NULL COMMENT '市',
-  `county` varchar(30) NOT NULL COMMENT '区/县',
-  `detailed_address` varchar(240) NOT NULL COMMENT '详细地址',
-  `consignee_name` varchar(30) NOT NULL COMMENT '收货人姓名',
-  `consignee_phone` varchar(15) NOT NULL COMMENT '收货人电话',
-  `postcode` char(6) DEFAULT NULL COMMENT '邮政编码',
-  `defaul` char(1) NOT NULL COMMENT '是否默认地址',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  PRIMARY KEY (`id`),
-  KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户收货地址';
 
 CREATE TABLE `withdraw_record` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -216,14 +244,6 @@ CREATE TABLE `withdraw_record` (
   PRIMARY KEY (`id`),
   KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='提现记录';
-
-CREATE TABLE `distribution_relation` (
-  `uid` int(11) NOT NULL COMMENT '所属用户id',
-  `lower_uid` int(11) NOT NULL COMMENT '下级分销用户id',
-  `level` tinyint(4) NOT NULL COMMENT '级别',
-  `create_time` datetime DEFAULT NULL COMMENT '成为分销商时间',
-  UNIQUE KEY (`id`,`lower_uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分销商关系';
 
 
 CREATE TABLE `certified_info` (

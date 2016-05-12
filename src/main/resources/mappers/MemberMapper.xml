@@ -28,8 +28,9 @@
     </sql>
 
     <sql id="Where_Clause">
-        <if test="criterias != null and criterias.valid">
-            where deleted = 0
+        where deleted = 0
+        <if test="criterias != null and valid">
+            and
             <foreach collection="criterias" item="criteria" separator="or">
                 <if test="criteria.valid">
                     <trim prefix="(" suffix=")" prefixOverrides="and">
@@ -43,6 +44,15 @@
                                 </when>
                                 <when test="criterion.betweenValue">
                                     and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.leftLikeValue">
+                                    and ${criterion.condition} #{criterion.value}%
+                                </when>
+                                <when test="criterion.rightLikeValue">
+                                    and ${criterion.condition} %#{criterion.value}
+                                </when>
+                                <when test="criterion.anyLikeValue">
+                                    and ${criterion.condition} %#{criterion.value}%
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
@@ -58,10 +68,7 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.micromall.repository.entity.Member">
-        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
+    <insert id="insert" parameterType="com.micromall.repository.entity.Member" useGeneratedKeys="true" keyProperty="id">
         insert into member (id, phone, wechat_id,
         nickname, avatar, level,
         gender, birthday, my_promote_code,
@@ -79,12 +86,14 @@
     <update id="updateByPrimaryKey" parameterType="com.micromall.repository.entity.Member">
         update member
         <set>
+            <!--
             <if test="phone != null">
                 phone = #{phone,jdbcType=VARCHAR},
             </if>
             <if test="wechatId != null">
                 wechat_id = #{wechatId,jdbcType=VARCHAR},
             </if>
+            -->
             <if test="nickname != null">
                 nickname = #{nickname,jdbcType=VARCHAR},
             </if>
@@ -100,11 +109,9 @@
             <if test="birthday != null">
                 birthday = #{birthday,jdbcType=VARCHAR},
             </if>
-            <!--
             <if test="myPromoteCode != null">
                 my_promote_code = #{myPromoteCode,jdbcType=VARCHAR},
             </if>
-            -->
             <if test="usePromoteCode != null">
                 use_promote_code = #{usePromoteCode,jdbcType=VARCHAR},
             </if>

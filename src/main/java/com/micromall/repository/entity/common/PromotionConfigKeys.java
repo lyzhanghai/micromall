@@ -8,6 +8,8 @@ package com.micromall.repository.entity.common;
  */
 public class PromotionConfigKeys {
 
+	public static final String PROMOTION_TYPE_KEY = "PromotionType";
+
 	/**
 	 * 促销类型：
 	 *  1、单商品促销
@@ -24,6 +26,5 @@ public class PromotionConfigKeys {
 	 *      满打折> 列如：参与促销商品订单金额满1000，打9.8折，最高优惠100元
 	 *      满包邮> 列如：参与促销商品订单金额满200，享受包邮
 	 */
-
 
 }

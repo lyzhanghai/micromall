@@ -13,7 +13,7 @@
     </sql>
 
     <sql id="Where_Clause">
-        <if test="criterias != null and criterias.valid">
+        <if test="criterias != null and valid">
             <where>
                 <foreach collection="criterias" item="criteria" separator="or">
                     <if test="criteria.valid">
@@ -44,10 +44,7 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.micromall.repository.entity.Category">
-        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
+    <insert id="insert" parameterType="com.micromall.repository.entity.Category" useGeneratedKeys="true" keyProperty="id">
         insert into category (id, parent_id, name,
         sort)
         values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},

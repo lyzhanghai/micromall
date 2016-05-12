@@ -14,7 +14,7 @@
     </sql>
 
     <sql id="Where_Clause">
-        <if test="criterias != null and criterias.valid">
+        <if test="criterias != null and valid">
             <where>
                 <foreach collection="criterias" item="criteria" separator="or">
                     <if test="criteria.valid">
@@ -45,10 +45,7 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.micromall.repository.entity.CartGoods">
-        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
+    <insert id="insert" parameterType="com.micromall.repository.entity.CartGoods" useGeneratedKeys="true" keyProperty="id">
         insert into cart_goods (id, uid, goods_id,
         buy_number, create_time)
         values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER},

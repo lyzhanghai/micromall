@@ -88,6 +88,7 @@ public final class CommonEnvConstants {
 
 	/*前端默认分页大小*/
 	// public static final int FRONT_DEFAULT_PAGE_LIMIT = Integer.valueOf(PropertyConfigurer.getString("front.default.page_limit"));
+	/*全局分页查询每页最大记录数*/
 	public static final int GLOBAL_PERPAGE_MAX_LIMIT_SIZE = Integer.valueOf(PropertyConfigurer.getString("global.perpage.max_limit_size"));
 
 	/*可申请提现时间区间*/

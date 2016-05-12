@@ -34,7 +34,7 @@
 
     <sql id="Where_Clause">
         where deleted = 0
-        <if test="criterias != null and criterias.valid">
+        <if test="criterias != null and valid">
             and
             <foreach collection="criterias" item="criteria" separator="or">
                 <if test="criteria.valid">
@@ -73,10 +73,7 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.micromall.repository.entity.Goods">
-        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
+    <insert id="insert" parameterType="com.micromall.repository.entity.Goods" useGeneratedKeys="true" keyProperty="id">
         insert into goods (id, title, main_image,
         category_id, price, inventory,shelves, type, promotion,
         sort, sales_volume, deleted,create_time, update_time, images,
