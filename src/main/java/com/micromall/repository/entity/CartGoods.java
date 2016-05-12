@@ -44,6 +44,12 @@ public class CartGoods extends IdEntity {
 		this.createTime = createTime;
 	}
 
+	@JsonIgnore
+	@Override
+	public Integer getId() {
+		return super.getId();
+	}
+
 	public Integer getGoodsId() {
 		return goodsId;
 	}

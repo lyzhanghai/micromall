@@ -45,15 +45,6 @@
                                 <when test="criterion.betweenValue">
                                     and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                                 </when>
-                                <when test="criterion.leftLikeValue">
-                                    and ${criterion.condition} #{criterion.value}%
-                                </when>
-                                <when test="criterion.rightLikeValue">
-                                    and ${criterion.condition} %#{criterion.value}
-                                </when>
-                                <when test="criterion.anyLikeValue">
-                                    and ${criterion.condition} %#{criterion.value}%
-                                </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
                                     <foreach collection="criterion.value" item="listItem" open="(" close=")" separator=",">

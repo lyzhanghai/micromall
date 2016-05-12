@@ -157,7 +157,7 @@ public class InsertController {
 			goods.setType(GoodsTypes.普通商品);
 			goods.setPromotion(false);
 			if (random.nextInt(10) < 3) {
-				goods.setPromotion(false);
+				goods.setPromotion(true);
 				Map<String, Object> params = Maps.newHashMap();
 				params.put(PromotionConfigKeys.PROMOTION_TYPE_KEY, "");
 				goods.setPromotionParams(params);

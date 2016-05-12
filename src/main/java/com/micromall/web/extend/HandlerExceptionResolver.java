@@ -2,7 +2,6 @@ package com.micromall.web.extend;
 
 import com.alibaba.fastjson.JSON;
 import com.micromall.utils.ArgumentValidException;
-import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.LogicException;
 import com.micromall.web.resp.ResponseEntity;
 import org.slf4j.Logger;
@@ -36,6 +35,10 @@ public class HandlerExceptionResolver extends SimpleMappingExceptionResolver {
 		}
 
 		try {
+			response.setContentType("application/json;charset=UTF-8");
+			response.getWriter().write(JSON.toJSONString(ResponseEntity.fail(message)));
+
+			/*
 			// 是否为ajax请求？
 			boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
 			if (ajax) {
@@ -44,7 +47,7 @@ public class HandlerExceptionResolver extends SimpleMappingExceptionResolver {
 			} else {
 				// response.sendRedirect(CommonEnvConstants.SERVER_ERROR_REDIRECT_URL);
 				request.getRequestDispatcher(CommonEnvConstants.SERVER_ERROR_REDIRECT_URL).forward(request, response);
-			}
+			}*/
 		} catch (Exception e) {
 			logger.warn("请求[{}], 写入返回结果出错: {}", request.getRequestURI(), e.getMessage());
 		}

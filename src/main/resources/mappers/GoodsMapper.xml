@@ -51,13 +51,13 @@
                                     and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                                 </when>
                                 <when test="criterion.leftLikeValue">
-                                    and ${criterion.condition} #{criterion.value}%
+                                    and ${criterion.condition} '${criterion.value}%'
                                 </when>
                                 <when test="criterion.rightLikeValue">
-                                    and ${criterion.condition} %#{criterion.value}
+                                    and ${criterion.condition} '%${criterion.value}'
                                 </when>
                                 <when test="criterion.anyLikeValue">
-                                    and ${criterion.condition} %#{criterion.value}%
+                                    and ${criterion.condition} '%${criterion.value}%'
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
@@ -162,9 +162,9 @@
         <include refid="Where_Clause"/>
     </update>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" resultMap="FullResultMap" parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List"/>,<include refid="Full_Column_List"/>
         from goods
         where id = #{id,jdbcType=INTEGER} and deleted = 0
     </select>

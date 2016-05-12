@@ -48,6 +48,8 @@ public class GoodsService {
 		try {
 			for (Goods goods : goodses) {
 				GoodsSearchResult result = new GoodsSearchResult();
+				result.setGoodsId(goods.getId());
+				result.setImage(goods.getMainImage());
 				BeanUtils.copyProperties(result, goods);
 				results.add(result);
 			}
