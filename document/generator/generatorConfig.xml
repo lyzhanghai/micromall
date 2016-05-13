@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <classPathEntry location="./lib/mysql-connector-java-5.1.38.jar"/>
+
+    <!-- targetRuntime="MyBatis3Simple"  不生成和Example查询有关的内容-->
+    <context id="MySQL2Tables" targetRuntime="MyBatis3">
+
+        <!-- 屏蔽注释-->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://211.149.241.76:3306/micromall"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="com.micromall.repository.entity"
+                            targetProject="/Users/zhangzx/work/my-work/micromall/document/generator/output/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+            <property name="rootClass" value="com.micromall.repository.entity.IdEntity"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator
+                targetPackage="mappers"
+                targetProject="/Users/zhangzx/work/my-work/micromall/document/generator/output/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- ANNOTATEDMAPPER  MIXEDMAPPER:XML  XMLMAPPER-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.micromall.repository"
+                             targetProject="/Users/zhangzx/work/my-work/micromall/document/generator/output/java">
+        </javaClientGenerator>
+
+        <!--<table tableName="%">-->
+        <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
+        <!--<columnOverride column="delete" javaType="Boolean"/>-->
+        <!--<columnOverride column="promotion" javaType="Boolean"/>-->
+        <!--<ignoreColumn column="id"/>-->
+        <!--</table>-->
+
+
+        <table tableName="distribution_relation">
+        </table>
+
+        <table tableName="certified_info">
+        </table>
+
+        <!--<table tableName="%"-->
+        <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+        <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+        <!--<generatedKey column="id" sqlStatement="Mysql"/>-->
+        <!--<property name="useActualColumnNames" value="true"/>-->
+        <!--</table>-->
+
+    </context>
+</generatorConfiguration>
