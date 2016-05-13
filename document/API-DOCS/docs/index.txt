@@ -1,17 +1,172 @@
-# Welcome to MkDocs
+全局返回结果结构：
+正常结果：
+{
+    "code": 0,
+    "data": {....}
+}
+错误结果：
+{
+    "code": 1,
+    "msg": "异常错误信息"
+}
+{
+    "code": -1,
+    "msg": "用户未登录"
+    "data": "{登录跳转地址}"
+}
 
-For full documentation visit [mkdocs.org](http://mkdocs.org).
 
-## Commands
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs help` - Print this help message.
+---------------------------------------------------------------------------------------------------------------------
+首页广告配置：/index_ad_config
+参数：无
+结果示例：
+{
+    "banner": [ #头部广告
+        {
+            "image": "http://img11.360buyimg.com/da/53ba3868Nea2f6c42.png", #显示图片url
+            "link": "http://www.micromall.com/xxx/xxx.html" #点击链接
+        },
+        {
+            "image": "http://img11.360buyimg.com/da/53ba3868Nea2f6c42.png",
+            "link": "http://www.micromall.com/xxx/xxx.html"
+        },
+        {
+            "image": "http://img11.360buyimg.com/da/53ba3868Nea2f6c42.png",
+            "link": "http://www.micromall.com/xxx/xxx.html"
+        }
+    ],
+    "middle": [ #中间广告
+        {
+            "index": 1, # 排序（根据排序确定显示的顺序）
+            "image": "http://img11.360buyimg.com/da/53ba3868Nea2f6c42.png", #显示图片url
+            "link": "http://www.micromall.com/xxx/xxx.html" #点击链接
+        },
+        {
+            "index": 2,
+            "image": "http://img11.360buyimg.com/da/53ba3868Nea2f6c42.png",
+            "link": "http://www.micromall.com/xxx/xxx.html"
+        },
+        {
+            "index": 3,
+            "image": "http://img11.360buyimg.com/da/53ba3868Nea2f6c42.png",
+            "link": "http://www.micromall.com/xxx/xxx.html"
+        }
+    ]
+}
+---------------------------------------------------------------------------------------------------------------------
 
-## Project layout
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+
+*******购物车接口：
+---------------------------------------------------------------------------------------------------------------------
+购物车商品列表：/cart/list
+参数：无
+结果：
+    Integer     goodsId     #商品id
+    Integer     buyNumber   #购买数量
+    String      title       #商品标题
+    String      image       #商品图片
+    BigDecimal  price       #商品价格
+    int         inventory   #库存量
+    boolean     invalid     #是否已经失效
+---------------------------------------------------------------------------------------------------------------------
+加入购物车：/cart/join
+参数：
+    int goodsId 商品id
+    int buyNumber 购买数量
+结果：无
+---------------------------------------------------------------------------------------------------------------------
+修改购买数量：/cart/update_buyNumber
+加入购物车：/cart/join
+参数：
+    int goodsId 商品id
+    int buyNumber 购买数量
+结果：无
+---------------------------------------------------------------------------------------------------------------------
+删除商品：/cart/delete
+参数：
+    int goodsId 商品id
+结果：无
+=====================================================================================================================
+
+*******商品收藏接口：
+---------------------------------------------------------------------------------------------------------------------
+收藏商品列表：/favorite/list
+参数：无
+结果：
+    Integer     goodsId     #商品id
+    String      title       #商品标题
+    String      image       #商品图片
+    BigDecimal  price       #商品价格
+    int         inventory   #库存量
+    boolean     invalid     #是否已经失效
+---------------------------------------------------------------------------------------------------------------------
+加入收藏：/favorite/join
+参数：
+    int goodsId 商品id
+结果：无
+---------------------------------------------------------------------------------------------------------------------
+取消收藏：/favorite/delete
+参数：
+    int goodsId 商品id
+结果：无
+=====================================================================================================================
+
+
+*******商品接口：
+---------------------------------------------------------------------------------------------------------------------
+搜索商品：/goods/search
+参数：
+    String query #搜索关键字（可不传）
+    int categoryId #商品类目id（可不传）
+    boolean promotion #是否促销商品（可不传）
+    String sort #排序方式（可不传），排序取值：
+                        price_desc：价格从高到低
+                        price_asc：价格从低到高
+                        time_desc： 时间降序
+                        time_asc：时间升序
+                        volume_desc：销量从高到低
+                        volume_asc：销量从低到高
+    int page #分页页码
+    int limit #每页商品个数
+
+结果：
+    int         goodsId     #商品ID
+    String      title       #商品标题
+    String      image       #商品图片
+    BigDecimal  price       #商品价格
+    int         salesVolume #商品销量
+    boolean     promotion   #是否促销商品
+    Map         promotionParams  #促销配置(JSON数据) **具体配置另行参考
+---------------------------------------------------------------------------------------------------------------------
+商品详情：/goods/details
+参数：
+    int goodsId 商品id
+结果：
+    Integer      id          #商品id
+    String       title       #商品标题
+    List<String> images      #商品图片数组(JSON)
+    String       categoryName  #所属类目
+    BigDecimal   price       #商品价格
+    Integer      inventory   #商品库存
+    Boolean      promotion   #是否促销商品
+    Map          promotionParams #促销配置(JSON数据) **具体配置另行参考
+    Integer      freight         #运费
+    String       descr           #商品描述
+    Map          productParams   #产品参数(JSON数据) **具体配置另行参考
+    Integer      salesVolume     #商品销量
+    boolean      favorite        #是否已经收藏
+=====================================================================================================================
+
+---------------------------------------------------------------------------------------------------------------------
+用户消息列表：/message/list
+参数：
+    int page #分页页码
+    int limit #每页消息条数
+结果：
+    Integer     id      #消息id
+    String      title   #标题
+    String      content #内容
+    Date        createTime #发送时间
+=====================================================================================================================
