@@ -1,4 +1,4 @@
-package com.micromall.web.controller.tmp;
+package com.micromall.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -47,6 +47,7 @@ public class MemberAuthenticationController {
 	 * @return
 	 */
 	@RequestMapping(value = "/api/auth/loginVerify")
+	@Deprecated
 	public ResponseEntity<?> loginVerify(HttpServletRequest request, HttpServletResponse response, String phone, String verifycode,
 			String usePromoteCode) throws Exception {
 

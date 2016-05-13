@@ -68,6 +68,8 @@ public final class CommonEnvConstants {
 	/**
 	 * =============== 文件上传目录配置 ===============
 	 **/
+	/* 文件上传根目录 */
+	public static final String UPLOAD_ROOT_DIR               = PropertyConfigurer.getString("upload.root.dir");
 	/* 用户头像保存目录 */
 	public static final String UPLOAD_MEMBER_IMAGES_DIR      = PropertyConfigurer.getString("upload.member_images.dir");
 	/* 商品图片保存目录 */

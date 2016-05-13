@@ -60,7 +60,6 @@ public class MemberService {
 		}
 		member.setAvatar(CommonEnvConstants.MEMBER_DEFAULT_AVATAR);
 		member.setLevel(MemberLevels.LV_0);
-		member.setVerified(false);
 		member.setDeleted(false);
 		member.setRegisterTime(new Date());
 		// 关联上级分销商

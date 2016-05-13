@@ -10,7 +10,6 @@ CREATE TABLE `member` (
   `my_promote_code` varchar(20) NULL COMMENT '推广码',
   `use_promote_code` varchar(20) DEFAULT NULL COMMENT '上级分销商推广码',
   `parent_uid` int(11) DEFAULT NULL COMMENT '上级分销商用户id',
-  `verified` char(1) NOT NULL COMMENT '是否认证用户',
   `deleted` char(1) NOT NULL COMMENT '是否逻辑删除',
   `last_login_time` datetime DEFAULT NULL COMMENT '最后登录时间',
   `last_login_ip` varchar(60) DEFAULT NULL COMMENT '最后一次登录IP',
@@ -124,7 +123,20 @@ CREATE TABLE `favorite_goods` (
   UNIQUE KEY (`uid`,`goods_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户商品收藏';
 
-
+CREATE TABLE `certified_info` (
+  `uid` int(11) NOT NULL COMMENT '用户id',
+  `name` varchar(30) NOT NULL COMMENT '姓名',
+  `phone` varchar(15) NOT NULL COMMENT '手机号',
+  `id_car_no` varchar(18) NOT NULL COMMENT '身份证号码',
+  `idcar_image1` varchar(255) NOT NULL COMMENT '身份证正面照片',
+  `idcar_image0` varchar(255) NOT NULL COMMENT '身份证背面照片',
+  `status` tinyint(4) NOT NULL COMMENT '审核状态',
+  `auditlog` varchar(300) NULL COMMENT '审核失败原因',
+  `audit_time` datetime NULL COMMENT '审核时间',
+  `create_time` datetime NOT NULL COMMENT '提交时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户认证信息';
 
 
 
@@ -246,19 +258,7 @@ CREATE TABLE `withdraw_record` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='提现记录';
 
 
-CREATE TABLE `certified_info` (
-  `uid` int(11) NOT NULL COMMENT '用户id',
-  `name` varchar(30) NOT NULL COMMENT '姓名',
-  `phone` varchar(15) NOT NULL COMMENT '手机号',
-  `id_car_no` varchar(18) NOT NULL COMMENT '身份证号码',
-  `idcar_image1` varchar(255) NOT NULL COMMENT '身份证正面照片',
-  `idcar_image0` varchar(255) NOT NULL COMMENT '身份证背面照片',
-  `status` tinyint(4) NOT NULL COMMENT '审核状态',
-  `auditlog` varchar(300) NULL COMMENT '审核失败原因',
-  `audit_time` datetime NULL COMMENT '审核时间',
-  `create_time` datetime NOT NULL COMMENT '提交时间',
-  PRIMARY KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户认证信息';
+
 /*
 CREATE TABLE `payment_info` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
