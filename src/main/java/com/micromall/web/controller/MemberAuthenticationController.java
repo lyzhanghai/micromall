@@ -29,7 +29,6 @@ import java.util.Map;
  * 登录授权认证
  */
 @RestController
-@RequestMapping(value = "/api")
 @Authentication(force = false)
 public class MemberAuthenticationController {
 
@@ -47,7 +46,7 @@ public class MemberAuthenticationController {
 	 * @param verifycode 验证码
 	 * @return
 	 */
-	@RequestMapping(value = "/auth/loginVerify")
+	@RequestMapping(value = "/api/auth/loginVerify")
 	public ResponseEntity<?> loginVerify(HttpServletRequest request, HttpServletResponse response, String phone, String verifycode,
 			String usePromoteCode) throws Exception {
 

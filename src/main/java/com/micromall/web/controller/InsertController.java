@@ -18,6 +18,7 @@ import com.micromall.service.*;
 import com.micromall.utils.ChainMap;
 import com.micromall.utils.Condition;
 import com.micromall.web.resp.ResponseEntity;
+import com.micromall.web.security.Authentication;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +32,8 @@ import java.util.*;
  * @date 2016/05/12.
  */
 @RestController
+
+@Authentication(force = true)
 public class InsertController {
 
 	@Resource

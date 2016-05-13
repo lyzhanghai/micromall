@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping(value = "/api")
-@Authentication(force = false)
+@Authentication
 public class GoodsController extends BasisController {
 
 	private static final Map<String, String> GOODS_SORT_FIELD_MAP = Maps.newHashMap();

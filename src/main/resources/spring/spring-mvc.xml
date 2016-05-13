@@ -54,12 +54,11 @@
     <mvc:interceptors>
         <!--前端-身份验证拦截器-->
         <mvc:interceptor>
-            <mvc:mapping path="/api/**"/>
-            <mvc:mapping path="/static/**"/>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/admin/**"/>
             <bean class="com.micromall.web.security.FrontAuthenticationInterceptor">
                 <property name="excludes">
                     <list>
-                        <value>/static/**</value>
                     </list>
                 </property>
             </bean>

@@ -29,7 +29,7 @@ import java.util.Map;
  * 会员中心
  */
 @RestController
-	@RequestMapping(value = "/api/member")
+@RequestMapping(value = "/api/member")
 @Authentication
 public class MemberCenterController extends BasisController {
 

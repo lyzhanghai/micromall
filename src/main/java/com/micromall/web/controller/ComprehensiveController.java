@@ -21,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping(value = "/api")
-@Authentication(force = false)
+@Authentication
 public class ComprehensiveController extends BasisController {
 
 	@Resource

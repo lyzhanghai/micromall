@@ -22,26 +22,13 @@ public class FrontAuthenticationInterceptor extends AbstractExcludeInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		Authentication authentication = null;
-		if (handler instanceof HandlerMethod) {
-			HandlerMethod handlerMethod = (HandlerMethod)handler;
-			authentication = handlerMethod.getMethodAnnotation(Authentication.class);
-			if (authentication == null) {
-				authentication = handlerMethod.getBeanType().getAnnotation(Authentication.class);
-			}
-		}
-
-		LoginUser loginUser = (LoginUser)request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY);
-
-		boolean debugAuth = CommonEnvConstants.ENV.isDevEnv() && request.getParameterMap().containsKey("debugAuth");
-		if (loginUser == null && debugAuth) {
-			loginUser = _MockLogin(request);
-		}
+		Authentication authentication = getAuthentication(handler);
+		LoginUser loginUser = getLoginUser(request);
 
 		// 用户未登录
 		if (loginUser == null) {
 			response.addHeader(_AUTHORIZED_HEADER, Boolean.FALSE.toString());
-			if (!debugAuth && (!isExclude(request) || (authentication != null && authentication.force()))) {
+			if (!isExclude(request) || (authentication != null && authentication.force())) {
 				logger.info("用户未登录访问：请求 [{}], 参数 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
 				String _agent = request.getHeader("User-Agent");
 				// 请求是否来自于微信
@@ -68,6 +55,28 @@ public class FrontAuthenticationInterceptor extends AbstractExcludeInterceptor {
 			RequestContext.setLoginUser(loginUser);
 		}
 		return true;
+	}
+
+	private LoginUser getLoginUser(HttpServletRequest request) {
+		LoginUser loginUser = (LoginUser)request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY);
+
+		boolean debugAuth = CommonEnvConstants.ENV.isDevEnv() && request.getParameterMap().containsKey("debugAuth");
+		if (debugAuth) {
+			loginUser = _MockLogin(request);
+		}
+		return loginUser;
+	}
+
+	private Authentication getAuthentication(Object handler) {
+		Authentication authentication = null;
+		if (handler instanceof HandlerMethod) {
+			HandlerMethod handlerMethod = (HandlerMethod)handler;
+			authentication = handlerMethod.getMethodAnnotation(Authentication.class);
+			if (authentication == null) {
+				authentication = handlerMethod.getBeanType().getAnnotation(Authentication.class);
+			}
+		}
+		return authentication;
 	}
 
 	private LoginUser _MockLogin(HttpServletRequest request) {

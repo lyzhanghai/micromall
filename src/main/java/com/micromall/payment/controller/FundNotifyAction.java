@@ -8,6 +8,7 @@ import com.micromall.repository.PaymentRecordMapper;
 import com.micromall.repository.entity.PaymentRecord;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.utils.IPUtils;
+import com.micromall.web.security.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import java.io.InputStreamReader;
  * 支付回调通知
  */
 //@Controller
+@Authentication(force = false)
 public class FundNotifyAction {
 
 	@Resource
