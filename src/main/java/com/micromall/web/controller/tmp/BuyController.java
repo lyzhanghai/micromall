@@ -1,4 +1,4 @@
-package com.micromall.web.controller;
+package com.micromall.web.controller.tmp;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -8,8 +8,9 @@ import com.micromall.repository.entity.Goods;
 import com.micromall.service.CartService;
 import com.micromall.service.GoodsService;
 import com.micromall.service.ShippingAddressService;
+import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
-import com.micromall.web.security.Authentication;
+import com.micromall.web.security.annotation.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,10 +49,10 @@ public class BuyController extends BasisController {
 	@RequestMapping(value = "/cart/settle")
 	public ResponseEntity<?> settle(String goodsIds, Integer buyNumber, boolean cart) {
 		if (StringUtils.isEmpty(goodsIds)) {
-			return ResponseEntity.fail(cart ? "请选择要结算的商品" : "请选择要购买的商品");
+			return ResponseEntity.Failure(cart ? "请选择要结算的商品" : "请选择要购买的商品");
 		}
 		if (!cart && buyNumber == null || buyNumber.intValue() <= 0) {
-			return ResponseEntity.fail("购买数量不能小于1件");
+			return ResponseEntity.Failure("购买数量不能小于1件");
 		}
 
 		Set<String> _goodsIds = Sets.newHashSet(StringUtils.split(goodsIds, ","));
@@ -77,16 +78,16 @@ public class BuyController extends BasisController {
 				}
 			}
 			if (settleGoodses.size() != _goodsIds.size()) {
-				return ResponseEntity.fail("商品信息改变，请刷新页面重新结算");
+				return ResponseEntity.Failure("商品信息改变，请刷新页面重新结算");
 			}
 		} else {
 			// 直接购买
 			Goods goods = goodsService.getGoodsInfo(Integer.parseInt(goodsIds));
 			if (goods == null) {
-				return ResponseEntity.fail("商品不存在或已下架");
+				return ResponseEntity.Failure("商品不存在或已下架");
 			}
 			if (buyNumber > goods.getInventory()) {
-				return ResponseEntity.fail("购买数量不能大于商品库存量");
+				return ResponseEntity.Failure("购买数量不能大于商品库存量");
 			}
 
 			Map<String, Object> _goods = Maps.newHashMap();
@@ -109,7 +110,7 @@ public class BuyController extends BasisController {
 		data.put("token", UUID.randomUUID().toString());
 		// TODO 优惠计算、邮费
 
-		return ResponseEntity.ok();
+		return ResponseEntity.Success();
 	}
 
 	/**
@@ -121,7 +122,7 @@ public class BuyController extends BasisController {
 	@RequestMapping(value = "/buy")
 	public ResponseEntity<?> buy(String settleId) {
 
-		return ResponseEntity.ok();
+		return ResponseEntity.Success();
 	}
 
 	/**
@@ -133,7 +134,7 @@ public class BuyController extends BasisController {
 	@RequestMapping(value = "/pay")
 	public ResponseEntity<?> pay(String orderNo) {
 
-		return ResponseEntity.ok();
+		return ResponseEntity.Success();
 	}
 
 }

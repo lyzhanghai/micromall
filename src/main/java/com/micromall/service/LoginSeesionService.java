@@ -3,8 +3,8 @@ package com.micromall.service;
 import com.micromall.repository.entity.Member;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.CookieUtils;
-import com.micromall.web.security.LoginUser;
-import com.micromall.web.security.LoginUser.LoginType;
+import com.micromall.web.security.entity.LoginUser;
+import com.micromall.web.security.entity.LoginUser.LoginType;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

@@ -16,8 +16,6 @@ public interface BaseMapper<T> {
 
 	int updateByPrimaryKey(T record);
 
-	// int updateByWhereClause(@Param("record") T record, @Param("condition") Condition condition);
-
 	int deleteByPrimaryKey(Object id);
 
 	int deleteByWhereClause(Condition condition);

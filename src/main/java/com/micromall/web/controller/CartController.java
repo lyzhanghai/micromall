@@ -2,7 +2,7 @@ package com.micromall.web.controller;
 
 import com.micromall.service.CartService;
 import com.micromall.web.resp.ResponseEntity;
-import com.micromall.web.security.Authentication;
+import com.micromall.web.security.annotation.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +28,7 @@ public class CartController extends BasisController {
 	 */
 	@RequestMapping(value = "/cart/list")
 	public ResponseEntity<?> list() {
-		return ResponseEntity.ok(cartService.listGoods(getLoginUser().getUid()));
+		return ResponseEntity.Success(cartService.listGoods(getLoginUser().getUid()));
 	}
 
 	/**
@@ -41,13 +41,13 @@ public class CartController extends BasisController {
 	@RequestMapping(value = "/cart/join")
 	public ResponseEntity<?> join(int goodsId, int buyNumber) {
 		if (buyNumber < 1) {
-			return ResponseEntity.fail("购买数量不能小于1");
+			return ResponseEntity.Failure("购买数量不能小于1");
 		}
 		if (buyNumber > 1000) {
-			return ResponseEntity.fail("购买数量不能大于1000");
+			return ResponseEntity.Failure("购买数量不能大于1000");
 		}
 		cartService.updateCartGoods(getLoginUser().getUid(), goodsId, buyNumber);
-		return ResponseEntity.ok();
+		return ResponseEntity.Success();
 	}
 
 	/**
@@ -60,10 +60,10 @@ public class CartController extends BasisController {
 	@RequestMapping(value = "/cart/update_buyNumber")
 	public ResponseEntity<?> update_buyNumber(int goodsId, int buyNumber) {
 		if (buyNumber < 1) {
-			return ResponseEntity.fail("购买数量不能小于1件");
+			return ResponseEntity.Failure("购买数量不能小于1件");
 		}
 		cartService.updateCartGoods(getLoginUser().getUid(), goodsId, buyNumber);
-		return ResponseEntity.ok();
+		return ResponseEntity.Success();
 	}
 
 	/**
@@ -73,8 +73,8 @@ public class CartController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/cart/delete")
-	public ResponseEntity<?> delete_goods(int goodsId) {
+	public ResponseEntity<?> delete(int goodsId) {
 		cartService.deleteGoods(getLoginUser().getUid(), Arrays.asList(goodsId));
-		return ResponseEntity.ok();
+		return ResponseEntity.Success();
 	}
 }

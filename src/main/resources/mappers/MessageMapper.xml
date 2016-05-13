@@ -5,18 +5,12 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="uid" property="uid" jdbcType="INTEGER"/>
         <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="LONGVARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
-    <resultMap id="FullResultMap" type="com.micromall.repository.entity.Message" extends="BaseResultMap">
-        <result column="content" property="content" jdbcType="LONGVARCHAR"/>
-    </resultMap>
 
-    <sql id="Base_Column_List">
-        id, uid, title, create_time
-    </sql>
-
-    <sql id="Full_Column_List">
-        id, uid, title, create_time, content
+    <sql id="Column_Sql">
+        id, uid, title, content, create_time
     </sql>
 
     <sql id="Where_Clause">
@@ -52,12 +46,21 @@
     </sql>
 
     <insert id="insert" parameterType="com.micromall.repository.entity.Message" useGeneratedKeys="true" keyProperty="id">
-        insert into message (id, uid, title,
-        create_time, content)
-        values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},
-        #{createTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
+        insert into message (<include refid="Column_Sql"/>)
+        values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
     </insert>
 
+    <select id="selectPageByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Column_Sql"/>
+        from message
+        <include refid="Where_Clause"/>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <!--
     <update id="updateByPrimaryKey" parameterType="com.micromall.repository.entity.Message">
         update message
         <set>
@@ -110,22 +113,11 @@
             order by ${orderBy}
         </if>
     </select>
-
-    <select id="selectPageByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
-        select
-        <include refid="Base_Column_List"/>
-        from message
-        <include refid="Where_Clause"/>
-        <if test="orderBy != null">
-            order by ${orderBy}
-        </if>
-    </select>
-
     <select id="countByWhereClause" parameterType="com.micromall.utils.Condition" resultType="java.lang.Integer">
         select count(*)
-        <include refid="Base_Column_List"/>
         from message
         <include refid="Where_Clause"/>
     </select>
+    -->
 
 </mapper>

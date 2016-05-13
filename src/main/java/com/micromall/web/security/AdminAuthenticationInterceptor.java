@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AdminAuthenticationInterceptor extends AbstractExcludeInterceptor {
+public class AdminAuthenticationInterceptor extends AbstractBaseInterceptor {
 
 	private static final Logger logger = LoggerFactory.getLogger(AdminAuthenticationInterceptor.class);
 

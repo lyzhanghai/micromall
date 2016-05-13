@@ -2,7 +2,7 @@ package com.micromall.web.controller;
 
 import com.micromall.service.FavoriteService;
 import com.micromall.web.resp.ResponseEntity;
-import com.micromall.web.security.Authentication;
+import com.micromall.web.security.annotation.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +27,7 @@ public class FavoriteController extends BasisController {
 	 */
 	@RequestMapping(value = "/favorite/list")
 	public ResponseEntity<?> list() {
-		return ResponseEntity.ok(favoriteService.listGoods(getLoginUser().getUid()));
+		return ResponseEntity.Success(favoriteService.listGoods(getLoginUser().getUid()));
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class FavoriteController extends BasisController {
 	@RequestMapping(value = "/favorite/join")
 	public ResponseEntity<?> join(int goodsId) {
 		favoriteService.favoriteGoods(getLoginUser().getUid(), goodsId);
-		return ResponseEntity.ok();
+		return ResponseEntity.Success();
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class FavoriteController extends BasisController {
 	@RequestMapping(value = "/favorite/delete")
 	public ResponseEntity<?> delete(int goodsId) {
 		favoriteService.deleteGoods(getLoginUser().getUid(), goodsId);
-		return ResponseEntity.ok();
+		return ResponseEntity.Success();
 	}
 
 }

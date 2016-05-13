@@ -2,7 +2,7 @@
  * Copyright (C), 2014-2015, 杭州小卡科技有限公司
  * Created by ciwei@xiaokakeji.com on 2016/05/12.
  */
-package com.micromall.web.controller;
+package com.micromall.web.controller.tmp;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
@@ -18,7 +18,7 @@ import com.micromall.service.*;
 import com.micromall.utils.ChainMap;
 import com.micromall.utils.Condition;
 import com.micromall.web.resp.ResponseEntity;
-import com.micromall.web.security.Authentication;
+import com.micromall.web.security.annotation.Authentication;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -74,7 +74,7 @@ public class InsertController {
 		//		createAddress();
 		//		createCartFavoriteGoods();
 
-		return ResponseEntity.ok();
+		return ResponseEntity.Success();
 	}
 
 	private void createCartFavoriteGoods() {

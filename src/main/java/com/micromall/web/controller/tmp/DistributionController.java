@@ -1,8 +1,9 @@
-package com.micromall.web.controller;
+package com.micromall.web.controller.tmp;
 
 import com.micromall.service.DistributionService;
+import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
-import com.micromall.web.security.Authentication;
+import com.micromall.web.security.annotation.Authentication;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +27,7 @@ public class DistributionController extends BasisController {
 	@RequestMapping(value = "/commission_stat")
 	@ResponseBody
 	public ResponseEntity<?> commission_stat() {
-		return ResponseEntity.ok(distributionService.commissionStat(getLoginUser().getUid()));
+		return ResponseEntity.Success(distributionService.commissionStat(getLoginUser().getUid()));
 	}
 
 	/**
@@ -37,7 +38,7 @@ public class DistributionController extends BasisController {
 	@RequestMapping(value = "/lower_distributors_stat")
 	@ResponseBody
 	public ResponseEntity<?> lower_distributors_stat() {
-		return ResponseEntity.ok(distributionService.lowerDistributorsStat(getLoginUser().getUid()));
+		return ResponseEntity.Success(distributionService.lowerDistributorsStat(getLoginUser().getUid()));
 	}
 
 	/**
@@ -59,12 +60,12 @@ public class DistributionController extends BasisController {
 					_level = 2;
 					break;
 				default:
-					return ResponseEntity.fail("参数错误");
+					return ResponseEntity.Failure("参数错误");
 			}
 		}
 
-		return ResponseEntity.ok(distributionService.lowerDistributorsList(getLoginUser().getUid(), _level, new RowBounds(page, resizeLimit(limit)
-		)));
+		return ResponseEntity.Success(
+				distributionService.lowerDistributorsList(getLoginUser().getUid(), _level, new RowBounds(page, resizeLimit(limit))));
 	}
 
 }

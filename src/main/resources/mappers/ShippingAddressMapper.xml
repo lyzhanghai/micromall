@@ -16,9 +16,8 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id, uid, province, city, county, detailed_address, consignee_name, consignee_phone,
-        postcode, defaul, create_time, update_time
+    <sql id="Column_Sql">
+        id, uid, province, city, county, detailed_address, consignee_name, consignee_phone, postcode, defaul, create_time, update_time
     </sql>
 
     <sql id="Where_Clause">
@@ -54,11 +53,7 @@
     </sql>
 
     <insert id="insert" parameterType="com.micromall.repository.entity.ShippingAddress" useGeneratedKeys="true" keyProperty="id">
-        insert into shipping_address (id, uid, province,
-        city, county, detailed_address,
-        consignee_name, consignee_phone, postcode,
-        defaul, create_time, update_time
-        )
+        insert into shipping_address (<include refid="Column_Sql"/>)
         values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR},
         #{city,jdbcType=VARCHAR}, #{county,jdbcType=VARCHAR}, #{detailedAddress,jdbcType=VARCHAR},
         #{consigneeName,jdbcType=VARCHAR}, #{consigneePhone,jdbcType=VARCHAR}, #{postcode,jdbcType=CHAR},
@@ -66,6 +61,69 @@
         )
     </insert>
 
+    <update id="updateByPrimaryKeyUid" parameterType="com.micromall.repository.entity.ShippingAddress">
+        update shipping_address
+        <set>
+            <if test="province != null">
+                province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="county != null">
+                county = #{county,jdbcType=VARCHAR},
+            </if>
+            <if test="detailedAddress != null">
+                detailed_address = #{detailedAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="consigneeName != null">
+                consignee_name = #{consigneeName,jdbcType=VARCHAR},
+            </if>
+            <if test="consigneePhone != null">
+                consignee_phone = #{consigneePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="postcode != null">
+                postcode = #{postcode,jdbcType=CHAR},
+            </if>
+            <if test="defaul != null">
+                defaul = #{defaul,jdbcType=CHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER} and uid = #{uid,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
+        delete from shipping_address
+        <include refid="Where_Clause"/>
+    </delete>
+
+    <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Column_Sql"/>
+        from shipping_address
+        <include refid="Where_Clause"/>
+    </select>
+
+    <select id="selectMultiByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Column_Sql"/>
+        from shipping_address
+        <include refid="Where_Clause"/>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="countByWhereClause" parameterType="com.micromall.utils.Condition" resultType="java.lang.Integer">
+        select count(*)
+        from shipping_address
+        <include refid="Where_Clause"/>
+    </select>
+
+    <!--
     <update id="updateByPrimaryKey" parameterType="com.micromall.repository.entity.ShippingAddress">
         update shipping_address
         <set>
@@ -111,33 +169,11 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <delete id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
-        delete from shipping_address
-        <include refid="Where_Clause"/>
-    </delete>
-
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from shipping_address
         where id = #{id,jdbcType=INTEGER}
-    </select>
-
-    <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
-        select
-        <include refid="Base_Column_List"/>
-        from shipping_address
-        <include refid="Where_Clause"/>
-    </select>
-
-    <select id="selectMultiByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
-        select
-        <include refid="Base_Column_List"/>
-        from shipping_address
-        <include refid="Where_Clause"/>
-        <if test="orderBy != null">
-            order by ${orderBy}
-        </if>
     </select>
 
     <select id="selectPageByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
@@ -149,12 +185,6 @@
             order by ${orderBy}
         </if>
     </select>
-
-    <select id="countByWhereClause" parameterType="com.micromall.utils.Condition" resultType="java.lang.Integer">
-        select count(*)
-        <include refid="Base_Column_List"/>
-        from shipping_address
-        <include refid="Where_Clause"/>
-    </select>
+    -->
 
 </mapper>

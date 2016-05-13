@@ -1,4 +1,4 @@
-package com.micromall.web.controller;
+package com.micromall.web.controller.tmp;
 
 import com.google.common.collect.Maps;
 import com.micromall.repository.entity.Goods;
@@ -6,8 +6,9 @@ import com.micromall.service.FavoriteService;
 import com.micromall.service.GoodsService;
 import com.micromall.service.vo.GoodsSearch;
 import com.micromall.utils.CommonEnvConstants;
+import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
-import com.micromall.web.security.Authentication;
+import com.micromall.web.security.annotation.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,7 +61,7 @@ public class GoodsController extends BasisController {
 
 		GoodsSearch search = GoodsSearch.created(GOODS_SORT_FIELD_MAP.get(sort), page, resizeLimit(limit));
 		search.setQuery(query).setCategoryId(categoryId).setPromotion(promotion);
-		return ResponseEntity.ok(goodsService.searchGoods(search));
+		return ResponseEntity.Success(goodsService.searchGoods(search));
 	}
 
 	/**
@@ -73,7 +74,7 @@ public class GoodsController extends BasisController {
 	public ResponseEntity<?> details(int goodsId) {
 		Goods goods = goodsService.getGoodsInfo(goodsId);
 		if (null == goods) {
-			return ResponseEntity.fail("商品信息不存在");
+			return ResponseEntity.Failure("商品信息不存在");
 		}
 		if (null != getLoginUser()) {
 			goods.setFavorite(favoriteService.hasFavorite(getLoginUser().getUid(), goodsId));
@@ -81,7 +82,7 @@ public class GoodsController extends BasisController {
 		if (goods.getInventory() <= 0) {
 			goods.setShelves(false);
 		}
-		return ResponseEntity.ok(goods);
+		return ResponseEntity.Success(goods);
 	}
 
 }

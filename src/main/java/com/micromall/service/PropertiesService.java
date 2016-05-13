@@ -1,9 +1,10 @@
 package com.micromall.service;
 
 import com.alibaba.fastjson.JSON;
-import com.micromall.repository.entity.Properties;
 import com.micromall.repository.PropertiesMapper;
+import com.micromall.repository.entity.Properties;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -49,5 +50,16 @@ public class PropertiesService {
 	public <T> List<T> getJSONList(String key, Class<T> clazz) {
 		Properties properties = mapper.selectByPrimaryKey(key);
 		return properties != null ? JSON.parseArray(properties.getContent(), clazz) : null;
+	}
+
+	@Transactional
+	public void multiUpdates(Properties... props) {
+		for (Properties prop : props) {
+			mapper.updateByPrimaryKey(prop);
+		}
+	}
+
+	public List<Properties> listProperties() {
+		return mapper.selectAllProperties();
 	}
 }

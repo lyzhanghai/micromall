@@ -2,11 +2,11 @@ package com.micromall.web.resp;
 
 public enum Ret {
 
-	Ok(0, ""),
+	Success(0, ""),
 	Error(1, "系统异常"),
 	NotLogin(-1, "用户未登录");
 
-	private int    code;
+	private int code;
 	private String message;
 
 	Ret(int code, String msg) {

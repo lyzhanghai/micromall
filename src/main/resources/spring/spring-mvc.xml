@@ -39,11 +39,11 @@
     </mvc:annotation-driven>
 
     <!-- 404请求处理-->
-    <bean id="URINotFoundMapping" class="com.micromall.web.extend.URINotFoundMapping"/>
+    <bean id="NotFoundHandler" class="com.micromall.web.extend.NotFoundHandler"/>
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-                <prop key="*">URINotFoundMapping</prop>
+                <prop key="*">NotFoundHandler</prop>
             </props>
         </property>
     </bean>
@@ -57,6 +57,10 @@
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/admin/**"/>
             <bean class="com.micromall.web.security.FrontAuthenticationInterceptor">
+                <property name="forbiddens">
+                    <list>
+                    </list>
+                </property>
                 <property name="excludes">
                     <list>
                     </list>
@@ -67,7 +71,6 @@
         <mvc:interceptor>
             <mvc:mapping path="/admin/**"/>
             <mvc:exclude-mapping path="/admin/login.html"/>
-            <mvc:exclude-mapping path="/admin/login"/>
             <bean class="com.micromall.web.security.AdminAuthenticationInterceptor">
                 <property name="excludes">
                     <list>

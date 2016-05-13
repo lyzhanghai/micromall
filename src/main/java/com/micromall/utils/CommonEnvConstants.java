@@ -36,6 +36,8 @@ public final class CommonEnvConstants {
 	public static final String WEIXIN_AUTH_FAIL_REDIRECT_URL    = PropertyConfigurer.getString("weixin.auth.fail.redirect_url");
 	/* 服务器请求处理出错，跳转到的页面 */
 	public static final String SERVER_ERROR_REDIRECT_URL        = PropertyConfigurer.getString("server.error.redirect_url");
+	/* 访问的页面找不到，跳转到的页面 */
+	public static final String SERVER_NOTFOUND_REDIRECT_URL     = PropertyConfigurer.getString("server.notfound.redirect_url");
 
 	/**
 	 * =============== 手机号码登录配置 ===============

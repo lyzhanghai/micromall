@@ -1,4 +1,4 @@
-package com.micromall.web.security;
+package com.micromall.web.security.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

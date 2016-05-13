@@ -1,9 +1,10 @@
-package com.micromall.web.controller;
+package com.micromall.web.controller.tmp;
 
 import com.micromall.service.LogisticsService;
 import com.micromall.service.OrderService;
+import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
-import com.micromall.web.security.Authentication;
+import com.micromall.web.security.annotation.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +34,7 @@ public class MyOrdersController extends BasisController {
 	 */
 	@RequestMapping(value = "/orders")
 	public ResponseEntity<?> orders(int status, @RequestParam(defaultValue = "1") int p) {
-		return ResponseEntity.ok(orderService.findOrders(getLoginUser().getUid(), status, p));
+		return ResponseEntity.Success(orderService.findOrders(getLoginUser().getUid(), status, p));
 	}
 
 	/**
@@ -44,7 +45,7 @@ public class MyOrdersController extends BasisController {
 	 */
 	@RequestMapping(value = "/details")
 	public ResponseEntity<?> details(String orderNo) {
-		return ResponseEntity.ok(orderService.getOrderDetails(getLoginUser().getUid(), orderNo));
+		return ResponseEntity.Success(orderService.getOrderDetails(getLoginUser().getUid(), orderNo));
 	}
 
 	/**
@@ -55,7 +56,7 @@ public class MyOrdersController extends BasisController {
 	 */
 	@RequestMapping(value = "/logistics")
 	public ResponseEntity<?> logistics(String orderNo) {
-		return ResponseEntity.ok(logisticsService.getLogisticsInfo(orderNo));
+		return ResponseEntity.Success(logisticsService.getLogisticsInfo(orderNo));
 	}
 
 	/**
@@ -66,7 +67,7 @@ public class MyOrdersController extends BasisController {
 	 */
 	@RequestMapping(value = "/confirm_delivery")
 	public ResponseEntity<?> confirm_delivery(String orderNo) {
-		return ResponseEntity.ok(orderService.confirmDelivery(getLoginUser().getUid(), orderNo));
+		return ResponseEntity.Success(orderService.confirmDelivery(getLoginUser().getUid(), orderNo));
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class MyOrdersController extends BasisController {
 	 */
 	@RequestMapping(value = "/apply_refund")
 	public ResponseEntity<?> apply_refund(String orderNo) {
-		return ResponseEntity.ok(orderService.applyRefund(getLoginUser().getUid(), orderNo));
+		return ResponseEntity.Success(orderService.applyRefund(getLoginUser().getUid(), orderNo));
 	}
 
 	/**
@@ -88,7 +89,7 @@ public class MyOrdersController extends BasisController {
 	 */
 	@RequestMapping(value = "/close")
 	public ResponseEntity<?> close(String orderNo) {
-		return ResponseEntity.ok(orderService.closeOrder(getLoginUser().getUid(), orderNo));
+		return ResponseEntity.Success(orderService.closeOrder(getLoginUser().getUid(), orderNo));
 	}
 
 }
