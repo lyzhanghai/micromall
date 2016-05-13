@@ -8,6 +8,11 @@ package com.micromall.utils;
  */
 public final class CommonEnvConstants {
 
+	/* 运行环境 */
+	public static final Environment ENV               = new Environment(PropertyConfigurer.getString("app.environment"));
+	/* 开发模式下模拟登录用户id */
+	public static final int         DEBUG_AUTH_USERID = Integer.valueOf(PropertyConfigurer.getString("debug.auth.userid"));
+
 	/**
 	 * =============== 微信授权/登录配置 ===============
 	 **/
@@ -31,9 +36,14 @@ public final class CommonEnvConstants {
 	public static final String WEIXIN_AUTH_FAIL_REDIRECT_URL    = PropertyConfigurer.getString("weixin.auth.fail.redirect_url");
 	/* 服务器请求处理出错，跳转到的页面 */
 	public static final String SERVER_ERROR_REDIRECT_URL        = PropertyConfigurer.getString("server.error.redirect_url");
+
+	/**
+	 * =============== 手机号码登录配置 ===============
+	 **/
+	/* 是否支持手机号码登录 */
+	public static final boolean MOBILE_LOGIN_USABLE        = Boolean.valueOf(PropertyConfigurer.getString("mobile.login.usable"));
 	/* 使用手机号的授权登录页面 */
-	@Deprecated
-	public static final String MOBILE_AUTHORIZE_LOGIN_URL       = PropertyConfigurer.getString("mobile.authorize.loginUrl");
+	public static final String  MOBILE_AUTHORIZE_LOGIN_URL = PropertyConfigurer.getString("mobile.authorize.loginUrl");
 
 	/**
 	 * =============== 登录会话session配置 ===============
@@ -69,15 +79,17 @@ public final class CommonEnvConstants {
 	public static final String MEMBER_DEFAULT_AVATAR = PropertyConfigurer.getString("member.default.avatar");
 
 	/* 商品搜索默认每页显示个数 */
-	public static final int    GOODS_SEARCH_PERPAGE_DEFAULT_SIZE = Integer
-			.valueOf(PropertyConfigurer.getString("goods.search" + ".perpage_default_size"));
+	// public static final int    GOODS_SEARCH_PERPAGE_DEFAULT_SIZE = Integer.valueOf(PropertyConfigurer.getString("goods.search" + "
+	// .perpage_default_size"));
 	/*商品搜索每页最大显示个数*/
-	public static final int    GOODS_SEARCH_PERPAGE_MAX_SIZE     = Integer.valueOf(PropertyConfigurer.getString("goods.search.perpage_max_size"));
+	// public static final int    GOODS_SEARCH_PERPAGE_MAX_SIZE     = Integer.valueOf(PropertyConfigurer.getString("goods.search.perpage_max_size"));
 	/* 商品搜索默认排序字段 */
-	public static final String GOODS_SEARCH_DEFAULT_SORT         = PropertyConfigurer.getString("goods.search.default_sort");
+	public static final String GOODS_SEARCH_DEFAULT_SORT = PropertyConfigurer.getString("goods.search.default_sort");
 
 	/*前端默认分页大小*/
-	public static final int FRONT_DEFAULT_PAGE_LIMIT = Integer.valueOf(PropertyConfigurer.getString("front.default.page_limit"));
+	// public static final int FRONT_DEFAULT_PAGE_LIMIT = Integer.valueOf(PropertyConfigurer.getString("front.default.page_limit"));
+	/*全局分页查询每页最大记录数*/
+	public static final int GLOBAL_PERPAGE_MAX_LIMIT_SIZE = Integer.valueOf(PropertyConfigurer.getString("global.perpage.max_limit_size"));
 
 	/*可申请提现时间区间*/
 	public static final String WITHDRAW_APPLY_ALLOW_TIME_INTERVAL  = PropertyConfigurer.getString("withdraw.apply.allow.time_interval");
@@ -92,4 +104,20 @@ public final class CommonEnvConstants {
 	/*订单物流已收货超时自动确认收货时间*/
 	public static final String ORDER_TIMEOUT_confirm_delivery_TIME = PropertyConfigurer.getString("order.timeout.confirm_delivery_time");
 
+	public static class Environment {
+
+		private String environment;
+
+		public Environment(String environment) {
+			this.environment = environment;
+		}
+
+		public boolean isDistEnv() {
+			return "dist".equals(environment);
+		}
+
+		public boolean isDevEnv() {
+			return "dev".equals(environment);
+		}
+	}
 }

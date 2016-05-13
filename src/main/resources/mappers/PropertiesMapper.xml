@@ -11,7 +11,7 @@
     </sql>
 
     <sql id="Where_Clause">
-        <if test="criterias != null and criterias.valid">
+        <if test="criterias != null and valid">
             <where>
                 <foreach collection="criterias" item="criteria" separator="or">
                     <if test="criteria.valid">
@@ -57,7 +57,7 @@
         where name = #{name,jdbcType=VARCHAR}
     </update>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
         delete from properties
         where name = #{name,jdbcType=INTEGER}
     </delete>
@@ -67,7 +67,7 @@
         <include refid="Where_Clause"/>
     </delete>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
         from properties

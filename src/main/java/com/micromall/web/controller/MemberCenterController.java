@@ -1,8 +1,8 @@
-package com.micromall.web.controller.v;
+package com.micromall.web.controller;
 
+import com.micromall.repository.entity.CashAccount;
 import com.micromall.repository.entity.CertifiedInfo;
 import com.micromall.repository.entity.Member;
-import com.micromall.repository.entity.CashAccount;
 import com.micromall.repository.entity.common.CertifiedStatus;
 import com.micromall.service.CashAccountService;
 import com.micromall.service.CertifiedInfoService;
@@ -12,16 +12,11 @@ import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.utils.UploadUtils;
 import com.micromall.utils.ValidateUtils;
-import com.micromall.web.controller.BasisController;
-import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -33,12 +28,10 @@ import java.util.Map;
  * Created by zhangzx on 16/3/21.
  * 会员中心
  */
-@Controller
-@RequestMapping(value = "/member_center")
+@RestController
+@RequestMapping(value = "/api/member")
 @Authentication
 public class MemberCenterController extends BasisController {
-
-	private static Logger logger = LoggerFactory.getLogger(MemberCenterController.class);
 
 	@Resource
 	private MemberService        memberService;
@@ -56,9 +49,7 @@ public class MemberCenterController extends BasisController {
 	 * @param verifycode 验证码
 	 * @return
 	 */
-	@UncaughtException(msg = "手机号码绑定失败")
 	@RequestMapping(value = "/binding_phone")
-	@ResponseBody
 	public ResponseEntity<?> binding_phone(HttpServletRequest request, String phone, String verifycode) {
 		if (StringUtils.isEmpty(phone)) {
 			return ResponseEntity.fail("请输入手机号码");
@@ -97,9 +88,7 @@ public class MemberCenterController extends BasisController {
 	 *
 	 * @return
 	 */
-	@UncaughtException(msg = "获取用户信息失败")
 	@RequestMapping(value = "/userinfo")
-	@ResponseBody
 	public ResponseEntity<?> userinfo(HttpServletRequest request) {
 		Member member = memberService.get(getLoginUser().getUid());
 		if (member == null) {
@@ -129,9 +118,7 @@ public class MemberCenterController extends BasisController {
 	 * @param birthday 生日，格式：1991-09-17
 	 * @return
 	 */
-	@UncaughtException(msg = "保存用户信息失败")
 	@RequestMapping(value = "/update_basisinfo")
-	@ResponseBody
 	public ResponseEntity<?> update_basisinfo(String nickname, String gender, String birthday) {
 		if (StringUtils.isEmpty(nickname)) {
 			ResponseEntity.fail("昵称不能为空");
@@ -163,9 +150,7 @@ public class MemberCenterController extends BasisController {
 	 * @param file 头像文件
 	 * @return
 	 */
-	@UncaughtException(msg = "保存用户头像失败")
 	@RequestMapping(value = "/update_avatar")
-	@ResponseBody
 	public ResponseEntity<?> update_avatar(MultipartFile file) {
 		String avatar = UploadUtils.upload(CommonEnvConstants.UPLOAD_MEMBER_IMAGES_DIR, file);
 		if (StringUtils.isNotEmpty(avatar)) {
@@ -179,9 +164,7 @@ public class MemberCenterController extends BasisController {
 		return ResponseEntity.fail("保存用户头像失败");
 	}
 
-	@UncaughtException(msg = "上传证件信息失败")
 	@RequestMapping(value = "/upload_certificate")
-	@ResponseBody
 	public ResponseEntity<?> upload_certificate(MultipartFile file) {
 		String url = UploadUtils.upload(CommonEnvConstants.UPLOAD_CERTIFICATE_IMAGES_DIR, file);
 		if (StringUtils.isNotEmpty(url)) {
@@ -198,9 +181,7 @@ public class MemberCenterController extends BasisController {
 	 * @param idCarImage0 身份证背面照
 	 * @return
 	 */
-	@UncaughtException(msg = "提交用户认证信息失败")
 	@RequestMapping(value = "/certification")
-	@ResponseBody
 	public ResponseEntity<?> certification(String name, String phone, String idCarNo, String idCarImage1, String idCarImage0) {
 		if (StringUtils.isEmpty(name)) {
 			ResponseEntity.fail("姓名不能为空");

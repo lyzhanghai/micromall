@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class ValidateUtils {
 
 	private static final Pattern POSTCODE            = Pattern.compile("^[1-9]\\d{5}$");
-	private static final Pattern MOBILE_PHONE_NUMBER = Pattern.compile("^1[34578]\\\\d{9}$");
+	private static final Pattern MOBILE_PHONE_NUMBER = Pattern.compile("^1[34578]\\d{9}$");
 
 	private static final Pattern             BIRTHDAY          = Pattern.compile(
 			"^([1-9][0-9]{0,3}-(((0?[13578]|1[02])-(0?[1-9]|([12][0-9]|3[01])))|((0?[469]|11)-(0?[1-9]|" + "([12][0-9]|30)))" + "|((0?2)-"

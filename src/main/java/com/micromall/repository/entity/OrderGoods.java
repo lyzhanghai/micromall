@@ -28,6 +28,12 @@ public class OrderGoods extends IdEntity {
 	// 创建时间
 	private Date       createTime;
 
+	@JsonIgnore
+	@Override
+	public Integer getId() {
+		return super.getId();
+	}
+
 	public String getOrderNo() {
 		return orderNo;
 	}

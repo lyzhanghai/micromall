@@ -34,7 +34,7 @@
 
     <sql id="Where_Clause">
         where deleted = 0
-        <if test="criterias != null and criterias.valid">
+        <if test="criterias != null and valid">
             and
             <foreach collection="criterias" item="criteria" separator="or">
                 <if test="criteria.valid">
@@ -51,13 +51,13 @@
                                     and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                                 </when>
                                 <when test="criterion.leftLikeValue">
-                                    and ${criterion.condition} #{criterion.value}%
+                                    and ${criterion.condition} '${criterion.value}%'
                                 </when>
                                 <when test="criterion.rightLikeValue">
-                                    and ${criterion.condition} %#{criterion.value}
+                                    and ${criterion.condition} '%${criterion.value}'
                                 </when>
                                 <when test="criterion.anyLikeValue">
-                                    and ${criterion.condition} %#{criterion.value}%
+                                    and ${criterion.condition} '%${criterion.value}%'
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
@@ -73,10 +73,7 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.micromall.repository.entity.Goods">
-        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
+    <insert id="insert" parameterType="com.micromall.repository.entity.Goods" useGeneratedKeys="true" keyProperty="id">
         insert into goods (id, title, main_image,
         category_id, price, inventory,shelves, type, promotion,
         sort, sales_volume, deleted,create_time, update_time, images,
@@ -165,9 +162,9 @@
         <include refid="Where_Clause"/>
     </update>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" resultMap="FullResultMap" parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Column_List"/>,<include refid="Full_Column_List"/>
         from goods
         where id = #{id,jdbcType=INTEGER} and deleted = 0
     </select>

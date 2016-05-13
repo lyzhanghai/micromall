@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class LogisticsService {
 
-	public LogisticsRecord getLogisticsRecords(String orderNo) {
+	public LogisticsRecord getLogisticsInfo(String orderNo) {
 		return null;
 	}
 }

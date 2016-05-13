@@ -1,13 +1,10 @@
-package com.micromall.web.controller.v;
+package com.micromall.web.controller;
 
 import com.micromall.service.CartService;
-import com.micromall.web.controller.BasisController;
-import com.micromall.web.extend.UncaughtException;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
@@ -16,8 +13,8 @@ import java.util.Arrays;
  * Created by zhangzx on 16/3/23.
  * 购物车
  */
-@Controller
-@RequestMapping(value = "/cart")
+@RestController
+@RequestMapping(value = "/api")
 @Authentication
 public class CartController extends BasisController {
 
@@ -29,9 +26,7 @@ public class CartController extends BasisController {
 	 *
 	 * @return
 	 */
-	@UncaughtException(msg = "加载商品列表失败")
-	@RequestMapping(value = "/list")
-	@ResponseBody
+	@RequestMapping(value = "/cart/list")
 	public ResponseEntity<?> list() {
 		return ResponseEntity.ok(cartService.listGoods(getLoginUser().getUid()));
 	}
@@ -43,9 +38,7 @@ public class CartController extends BasisController {
 	 * @param buyNumber 购买数量
 	 * @return
 	 */
-	@UncaughtException(msg = "加入购物车失败")
-	@RequestMapping(value = "/join")
-	@ResponseBody
+	@RequestMapping(value = "/cart/join")
 	public ResponseEntity<?> join(int goodsId, int buyNumber) {
 		if (buyNumber < 1) {
 			return ResponseEntity.fail("购买数量不能小于1");
@@ -64,9 +57,7 @@ public class CartController extends BasisController {
 	 * @param buyNumber 购买数量
 	 * @return
 	 */
-	@UncaughtException(msg = "修改购买数量失败")
-	@RequestMapping(value = "/update_buyNumber")
-	@ResponseBody
+	@RequestMapping(value = "/cart/update_buyNumber")
 	public ResponseEntity<?> update_buyNumber(int goodsId, int buyNumber) {
 		if (buyNumber < 1) {
 			return ResponseEntity.fail("购买数量不能小于1件");
@@ -81,9 +72,7 @@ public class CartController extends BasisController {
 	 * @param goodsId 商品id
 	 * @return
 	 */
-	@UncaughtException(msg = "删除商品失败")
-	@RequestMapping(value = "/delete_goods")
-	@ResponseBody
+	@RequestMapping(value = "/cart/delete")
 	public ResponseEntity<?> delete_goods(int goodsId) {
 		cartService.deleteGoods(getLoginUser().getUid(), Arrays.asList(goodsId));
 		return ResponseEntity.ok();

@@ -38,7 +38,7 @@
     </sql>
 
     <sql id="Where_Clause">
-        <if test="criterias != null and criterias.valid">
+        <if test="criterias != null and valid">
             <where>
                 <foreach collection="criterias" item="criteria" separator="or">
                     <if test="criteria.valid">
@@ -69,10 +69,7 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.micromall.repository.entity.Order">
-        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
+    <insert id="insert" parameterType="com.micromall.repository.entity.Order" useGeneratedKeys="true" keyProperty="id">
         insert into order (id, uid, order_no,
         total_amount, realpay_amount, balancepay_amount,
         deduction_amount, leave_message, status,

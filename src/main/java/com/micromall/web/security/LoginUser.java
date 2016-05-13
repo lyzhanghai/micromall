@@ -76,6 +76,6 @@ public class LoginUser implements Serializable {
 	}
 
 	public enum LoginType {
-		Phone, WeChat
+		Phone, WeChat, Mock
 	}
 }

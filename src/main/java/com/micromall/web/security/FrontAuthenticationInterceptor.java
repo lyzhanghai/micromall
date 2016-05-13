@@ -1,9 +1,11 @@
 package com.micromall.web.security;
 
 import com.alibaba.fastjson.JSON;
+import com.micromall.repository.entity.Member;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.URLBuilder;
 import com.micromall.web.RequestContext;
+import com.micromall.web.security.LoginUser.LoginType;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,18 +22,8 @@ public class FrontAuthenticationInterceptor extends AbstractExcludeInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		Authentication authentication = null;
-		if (handler instanceof HandlerMethod) {
-			HandlerMethod handlerMethod = (HandlerMethod)handler;
-			authentication = handlerMethod.getMethodAnnotation(Authentication.class);
-			if (authentication == null) {
-				authentication = handlerMethod.getBeanType().getAnnotation(Authentication.class);
-			}
-		}
-
-		/*String sid = CookieUtils.getCookieValue(request, CommonEnvConstants.LOGIN_SESSION_COOKIE_SID);
-		LoginUser loginUser = (sid != null) ? (LoginUser) request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY) : null;*/
-		LoginUser loginUser = (LoginUser)request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY);
+		Authentication authentication = getAuthentication(handler);
+		LoginUser loginUser = getLoginUser(request);
 
 		// 用户未登录
 		if (loginUser == null) {
@@ -41,15 +33,20 @@ public class FrontAuthenticationInterceptor extends AbstractExcludeInterceptor {
 				String _agent = request.getHeader("User-Agent");
 				// 请求是否来自于微信
 				boolean weixin = (_agent != null && _agent.contains("MicroMessenger"));
-				// 是否为ajax请求？
+				// 是否为ajax请求
 				boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
-				if (ajax) {
-					response.getWriter()
-					        .write("\"redirectUrl\":\"" + (weixin ? _buildWeixinAuthorizeUrl(request) : CommonEnvConstants
-							        .MOBILE_AUTHORIZE_LOGIN_URL)
-							        + "\"");
+
+				String redirectUrl;
+				if (!weixin && CommonEnvConstants.MOBILE_LOGIN_USABLE) {
+					redirectUrl = CommonEnvConstants.MOBILE_AUTHORIZE_LOGIN_URL;
 				} else {
-					response.sendRedirect((weixin ? _buildWeixinAuthorizeUrl(request) : CommonEnvConstants.MOBILE_AUTHORIZE_LOGIN_URL));
+					redirectUrl = _buildWeixinAuthorizeUrl(request);
+				}
+
+				if (ajax) {
+					response.getWriter().write("\"redirectUrl\":\"" + redirectUrl + "\"");
+				} else {
+					response.sendRedirect(redirectUrl);
 				}
 				return false;
 			}
@@ -58,6 +55,35 @@ public class FrontAuthenticationInterceptor extends AbstractExcludeInterceptor {
 			RequestContext.setLoginUser(loginUser);
 		}
 		return true;
+	}
+
+	private LoginUser getLoginUser(HttpServletRequest request) {
+		LoginUser loginUser = (LoginUser)request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY);
+
+		boolean debugAuth = CommonEnvConstants.ENV.isDevEnv() && request.getParameterMap().containsKey("debugAuth");
+		if (debugAuth) {
+			loginUser = _MockLogin(request);
+		}
+		return loginUser;
+	}
+
+	private Authentication getAuthentication(Object handler) {
+		Authentication authentication = null;
+		if (handler instanceof HandlerMethod) {
+			HandlerMethod handlerMethod = (HandlerMethod)handler;
+			authentication = handlerMethod.getMethodAnnotation(Authentication.class);
+			if (authentication == null) {
+				authentication = handlerMethod.getBeanType().getAnnotation(Authentication.class);
+			}
+		}
+		return authentication;
+	}
+
+	private LoginUser _MockLogin(HttpServletRequest request) {
+		Member member = new Member();
+		member.setId(CommonEnvConstants.DEBUG_AUTH_USERID);
+		LoginUser loginUser = LoginUser.create(LoginType.Mock, member, request);
+		return loginUser;
 	}
 
 	private String _buildWeixinAuthorizeUrl(HttpServletRequest request) {
@@ -87,7 +113,7 @@ public class FrontAuthenticationInterceptor extends AbstractExcludeInterceptor {
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 		RequestContext.clean();
 		if (ex != null) {
-			logger.info("请求 [{}], 参数 [{}], 异常 [{}]", request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), ex.getMessage());
+			logger.error("请求 [{}], 参数 [{}], 异常 [{}]", request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), ex.getMessage());
 		}
 	}
 }

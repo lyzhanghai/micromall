@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.micromall.repository.CashAccountMapper">
     <resultMap id="BaseResultMap" type="com.micromall.repository.entity.CashAccount">
-        <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <id column="uid" property="uid" jdbcType="INTEGER"/>
         <result column="balance" property="balance" jdbcType="DECIMAL"/>
         <result column="commission" property="commission" jdbcType="DECIMAL"/>
         <result column="total_sales" property="totalSales" jdbcType="DECIMAL"/>
@@ -12,11 +11,11 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, uid, balance, commission, total_sales, create_time, update_time
+        uid, balance, commission, total_sales, create_time, update_time
     </sql>
 
     <sql id="Where_Clause">
-        <if test="criterias != null and criterias.valid">
+        <if test="criterias != null and valid">
             <where>
                 <foreach collection="criterias" item="criteria" separator="or">
                     <if test="criteria.valid">
@@ -48,13 +47,10 @@
     </sql>
 
     <insert id="insert" parameterType="com.micromall.repository.entity.CashAccount">
-        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
-        insert into cash_account (id, uid, balance,
+        insert into cash_account (uid, balance,
         commission, total_sales, create_time,
         update_time)
-        values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{balance,jdbcType=DECIMAL},
+        values (#{uid,jdbcType=INTEGER}, #{balance,jdbcType=DECIMAL},
         #{commission,jdbcType=DECIMAL}, #{totalSales,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP},
         #{updateTime,jdbcType=TIMESTAMP})
     </insert>
@@ -62,9 +58,6 @@
     <update id="updateByPrimaryKey" parameterType="com.micromall.repository.entity.CashAccount">
         update cash_account
         <set>
-            <if test="uid != null">
-                uid = #{uid,jdbcType=INTEGER},
-            </if>
             <if test="balance != null">
                 balance = #{balance,jdbcType=DECIMAL},
             </if>
@@ -74,19 +67,21 @@
             <if test="totalSales != null">
                 total_sales = #{totalSales,jdbcType=DECIMAL},
             </if>
+            <!--
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
+            -->
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
         </set>
-        where id = #{id,jdbcType=INTEGER}
+        where uid = #{uid,jdbcType=INTEGER}
     </update>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete from cash_account
-        where id = #{id,jdbcType=INTEGER}
+        where uid = #{uid,jdbcType=INTEGER}
     </delete>
 
     <delete id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
@@ -98,7 +93,7 @@
         select
         <include refid="Base_Column_List"/>
         from cash_account
-        where id = #{id,jdbcType=INTEGER}
+        where uid = #{uid,jdbcType=INTEGER}
     </select>
 
     <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">

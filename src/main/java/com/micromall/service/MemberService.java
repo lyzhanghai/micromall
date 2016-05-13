@@ -1,8 +1,8 @@
 package com.micromall.service;
 
+import com.micromall.repository.MemberMapper;
 import com.micromall.repository.entity.Member;
 import com.micromall.repository.entity.common.MemberLevels;
-import com.micromall.repository.MemberMapper;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.Condition;
 import com.micromall.utils.Condition.Criteria;
@@ -27,6 +27,12 @@ public class MemberService {
 	@Resource
 	private DistributionRelationService distributionRelationService;
 
+	public static void main(String[] args) {
+		System.out.println(Base64.encodeBase64String(("#" + "879777").getBytes()));
+		System.out.println(Base64.encodeBase64String(("#" + "168288").getBytes()));
+		System.out.println(Base64.encodeBase64String(("#" + "100001").getBytes()));
+	}
+
 	@Transactional
 	public boolean update(Member member) {
 		member.setUpdateTime(new Date());
@@ -49,6 +55,8 @@ public class MemberService {
 		member.setWechatId(wechatId);
 		if (StringUtils.isNotEmpty(phone)) {
 			member.setNickname(phone);
+		} else {
+			member.setNickname("小白菜");
 		}
 		member.setAvatar(CommonEnvConstants.MEMBER_DEFAULT_AVATAR);
 		member.setLevel(MemberLevels.LV_0);

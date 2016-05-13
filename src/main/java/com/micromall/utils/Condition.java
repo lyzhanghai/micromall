@@ -1,6 +1,7 @@
 package com.micromall.utils;
 
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
+
 import java.util.List;
 
 /**
@@ -9,25 +10,21 @@ import java.util.List;
  */
 public class Condition {
 
+	/*排序方式*/
 	private String         orderBy;
+	/*查询条件*/
 	private List<Criteria> criterias;
 
 	public Condition() {
 		this(null);
 	}
 
+	/**
+	 * @param orderBy 排序方式
+	 */
 	public Condition(String orderBy) {
 		this.orderBy = orderBy;
-		criterias = new ArrayList<Criteria>();
-	}
-
-	public boolean isValid() {
-		for (Criteria criteria : criterias) {
-			if (criteria.isValid()) {
-				return true;
-			}
-		}
-		return false;
+		criterias = Lists.newArrayList();
 	}
 
 	public String getOrderBy() {
@@ -54,9 +51,8 @@ public class Condition {
 		return criteria;
 	}
 
-	public void clear() {
-		criterias.clear();
-		orderBy = null;
+	public boolean isValid() {
+		return criterias.size() > 0;
 	}
 
 	protected abstract static class GeneratedCriteria {
@@ -73,7 +69,7 @@ public class Condition {
 		}
 
 		protected GeneratedCriteria(Condition condition) {
-			criterions = new ArrayList<Criterion>();
+			criterions = Lists.newArrayList();
 			this.condition = condition;
 		}
 

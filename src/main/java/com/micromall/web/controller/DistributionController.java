@@ -1,14 +1,13 @@
 package com.micromall.web.controller;
 
 import com.micromall.service.DistributionService;
-import com.micromall.utils.CommonEnvConstants;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.Authentication;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -16,8 +15,8 @@ import javax.annotation.Resource;
  * Created by zhangzx on 16/3/28.
  * 分销
  */
-@Controller
-@RequestMapping(value = "/distribution")
+@RestController
+@RequestMapping(value = "/api/distribution")
 @Authentication
 public class DistributionController extends BasisController {
 
@@ -49,7 +48,7 @@ public class DistributionController extends BasisController {
 	 */
 	@RequestMapping(value = "/lower_distributors_list")
 	@ResponseBody
-	public ResponseEntity<?> lower_distributors_list(String level, @RequestParam(defaultValue = "1") int page) {
+	public ResponseEntity<?> lower_distributors_list(String level, @RequestParam(defaultValue = "1") int page, Integer limit) {
 		Integer _level = null;
 		if (level != null) {
 			switch (level) {
@@ -64,8 +63,8 @@ public class DistributionController extends BasisController {
 			}
 		}
 
-		return ResponseEntity.ok(distributionService
-				.lowerDistributorsList(getLoginUser().getUid(), _level, new RowBounds(page, CommonEnvConstants.FRONT_DEFAULT_PAGE_LIMIT)));
+		return ResponseEntity.ok(distributionService.lowerDistributorsList(getLoginUser().getUid(), _level, new RowBounds(page, resizeLimit(limit)
+		)));
 	}
 
 }

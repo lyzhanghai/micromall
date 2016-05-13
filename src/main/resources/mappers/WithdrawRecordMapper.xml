@@ -18,7 +18,7 @@
     </sql>
 
     <sql id="Where_Clause">
-        <if test="criterias != null and criterias.valid">
+        <if test="criterias != null and valid">
             <where>
                 <foreach collection="criterias" item="criteria" separator="or">
                     <if test="criteria.valid">
@@ -49,10 +49,7 @@
         </if>
     </sql>
 
-    <insert id="insert" parameterType="com.micromall.repository.entity.WithdrawApplyRecord">
-        <selectKey resultType="java.lang.Integer" keyProperty="id" order="BEFORE">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
+    <insert id="insert" parameterType="com.micromall.repository.entity.WithdrawApplyRecord" useGeneratedKeys="true" keyProperty="id">
         insert into withdraw_record (id, uid, amount,channel, status, auditlog,apply_time, audit_time, complete_time
         )
         values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL},

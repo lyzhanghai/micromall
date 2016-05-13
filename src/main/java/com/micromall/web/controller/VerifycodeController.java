@@ -1,15 +1,15 @@
-package com.micromall.web.controller.v;
+package com.micromall.web.controller;
 
 import com.micromall.service.ShortMessageService;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.ValidateUtils;
 import com.micromall.web.resp.ResponseEntity;
+import com.micromall.web.security.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +19,9 @@ import java.util.Random;
  * @author zhangzxiang91@gmail.com
  * @date 2016/04/19.
  */
-@Controller
+@RestController
+@RequestMapping(value = "/api")
+@Authentication(force = false)
 public class VerifycodeController {
 
 	private static final Random RANDOM = new Random();
@@ -35,21 +37,21 @@ public class VerifycodeController {
 	 * @param phone 手机号码
 	 * @return
 	 */
-	@RequestMapping(value = "/verifycode")
-	@ResponseBody
+	@RequestMapping(value = "/verifycode/send")
 	public ResponseEntity<?> verifycode(HttpServletRequest request, String phone) {
 		if (StringUtils.isEmpty(phone)) {
 			return ResponseEntity.fail("请输入手机号码");
 		}
-		if (ValidateUtils.illegalMobilePhoneNumber(phone)) {
+		if (ValidateUtils.illegalMobilePhoneNumber(phone) && CommonEnvConstants.ENV.isDistEnv()) {
 			return ResponseEntity.fail("手机号码不正确");
 		}
 
 		try {
 			String verifycode = String.valueOf((RANDOM.nextInt(9000) + 1000));
 			boolean sendResult = shortMessageService.sendMessage(phone, String.format(CommonEnvConstants.VERIFYCODE_TEMPLATE, verifycode));
-			if (sendResult) {
-				request.getSession().setAttribute(CommonEnvConstants.VERIFYCODE_KEY, verifycode);
+			if (CommonEnvConstants.ENV.isDevEnv()) {
+				return ResponseEntity.ok(verifycode);
+			} else if (sendResult) {
 				return ResponseEntity.ok();
 			}
 		} catch (Exception e) {

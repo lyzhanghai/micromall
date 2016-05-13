@@ -32,6 +32,12 @@ public class FavoriteGoods extends IdEntity {
 	// 是否已经失效
 	private boolean invalid;
 
+	@JsonIgnore
+	@Override
+	public Integer getId() {
+		return super.getId();
+	}
+
 	public Integer getUid() {
 		return uid;
 	}

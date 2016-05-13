@@ -2,9 +2,7 @@
 target
 micromall.iml
 document/properties
-document/服务器
-document/API-DOCS/docs/.Ulysses-Group.plist
-document/API-DOCS/.Ulysses-Group.plist
+document/账号
 document/backup
-document/generator
+document/generator/output
 document/remark.md
