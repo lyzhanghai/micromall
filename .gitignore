@@ -2,7 +2,7 @@
 target
 micromall.iml
 document/properties
-document/账号
+document/account
 document/backup
 document/generator/output
 document/remark.md
