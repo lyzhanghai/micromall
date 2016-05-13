@@ -1,7 +1,7 @@
 package com.micromall.service;
 
-import com.micromall.repository.entity.CashAccount;
 import com.micromall.repository.CashAccountMapper;
+import com.micromall.repository.entity.CashAccount;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +19,6 @@ public class CashAccountService {
 	@Resource
 	private CashAccountMapper mapper;
 
-	@Transactional(readOnly = true)
 	public CashAccount getCashAccount(Integer uid) {
 		return mapper.selectByPrimaryKey(uid);
 	}
@@ -49,5 +48,9 @@ public class CashAccountService {
 
 	public int incrementBalance(int uid, BigDecimal amount) {
 		return mapper.incrementBalance(uid, amount, new Date());
+	}
+
+	public int incrementTotalSales(int uid, BigDecimal amount) {
+		return mapper.incrementTotalSales(uid, amount, new Date());
 	}
 }

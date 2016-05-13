@@ -2,14 +2,16 @@ package com.micromall.web.security;
 
 import com.alibaba.fastjson.JSON;
 import com.micromall.repository.entity.Member;
+import com.micromall.service.MemberService;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.HttpServletUtils;
+import com.micromall.utils.SpringBeanUtils;
 import com.micromall.utils.URLBuilder;
 import com.micromall.web.RequestContext;
 import com.micromall.web.resp.ResponseEntity;
+import com.micromall.web.security.annotation.Authentication;
 import com.micromall.web.security.entity.LoginUser;
 import com.micromall.web.security.entity.LoginUser.LoginType;
-import com.micromall.web.security.annotation.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,21 +22,28 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 
-	private static final Logger logger             = LoggerFactory.getLogger(FrontAuthenticationInterceptor.class);
-	private static final String _AUTHORIZED_HEADER = "X-Authorized";
+	private static final Logger          logger             = LoggerFactory.getLogger(FrontAuthenticationInterceptor.class);
+	private static final String          _AUTHORIZED_HEADER = "X-Authorized";
+	private static final String          _PROMOTE_CODE_KEY  = "promote_code";
+	private static       ExecutorService executor           = Executors.newFixedThreadPool(1);
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		if (isForbidden(request)) {
-			_forbidden(request, response);
+		if (_forbidden(request, response)) {
 			return false;
 		}
 
 		LoginUser loginUser = _getLoginUser(request);
 		if (loginUser != null) {
+			if (_isShareSource(request)) {
+				_processShareRequest(request, loginUser);
+			}
+
 			response.addHeader(_AUTHORIZED_HEADER, Boolean.TRUE.toString());
 			RequestContext.setLoginUser(loginUser);
 			return true;
@@ -48,6 +57,19 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 
 		_processNotLogin(request, response);
 		return false;
+	}
+
+	private void _processShareRequest(HttpServletRequest request, LoginUser loginUser) {
+		final String promote_code = request.getParameter(_PROMOTE_CODE_KEY);
+		final int loginUid = loginUser.getUid();
+		executor.execute(() -> {
+			MemberService memberService = SpringBeanUtils.get(MemberService.class);
+			memberService.bindingPromoteCode(loginUid, promote_code);
+		});
+	}
+
+	private boolean _isShareSource(HttpServletRequest request) {
+		return StringUtils.isNotBlank(request.getParameter(_PROMOTE_CODE_KEY));
 	}
 
 	private void _processNotLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -70,13 +92,18 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 		}
 	}
 
-	private void _forbidden(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+	private boolean _forbidden(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		if (!isForbidden(request)) {
+			return false;
+		}
+
 		logger.info("拦截访问受保护资源：请求 [{}], 参数 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
 		if (HttpServletUtils.isAjaxRequest(request)) {
 			HttpServletUtils.responseWriter(request, response, ResponseEntity.Failure("请求地址[{" + (request.getRequestURI()) + "}]不存在"));
 		} else {
 			request.getRequestDispatcher(CommonEnvConstants.SERVER_NOTFOUND_REDIRECT_URL).forward(request, response);
 		}
+		return true;
 	}
 
 	private LoginUser _getLoginUser(HttpServletRequest request) {

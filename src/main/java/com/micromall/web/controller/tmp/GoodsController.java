@@ -74,7 +74,7 @@ public class GoodsController extends BasisController {
 	public ResponseEntity<?> details(int goodsId) {
 		Goods goods = goodsService.getGoodsInfo(goodsId);
 		if (null == goods) {
-			return ResponseEntity.Failure("商品信息不存在");
+			return ResponseEntity.Failure("商品不存在");
 		}
 		if (null != getLoginUser()) {
 			goods.setFavorite(favoriteService.hasFavorite(getLoginUser().getUid(), goodsId));

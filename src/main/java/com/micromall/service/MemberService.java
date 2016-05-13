@@ -98,4 +98,23 @@ public class MemberService {
 	public Member get(int id) {
 		return mapper.selectByPrimaryKey(id);
 	}
+
+	@Transactional
+	public void bindingPromoteCode(int uid, String promoteCode) {
+		Member member = this.get(uid);
+		if (StringUtils.isNotEmpty(member.getUsePromoteCode())) {
+			return;
+		}
+
+		Member parent = mapper.selectOneByWhereClause(Criteria.create().andEqualTo("my_promote_code", promoteCode).build());
+		if (parent != null) {
+			distributionRelationService.relation(member.getParentUid(), member.getId());
+			Member _updateMember = new Member();
+			_updateMember.setId(member.getId());
+			_updateMember.setParentUid(parent.getId());
+			_updateMember.setUsePromoteCode(promoteCode);
+			_updateMember.setUpdateTime(new Date());
+			mapper.updateByPrimaryKey(_updateMember);
+		}
+	}
 }

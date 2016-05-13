@@ -1,4 +1,4 @@
-package com.micromall.web.controller.tmp;
+package com.micromall.web.controller;
 
 import com.micromall.service.ShortMessageService;
 import com.micromall.utils.CommonEnvConstants;
@@ -22,6 +22,7 @@ import java.util.Random;
 @RestController
 @RequestMapping(value = "/api")
 @Authentication(force = false)
+@Deprecated
 public class VerifycodeController {
 
 	private static final Random RANDOM = new Random();
@@ -38,11 +39,11 @@ public class VerifycodeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/verifycode/send")
-	public ResponseEntity<?> verifycode(HttpServletRequest request, String phone) {
+	public ResponseEntity<?> verifycodeSend(HttpServletRequest request, String phone) {
 		if (StringUtils.isEmpty(phone)) {
 			return ResponseEntity.Failure("请输入手机号码");
 		}
-		if (ValidateUtils.illegalMobilePhoneNumber(phone) && CommonEnvConstants.ENV.isDistEnv()) {
+		if (ValidateUtils.illegalMobilePhoneNumber(phone)) {
 			return ResponseEntity.Failure("手机号码不正确");
 		}
 
@@ -50,13 +51,15 @@ public class VerifycodeController {
 			String verifycode = String.valueOf((RANDOM.nextInt(9000) + 1000));
 			boolean sendResult = shortMessageService.sendMessage(phone, String.format(CommonEnvConstants.VERIFYCODE_TEMPLATE, verifycode));
 			if (CommonEnvConstants.ENV.isDevEnv()) {
+				request.getSession().setAttribute(CommonEnvConstants.VERIFYCODE_KEY, verifycode);
 				return ResponseEntity.Success(verifycode);
 			} else if (sendResult) {
+				request.getSession().setAttribute(CommonEnvConstants.VERIFYCODE_KEY, verifycode);
 				return ResponseEntity.Success();
 			}
 		} catch (Exception e) {
 			logger.error("发送短信验证码出错：", e);
 		}
-		return ResponseEntity.Failure("短信验证码发送失败");
+		return ResponseEntity.Failure("验证码发送失败");
 	}
 }

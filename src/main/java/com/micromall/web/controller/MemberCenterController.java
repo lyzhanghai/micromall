@@ -1,4 +1,4 @@
-package com.micromall.web.controller.tmp;
+package com.micromall.web.controller;
 
 import com.micromall.repository.entity.CashAccount;
 import com.micromall.repository.entity.CertifiedInfo;
@@ -12,7 +12,6 @@ import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.utils.UploadUtils;
 import com.micromall.utils.ValidateUtils;
-import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.annotation.Authentication;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +51,7 @@ public class MemberCenterController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/binding_phone")
+	@Deprecated
 	public ResponseEntity<?> binding_phone(HttpServletRequest request, String phone, String verifycode) {
 		if (StringUtils.isEmpty(phone)) {
 			return ResponseEntity.Failure("请输入手机号码");
@@ -93,21 +94,24 @@ public class MemberCenterController extends BasisController {
 	public ResponseEntity<?> userinfo(HttpServletRequest request) {
 		Member member = memberService.get(getLoginUser().getUid());
 		if (member == null) {
-			loginSeesionService.loginout(request);
+			loginSeesionService.loginout(request, getLoginUser().getUid());
 			return ResponseEntity.Failure("获取用户信息失败");
 		}
 
 		CashAccount cashAccount = cashAccountService.getCashAccount(member.getId());
 		CertifiedInfo certifiedInfo = certifiedInfoService.getCertifiedInfo(member.getId());
-		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<>();
 		data.put("uid", member.getId());
+		data.put("phone", member.getPhone());
 		data.put("nickname", member.getNickname());
 		data.put("avatar", member.getAvatar());
 		data.put("level", member.getLevel());
-		data.put("commission", cashAccount.getCommission());
-		data.put("totalSales", cashAccount.getTotalSales());
+		data.put("gender", member.getGender());
+		data.put("birthday", member.getBirthday());
+		data.put("myPromoteCode", member.getMyPromoteCode());
+		data.put("commission", cashAccount.getCommission().toPlainString());
+		data.put("totalSales", cashAccount.getTotalSales().toPlainString());
 		data.put("certifiedInfo", certifiedInfo);
-
 		return ResponseEntity.Success(data);
 	}
 
@@ -142,7 +146,7 @@ public class MemberCenterController extends BasisController {
 		if (memberService.update(_updateMember)) {
 			return ResponseEntity.Success();
 		}
-		return ResponseEntity.Failure("保存用户信息失败");
+		return ResponseEntity.Failure("保存失败");
 	}
 
 	/**
@@ -162,7 +166,7 @@ public class MemberCenterController extends BasisController {
 				return ResponseEntity.Success();
 			}
 		}
-		return ResponseEntity.Failure("保存用户头像失败");
+		return ResponseEntity.Failure("保存头像失败");
 	}
 
 	@RequestMapping(value = "/upload_certificate")
@@ -171,7 +175,7 @@ public class MemberCenterController extends BasisController {
 		if (StringUtils.isNotEmpty(url)) {
 			return ResponseEntity.Success(url);
 		}
-		return ResponseEntity.Failure("上传证件信息失败");
+		return ResponseEntity.Failure("上传证件失败");
 	}
 
 	/**
@@ -210,28 +214,36 @@ public class MemberCenterController extends BasisController {
 		}
 
 		CertifiedInfo certifiedInfo = certifiedInfoService.getCertifiedInfo(getLoginUser().getUid());
-		boolean exists = true;
+		boolean exists = false;
 		if (certifiedInfo != null) {
-			exists = false;
+			exists = true;
 			if (certifiedInfo.getStatus().intValue() == CertifiedStatus.审核通过) {
 				return ResponseEntity.Failure("认证信息已经审核通过，不允许修改");
 			}
 			if (certifiedInfo.getStatus().intValue() == CertifiedStatus.审核中) {
 				return ResponseEntity.Failure("认证信息正在审核中，请不要重复提交");
 			}
+		} else {
+			certifiedInfo = new CertifiedInfo();
 		}
-		certifiedInfo.setUid(getLoginUser().getUid());
+
 		certifiedInfo.setName(name);
 		certifiedInfo.setPhone(phone);
 		certifiedInfo.setIdCarNo(idCarNo);
 		certifiedInfo.setIdCarImage1(idCarImage1);
 		certifiedInfo.setIdCarImage0(idCarImage0);
 		certifiedInfo.setStatus(CertifiedStatus.审核中);
-		if (exists) {
+
+		if (!exists) {
+			certifiedInfo.setUid(getLoginUser().getUid());
+			certifiedInfo.setCreateTime(new Date());
 			certifiedInfoService.insert(certifiedInfo);
 		} else {
+			certifiedInfo.setAuditlog(null);
+			certifiedInfo.setAuditTime(null);
+			certifiedInfo.setUpdateTime(new Date());
 			if (!certifiedInfoService.update(certifiedInfo)) {
-				return ResponseEntity.Failure("提交用户认证信息失败");
+				return ResponseEntity.Failure("提交认证信息失败");
 			}
 		}
 		return ResponseEntity.Success();

@@ -39,7 +39,7 @@ public class LoginSeesionService {
 		request.getSession().setAttribute(CommonEnvConstants.LOGIN_SESSION_KEY, loginUser);
 	}
 
-	public void loginout(HttpServletRequest request) {
+	public void loginout(HttpServletRequest request, int uid) {
 		request.getSession().invalidate();
 	}
 }
