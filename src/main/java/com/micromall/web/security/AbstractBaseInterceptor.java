@@ -29,14 +29,14 @@ public abstract class AbstractBaseInterceptor extends HandlerInterceptorAdapter 
 	}
 
 	public boolean isForbidden(HttpServletRequest request) {
-		return _isMatch(request, forbiddens);
+		return isMatch(request, forbiddens);
 	}
 
 	public boolean isExclude(HttpServletRequest request) {
-		return _isMatch(request, excludes);
+		return isMatch(request, excludes);
 	}
 
-	private boolean _isMatch(HttpServletRequest request, Set<String> urls) {
+	protected boolean isMatch(HttpServletRequest request, Set<String> urls) {
 		String url = request.getRequestURI();
 		for (String _url : urls) {
 			if (_isMatch(url, _url)) {

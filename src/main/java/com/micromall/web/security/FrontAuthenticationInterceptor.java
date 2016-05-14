@@ -1,6 +1,7 @@
 package com.micromall.web.security;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Sets;
 import com.micromall.repository.entity.Member;
 import com.micromall.service.MemberService;
 import com.micromall.utils.CommonEnvConstants;
@@ -22,6 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -31,6 +33,11 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 	private static final String          _AUTHORIZED_HEADER = "X-Authorized";
 	private static final String          _PROMOTE_CODE_KEY  = "promote_code";
 	private static       ExecutorService executor           = Executors.newFixedThreadPool(1);
+	private              Set<String>     privacys           = Sets.newHashSet();
+
+	public void setPrivacys(Set<String> privacys) {
+		this.privacys = privacys;
+	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -51,7 +58,8 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 
 		response.addHeader(_AUTHORIZED_HEADER, Boolean.FALSE.toString());
 		Authentication authentication = _getHandlerAuthentication(handler);
-		if (isExclude(request) || (authentication == null || !authentication.force())) {
+		if (!isMatch(request, privacys) && (isExclude(request) || (handler instanceof HandlerMethod && (authentication == null || !authentication
+				.force())))) {
 			return true;
 		}
 
@@ -155,7 +163,9 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-		logger.info("请求 [{}], 参数 [{}] 状态 [200]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
+		if (!isExclude(request)) {
+			logger.info("请求 [{}], 参数 [{}] 状态 [200]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
+		}
 	}
 
 	@Override

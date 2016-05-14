@@ -63,14 +63,23 @@
         <!--前端-身份验证拦截器-->
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
+            <!-- admin-->
             <mvc:exclude-mapping path="/admin/**"/>
+            <!-- static -->
+            <mvc:exclude-mapping path="/css/**"/>
+            <mvc:exclude-mapping path="/js/**"/>
+            <mvc:exclude-mapping path="/font/**"/>
+            <mvc:exclude-mapping path="/less/**"/>
+            <mvc:exclude-mapping path="/less/**"/>
             <bean class="com.micromall.web.security.FrontAuthenticationInterceptor">
-                <property name="forbiddens">
+                <property name="privacys">
                     <list>
+                        <value>/images/certificate/*</value>
                     </list>
                 </property>
                 <property name="excludes">
                     <list>
+                        <value>/images/*</value>
                     </list>
                 </property>
             </bean>
@@ -79,12 +88,7 @@
         <mvc:interceptor>
             <mvc:mapping path="/admin/**"/>
             <mvc:exclude-mapping path="/admin/login.html"/>
-            <bean class="com.micromall.web.security.AdminAuthenticationInterceptor">
-                <property name="excludes">
-                    <list>
-                    </list>
-                </property>
-            </bean>
+            <bean class="com.micromall.web.security.AdminAuthenticationInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
