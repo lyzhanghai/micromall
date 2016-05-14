@@ -16,6 +16,14 @@
     <context:annotation-config/>
     <mvc:default-servlet-handler/>
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>${config.dir}/config-${env.profiles}.properties</value>
+            </list>
+        </property>
+    </bean>
+
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -80,7 +88,15 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
-    <!--<mvc:resources mapping="/**/*.html" location="/static/"/>-->
+    <!-- 静态资源映射-->
+    <mvc:resources mapping="/images/**" location="/images/, file:${upload.root.dir}/images/"/>
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/font/**" location="/font/"/>
+    <mvc:resources mapping="/less/**" location="/less/"/>
+    <mvc:resources mapping="/less/**" location="/less/"/>
+    <mvc:resources mapping="/static/**" location="/static/"/>
+    <mvc:resources mapping="/view/**" location="/view/"/>
 
     <!-- 文件上传 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

@@ -13,7 +13,6 @@
         <result column="my_promote_code" property="myPromoteCode" jdbcType="VARCHAR"/>
         <result column="use_promote_code" property="usePromoteCode" jdbcType="VARCHAR"/>
         <result column="parent_uid" property="parentUid" jdbcType="INTEGER"/>
-        <result column="verified" property="verified" jdbcType="CHAR"/>
         <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"/>
         <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR"/>
         <result column="deleted" property="deleted" jdbcType="CHAR"/>
@@ -23,7 +22,7 @@
 
     <sql id="Base_Column_List">
         id, phone, wechat_id, nickname, avatar, level, gender, birthday, my_promote_code,
-        use_promote_code, parent_uid, verified, last_login_time, last_login_ip, deleted, register_time,
+        use_promote_code, parent_uid, last_login_time, last_login_ip, deleted, register_time,
         update_time
     </sql>
 
@@ -63,13 +62,13 @@
         insert into member (id, phone, wechat_id,
         nickname, avatar, level,
         gender, birthday, my_promote_code,
-        use_promote_code, parent_uid, verified,
+        use_promote_code, parent_uid,
         last_login_time, last_login_ip, deleted, register_time,
         update_time)
         values (#{id,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{wechatId,jdbcType=VARCHAR},
         #{nickname,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{level,jdbcType=VARCHAR},
         #{gender,jdbcType=CHAR}, #{birthday,jdbcType=VARCHAR}, #{myPromoteCode,jdbcType=VARCHAR},
-        #{usePromoteCode,jdbcType=VARCHAR}, #{parentUid,jdbcType=INTEGER}, #{verified,jdbcType=CHAR},
+        #{usePromoteCode,jdbcType=VARCHAR}, #{parentUid,jdbcType=INTEGER},
         #{lastLoginTime,jdbcType=TIMESTAMP}, #{lastLoginIp,jdbcType=VARCHAR}, #{deleted,jdbcType=CHAR}, #{registerTime,jdbcType=TIMESTAMP},
         #{updateTime,jdbcType=TIMESTAMP})
     </insert>
@@ -108,9 +107,6 @@
             </if>
             <if test="parentUid != null">
                 parent_uid = #{parentUid,jdbcType=INTEGER},
-            </if>
-            <if test="verified != null">
-                verified = #{verified,jdbcType=CHAR},
             </if>
             <if test="lastLoginTime != null">
                 last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},

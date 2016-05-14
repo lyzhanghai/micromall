@@ -163,7 +163,7 @@ public class MemberCenterController extends BasisController {
 			_updateMember.setId(getLoginUser().getUid());
 			_updateMember.setAvatar(avatar);
 			if (memberService.update(_updateMember)) {
-				return ResponseEntity.Success();
+				return ResponseEntity.Success(avatar);
 			}
 		}
 		return ResponseEntity.Failure("保存头像失败");

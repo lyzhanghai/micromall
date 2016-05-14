@@ -10,15 +10,18 @@ import org.springframework.core.io.Resource;
 
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by zhangzx on 15/12/24.
  */
-public class PropertyConfigurer extends PropertyPlaceholderConfigurer {
+public class PropertyConfigurerUtils extends PropertyPlaceholderConfigurer {
 
-	private static Logger     logger    = LoggerFactory.getLogger(PropertyConfigurer.class);
-	private static boolean    firstInit = false;
-	private static Properties props     = new Properties();
+	private static Logger     logger               = LoggerFactory.getLogger(PropertyConfigurerUtils.class);
+	private static String     PLACE_HOLDER_REGEX   = "\\$\\{([^\\}]+)\\}";
+	private static Pattern    PLACE_HOLDER_PATTERN = Pattern.compile(PLACE_HOLDER_REGEX);
+	private static Properties props                = new Properties();
 
 	public static String getString(String name) {
 		return props.getProperty(name);
@@ -27,7 +30,6 @@ public class PropertyConfigurer extends PropertyPlaceholderConfigurer {
 	protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props) throws BeansException {
 		super.processProperties(beanFactoryToProcess, props);
 		logger.info("初始化系统配置属性......");
-		// this.props.clear();
 		Iterator iterator = props.keySet().iterator();
 		while (iterator.hasNext()) {
 			String key = (String)iterator.next();
@@ -38,8 +40,21 @@ public class PropertyConfigurer extends PropertyPlaceholderConfigurer {
 			}
 			this.props.put(key, value);
 		}
-		firstInit = true;
 		logger.info("系统配置属性初始化完成.");
+	}
+
+	@Override
+	protected String convertProperty(String propertyName, String propertyValue) {
+		Matcher matcher = PLACE_HOLDER_PATTERN.matcher(propertyValue);
+		for (int i = 1; matcher.find(); i++) {
+			String key = matcher.group(i);
+			if (System.getProperties().get(key) != null) {
+				propertyValue = propertyValue.replaceFirst(PLACE_HOLDER_REGEX, System.getProperties().getProperty(key));
+			} else {
+				logger.error("找不到配置项：" + propertyValue + " >>>> ${" + key + "}");
+			}
+		}
+		return propertyValue;
 	}
 
 	@Override
