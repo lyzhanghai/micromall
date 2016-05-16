@@ -67,18 +67,18 @@ public class InsertController {
 
 		Map<String, Object> map = Maps.newHashMap();
 		List<Map<String, Object>> banner = Lists.newArrayList();
-		banner.add(new ChainMap<String, Object>().append("image", "/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
-		banner.add(new ChainMap<String, Object>().append("image", "/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
-		banner.add(new ChainMap<String, Object>().append("image", "/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
+		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
+		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
+		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
 		map.put("banner", banner);
 		List<Map<String, Object>> middle = Lists.newArrayList();
-		middle.add(new ChainMap<String, Object>().append("index", 1).append("image", "/images/tmp/middle0.png")
+		middle.add(new ChainMap<String, Object>().append("index", 1).append("image", "http://211.149.241.76/images/tmp/middle0.png")
 		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
-		middle.add(new ChainMap<String, Object>().append("index", 2).append("image", "/images/tmp/middle1.png")
+		middle.add(new ChainMap<String, Object>().append("index", 2).append("image", "http://211.149.241.76/images/tmp/middle1.png")
 		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
-		middle.add(new ChainMap<String, Object>().append("index", 3).append("image", "/images/tmp/middle2.png")
+		middle.add(new ChainMap<String, Object>().append("index", 3).append("image", "http://211.149.241.76/images/tmp/middle2.png")
 		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
-		middle.add(new ChainMap<String, Object>().append("index", 4).append("image", "/images/tmp/middle3.png")
+		middle.add(new ChainMap<String, Object>().append("index", 4).append("image", "http://211.149.241.76/images/tmp/middle3.png")
 		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
 		map.put("middle", middle);
 
@@ -89,7 +89,7 @@ public class InsertController {
 	public ResponseEntity<?> insert() {
 		//		createMember();
 				createGoods();
-		//		createProperties();
+				createProperties();
 		//		createMessage();
 		//		createAddress();
 		//		createCartFavoriteGoods();
@@ -135,18 +135,18 @@ public class InsertController {
 	private void createProperties() {
 		Map<String, Object> map = Maps.newHashMap();
 		List<Map<String, Object>> banner = Lists.newArrayList();
-		banner.add(new ChainMap<String, Object>().append("image", "/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
-		banner.add(new ChainMap<String, Object>().append("image", "/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
-		banner.add(new ChainMap<String, Object>().append("image", "/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
+		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
+		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
+		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
 		map.put("banner", banner);
 		List<Map<String, Object>> middle = Lists.newArrayList();
-		middle.add(new ChainMap<String, Object>().append("index", 1).append("image", "/images/tmp/middle0.png")
+		middle.add(new ChainMap<String, Object>().append("index", 1).append("image", "http://211.149.241.76/images/tmp/middle0.png")
 		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
-		middle.add(new ChainMap<String, Object>().append("index", 2).append("image", "/images/tmp/middle1.png")
+		middle.add(new ChainMap<String, Object>().append("index", 2).append("image", "http://211.149.241.76/images/tmp/middle1.png")
 		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
-		middle.add(new ChainMap<String, Object>().append("index", 3).append("image", "/images/tmp/middle2.png")
+		middle.add(new ChainMap<String, Object>().append("index", 3).append("image", "http://211.149.241.76/images/tmp/middle2.png")
 		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
-		middle.add(new ChainMap<String, Object>().append("index", 4).append("image", "/images/tmp/middle3.png")
+		middle.add(new ChainMap<String, Object>().append("index", 4).append("image", "http://211.149.241.76/images/tmp/middle3.png")
 		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
 		map.put("middle", middle);
 
@@ -168,8 +168,8 @@ public class InsertController {
 		for (int i = 0; i < 300; i++) {
 			Goods goods = new Goods();
 			goods.setTitle("测试商品-" + i);
-			goods.setMainImage("/images/tmp/goods.jpg");
-			goods.setImages(Arrays.asList("/images/tmp/goods.jpg", "/images/tmp/goods.jpg", "/images/tmp/goods.jpg"));
+			goods.setMainImage("http://211.149.241.76/images/tmp/goods.jpg");
+			goods.setImages(Arrays.asList("http://211.149.241.76/images/tmp/goods.jpg", "http://211.149.241.76/images/tmp/goods.jpg", "http://211.149.241.76/images/tmp/goods.jpg"));
 
 			goods.setCategoryId(categorys[random.nextInt(categorys.length)]);
 			goods.setPrice(new BigDecimal(random.nextInt(500) + "." + random.nextInt(9)));
@@ -185,7 +185,7 @@ public class InsertController {
 				params.put("discountName", "85折");// 折扣名称
 				// params.put("reduceAmoun", "18.5");// 折扣减免金额
 				// params.put("presentPrice", "18.5");// 折扣减免金额
-				params.put("imgurl", "/images/tmp/goods_" + (random.nextInt(2) + 1) + "_promotion.png");
+				params.put("imgurl", "http://211.149.241.76/images/tmp/goods_" + (random.nextInt(2) + 1) + "_promotion.png");
 
 				goods.setPromotionParams(params);
 			}
