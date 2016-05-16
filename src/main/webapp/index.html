@@ -23,6 +23,7 @@
 
     <link rel="stylesheet" href="css/iconfont.css"/>
     <link rel="stylesheet" href="js/widget/czMobile/src/css/base.css"/>
+    <link rel="stylesheet" href="js/libs/carousel/angular-carousel.css"/>
     <link rel="stylesheet" href="css/theme.css"/>
 </head>
 <body>
@@ -31,8 +32,8 @@
 
         <div class="fix-bottom fix-bottom-show">
             <div class="fix-bottom-main">
-                <a href="#/index" class="active"><i class="iconfont icon-home"></i><p>首页</p></a>
-                <a href="#/type" class=""><i class="iconfont icon-fenlei"></i><p>商品</p></a>
+                <a href="{{prefix}}indexMain.html" class="active"><i class="iconfont icon-home"></i><p>首页</p></a>
+                <a href="{{perfix}}goodsList.html" class=""><i class="iconfont icon-fenlei"></i><p>商品</p></a>
                 <a href="#/type" class=""><i class="iconfont icon-xiazai"></i><p>我的</p></a>
                 <a href="#/user/info" class=""><i class="iconfont icon-gouwuche"></i><p>购物车</p></a>
             </div>
@@ -51,7 +52,7 @@
 <script src="js/httpPath.js"></script>
 <script src="js/widget/bodySize.js"></script>
 <script src="js/libs/angular.js"></script>
-<script src="js/libs/angular-carousel.js"></script>
+<script src="js/libs/carousel/angular-carousel.js"></script>
 <script src="js/libs/angular-date-binder.js"></script>
 <script src="js/libs/angular-lazy-img.js"></script>
 <script src="js/libs/angular-sanitize.js"></script>

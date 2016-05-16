@@ -1,6 +1,6 @@
 /**
  * Angular Carousel - Mobile friendly touch carousel for AngularJS
- * @version v1.0.1 - 2016-03-05
+ * @version v0.3.10 - 2015-02-11
  * @link http://revolunet.github.com/angular-carousel
  * @author Julien Bouquillon <julien@revolunet.com>
  * @license MIT License, http://www.opensource.org/licenses/MIT
@@ -50,14 +50,6 @@ angular.module('angular-carousel')
         };
     }]);
 
-angular.module('angular-carousel').run(['$templateCache', function($templateCache) {
-    $templateCache.put('carousel-indicators.html',
-        '<div class="rn-carousel-indicator">\n' +
-        '<span ng-repeat="slide in slides" ng-class="{active: $index==index}" ng-click="goToSlide($index)">●</span>' +
-        '</div>'
-    );
-}]);
-
 angular.module('angular-carousel')
 
     .directive('rnCarouselIndicators', ['$parse', function($parse) {
@@ -77,6 +69,13 @@ angular.module('angular-carousel')
         };
     }]);
 
+angular.module('angular-carousel').run(['$templateCache', function($templateCache) {
+    $templateCache.put('carousel-indicators.html',
+        '<div class="rn-carousel-indicator">\n' +
+        '<span ng-repeat="slide in slides track by $index" ng-class="{active: $index==index}" ng-click="goToSlide($index)">●</span>' +
+        '</div>'
+    );
+}]);
 
 (function() {
     "use strict";
@@ -127,7 +126,7 @@ angular.module('angular-carousel')
                     }
                 }
                 document.body.removeChild(el);
-                return (has3d !== undefined && has3d.length > 0 && has3d !== "none");
+                return (has3d !== undefined && has3d.length > 0); //&& has3d !== "none"
             }
 
             return {
@@ -185,6 +184,7 @@ angular.module('angular-carousel')
                         style[DeviceCapabilities.transformProperty] = slideTransformValue;
                     }
                 }
+                //console.log(style)
                 return style;
             };
         }])
@@ -231,10 +231,10 @@ angular.module('angular-carousel')
                             isBuffered = false,
                             repeatItem,
                             repeatCollection;
-
                         // try to find an ngRepeat expression
                         // at this point, the attributes are not yet normalized so we need to try various syntax
                         ['ng-repeat', 'data-ng-repeat', 'ng:repeat', 'x-ng-repeat'].every(function(attr) {
+
                             var repeatAttribute = firstChildAttributes[attr];
                             if (angular.isDefined(repeatAttribute)) {
                                 // ngRepeat regexp extracted from angular 1.2.7 src
@@ -261,7 +261,6 @@ angular.module('angular-carousel')
                         });
 
                         return function(scope, iElement, iAttributes, containerCtrl) {
-
                             carouselId++;
 
                             var defaultOptions = {
@@ -272,8 +271,7 @@ angular.module('angular-carousel')
                                 autoSlideDuration: 3,
                                 bufferSize: 5,
                                 /* in container % how much we need to drag to trigger the slide change */
-                                moveTreshold: 0.1,
-                                defaultIndex: 0
+                                moveTreshold: 0.1
                             };
 
                             // TODO
@@ -294,23 +292,18 @@ angular.module('angular-carousel')
                                 animating = false,
                                 mouseUpBound = false,
                                 locked = false;
-
-                            //rn-swipe-disabled =true will only disable swipe events
-                            if(iAttributes.rnSwipeDisabled !== "true") {
-                                $swipe.bind(iElement, {
-                                    start: swipeStart,
-                                    move: swipeMove,
-                                    end: swipeEnd,
-                                    cancel: function(event) {
-                                        swipeEnd({}, event);
-                                    }
-                                });
-                            }
+                            $swipe.bind(iElement, {
+                                start: swipeStart,
+                                move: swipeMove,
+                                end: swipeEnd,
+                                cancel: function(event) {
+                                    swipeEnd({}, event);
+                                }
+                            });
 
                             function getSlidesDOM() {
-                                return iElement[0].querySelectorAll('ul[rn-carousel] > li');
+                                return iElement[0].querySelectorAll('li');
                             }
-
                             function documentMouseUpEvent(event) {
                                 // in case we click outside the carousel, trigger a fake swipeEnd
                                 swipeMoved = true;
@@ -325,6 +318,11 @@ angular.module('angular-carousel')
                                 // todo : optim : apply only to visible items
                                 var x = scope.carouselBufferIndex * 100 + offset;
                                 angular.forEach(getSlidesDOM(), function(child, index) {
+                                    //console.log(index);
+                                    //console.log(x);
+                                    //console.log(options.transitionType)
+                                    //console.log(createStyleString(computeCarouselSlideStyle(index, x, options.transitionType)))
+                                    //console.log(child)
                                     child.style.cssText = createStyleString(computeCarouselSlideStyle(index, x, options.transitionType));
                                 });
                             }
@@ -375,9 +373,7 @@ angular.module('angular-carousel')
                                     duration: options.transitionDuration,
                                     easing: options.transitionEasing,
                                     step: function(state) {
-                                        if (isFinite(state.x)) {
-                                            updateSlidesPosition(state.x);
-                                        }
+                                        updateSlidesPosition(state.x);
                                     },
                                     finish: function() {
                                         scope.$apply(function() {
@@ -456,13 +452,12 @@ angular.module('angular-carousel')
 
                             if (iAttributes.rnCarouselControls!==undefined) {
                                 // dont use a directive for this
-                                var canloop = ((isRepeatBased ? scope.$eval(repeatCollection.replace('::', '')).length : currentSlides.length) > 1) ? angular.isDefined(tAttributes['rnCarouselControlsAllowLoop']) : false;
-                                var nextSlideIndexCompareValue = isRepeatBased ? '(' + repeatCollection.replace('::', '') + ').length - 1' : currentSlides.length - 1;
+                                var nextSlideIndexCompareValue = isRepeatBased ? repeatCollection.replace('::', '') + '.length - 1' : currentSlides.length - 1;
                                 var tpl = '<div class="rn-carousel-controls">\n' +
-                                    '  <span class="rn-carousel-control rn-carousel-control-prev" ng-click="prevSlide()" ng-if="carouselIndex > 0 || ' + canloop + '"></span>\n' +
-                                    '  <span class="rn-carousel-control rn-carousel-control-next" ng-click="nextSlide()" ng-if="carouselIndex < ' + nextSlideIndexCompareValue + ' || ' + canloop + '"></span>\n' +
+                                    '  <span class="rn-carousel-control rn-carousel-control-prev" ng-click="prevSlide()" ng-if="carouselIndex > 0"></span>\n' +
+                                    '  <span class="rn-carousel-control rn-carousel-control-next" ng-click="nextSlide()" ng-if="carouselIndex < ' + nextSlideIndexCompareValue + '"></span>\n' +
                                     '</div>';
-                                iElement.parent().append($compile(angular.element(tpl))(scope));
+                                iElement.append($compile(angular.element(tpl))(scope));
                             }
 
                             if (iAttributes.rnCarouselAutoSlide!==undefined) {
@@ -480,11 +475,6 @@ angular.module('angular-carousel')
                                 };
                             }
 
-                            if (iAttributes.rnCarouselDefaultIndex) {
-                                var defaultIndexModel = $parse(iAttributes.rnCarouselDefaultIndex);
-                                options.defaultIndex = defaultIndexModel(scope.$parent) || 0;
-                            }
-
                             if (iAttributes.rnCarouselIndex) {
                                 var updateParentIndex = function(value) {
                                     indexModel.assign(scope.$parent, value);
@@ -498,7 +488,7 @@ angular.module('angular-carousel')
                                     scope.$parent.$watch(indexModel, function(newValue, oldValue) {
 
                                         if (newValue !== undefined && newValue !== null) {
-                                            if (currentSlides && currentSlides.length > 0 && newValue >= currentSlides.length) {
+                                            if (currentSlides && newValue >= currentSlides.length) {
                                                 newValue = currentSlides.length - 1;
                                                 updateParentIndex(newValue);
                                             } else if (currentSlides && newValue < 0) {
@@ -514,12 +504,6 @@ angular.module('angular-carousel')
                                         }
                                     });
                                     isIndexBound = true;
-
-                                    if (options.defaultIndex) {
-                                        goToSlide(options.defaultIndex, {
-                                            animate: !init
-                                        });
-                                    }
                                 } else if (!isNaN(iAttributes.rnCarouselIndex)) {
                                     /* if user just set an initial number, set it */
                                     goToSlide(parseInt(iAttributes.rnCarouselIndex, 10), {
@@ -527,7 +511,7 @@ angular.module('angular-carousel')
                                     });
                                 }
                             } else {
-                                goToSlide(options.defaultIndex, {
+                                goToSlide(0, {
                                     animate: !init
                                 });
                                 init = false;
@@ -553,9 +537,6 @@ angular.module('angular-carousel')
                                     //console.log('repeatCollection', currentSlides);
                                     currentSlides = newValue;
                                     // if deepWatch ON ,manually compare objects to guess the new position
-                                    if (!angular.isArray(currentSlides)) {
-                                        throw Error('the slides collection must be an Array');
-                                    }
                                     if (deepWatch && angular.isArray(newValue)) {
                                         var activeElement = oldValue[scope.carouselIndex];
                                         var newIndex = getItemIndex(newValue, activeElement, scope.carouselIndex);
@@ -569,7 +550,6 @@ angular.module('angular-carousel')
                             function swipeEnd(coords, event, forceAnimation) {
                                 //  console.log('swipeEnd', 'scope.carouselIndex', scope.carouselIndex);
                                 // Prevent clicks on buttons inside slider to trigger "swipeEnd" event on touchend/mouseup
-                                // console.log(iAttributes.rnCarouselOnInfiniteScroll);
                                 if (event && !swipeMoved) {
                                     return;
                                 }
@@ -577,6 +557,7 @@ angular.module('angular-carousel')
                                 pressed = false;
                                 swipeMoved = false;
                                 destination = startX - coords.x;
+                                var indexNum = 0;
                                 if (destination===0) {
                                     return;
                                 }
@@ -585,13 +566,20 @@ angular.module('angular-carousel')
                                 }
                                 offset += (-destination * 100 / elWidth);
                                 if (options.isSequential) {
+                                    if(typeof currentSlides == 'object'){
+                                        angular.forEach(currentSlides,function(){
+                                            indexNum++;
+                                        })
+                                    }else{
+                                        indexNum = currentSlides.length;
+                                    }
                                     var minMove = options.moveTreshold * elWidth,
                                         absMove = -destination,
                                         slidesMove = -Math[absMove >= 0 ? 'ceil' : 'floor'](absMove / elWidth),
                                         shouldMove = Math.abs(absMove) > minMove;
 
-                                    if (currentSlides && (slidesMove + scope.carouselIndex) >= currentSlides.length) {
-                                        slidesMove = currentSlides.length - 1 - scope.carouselIndex;
+                                    if (currentSlides && (slidesMove + scope.carouselIndex) >= indexNum) {
+                                        slidesMove = indexNum - 1 - scope.carouselIndex;
                                     }
                                     if ((slidesMove + scope.carouselIndex) < 0) {
                                         slidesMove = -scope.carouselIndex;
@@ -601,15 +589,6 @@ angular.module('angular-carousel')
                                     destination = (scope.carouselIndex + moveOffset);
 
                                     goToSlide(destination);
-                                    if(iAttributes.rnCarouselOnInfiniteScrollRight!==undefined && slidesMove === 0 && scope.carouselIndex !== 0) {
-                                        $parse(iAttributes.rnCarouselOnInfiniteScrollRight)(scope)
-                                        goToSlide(0);
-                                    }
-                                    if(iAttributes.rnCarouselOnInfiniteScrollLeft!==undefined && slidesMove === 0 && scope.carouselIndex === 0 && moveOffset === 0) {
-                                        $parse(iAttributes.rnCarouselOnInfiniteScrollLeft)(scope)
-                                        goToSlide(currentSlides.length);
-                                    }
-
                                 } else {
                                     scope.$apply(function() {
                                         scope.carouselIndex = parseInt(-offset / 100, 10);
@@ -716,12 +695,12 @@ angular.module('angular-carousel.shifty', [])
                     // requestAnimationFrame() shim by Paul Irish (modified for Shifty)
                     // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
                     DEFAULT_SCHEDULE_FUNCTION = window.requestAnimationFrame
-                        || window.webkitRequestAnimationFrame
-                        || window.oRequestAnimationFrame
-                        || window.msRequestAnimationFrame
-                        || (window.mozCancelRequestAnimationFrame
-                        && window.mozRequestAnimationFrame)
-                        || setTimeout;
+                    || window.webkitRequestAnimationFrame
+                    || window.oRequestAnimationFrame
+                    || window.msRequestAnimationFrame
+                    || (window.mozCancelRequestAnimationFrame
+                    && window.mozRequestAnimationFrame)
+                    || setTimeout;
                 } else {
                     DEFAULT_SCHEDULE_FUNCTION = setTimeout;
                 }
@@ -857,7 +836,7 @@ angular.module('angular-carousel.shifty', [])
                         timeoutHandler_currentTime >= timeoutHandler_endTime;
 
                     timeoutHandler_offset = duration - (
-                        timeoutHandler_endTime - timeoutHandler_currentTime);
+                    timeoutHandler_endTime - timeoutHandler_currentTime);
 
                     if (tweenable.isPlaying() && !timeoutHandler_isEnded) {
                         tweenable._scheduleId = schedule(tweenable._timeoutHandler, UPDATE_TIME);
@@ -1745,8 +1724,8 @@ angular.module('angular-carousel.shifty', [])
                         // followed by a token...
                         // NOTE: This may be an unwise assumption.
                     } else if (chunks.length === 1 ||
-                        // ...or if the string starts with a number component (".", "-", or a
-                        // digit)...
+                            // ...or if the string starts with a number component (".", "-", or a
+                            // digit)...
                         formattedString[0].match(R_NUMBER_COMPONENT)) {
                         // ...prepend an empty string here to make sure that the formatted number
                         // is properly replaced by VALUE_PLACEHOLDER

@@ -40,6 +40,7 @@ app.controller('goodsListCrt',["$scope","$rootScope","$stateParams","goodsListCa
    $scope.tabFilter = function(up,dowm){
       empty = false;
       $scope.getData.page = 1;
+      $scope.listData = [];
       if($scope.getData.sort == up){
          $scope.getData.sort = dowm;
       }else{

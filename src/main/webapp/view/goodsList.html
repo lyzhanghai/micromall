@@ -25,34 +25,5 @@
             </div>
         </a>
     </div>
-    <div class="htlist" bottom-scroll="load()">
-        <ul>
-            <li>
-                <a href="javascript:;" class="item ">
-                    <div class="list-out-lay">
-                        <div class="list-out-img">
-                             <img src="../images/item.png" class="ht-img">
-                        </div>
-                    </div>
-                    <div class="main">
-                        <h4 class="ng-binding">雅诗兰黛(Estee Lauder) 奢宠白金紧颜系列眼霜</h4>
-                        <div class="price"><span class="left ng-binding">￥1023</span></div>
-                    </div>
-                </a>
-            </li>
-            <li>
-                <a href="javascript:;" class="item">
-                    <div class="list-out-lay">
-                        <div class="list-out-img">
-                            <img src="../images/item.png" class="ht-img">
-                        </div>
-                    </div>
-                    <div class="main">
-                        <h4 class="ng-binding">雅诗兰黛(Estee Lauder) 奢宠白金紧颜系列眼霜</h4>
-                        <div class="price"><span class="left ng-binding">￥1023</span></div>
-                    </div>
-                </a>
-            </li>
-        </ul>
-    </div>
+    <div ng-include="'/webapp/view/common/htlist.html'" ng-controller="htlistCrt"></div>
 </div>

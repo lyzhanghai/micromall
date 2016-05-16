@@ -13,15 +13,15 @@
         <input class="index-search-text" placeholder="搜索全部商品" ng-model="search">
         <!-- <i class="iconzfl icon-sousuo"></i> -->
     </form>
-    <div class="carousel-lay index-carousel" rn-carousel rn-carousel-index="bannerListIndex" rn-carousel-auto-slide=6>
+    <div class="carousel-lay index-carousel" rn-carousel rn-carousel-auto-slide=6 style="height: 8.25rem;">
         <ul class="carousel-course index-carousel">
             <li bindonce ng-repeat="item in indexConfData.banner track by $index">
                 <a >
-                    <img ng-src="{{item.imageUrl}}">
+                    <img ng-src="{{item.image}}">
                 </a>
             </li>
         </ul>
-        <div class="carousel-page" rn-carousel-indicators ng-show="indexConfData.banner.length > 1" slides="indexConfData.bannert" rn-carousel-index="bannerListIndex"></div>
+        <div class="carousel-page" rn-carousel-indicators ng-show="indexConfData.banner.length > 1" slides="indexConfData.banner" rn-carousel-index="bannerListIndex"></div>
     </div>
 
     <div class="hot-type-list">
@@ -49,44 +49,36 @@
     <div class="hot-sale">
         <img class="hot-sale-title" src="images/title.png">
         <div class="hot-sale-main">
-            <a href="javascript:;" class="left">
-                <h2 class="tit">水果专区</h2>
-                <p>新鲜水果 新鲜水果</p>
-                <img src="images/income.jpg">
+            <a href="{{::indexConfData.middle[0].link}}" class="left">
+                <img lazy-img="{{indexConfData.middle[0].image}}">
             </a>
             <div class="right">
-                <a href="javascript:;" class="hot-top">
-                    <div class="top-main">
-                        <h2 class="tit">水果专区</h2>
-                        <p>新鲜水果 新鲜水果</p>
-                    </div>
-                    <img src="images/income.jpg" class="top-img">
+                <a href="{{::indexConfData.middle[1].link}}" class="hot-top">
+                    <img lazy-img="{{indexConfData.middle[1].image}}">
                 </a>
                 <div class="hot-bottom">
-                    <a href="javascript:;">
-                        <h2 class="tit">水果专区</h2>
-                        <p>新鲜新新鲜水果</p>
-                        <img src="images/income.jpg">
+                    <a href="{{::indexConfData.middle[2].link}}">
+                        <img lazy-img="{{indexConfData.middle[2].image}}">
                     </a>
-                    <a href="javascript:;">
-                        <h2 class="tit">水果专区</h2>
-                        <p>新鲜鲜新鲜水果</p>
-                        <img src="images/income.jpg">
+                    <a href="{{::indexConfData.middle[3].link}}">
+                        <img lazy-img="{{indexConfData.middle[3].image}}">
                     </a>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="hot-sale">
         <img class="hot-sale-title" src="images/title.png">
         <ul>
-            <li ng-repeat="item in indexConfData.middle track by item.index" bindonce>
-                <a href="javascript:;">
-                    <img lazy-img="{{item.image}}">
+            <li ng-repeat="item in indexRecommend track by $index" bindonce>
+                <a href="{{prefix}}detail?id={{item.goodsId}}">
+                    <img lazy-img="{{item.promotionParams.imgurl}}">
                 </a>
             </li>
         </ul>
     </div>
+
     <div class="index-htlist">
         <img class="hot-sale-title" src="images/index-list-bg.jpg">
         <div ng-include="'/webapp/view/common/htlist.html'" ng-controller="htlistCrt"></div>
