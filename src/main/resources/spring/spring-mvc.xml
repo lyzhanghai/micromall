@@ -16,6 +16,14 @@
     <context:annotation-config/>
     <mvc:default-servlet-handler/>
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>${config.dir}/config-${env.profiles}.properties</value>
+            </list>
+        </property>
+    </bean>
+
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
@@ -39,11 +47,11 @@
     </mvc:annotation-driven>
 
     <!-- 404请求处理-->
-    <bean id="URINotFoundMapping" class="com.micromall.web.extend.URINotFoundMapping"/>
+    <bean id="NotFoundHandler" class="com.micromall.web.extend.NotFoundHandler"/>
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-                <prop key="*">URINotFoundMapping</prop>
+                <prop key="*">NotFoundHandler</prop>
             </props>
         </property>
     </bean>
@@ -55,10 +63,24 @@
         <!--前端-身份验证拦截器-->
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
+            <!-- admin-->
             <mvc:exclude-mapping path="/admin/**"/>
+            <!-- static -->
+            <mvc:exclude-mapping path="/favicon.ico"/>
+            <mvc:exclude-mapping path="/css/**"/>
+            <mvc:exclude-mapping path="/js/**"/>
+            <mvc:exclude-mapping path="/font/**"/>
+            <mvc:exclude-mapping path="/less/**"/>
+            <mvc:exclude-mapping path="/less/**"/>
             <bean class="com.micromall.web.security.FrontAuthenticationInterceptor">
+                <property name="privacys">
+                    <list>
+                        <value>/images/certificate/*</value>
+                    </list>
+                </property>
                 <property name="excludes">
                     <list>
+                        <value>/images/*</value>
                     </list>
                 </property>
             </bean>
@@ -67,17 +89,19 @@
         <mvc:interceptor>
             <mvc:mapping path="/admin/**"/>
             <mvc:exclude-mapping path="/admin/login.html"/>
-            <mvc:exclude-mapping path="/admin/login"/>
-            <bean class="com.micromall.web.security.AdminAuthenticationInterceptor">
-                <property name="excludes">
-                    <list>
-                    </list>
-                </property>
-            </bean>
+            <bean class="com.micromall.web.security.AdminAuthenticationInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
-    <!--<mvc:resources mapping="/**/*.html" location="/static/"/>-->
+    <!-- 静态资源映射-->
+    <mvc:resources mapping="/images/**" location="/images/, file:${upload.root.dir}/images/"/>
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/font/**" location="/font/"/>
+    <mvc:resources mapping="/less/**" location="/less/"/>
+    <mvc:resources mapping="/less/**" location="/less/"/>
+    <mvc:resources mapping="/static/**" location="/static/"/>
+    <mvc:resources mapping="/view/**" location="/view/"/>
 
     <!-- 文件上传 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

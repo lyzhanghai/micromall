@@ -2,8 +2,8 @@ package com.micromall.web.resp;
 
 public enum Ret {
 
-	Ok(0, ""),
-	Error(1, "系统异常"),
+	Success(0, ""),
+	Error(1, "系统繁忙,请稍后再试"),
 	NotLogin(-1, "用户未登录");
 
 	private int    code;

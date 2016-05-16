@@ -8,8 +8,8 @@ import com.micromall.service.MemberService;
 import com.micromall.utils.*;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.web.resp.ResponseEntity;
-import com.micromall.web.security.Authentication;
-import com.micromall.web.security.LoginUser.LoginType;
+import com.micromall.web.security.annotation.Authentication;
+import com.micromall.web.security.entity.LoginUser.LoginType;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,26 +47,27 @@ public class MemberAuthenticationController {
 	 * @return
 	 */
 	@RequestMapping(value = "/api/auth/loginVerify")
+	@Deprecated
 	public ResponseEntity<?> loginVerify(HttpServletRequest request, HttpServletResponse response, String phone, String verifycode,
 			String usePromoteCode) throws Exception {
 
 		if (StringUtils.isEmpty(phone)) {
-			return ResponseEntity.fail("请输入手机号码");
+			return ResponseEntity.Failure("请输入手机号码");
 		}
 		if (ValidateUtils.illegalMobilePhoneNumber(phone)) {
-			return ResponseEntity.fail("手机号码不正确");
+			return ResponseEntity.Failure("手机号码不正确");
 		}
 		if (StringUtils.isEmpty(verifycode)) {
-			return ResponseEntity.fail("请输入验证码");
+			return ResponseEntity.Failure("请输入验证码");
 		}
 
 		String verifycodeKey = CommonEnvConstants.VERIFYCODE_KEY;
 		// 短信验证码验证
 		String _verifycode = (String)request.getSession().getAttribute(verifycodeKey);
 		if (_verifycode == null) {
-			return ResponseEntity.fail("短信验证码已失效");
+			return ResponseEntity.Failure("短信验证码已失效");
 		} else if (!_verifycode.equals(verifycode)) {
-			return ResponseEntity.fail("验证码输入错误");
+			return ResponseEntity.Failure("验证码输入错误");
 		}
 		request.getSession().removeAttribute(verifycodeKey);
 
@@ -86,7 +87,7 @@ public class MemberAuthenticationController {
 		}
 
 		loginSeesionService.processLogin(LoginType.Phone, member, request, response);
-		return ResponseEntity.ok();
+		return ResponseEntity.Success();
 	}
 
 	/**
@@ -189,7 +190,12 @@ public class MemberAuthenticationController {
 			}
 		} catch (Exception e) {
 			logger.error("微信登录授权后台处理出错：", e);
-			response.sendRedirect(CommonEnvConstants.SERVER_ERROR_REDIRECT_URL);
+			try {
+				// response.sendRedirect(CommonEnvConstants.SERVER_ERROR_REDIRECT_URL);
+				request.getRequestDispatcher(CommonEnvConstants.SERVER_ERROR_REDIRECT_URL).forward(request, response);
+			} catch (Exception ex) {
+				// ignore
+			}
 		}
 	}
 }

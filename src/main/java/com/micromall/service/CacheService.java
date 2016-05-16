@@ -10,6 +10,7 @@ import java.io.Serializable;
  * @ClassName: CacheService
  * @date 2014年5月6日 下午3:48:05
  */
+@Deprecated
 public interface CacheService extends Serializable {
 
 	int SECOND = 1;

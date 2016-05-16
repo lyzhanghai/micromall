@@ -31,7 +31,6 @@ public class Goods extends IdEntity {
 	// 商品库存
 	private Integer             inventory;
 	// 是否上架（商品卖完后自动下架）
-	@JsonIgnore
 	private Boolean             shelves;
 	/**
 	 * 商品类型（普通商品、会员充值卡）{@link GoodsTypes}
@@ -53,12 +52,14 @@ public class Goods extends IdEntity {
 	/**
 	 * 产品参数(JSON数据) {@link ProductParamsKeys}
 	 */
+	@JsonIgnore
+	@Deprecated
 	private Map<String, Object> productParams;
+	// 商品销量
+	private Integer             salesVolume;
 	// 商品排序
 	@JsonIgnore
 	private Integer             sort;
-	// 商品销量
-	private Integer             salesVolume;
 	// 是否逻辑删除
 	@JsonIgnore
 	private Boolean             deleted;
@@ -71,7 +72,8 @@ public class Goods extends IdEntity {
 
 	// -------------前端展示字段------------
 	// 所属类目
-	private String             categoryName;
+	@Deprecated
+	private String  categoryName;
 	// 是否已经收藏
 	private boolean favorite;
 
@@ -171,10 +173,12 @@ public class Goods extends IdEntity {
 		this.descr = descr;
 	}
 
+	@Deprecated
 	public Map<String, Object> getProductParams() {
 		return productParams;
 	}
 
+	@Deprecated
 	public void setProductParams(Map<String, Object> productParams) {
 		this.productParams = productParams;
 	}
@@ -219,10 +223,12 @@ public class Goods extends IdEntity {
 		this.updateTime = updateTime;
 	}
 
+	@Deprecated
 	public String getCategoryName() {
 		return categoryName;
 	}
 
+	@Deprecated
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}

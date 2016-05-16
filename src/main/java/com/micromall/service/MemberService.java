@@ -18,14 +18,15 @@ import java.util.Date;
  * Created by zhangzx on 16/3/26.
  */
 @Service
+@Transactional
 public class MemberService {
 
 	@Resource
-	private MemberMapper                mapper;
+	private MemberMapper        mapper;
 	@Resource
-	private CashAccountService          cashAccountService;
+	private CashAccountService  cashAccountService;
 	@Resource
-	private DistributionRelationService distributionRelationService;
+	private DistributionService distributionService;
 
 	public static void main(String[] args) {
 		System.out.println(Base64.encodeBase64String(("#" + "879777").getBytes()));
@@ -33,18 +34,15 @@ public class MemberService {
 		System.out.println(Base64.encodeBase64String(("#" + "100001").getBytes()));
 	}
 
-	@Transactional
 	public boolean update(Member member) {
 		member.setUpdateTime(new Date());
 		return mapper.updateByPrimaryKey(member) > 0;
 	}
 
-	@Transactional
 	public Member registerForPhone(String phone, String usePromoteCode) {
 		return _create(null, phone, usePromoteCode);
 	}
 
-	@Transactional
 	public Member registerForWechatId(String wechatId) {
 		return _create(wechatId, null, null);
 	}
@@ -60,7 +58,6 @@ public class MemberService {
 		}
 		member.setAvatar(CommonEnvConstants.MEMBER_DEFAULT_AVATAR);
 		member.setLevel(MemberLevels.LV_0);
-		member.setVerified(false);
 		member.setDeleted(false);
 		member.setRegisterTime(new Date());
 		// 关联上级分销商
@@ -84,7 +81,7 @@ public class MemberService {
 
 		// 建立分销商上下级关系
 		if (member.getParentUid() != null) {
-			distributionRelationService.relation(member.getParentUid(), member.getId());
+			distributionService.relation(member.getParentUid(), member.getId());
 		}
 		return member;
 	}
@@ -97,5 +94,23 @@ public class MemberService {
 	@Transactional(readOnly = true)
 	public Member get(int id) {
 		return mapper.selectByPrimaryKey(id);
+	}
+
+	public void bindingPromoteCode(int uid, String promoteCode) {
+		Member member = this.get(uid);
+		if (StringUtils.isNotEmpty(member.getUsePromoteCode())) {
+			return;
+		}
+
+		Member parent = mapper.selectOneByWhereClause(Criteria.create().andEqualTo("my_promote_code", promoteCode).build());
+		if (parent != null) {
+			distributionService.relation(member.getParentUid(), member.getId());
+			Member _updateMember = new Member();
+			_updateMember.setId(member.getId());
+			_updateMember.setParentUid(parent.getId());
+			_updateMember.setUsePromoteCode(promoteCode);
+			_updateMember.setUpdateTime(new Date());
+			mapper.updateByPrimaryKey(_updateMember);
+		}
 	}
 }

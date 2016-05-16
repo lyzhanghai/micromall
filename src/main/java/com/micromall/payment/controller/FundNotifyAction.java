@@ -7,8 +7,8 @@ import com.micromall.payment.facade.impl.FundServiceFacadeImpl;
 import com.micromall.repository.PaymentRecordMapper;
 import com.micromall.repository.entity.PaymentRecord;
 import com.micromall.utils.Condition.Criteria;
-import com.micromall.utils.IPUtils;
-import com.micromall.web.security.Authentication;
+import com.micromall.utils.HttpServletUtils;
+import com.micromall.web.security.annotation.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +47,7 @@ public class FundNotifyAction {
 		VerityRequest verityRequest = new VerityRequest();
 		verityRequest.setPayChannel(PayChannel.valueOfCode(channel));
 		verityRequest.setRequestData(_read_RequestData(request, channel));
-		verityRequest.setRequestIp(IPUtils.getIp(request));
+		verityRequest.setRequestIp(HttpServletUtils.getRequestIP(request));
 		verityRequest.setNotifyType(notifyType);
 
 		VerityResult result = fundServiceFacade.verity(verityRequest);

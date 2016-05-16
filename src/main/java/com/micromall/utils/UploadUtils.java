@@ -32,22 +32,22 @@ public class UploadUtils {
 			buffer.append(File.separator);
 		}
 		buffer.append(calendar.get(Calendar.YEAR)).append(File.separator).append(calendar.get(Calendar.MONTH) + 1).append(File.separator)
-		      .append(UUID.randomUUID().toString()).append(".").append(_get_suffix(filename));
+		      .append(UUID.randomUUID().toString().replaceAll("-", "")).append(".").append(_get_suffix(filename));
 		return buffer.toString();
 	}
 
-	private static void _mkdirs(String path) {
-		File file = new File(path);
+	private static void _mkdirs(File file) {
 		if (file.getParentFile() != null && !file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
 		}
 	}
 
 	public static String upload(String dir, MultipartFile multipartFile) {
-		String path = _build_file_path(dir, multipartFile.getName());
-		_mkdirs(path);
+		String path = _build_file_path(dir, multipartFile.getOriginalFilename());
+		File file = new File(CommonEnvConstants.UPLOAD_ROOT_DIR, path);
+		_mkdirs(file);
 		try {
-			multipartFile.transferTo(new File(path));
+			multipartFile.transferTo(file);
 		} catch (IOException e) {
 			logger.error("保存文件出错：", e);
 			return null;
@@ -57,7 +57,8 @@ public class UploadUtils {
 
 	public static String upload(String dir, String downloadUrl) {
 		String path = _build_file_path(dir, downloadUrl);
-		_mkdirs(path);
+		File file = new File(CommonEnvConstants.UPLOAD_ROOT_DIR, path);
+		_mkdirs(file);
 
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		InputStream in = null;
@@ -67,7 +68,7 @@ public class UploadUtils {
 			HttpEntity httpEntity = httpclient.execute(httpGet).getEntity();
 			if (httpEntity != null) {
 				in = httpEntity.getContent();
-				out = new FileOutputStream(new File(path));
+				out = new FileOutputStream(file);
 
 				byte[] data = new byte[1024];
 				int len;

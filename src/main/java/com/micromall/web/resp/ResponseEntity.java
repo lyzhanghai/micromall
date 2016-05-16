@@ -1,5 +1,6 @@
 package com.micromall.web.resp;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -20,8 +21,8 @@ public class ResponseEntity<T> implements Serializable {
 	private T      data;
 
 	public ResponseEntity() {
-		this.code = Ret.Ok.getCode();
-		this.msg = Ret.Ok.getMessage();
+		this.code = Ret.Success.getCode();
+		this.msg = Ret.Success.getMessage();
 	}
 
 	public ResponseEntity(Ret ret, T data) {
@@ -49,21 +50,25 @@ public class ResponseEntity<T> implements Serializable {
 
 	public ResponseEntity(T data) {
 		super();
-		this.code = Ret.Ok.getCode();
-		this.msg = Ret.Ok.getMessage();
+		this.code = Ret.Success.getCode();
+		this.msg = Ret.Success.getMessage();
 		this.data = data;
 	}
 
-	public static <T> ResponseEntity<T> ok() {
-		return new ResponseEntity<T>(Ret.Ok);
+	public static <T> ResponseEntity<T> Success() {
+		return new ResponseEntity<>(Ret.Success);
 	}
 
-	public static <T> ResponseEntity<T> ok(T data) {
-		return new ResponseEntity<T>(Ret.Ok, data);
+	public static <T> ResponseEntity<T> Success(T data) {
+		return new ResponseEntity<>(Ret.Success, data);
 	}
 
-	public static <T> ResponseEntity<T> fail(String msg) {
-		return new ResponseEntity<T>(Ret.Error, msg);
+	public static <T> ResponseEntity<T> Failure(String msg) {
+		return new ResponseEntity<>(Ret.Error, msg);
+	}
+
+	public static <T> ResponseEntity<T> NotLogin(T data) {
+		return new ResponseEntity<>(Ret.NotLogin, data);
 	}
 
 	public int getCode() {
@@ -88,6 +93,10 @@ public class ResponseEntity<T> implements Serializable {
 
 	public void setData(T data) {
 		this.data = data;
+	}
+
+	public String toJSONString() {
+		return JSON.toJSONString(this);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package com.micromall.web.extend;
+package com.micromall.web.extend.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})
-public @interface UncaughtException {
+public @interface Uncaught {
 
 	String msg();
 }

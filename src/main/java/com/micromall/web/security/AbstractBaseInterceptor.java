@@ -1,14 +1,16 @@
 package com.micromall.web.security;
 
+import com.google.common.collect.Sets;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
 import java.util.Set;
 
-public abstract class AbstractExcludeInterceptor extends HandlerInterceptorAdapter {
+public abstract class AbstractBaseInterceptor extends HandlerInterceptorAdapter {
 
-	private Set<String> excludes = new HashSet<String>();
+	private Set<String> excludes = Sets.newHashSet();
+
+	private Set<String> forbiddens = Sets.newHashSet();
 
 	public Set<String> getExcludes() {
 		return excludes;
@@ -18,17 +20,33 @@ public abstract class AbstractExcludeInterceptor extends HandlerInterceptorAdapt
 		this.excludes = excludes;
 	}
 
+	public Set<String> getForbiddens() {
+		return forbiddens;
+	}
+
+	public void setForbiddens(Set<String> forbiddens) {
+		this.forbiddens = forbiddens;
+	}
+
+	public boolean isForbidden(HttpServletRequest request) {
+		return isMatch(request, forbiddens);
+	}
+
 	public boolean isExclude(HttpServletRequest request) {
+		return isMatch(request, excludes);
+	}
+
+	protected boolean isMatch(HttpServletRequest request, Set<String> urls) {
 		String url = request.getRequestURI();
-		for (String exclude : excludes) {
-			if (_isExclude(url, exclude)) {
+		for (String _url : urls) {
+			if (_isMatch(url, _url)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean _isExclude(String url, String exclude) {
+	private boolean _isMatch(String url, String exclude) {
 		if (url.contains("@")) {
 			url = url.substring(url.indexOf("@"));
 		}

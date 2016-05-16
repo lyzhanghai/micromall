@@ -21,6 +21,7 @@ import java.util.List;
  * Created by zhangzx on 16/3/26.
  */
 @Service
+@Transactional
 public class GoodsService {
 
 	@Resource
@@ -50,6 +51,7 @@ public class GoodsService {
 				GoodsSearchResult result = new GoodsSearchResult();
 				result.setGoodsId(goods.getId());
 				result.setImage(goods.getMainImage());
+				result.setPromotion(goods.isPromotion());
 				BeanUtils.copyProperties(result, goods);
 				results.add(result);
 			}

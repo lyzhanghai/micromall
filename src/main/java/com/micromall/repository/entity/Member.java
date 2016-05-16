@@ -32,8 +32,6 @@ public class Member extends IdEntity {
 	private String  usePromoteCode;
 	// 上级分销商用户id
 	private Integer parentUid;
-	// 是否认证用户
-	private Boolean verified;
 	// 是否逻辑删除
 	private Boolean deleted;
 	// 最后登录时间
@@ -123,14 +121,6 @@ public class Member extends IdEntity {
 
 	public void setParentUid(Integer parentUid) {
 		this.parentUid = parentUid;
-	}
-
-	public void setVerified(Boolean verified) {
-		this.verified = verified;
-	}
-
-	public Boolean isVerified() {
-		return verified;
 	}
 
 	public boolean isDeleted() {

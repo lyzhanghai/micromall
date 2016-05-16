@@ -8,8 +8,9 @@ import com.micromall.repository.entity.common.WithdrawStatus;
 import com.micromall.service.WithdrawService;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.Condition.Criteria;
+import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
-import com.micromall.web.security.Authentication;
+import com.micromall.web.security.annotation.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,16 +41,16 @@ public class WithdrawController extends BasisController {
 	@RequestMapping(value = "/withdraw/apply")
 	public ResponseEntity<?> apply(float amount, String channel) {
 		if (amount < CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MIN_AMOUNT) {
-			return ResponseEntity.fail("提现金额不得低于" + CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MIN_AMOUNT + "元");
+			return ResponseEntity.Failure("提现金额不得低于" + CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MIN_AMOUNT + "元");
 		}
 		if (amount > CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MAX_AMOUNT) {
-			return ResponseEntity.fail("提现金额不得大于" + CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MAX_AMOUNT + "元");
+			return ResponseEntity.Failure("提现金额不得大于" + CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MAX_AMOUNT + "元");
 		}
 		if (StringUtils.isEmpty(channel)) {
-			return ResponseEntity.fail("未选择提现渠道");
+			return ResponseEntity.Failure("未选择提现渠道");
 		}
 		if (!WithdrawChannels.support(channel)) {
-			return ResponseEntity.fail("提现渠道不支持或不存在");
+			return ResponseEntity.Failure("提现渠道不支持或不存在");
 		}
 		if (StringUtils.isNotEmpty(CommonEnvConstants.WITHDRAW_APPLY_ALLOW_TIME_INTERVAL)) {
 			JSONObject jsonObject = JSON.parseObject(CommonEnvConstants.WITHDRAW_APPLY_ALLOW_TIME_INTERVAL);
@@ -76,22 +77,22 @@ public class WithdrawController extends BasisController {
 			String hour = jsonObject.getString("hour");
 
 			if (days != null && !days.isEmpty() && !days.contains(_now_day)) {
-				return ResponseEntity.fail("当前时间不能申请提现");
+				return ResponseEntity.Failure("当前时间不能申请提现");
 			}
 			if (weeks != null && !weeks.isEmpty() && !weeks.contains(_now_week)) {
-				return ResponseEntity.fail("当前时间不能申请提现");
+				return ResponseEntity.Failure("当前时间不能申请提现");
 			}
 			if (StringUtils.isNotEmpty(hour)) {
 				String[] arrays = hour.split("-");
 				int begin = Integer.valueOf(arrays[0]);
 				int end = Integer.valueOf(arrays[1]);
 				if (!(_now_hour >= begin && _now_hour <= end)) {
-					return ResponseEntity.fail("当前时间不能申请提现");
+					return ResponseEntity.Failure("当前时间不能申请提现");
 				}
 			}
 		}
 		withdrawService.applyWithdraw(getLoginUser().getUid(), amount, channel);
-		return ResponseEntity.ok();
+		return ResponseEntity.Success();
 	}
 
 	/**
@@ -116,11 +117,11 @@ public class WithdrawController extends BasisController {
 					criteria.andEqualTo("status", WithdrawStatus.审核不通过);
 					break;
 				default:
-					return ResponseEntity.fail("参数错误");
+					return ResponseEntity.Failure("参数错误");
 
 			}
 		}
-		return ResponseEntity.ok(withdrawService.records(criteria.build("id desc"), new RowBounds()));
+		return ResponseEntity.Success(withdrawService.records(criteria.build("id desc"), new RowBounds()));
 	}
 
 }

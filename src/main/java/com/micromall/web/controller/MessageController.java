@@ -3,7 +3,7 @@ package com.micromall.web.controller;
 import com.micromall.repository.MessageMapper;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.web.resp.ResponseEntity;
-import com.micromall.web.security.Authentication;
+import com.micromall.web.security.annotation.Authentication;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +30,7 @@ public class MessageController extends BasisController {
 	 */
 	@RequestMapping(value = "/message/list")
 	public ResponseEntity<?> list(@RequestParam(defaultValue = "1") int page, Integer limit) {
-		return ResponseEntity.ok(mapper.selectPageByWhereClause(Criteria.create().andEqualTo("uid", getLoginUser().getUid()).build("id desc"),
+		return ResponseEntity.Success(mapper.selectPageByWhereClause(Criteria.create().andEqualTo("uid", getLoginUser().getUid()).build("id desc"),
 				new RowBounds(page, resizeLimit(limit))));
 	}
 }

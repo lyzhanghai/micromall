@@ -160,7 +160,7 @@ class NotifyThread implements Runnable {
 			logger.error("发送通知消息异常", e);
 		}
 		// 判断是否已经接受成功
-		if (null != responseEntity && "success".equals(responseEntity.getBody())) {
+		if (null != responseEntity && "Success".equals(responseEntity.getBody())) {
 			_update_paymentNotify.setStatus(NotifyStatus.FINISH);
 		} else {
 			_update_paymentNotify.setNextNotifyTime(_getNextNotifyTime(paymentNotify.getNotifyTimes()));

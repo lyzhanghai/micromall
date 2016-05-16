@@ -1,6 +1,6 @@
 <configuration debug="true" scan="true" scanPeriod="5 seconds">
     <!-- 日志输出目录 -->
-    <property name="log.dir" value="${catalina.base:-.}/logs"/>
+    <property name="log.dir" value="${catalina.home:-.}/logs"/>
 
     <!-- 引入appender定义 -->
     <include resource="logback-appender.xml"/>

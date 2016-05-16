@@ -1,63 +1,120 @@
 package com.micromall.web.security;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Sets;
 import com.micromall.repository.entity.Member;
+import com.micromall.service.MemberService;
 import com.micromall.utils.CommonEnvConstants;
+import com.micromall.utils.HttpServletUtils;
+import com.micromall.utils.SpringBeanUtils;
 import com.micromall.utils.URLBuilder;
 import com.micromall.web.RequestContext;
-import com.micromall.web.security.LoginUser.LoginType;
+import com.micromall.web.resp.ResponseEntity;
+import com.micromall.web.security.annotation.Authentication;
+import com.micromall.web.security.entity.LoginUser;
+import com.micromall.web.security.entity.LoginUser.LoginType;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class FrontAuthenticationInterceptor extends AbstractExcludeInterceptor {
+public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 
-	private static final Logger logger             = LoggerFactory.getLogger(FrontAuthenticationInterceptor.class);
-	private static final String _AUTHORIZED_HEADER = "X-Authorized";
+	private static final Logger          logger             = LoggerFactory.getLogger(FrontAuthenticationInterceptor.class);
+	private static final String          _AUTHORIZED_HEADER = "X-Authorized";
+	private static final String          _PROMOTE_CODE_KEY  = "promote_code";
+	private static       ExecutorService executor           = Executors.newFixedThreadPool(1);
+	private              Set<String>     privacys           = Sets.newHashSet();
+
+	public void setPrivacys(Set<String> privacys) {
+		this.privacys = privacys;
+	}
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		Authentication authentication = getAuthentication(handler);
-		LoginUser loginUser = getLoginUser(request);
+		if (_forbidden(request, response)) {
+			return false;
+		}
 
-		// 用户未登录
-		if (loginUser == null) {
-			response.addHeader(_AUTHORIZED_HEADER, Boolean.FALSE.toString());
-			if (!isExclude(request) || (authentication != null && authentication.force())) {
-				logger.info("用户未登录访问：请求 [{}], 参数 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
-				String _agent = request.getHeader("User-Agent");
-				// 请求是否来自于微信
-				boolean weixin = (_agent != null && _agent.contains("MicroMessenger"));
-				// 是否为ajax请求
-				boolean ajax = "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
-
-				String redirectUrl;
-				if (!weixin && CommonEnvConstants.MOBILE_LOGIN_USABLE) {
-					redirectUrl = CommonEnvConstants.MOBILE_AUTHORIZE_LOGIN_URL;
-				} else {
-					redirectUrl = _buildWeixinAuthorizeUrl(request);
-				}
-
-				if (ajax) {
-					response.getWriter().write("\"redirectUrl\":\"" + redirectUrl + "\"");
-				} else {
-					response.sendRedirect(redirectUrl);
-				}
-				return false;
+		LoginUser loginUser = _getLoginUser(request);
+		if (loginUser != null) {
+			if (_isShareSource(request)) {
+				_processShareRequest(request, loginUser);
 			}
-		} else {
+
 			response.addHeader(_AUTHORIZED_HEADER, Boolean.TRUE.toString());
 			RequestContext.setLoginUser(loginUser);
+			return true;
+		}
+
+		response.addHeader(_AUTHORIZED_HEADER, Boolean.FALSE.toString());
+		Authentication authentication = _getHandlerAuthentication(handler);
+		if (!isMatch(request, privacys) && (isExclude(request) || (handler instanceof HandlerMethod && (authentication == null || !authentication
+				.force())))) {
+			return true;
+		}
+
+		_processNotLogin(request, response);
+		return false;
+	}
+
+	private void _processShareRequest(HttpServletRequest request, LoginUser loginUser) {
+		final String promote_code = request.getParameter(_PROMOTE_CODE_KEY);
+		final int loginUid = loginUser.getUid();
+		executor.execute(() -> {
+			MemberService memberService = SpringBeanUtils.get(MemberService.class);
+			memberService.bindingPromoteCode(loginUid, promote_code);
+		});
+	}
+
+	private boolean _isShareSource(HttpServletRequest request) {
+		return StringUtils.isNotBlank(request.getParameter(_PROMOTE_CODE_KEY));
+	}
+
+	private void _processNotLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		logger.info("用户未登录访问：请求 [{}], 参数 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
+		String _agent = request.getHeader("User-Agent");
+		// 请求是否来自于微信
+		boolean weixin = (_agent != null && _agent.contains("MicroMessenger"));
+
+		String redirectUrl;
+		if (!weixin && CommonEnvConstants.MOBILE_LOGIN_USABLE) {
+			redirectUrl = CommonEnvConstants.MOBILE_AUTHORIZE_LOGIN_URL;
+		} else {
+			redirectUrl = _buildWeixinAuthorizeUrl(request);
+		}
+
+		if (HttpServletUtils.isAjaxRequest(request)) {
+			HttpServletUtils.responseWriter(request, response, ResponseEntity.NotLogin(redirectUrl));
+		} else {
+			response.sendRedirect(redirectUrl);
+		}
+	}
+
+	private boolean _forbidden(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		if (!isForbidden(request)) {
+			return false;
+		}
+
+		logger.info("拦截访问受保护资源：请求 [{}], 参数 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
+		if (HttpServletUtils.isAjaxRequest(request)) {
+			HttpServletUtils.responseWriter(request, response, ResponseEntity.Failure("请求地址[{" + (request.getRequestURI()) + "}]不存在"));
+		} else {
+			request.getRequestDispatcher(CommonEnvConstants.SERVER_NOTFOUND_REDIRECT_URL).forward(request, response);
 		}
 		return true;
 	}
 
-	private LoginUser getLoginUser(HttpServletRequest request) {
+	private LoginUser _getLoginUser(HttpServletRequest request) {
 		LoginUser loginUser = (LoginUser)request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY);
 
 		boolean debugAuth = CommonEnvConstants.ENV.isDevEnv() && request.getParameterMap().containsKey("debugAuth");
@@ -67,7 +124,7 @@ public class FrontAuthenticationInterceptor extends AbstractExcludeInterceptor {
 		return loginUser;
 	}
 
-	private Authentication getAuthentication(Object handler) {
+	private Authentication _getHandlerAuthentication(Object handler) {
 		Authentication authentication = null;
 		if (handler instanceof HandlerMethod) {
 			HandlerMethod handlerMethod = (HandlerMethod)handler;
@@ -106,7 +163,9 @@ public class FrontAuthenticationInterceptor extends AbstractExcludeInterceptor {
 
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-		logger.info("请求 [{}], 参数 [{}] 状态 [200]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
+		if (!isExclude(request)) {
+			logger.info("请求 [{}], 参数 [{}] 状态 [200]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
+		}
 	}
 
 	@Override

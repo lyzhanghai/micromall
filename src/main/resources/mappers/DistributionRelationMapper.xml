@@ -8,7 +8,7 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
+    <sql id="Column_sql">
         uid, lower_uid, level, create_time
     </sql>
 
@@ -51,6 +51,37 @@
         #{createTime,jdbcType=TIMESTAMP})
     </insert>
 
+    <select id="countByWhereClause" parameterType="com.micromall.utils.Condition" resultType="java.lang.Integer">
+        select count(*) from distribution_relation
+        <include refid="Where_Clause"/>
+    </select>
+
+    <select id="selectLowerMembers" resultType="com.micromall.service.vo.DistributionMember" parameterType="java.util.Map">
+        SELECT
+        t2.id as 'uid',
+        t2.nickname,
+        t2.avatar,
+        t2.level
+        FROM
+        distribution_relation t1 LEFT JOIN member t2 ON t1.lower_uid = t2.id
+        WHERE
+        t1.uid = #{uid}
+        <if test="level != null">
+            and t1.level=#{level}
+        </if>
+    </select>
+
+    <select id="lowerMemberStat" resultType="int" parameterType="java.util.Map">
+        SELECT count(*) FROM
+        distribution_relation t1 LEFT JOIN member t2 ON t1.lower_uid = t2.id
+        WHERE
+        t1.uid = #{uid}
+        <if test="level != null">
+            and t1.level=#{level}
+        </if>
+    </select>
+
+    <!--
     <update id="updateByPrimaryKey" parameterType="com.micromall.repository.entity.CertifiedInfo">
 
     </update>
@@ -95,11 +126,5 @@
             order by ${orderBy}
         </if>
     </select>
-
-    <select id="countByWhereClause" parameterType="com.micromall.utils.Condition" resultType="java.lang.Integer">
-        select count(*)
-        <include refid="Base_Column_List"/>
-        from distribution_relation
-        <include refid="Where_Clause"/>
-    </select>
+    -->
 </mapper>

@@ -9,33 +9,31 @@
         <result column="realpay_amount" property="realpayAmount" jdbcType="DECIMAL"/>
         <result column="balancepay_amount" property="balancepayAmount" jdbcType="DECIMAL"/>
         <result column="deduction_amount" property="deductionAmount" jdbcType="DECIMAL"/>
-        <result column="leave_message" property="leaveMessage" jdbcType="VARCHAR"/>
+        <result column="freight" property="freight" jdbcType="INTEGER"/>
+        <result column="discounts" property="discounts" jdbcType="LONGVARCHAR"/>
         <result column="coupons" property="coupons" jdbcType="LONGVARCHAR"/>
+        <result column="leave_message" property="leaveMessage" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="refund_status" property="refundStatus" jdbcType="TINYINT"/>
         <result column="shipping_address" property="shippingAddress" jdbcType="VARCHAR"/>
         <result column="consignee_name" property="consigneeName" jdbcType="VARCHAR"/>
         <result column="consignee_phone" property="consigneePhone" jdbcType="VARCHAR"/>
         <result column="postcode" property="postcode" jdbcType="CHAR"/>
         <result column="delivery_company" property="deliveryCompany" jdbcType="VARCHAR"/>
+        <result column="delivery_code" property="deliveryCode" jdbcType="VARCHAR"/>
         <result column="delivery_number" property="deliveryNumber" jdbcType="VARCHAR"/>
         <result column="delivery_time" property="deliveryTime" jdbcType="TIMESTAMP"/>
         <result column="pay_time" property="payTime" jdbcType="TIMESTAMP"/>
-        <result column="confirm_goods_time" property="confirmGoodsTime" jdbcType="TIMESTAMP"/>
+        <result column="confirm_delivery_time" property="confirmDeliveryTime" jdbcType="TIMESTAMP"/>
         <result column="apply_refund_time" property="applyRefundTime" jdbcType="TIMESTAMP"/>
         <result column="refund_complete_time" property="refundCompleteTime" jdbcType="TIMESTAMP"/>
+        <result column="refund_reason" property="refundReason" jdbcType="VARCHAR"/>
         <result column="close_time" property="closeTime" jdbcType="TIMESTAMP"/>
         <result column="closelog" property="closelog" jdbcType="VARCHAR"/>
+        <result column="timeout_close_time" property="timeoutCloseTime" jdbcType="TIMESTAMP"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
-        <result column="timeout_close_time" property="timeoutCloseTime" jdbcType="TIMESTAMP"/>
     </resultMap>
-
-    <sql id="Base_Column_List">
-        id, uid, order_no, total_amount, realpay_amount, balancepay_amount, deduction_amount,
-        leave_message, coupons, status, shipping_address, consignee_name, consignee_phone, postcode,
-        delivery_company, delivery_number, delivery_time, pay_time, confirm_goods_time, apply_refund_time,
-        refund_complete_time, close_time, closelog, create_time, update_time, timeout_close_time
-    </sql>
 
     <sql id="Where_Clause">
         <if test="criterias != null and valid">
@@ -69,36 +67,31 @@
         </if>
     </sql>
 
+    <sql id="Column_sql">
+        id, uid, order_no, total_amount, realpay_amount, balancepay_amount, deduction_amount,freight,discounts
+        , coupons,leave_message, status,refund_status, shipping_address, consignee_name, consignee_phone, postcode,
+        delivery_company, delivery_code, delivery_number, delivery_time, pay_time, confirm_delivery_time, apply_refund_time,
+        refund_complete_time, refund_reason,close_time, closelog, timeout_close_time,create_time, update_time
+    </sql>
+
     <insert id="insert" parameterType="com.micromall.repository.entity.Order" useGeneratedKeys="true" keyProperty="id">
-        insert into order (id, uid, order_no,
-        total_amount, realpay_amount, balancepay_amount,
-        deduction_amount, leave_message, status,
-        shipping_address, consignee_name, consignee_phone,
-        postcode, delivery_company, delivery_number,
-        delivery_time, pay_time, confirm_goods_time,
-        apply_refund_time, refund_complete_time,
-        close_time, closelog, create_time,
-        update_time, coupons, timeout_close_time)
+        insert into order (<include refid="Column_sql"/>)
         values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR},
         #{totalAmount,jdbcType=DECIMAL}, #{realpayAmount,jdbcType=DECIMAL}, #{balancepayAmount,jdbcType=DECIMAL},
-        #{deductionAmount,jdbcType=DECIMAL}, #{leaveMessage,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},
+        #{deductionAmount,jdbcType=DECIMAL}, #{freight,jdbcType=INTEGER},
+        #{discounts,jdbcType=LONGVARCHAR}, #{coupons,jdbcType=LONGVARCHAR},
+        #{leaveMessage,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},#{refundStatus,jdbcType=TINYINT},
         #{shippingAddress,jdbcType=VARCHAR}, #{consigneeName,jdbcType=VARCHAR}, #{consigneePhone,jdbcType=VARCHAR},
-        #{postcode,jdbcType=CHAR}, #{deliveryCompany,jdbcType=VARCHAR}, #{deliveryNumber,jdbcType=VARCHAR},
-        #{deliveryTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=TIMESTAMP}, #{confirmGoodsTime,jdbcType=TIMESTAMP},
-        #{applyRefundTime,jdbcType=TIMESTAMP}, #{refundCompleteTime,jdbcType=TIMESTAMP},
-        #{closeTime,jdbcType=TIMESTAMP}, #{closelog,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
-        #{updateTime,jdbcType=TIMESTAMP}, #{coupons,jdbcType=LONGVARCHAR}, #{timeoutCloseTime,jdbcType=TIMESTAMP})
+        #{postcode,jdbcType=CHAR}, #{deliveryCompany,jdbcType=VARCHAR}, #{deliveryCode,jdbcType=VARCHAR}, #{deliveryNumber,jdbcType=VARCHAR},
+        #{deliveryTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=TIMESTAMP}, #{confirmDeliveryTime,jdbcType=TIMESTAMP},
+        #{applyRefundTime,jdbcType=TIMESTAMP}, #{refundCompleteTime,jdbcType=TIMESTAMP}, #{refundReason,jdbcType=VARCHAR},
+        #{closeTime,jdbcType=TIMESTAMP}, #{closelog,jdbcType=VARCHAR}, #{timeoutCloseTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.micromall.repository.entity.Order">
         update order
         <set>
-            <if test="uid != null">
-                uid = #{uid,jdbcType=INTEGER},
-            </if>
-            <if test="orderNo != null">
-                order_no = #{orderNo,jdbcType=VARCHAR},
-            </if>
             <if test="totalAmount != null">
                 total_amount = #{totalAmount,jdbcType=DECIMAL},
             </if>
@@ -111,11 +104,23 @@
             <if test="deductionAmount != null">
                 deduction_amount = #{deductionAmount,jdbcType=DECIMAL},
             </if>
+            <if test="freight != null">
+                freight = #{freight,jdbcType=INTEGER},
+            </if>
+            <if test="discounts != null">
+                discounts = #{discounts,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="coupons != null">
+                coupons = #{coupons,jdbcType=LONGVARCHAR},
+            </if>
             <if test="leaveMessage != null">
                 leave_message = #{leaveMessage,jdbcType=VARCHAR},
             </if>
             <if test="status != null">
                 status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="refundStatus != null">
+                refund_status = #{refundStatus,jdbcType=TINYINT},
             </if>
             <if test="shippingAddress != null">
                 shipping_address = #{shippingAddress,jdbcType=VARCHAR},
@@ -132,6 +137,9 @@
             <if test="deliveryCompany != null">
                 delivery_company = #{deliveryCompany,jdbcType=VARCHAR},
             </if>
+            <if test="deliveryCode != null">
+                delivery_code = #{deliveryCode,jdbcType=VARCHAR},
+            </if>
             <if test="deliveryNumber != null">
                 delivery_number = #{deliveryNumber,jdbcType=VARCHAR},
             </if>
@@ -141,8 +149,8 @@
             <if test="payTime != null">
                 pay_time = #{payTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="confirmGoodsTime != null">
-                confirm_goods_time = #{confirmGoodsTime,jdbcType=TIMESTAMP},
+            <if test="confirmDeliveryTime != null">
+                confirm_delivery_time = #{confirmDeliveryTime,jdbcType=TIMESTAMP},
             </if>
             <if test="applyRefundTime != null">
                 apply_refund_time = #{applyRefundTime,jdbcType=TIMESTAMP},
@@ -150,51 +158,91 @@
             <if test="refundCompleteTime != null">
                 refund_complete_time = #{refundCompleteTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="refundReason != null">
+                refund_reason = #{refundReason,jdbcType=VARCHAR},
+            </if>
             <if test="closeTime != null">
                 close_time = #{closeTime,jdbcType=TIMESTAMP},
             </if>
             <if test="closelog != null">
                 closelog = #{closelog,jdbcType=VARCHAR},
             </if>
-            <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
+            <if test="timeoutCloseTime != null">
+                timeout_close_time = #{timeoutCloseTime,jdbcType=LONGVARCHAR},
             </if>
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="coupons != null">
-                coupons = #{coupons,jdbcType=LONGVARCHAR},
-            </if>
-            <if test="timeoutCloseTime != null">
-                timeout_close_time = #{timeoutCloseTime,jdbcType=LONGVARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete from order
-        where id = #{id,jdbcType=INTEGER}
-    </delete>
-
-    <delete id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
-        delete from order
+    <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="Column_sql"/>
+        from order
         <include refid="Where_Clause"/>
-    </delete>
+    </select>
+
+    <select id="selectListViewPageByWhereClause" resultType="com.micromall.service.vo.ListViewOrder" parameterType="com.micromall.utils.Condition">
+        select
+        order_no as 'orderNo',
+        total_amount as 'totalAmount',
+        status,
+        refund_status as 'refundStatus',
+        confirm_delivery_time as 'confirmDeliveryTime',
+        timeout_close_time as 'timeoutCloseTime'
+        from order
+        <include refid="Where_Clause"/>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <select id="distributionOrderAmountSum" parameterType="java.util.Map" resultType="java.util.HashMap">
+        SELECT
+        CASE WHEN status = 0
+        THEN 'waitPay'
+        WHEN status = 1
+        THEN 'waitDelivery'
+        WHEN status = 2
+        THEN 'waitReceive'
+        WHEN status = 3
+        THEN 'complete'
+        WHEN status = 4
+        THEN 'refund'
+        WHEN status = 5
+        THEN 'closed'
+        ELSE status
+        END AS 'name',
+        sum(total_amount) AS 'amount'
+        FROM `order`
+        WHERE uid IN (
+        SELECT lower_uid
+        FROM distribution_relation
+        WHERE uid = #{uid} AND level = #{level}
+        )
+        GROUP BY status;
+    </select>
+
+    <!--
+     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+         delete from order
+         where id = #{id,jdbcType=INTEGER}
+     </delete>
+
+     <delete id="deleteByWhereClause" parameterType="com.micromall.utils.Condition">
+         delete from order
+         <include refid="Where_Clause"/>
+     </delete>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Column_sql"/>
         from order
         where id = #{id,jdbcType=INTEGER}
     </select>
 
-    <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
-        select
-        <include refid="Base_Column_List"/>
-        from order
-        <include refid="Where_Clause"/>
-    </select>
 
     <select id="selectMultiByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
         select
@@ -223,32 +271,6 @@
         <include refid="Where_Clause"/>
     </select>
 
-    <select id="distributionOrderAmountSum" parameterType="java.util.Map" resultType="java.util.HashMap">
-        SELECT
-        CASE WHEN status = 0
-        THEN 'waitPay'
-        WHEN status = 1
-        THEN 'waitDelivery'
-        WHEN status = 2
-        THEN 'waitReceive'
-        WHEN status = 3
-        THEN 'complete'
-        WHEN status = 4
-        THEN 'applyRefund'
-        WHEN status = 5
-        THEN 'refund'
-        WHEN status = 6
-        THEN 'closed'
-        ELSE status
-        END               AS 'name',
-        sum(total_amount) AS 'amount'
-        FROM `order`
-        WHERE uid IN (
-        SELECT lower_uid
-        FROM distribution_relation
-        WHERE uid = #{uid} AND level = #{level}
-        )
-        GROUP BY status;
-    </select>
+    -->
 
 </mapper>

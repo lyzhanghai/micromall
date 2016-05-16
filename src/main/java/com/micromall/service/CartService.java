@@ -1,8 +1,8 @@
 package com.micromall.service;
 
+import com.micromall.repository.CartGoodsMapper;
 import com.micromall.repository.entity.CartGoods;
 import com.micromall.repository.entity.Goods;
-import com.micromall.repository.CartGoodsMapper;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.utils.LogicException;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,7 @@ import java.util.List;
  * Created by zhangzx on 16/3/26.
  */
 @Service
+@Transactional
 public class CartService {
 
 	@Resource
@@ -25,10 +26,9 @@ public class CartService {
 
 	@Transactional(readOnly = true)
 	public List<CartGoods> listGoods(int uid) {
-		return mapper.selectMemberCartGoods(uid);
+		return mapper.selectCartGoods(uid);
 	}
 
-	@Transactional
 	public void updateCartGoods(int uid, int goodsId, int buyNumber) {
 		Goods goods = goodsService.getGoodsInfo(goodsId);
 		if (goods == null) {
@@ -46,7 +46,6 @@ public class CartService {
 		mapper.insert(new CartGoods(uid, goodsId, buyNumber, new Date()));
 	}
 
-	@Transactional
 	public void deleteGoods(int uid, List<Integer> goodsIds) {
 		mapper.deleteByWhereClause(Criteria.create().andEqualTo("uid", uid).andIn("goods_id", goodsIds).build());
 	}

@@ -1,7 +1,7 @@
-package com.micromall.web.security;
+package com.micromall.web.security.entity;
 
 import com.micromall.repository.entity.Member;
-import com.micromall.utils.IPUtils;
+import com.micromall.utils.HttpServletUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
@@ -29,7 +29,7 @@ public class LoginUser implements Serializable {
 		loginUser.setUid(member.getId());
 		loginUser.setLoginType(loginType);
 		loginUser.setLoginTime(new Date());
-		loginUser.setLoginIp(IPUtils.getIp(request));
+		loginUser.setLoginIp(HttpServletUtils.getRequestIP(request));
 		return loginUser;
 	}
 

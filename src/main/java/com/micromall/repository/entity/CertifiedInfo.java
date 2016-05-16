@@ -35,6 +35,9 @@ public class CertifiedInfo {
 	// 提交时间
 	@JsonIgnore
 	private Date    createTime;
+	// 修改时间
+	@JsonIgnore
+	private Date    updateTime;
 
 	public Integer getUid() {
 		return uid;
@@ -114,5 +117,13 @@ public class CertifiedInfo {
 
 	public void setAuditTime(Date auditTime) {
 		this.auditTime = auditTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 }
