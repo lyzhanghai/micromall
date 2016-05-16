@@ -1,14 +1,14 @@
 package com.micromall.service;
 
 import com.github.pagehelper.Page;
+import com.micromall.repository.CashRecordMapper;
+import com.micromall.repository.WithdrawApplyRecordMapper;
 import com.micromall.repository.entity.CashAccount;
 import com.micromall.repository.entity.CashRecord;
 import com.micromall.repository.entity.WithdrawApplyRecord;
 import com.micromall.repository.entity.common.CashChangeTypes;
 import com.micromall.repository.entity.common.CashTypes;
 import com.micromall.repository.entity.common.WithdrawStatus;
-import com.micromall.repository.CashRecordMapper;
-import com.micromall.repository.WithdrawApplyRecordMapper;
 import com.micromall.utils.Condition;
 import com.micromall.utils.LogicException;
 import org.apache.ibatis.session.RowBounds;
@@ -57,7 +57,6 @@ public class WithdrawService {
 	@Transactional
 	public void applyWithdraw(int uid, float amount, String channel) {
 		CashAccount cashAccount = cashAccountService.getCashAccount(uid);
-
 		if (cashAccount == null) {
 			throw new LogicException("账户信息错误");
 		}

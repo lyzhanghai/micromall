@@ -2,7 +2,7 @@ package com.micromall.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.micromall.repository.entity.common.OrderStatus;
-import com.micromall.service.vo.LogisticsRecord;
+import com.micromall.repository.entity.common.OrderStatus.RefundStatus;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -43,9 +43,9 @@ public class Order extends IdEntity {
 	 */
 	private Integer                   status;
 	/**
-	 * 订单上一步状态 {@link OrderStatus}
+	 * 退款状态 {@link RefundStatus}
 	 */
-	private Integer                   beforeStatus;
+	private Integer                   refundStatus;
 
 	// ----------------------------- 收货信息
 
@@ -60,9 +60,11 @@ public class Order extends IdEntity {
 
 	// ----------------------------- 物流信息
 
-	// 发货快递公司
+	// 发货物流公司
 	private String deliveryCompany;
-	// 发货快递单号
+	// 发货物流公司代码
+	private String deliveryCode;
+	// 发货物流单号
 	private String deliveryNumber;
 	// 发货时间
 	private Date   deliveryTime;
@@ -70,20 +72,21 @@ public class Order extends IdEntity {
 	// 订单支付时间
 	private Date   payTime;
 	// 订单确认收货时间
-	private Date   confirmGoodsTime;
+	private Date   confirmDeliveryTime;
 	// 订单申请退款时间
 	private Date   applyRefundTime;
 	// 订单退款完成时间
+	@Deprecated
 	private Date   refundCompleteTime;
 	// 订单申请退款原因
-	private Date   refundReason;
+	private String refundReason;
 	// 订单关闭时间
 	private Date   closeTime;
+	// 关闭日志
+	private String closelog;
 	// 超时未支付自动关闭时间
 	@JsonIgnore
 	private Date   timeoutCloseTime;
-	// 关闭日志
-	private String closelog;
 	// 订单创建时间
 	private Date   createTime;
 	// 修改时间
@@ -92,9 +95,11 @@ public class Order extends IdEntity {
 
 	// -------------前端展示字段------------
 	// 订单商品信息
-	private List<OrderGoods>      goodsList;
+	private List<OrderGoods> goodsList;
+	// 能否申请退款
+	private boolean          canApplyRefund;
 	// 物流信息
-	private List<LogisticsRecord> logistics;
+	// private LogisticsInfo    logistics;
 	// 支付信息
 	// private PaymentRecord         paymentInfo;
 	// 退款信息
@@ -188,12 +193,12 @@ public class Order extends IdEntity {
 		this.status = status;
 	}
 
-	public Integer getBeforeStatus() {
-		return beforeStatus;
+	public Integer getRefundStatus() {
+		return refundStatus;
 	}
 
-	public void setBeforeStatus(Integer beforeStatus) {
-		this.beforeStatus = beforeStatus;
+	public void setRefundStatus(Integer refundStatus) {
+		this.refundStatus = refundStatus;
 	}
 
 	public String getShippingAddress() {
@@ -236,6 +241,14 @@ public class Order extends IdEntity {
 		this.deliveryCompany = deliveryCompany;
 	}
 
+	public String getDeliveryCode() {
+		return deliveryCode;
+	}
+
+	public void setDeliveryCode(String deliveryCode) {
+		this.deliveryCode = deliveryCode;
+	}
+
 	public String getDeliveryNumber() {
 		return deliveryNumber;
 	}
@@ -268,12 +281,12 @@ public class Order extends IdEntity {
 		this.deliveryTime = deliveryTime;
 	}
 
-	public Date getConfirmGoodsTime() {
-		return confirmGoodsTime;
+	public Date getConfirmDeliveryTime() {
+		return confirmDeliveryTime;
 	}
 
-	public void setConfirmGoodsTime(Date confirmGoodsTime) {
-		this.confirmGoodsTime = confirmGoodsTime;
+	public void setConfirmDeliveryTime(Date confirmDeliveryTime) {
+		this.confirmDeliveryTime = confirmDeliveryTime;
 	}
 
 	public Date getApplyRefundTime() {
@@ -284,19 +297,21 @@ public class Order extends IdEntity {
 		this.applyRefundTime = applyRefundTime;
 	}
 
+	@Deprecated
 	public Date getRefundCompleteTime() {
 		return refundCompleteTime;
 	}
 
+	@Deprecated
 	public void setRefundCompleteTime(Date refundCompleteTime) {
 		this.refundCompleteTime = refundCompleteTime;
 	}
 
-	public Date getRefundReason() {
+	public String getRefundReason() {
 		return refundReason;
 	}
 
-	public void setRefundReason(Date refundReason) {
+	public void setRefundReason(String refundReason) {
 		this.refundReason = refundReason;
 	}
 
@@ -340,11 +355,11 @@ public class Order extends IdEntity {
 		this.goodsList = goodsList;
 	}
 
-	public List<LogisticsRecord> getLogistics() {
-		return logistics;
+	public boolean isCanApplyRefund() {
+		return canApplyRefund;
 	}
 
-	public void setLogistics(List<LogisticsRecord> logistics) {
-		this.logistics = logistics;
+	public void setCanApplyRefund(boolean canApplyRefund) {
+		this.canApplyRefund = canApplyRefund;
 	}
 }

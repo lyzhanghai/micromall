@@ -21,6 +21,7 @@ import java.util.List;
  * Created by zhangzx on 16/3/26.
  */
 @Service
+@Transactional
 public class GoodsService {
 
 	@Resource

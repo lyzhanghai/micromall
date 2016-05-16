@@ -1,13 +1,11 @@
-package com.micromall.web.controller.tmp;
+package com.micromall.web.controller;
 
 import com.micromall.service.DistributionService;
-import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.annotation.Authentication;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -24,8 +22,12 @@ public class DistributionController extends BasisController {
 	@Resource
 	private DistributionService distributionService;
 
+	/**
+	 * 分销订单统计
+	 *
+	 * @return
+	 */
 	@RequestMapping(value = "/commission_stat")
-	@ResponseBody
 	public ResponseEntity<?> commission_stat() {
 		return ResponseEntity.Success(distributionService.commissionStat(getLoginUser().getUid()));
 	}
@@ -36,7 +38,6 @@ public class DistributionController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/lower_distributors_stat")
-	@ResponseBody
 	public ResponseEntity<?> lower_distributors_stat() {
 		return ResponseEntity.Success(distributionService.lowerDistributorsStat(getLoginUser().getUid()));
 	}
@@ -48,7 +49,6 @@ public class DistributionController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/lower_distributors_list")
-	@ResponseBody
 	public ResponseEntity<?> lower_distributors_list(String level, @RequestParam(defaultValue = "1") int page, Integer limit) {
 		Integer _level = null;
 		if (level != null) {
@@ -64,8 +64,8 @@ public class DistributionController extends BasisController {
 			}
 		}
 
-		return ResponseEntity.Success(
-				distributionService.lowerDistributorsList(getLoginUser().getUid(), _level, new RowBounds(page, resizeLimit(limit))));
+		return ResponseEntity
+				.Success(distributionService.lowerDistributorsList(getLoginUser().getUid(), _level, new RowBounds(page, resizeLimit(limit))));
 	}
 
 }

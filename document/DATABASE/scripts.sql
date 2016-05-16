@@ -139,60 +139,6 @@ CREATE TABLE `certified_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户认证信息';
 
 
-
--- ======================================================================================
-
-
-
-
-
-CREATE TABLE `article` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `type` tinyint(4) NOT NULL COMMENT '类型',
-  `title` varchar(90) DEFAULT NULL COMMENT '标题',
-  `content` text NOT NULL COMMENT '内容',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`),
-  KEY (`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章';
-
-
-CREATE TABLE `category` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `parent_id` int(11) DEFAULT NULL COMMENT '上级类目id',
-  `name` varchar(30) NOT NULL COMMENT '类目名称',
-  `sort` smallint(4) NOT NULL COMMENT '显示顺序',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='商品类目';
-
-CREATE TABLE `commission_record` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `uid` int(11) NOT NULL COMMENT '所属用户id',
-  `lower_uid` int(11) NOT NULL COMMENT '产生佣金下级分销商id',
-  `order_no` varchar(30) NOT NULL COMMENT '产生佣金的订单',
-  `order_amount` decimal(10,2) NOT NULL COMMENT '产生佣金的订单金额',
-  `commission_amount` decimal(10,2) NOT NULL COMMENT '佣金金额',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`),
-  KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='佣金收入记录';
-
-CREATE TABLE `coupon` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `uid` int(11) NOT NULL COMMENT '所属用户id',
-  `amount` smallint(6) NOT NULL COMMENT '金额',
-  `descr` varchar(90) NOT NULL COMMENT '优惠劵描述',
-  `expira_time` datetime DEFAULT NULL COMMENT '过期时间',
-  `used` char(1) NOT NULL COMMENT '是否已经使用',
-  `used_time` datetime DEFAULT NULL COMMENT '使用时间',
-  `used_order_no` varchar(30) DEFAULT NULL COMMENT '使用的订单号',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`),
-  KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户优惠券';
-
-
-
 CREATE TABLE `order` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL COMMENT '所属用户id',
@@ -206,24 +152,25 @@ CREATE TABLE `order` (
   `coupons` text COMMENT '使用的优惠劵',
   `leave_message` varchar(300) DEFAULT NULL COMMENT '买家留言',
   `status` tinyint(4) NOT NULL COMMENT '订单状态',
-  `before_status` tinyint(4) NOT NULL COMMENT '订单上一步状态',
+  `refund_status` tinyint(4) NOT NULL COMMENT '退款状态',
   `shipping_address` varchar(600) NOT NULL COMMENT '收货地址信息',
   `consignee_name` varchar(30) NOT NULL COMMENT '收货人姓名',
   `consignee_phone` varchar(15) NOT NULL COMMENT '收货人电话',
   `postcode` char(6) DEFAULT NULL COMMENT '邮政编码',
-  `delivery_company` varchar(60) DEFAULT NULL COMMENT '发货快递公司',
-  `delivery_number` varchar(20) DEFAULT NULL COMMENT '发货快递单号',
+  `delivery_company` varchar(60) DEFAULT NULL COMMENT '发货物流公司',
+  `delivery_code` varchar(60) DEFAULT NULL COMMENT '发货物流公司代码',
+  `delivery_number` varchar(20) DEFAULT NULL COMMENT '发货物流单号',
   `delivery_time` datetime DEFAULT NULL COMMENT '发货时间',
   `pay_time` datetime DEFAULT NULL COMMENT '订单支付时间',
-  `confirm_goods_time` datetime DEFAULT NULL COMMENT '订单确认收货时间',
+  `confirm_delivery_time` datetime DEFAULT NULL COMMENT '订单确认收货时间',
   `apply_refund_time` datetime DEFAULT NULL COMMENT '订单申请退款时间',
   `refund_complete_time` datetime DEFAULT NULL COMMENT '订单退款完成时间',
   `refund_reason` varchar(300) DEFAULT NULL COMMENT '订单申请退款原因',
   `close_time` datetime DEFAULT NULL COMMENT '订单关闭时间',
   `closelog` varchar(60) DEFAULT NULL COMMENT '订单关闭日志',
+  `timeout_close_time` datetime DEFAULT NULL COMMENT '超时未支付自动关闭时间',
   `create_time` datetime NOT NULL COMMENT '订单创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  `timeout_close_time` datetime NOT NULL COMMENT '超时未支付自动关闭时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY (`order_no`),
   KEY (`uid`,`status`)
@@ -236,7 +183,8 @@ CREATE TABLE `order_goods` (
   `goods_id` int(11) NOT NULL COMMENT '商品id',
   `title` varchar(90) NOT NULL COMMENT '商品标题',
   `image` varchar(255) NOT NULL COMMENT '商品图片',
-  `price` decimal(10,2) NOT NULL COMMENT '商品价格',
+  `price` decimal(10,2) NOT NULL COMMENT '商品购买价格',
+  `origin_price` decimal(10,2) NOT NULL COMMENT '商品原始价格',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY (`order_no`)
@@ -256,6 +204,62 @@ CREATE TABLE `withdraw_record` (
   PRIMARY KEY (`id`),
   KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='提现记录';
+
+
+-- ======================================================================================
+
+
+
+
+/*
+CREATE TABLE `article` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `type` tinyint(4) NOT NULL COMMENT '类型',
+  `title` varchar(90) DEFAULT NULL COMMENT '标题',
+  `content` text NOT NULL COMMENT '内容',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY (`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章';
+
+CREATE TABLE `category` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `parent_id` int(11) DEFAULT NULL COMMENT '上级类目id',
+  `name` varchar(30) NOT NULL COMMENT '类目名称',
+  `sort` smallint(4) NOT NULL COMMENT '显示顺序',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='商品类目';
+
+CREATE TABLE `coupon` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL COMMENT '所属用户id',
+  `amount` smallint(6) NOT NULL COMMENT '金额',
+  `descr` varchar(90) NOT NULL COMMENT '优惠劵描述',
+  `expira_time` datetime DEFAULT NULL COMMENT '过期时间',
+  `used` char(1) NOT NULL COMMENT '是否已经使用',
+  `used_time` datetime DEFAULT NULL COMMENT '使用时间',
+  `used_order_no` varchar(30) DEFAULT NULL COMMENT '使用的订单号',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户优惠券';
+*/
+
+CREATE TABLE `commission_record` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL COMMENT '所属用户id',
+  `lower_uid` int(11) NOT NULL COMMENT '产生佣金下级分销商id',
+  `order_no` varchar(30) NOT NULL COMMENT '产生佣金的订单',
+  `order_amount` decimal(10,2) NOT NULL COMMENT '产生佣金的订单金额',
+  `commission_amount` decimal(10,2) NOT NULL COMMENT '佣金金额',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='佣金收入记录';
+
+
+
+
 
 
 

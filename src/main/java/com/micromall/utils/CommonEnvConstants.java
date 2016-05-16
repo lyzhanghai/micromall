@@ -1,5 +1,7 @@
 package com.micromall.utils;
 
+import java.math.BigDecimal;
+
 /**
  * <pre>
  *
@@ -96,17 +98,28 @@ public final class CommonEnvConstants {
 	public static final int GLOBAL_PERPAGE_MAX_LIMIT_SIZE = Integer.valueOf(PropertyConfigurerUtils.getString("global.perpage.max_limit_size"));
 
 	/*可申请提现时间区间*/
-	public static final String WITHDRAW_APPLY_ALLOW_TIME_INTERVAL  = PropertyConfigurerUtils.getString("withdraw.apply.allow.time_interval");
+	public static final String     WITHDRAW_APPLY_ALLOW_TIME_INTERVAL  = PropertyConfigurerUtils.getString("withdraw.apply.allow.time_interval");
 	/*单次提现最小金额限制*/
-	public static final int    WITHDRAW_APPLY_SINGLE_MIN_AMOUNT    = Integer
+	public static final int        WITHDRAW_APPLY_SINGLE_MIN_AMOUNT    = Integer
 			.valueOf(PropertyConfigurerUtils.getString("withdraw.apply.single.min_amount"));
 	/*单次提现最大金额限制*/
-	public static final int    WITHDRAW_APPLY_SINGLE_MAX_AMOUNT    = Integer
+	public static final int        WITHDRAW_APPLY_SINGLE_MAX_AMOUNT    = Integer
 			.valueOf(PropertyConfigurerUtils.getString("withdraw.apply.single.max_amount"));
-	/*订单未支付超时自动关闭时间*/
-	public static final String ORDER_NOTPAY_TIMEOUT_CLOSE_TIME     = PropertyConfigurerUtils.getString("order.notpay.timeout.close_time");
-	/*订单物流已收货超时自动确认收货时间*/
-	public static final String ORDER_TIMEOUT_confirm_delivery_TIME = PropertyConfigurerUtils.getString("order.timeout.confirm_delivery_time");
+	/*订单未支付超时自动关闭时间, 单位：分钟*/
+	public static final int        ORDER_NOTPAY_TIMEOUT_CLOSE_TIME     = Integer
+			.valueOf(PropertyConfigurerUtils.getString("order.notpay.timeout.close_time"));
+	/*订单物流已收货超时自动确认收货时间, 单位：天*/
+	public static final int        ORDER_TIMEOUT_CONFIRM_DELIVERY_TIME = Integer
+			.valueOf(PropertyConfigurerUtils.getString("order.timeout.confirm_delivery_time"));
+	/*订单退货申请有效时间, 单位：天*/
+	public static final int        ORDER_REFUND_APPLY_VALID_TIME       = Integer
+			.valueOf(PropertyConfigurerUtils.getString("order.refund_apply.valid_time"));
+	/*一级分销商佣金分成比例*/
+	public static final BigDecimal COMMISSION_DIVIDED_PROPORTION_LV1   = new BigDecimal(
+			PropertyConfigurerUtils.getString("commission.divided.proportion.lv1"));
+	/*二级分销商佣金分成比例*/
+	public static final BigDecimal COMMISSION_DIVIDED_PROPORTION_LV2   = new BigDecimal(
+			PropertyConfigurerUtils.getString("commission.divided.proportion.lv2"));
 
 	public static class Environment {
 

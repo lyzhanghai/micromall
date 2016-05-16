@@ -13,6 +13,7 @@ import java.util.List;
  * Created by zhangzx on 16/4/6.
  */
 @Service
+@Transactional(readOnly = true)
 public class PropertiesService {
 
 	@Resource

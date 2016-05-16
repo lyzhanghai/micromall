@@ -9,11 +9,12 @@
         <result column="title" property="title" jdbcType="VARCHAR"/>
         <result column="image" property="image" jdbcType="VARCHAR"/>
         <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="origin_price" property="originPrice" jdbcType="DECIMAL"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <sql id="Base_Column_List">
-        id, order_no, buy_number, goods_id, title, image, price, create_time
+    <sql id="Column_sql">
+        id, order_no, buy_number, goods_id, title, image, price, origin_price, create_time
     </sql>
 
     <sql id="Where_Clause">
@@ -54,7 +55,7 @@
         )
         values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{buyNumber,jdbcType=INTEGER},
         #{goodsId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},
-        #{image,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}
+        #{image,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{originPrice,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}
         )
     </insert>
 

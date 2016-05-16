@@ -14,6 +14,7 @@ import java.util.List;
  * Created by zhangzx on 16/3/26.
  */
 @Service
+@Transactional
 public class ShippingAddressService {
 
 	@Resource
@@ -34,7 +35,6 @@ public class ShippingAddressService {
 		}
 	}
 
-	@Transactional
 	public void addAddress(ShippingAddress address) {
 		_resetDefaultAddress(address);
 		address.setId(null);
@@ -43,7 +43,6 @@ public class ShippingAddressService {
 		mapper.insert(address);
 	}
 
-	@Transactional
 	public boolean updateAddress(ShippingAddress address) {
 		_resetDefaultAddress(address);
 		address.setCreateTime(null);
@@ -51,7 +50,6 @@ public class ShippingAddressService {
 		return mapper.updateByPrimaryKeyUid(address) > 0;
 	}
 
-	@Transactional
 	public boolean deleteAddress(int uid, int id) {
 		return mapper.deleteByWhereClause(Criteria.create().andEqualTo("uid", uid).andEqualTo("id", id).build()) > 0;
 	}

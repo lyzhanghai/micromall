@@ -4,6 +4,7 @@ import com.micromall.repository.CertifiedInfoMapper;
 import com.micromall.repository.entity.CertifiedInfo;
 import com.micromall.repository.entity.common.CertifiedStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -13,11 +14,13 @@ import java.util.Date;
  * @date 2016/04/19.
  */
 @Service
+@Transactional
 public class CertifiedInfoService {
 
 	@Resource
 	private CertifiedInfoMapper mapper;
 
+	@Transactional(readOnly = true)
 	public CertifiedInfo getCertifiedInfo(int uid) {
 		return mapper.selectByPrimaryKey(uid);
 	}
@@ -43,8 +46,9 @@ public class CertifiedInfoService {
 		return mapper.updateByPrimaryKey(certifiedInfo) > 0;
 	}
 
+	@Transactional(readOnly = true)
 	public boolean certified(int uid) {
-		CertifiedInfo certifiedInfo = this.getCertifiedInfo(uid);
+		CertifiedInfo certifiedInfo = mapper.selectByPrimaryKey(uid);
 		return certifiedInfo != null && certifiedInfo.getStatus() == CertifiedStatus.审核通过;
 	}
 

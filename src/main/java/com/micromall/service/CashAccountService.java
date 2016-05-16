@@ -14,16 +14,17 @@ import java.util.Date;
  * @date 2016/04/17.
  */
 @Service
+@Transactional
 public class CashAccountService {
 
 	@Resource
 	private CashAccountMapper mapper;
 
+	@Transactional(readOnly = true)
 	public CashAccount getCashAccount(Integer uid) {
 		return mapper.selectByPrimaryKey(uid);
 	}
 
-	@Transactional
 	public void createCashAccount(Integer uid) {
 		CashAccount cashAccount = new CashAccount();
 		cashAccount.setUid(uid);

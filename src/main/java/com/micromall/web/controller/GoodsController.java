@@ -1,4 +1,4 @@
-package com.micromall.web.controller.tmp;
+package com.micromall.web.controller;
 
 import com.google.common.collect.Maps;
 import com.micromall.repository.entity.Goods;
@@ -6,7 +6,6 @@ import com.micromall.service.FavoriteService;
 import com.micromall.service.GoodsService;
 import com.micromall.service.vo.GoodsSearch;
 import com.micromall.utils.CommonEnvConstants;
-import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.annotation.Authentication;
 import org.apache.commons.lang3.StringUtils;

@@ -1,9 +1,12 @@
 package com.micromall.service.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.micromall.repository.entity.OrderGoods;
 import com.micromall.repository.entity.common.OrderStatus;
+import com.micromall.repository.entity.common.OrderStatus.RefundStatus;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,8 +23,19 @@ public class ListViewOrder {
 	 * 订单当前状态 {@link OrderStatus}
 	 */
 	private Integer          status;
+	/**
+	 * 退款状态 {@link RefundStatus}
+	 */
+	private Integer          refundStatus;
+	// 能否申请退款
+	private boolean          canApplyRefund;
 	// 订单商品信息
 	private List<OrderGoods> goodsList;
+	// 订单确认收货时间（验证能否申请退款使用）
+	@JsonIgnore
+	private Date             confirmDeliveryTime;
+	// 超时未支付自动关闭时间
+	private Date             timeoutCloseTime;
 
 	public String getOrderNo() {
 		return orderNo;
@@ -47,11 +61,43 @@ public class ListViewOrder {
 		this.status = status;
 	}
 
+	public Integer getRefundStatus() {
+		return refundStatus;
+	}
+
+	public void setRefundStatus(Integer refundStatus) {
+		this.refundStatus = refundStatus;
+	}
+
+	public boolean isCanApplyRefund() {
+		return canApplyRefund;
+	}
+
+	public void setCanApplyRefund(boolean canApplyRefund) {
+		this.canApplyRefund = canApplyRefund;
+	}
+
 	public List<OrderGoods> getGoodsList() {
 		return goodsList;
 	}
 
 	public void setGoodsList(List<OrderGoods> goodsList) {
 		this.goodsList = goodsList;
+	}
+
+	public Date getConfirmDeliveryTime() {
+		return confirmDeliveryTime;
+	}
+
+	public void setConfirmDeliveryTime(Date confirmDeliveryTime) {
+		this.confirmDeliveryTime = confirmDeliveryTime;
+	}
+
+	public Date getTimeoutCloseTime() {
+		return timeoutCloseTime;
+	}
+
+	public void setTimeoutCloseTime(Date timeoutCloseTime) {
+		this.timeoutCloseTime = timeoutCloseTime;
 	}
 }

@@ -52,6 +52,8 @@ public class Goods extends IdEntity {
 	/**
 	 * 产品参数(JSON数据) {@link ProductParamsKeys}
 	 */
+	@JsonIgnore
+	@Deprecated
 	private Map<String, Object> productParams;
 	// 商品销量
 	private Integer             salesVolume;
@@ -171,10 +173,12 @@ public class Goods extends IdEntity {
 		this.descr = descr;
 	}
 
+	@Deprecated
 	public Map<String, Object> getProductParams() {
 		return productParams;
 	}
 
+	@Deprecated
 	public void setProductParams(Map<String, Object> productParams) {
 		this.productParams = productParams;
 	}
@@ -219,10 +223,12 @@ public class Goods extends IdEntity {
 		this.updateTime = updateTime;
 	}
 
+	@Deprecated
 	public String getCategoryName() {
 		return categoryName;
 	}
 
+	@Deprecated
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}

@@ -1,13 +1,18 @@
 package com.micromall.web.controller.tmp;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.micromall.payment.facade.FundService;
 import com.micromall.repository.entity.CartGoods;
 import com.micromall.repository.entity.Goods;
+import com.micromall.repository.entity.OrderGoods;
+import com.micromall.repository.entity.ShippingAddress;
 import com.micromall.service.CartService;
 import com.micromall.service.GoodsService;
+import com.micromall.service.OrderService;
 import com.micromall.service.ShippingAddressService;
+import com.micromall.service.vo.CreateOrder;
+import com.micromall.service.vo.OrderSettle;
 import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.annotation.Authentication;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +43,10 @@ public class BuyController extends BasisController {
 	private GoodsService           goodsService;
 	@Resource
 	private ShippingAddressService shippingAddressService;
+	@Resource
+	private OrderService           orderService;
+	@Resource
+	private FundService            fundService;
 
 	/**
 	 * 结算
@@ -47,70 +57,99 @@ public class BuyController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/cart/settle")
-	public ResponseEntity<?> settle(String goodsIds, Integer buyNumber, boolean cart) {
+	public ResponseEntity<?> settle(HttpServletRequest request, String goodsIds, Integer buyNumber, boolean cart) {
 		if (StringUtils.isEmpty(goodsIds)) {
-			return ResponseEntity.Failure(cart ? "请选择要结算的商品" : "请选择要购买的商品");
+			return ResponseEntity.Failure(cart ? "请选择要购买的商品" : "请选择要购买的商品");
 		}
 		if (!cart && buyNumber == null || buyNumber.intValue() <= 0) {
 			return ResponseEntity.Failure("购买数量不能小于1件");
 		}
 
-		Set<String> _goodsIds = Sets.newHashSet(StringUtils.split(goodsIds, ","));
-
-		List<Map<String, Object>> settleGoodses = Lists.newArrayList();
-		BigDecimal totalPrice = new BigDecimal(0);
-
+		OrderSettle orderSettle = new OrderSettle();
+		BigDecimal totalAmount = new BigDecimal(0);
+		BigDecimal deductionAmount = new BigDecimal(0);
+		BigDecimal realpayAmount = new BigDecimal(0);
 		if (cart) {
 			// 购物车结算
+			Set<String> _goodsIds = Sets.newHashSet(StringUtils.split(goodsIds, ","));
 			List<CartGoods> goodsList = cartService.listGoods(getLoginUser().getUid());
-			for (CartGoods goods : goodsList) {
-				if (_goodsIds.contains(String.valueOf(goods.getGoodsId()))) {
-					Map<String, Object> _goods = Maps.newHashMap();
-					_goods.put("id", goods.getGoodsId());
-					_goods.put("title", goods.getTitle());
-					_goods.put("image", goods.getImage());
-					_goods.put("price", goods.getPrice());
-					_goods.put("buyNumber", goods.getBuyNumber());
-					BigDecimal _totalPrice = goods.getPrice().multiply(new BigDecimal(goods.getBuyNumber())).setScale(2);
-					_goods.put("totalPrice", _totalPrice);
-					settleGoodses.add(_goods);
-					totalPrice = totalPrice.add(_totalPrice);
+			for (CartGoods carGoods : goodsList) {
+				if (_goodsIds.contains(String.valueOf(carGoods.getGoodsId()))) {
+					if (carGoods.isInvalid()) {
+						return ResponseEntity.Failure("商品[" + carGoods.getTitle() + "]已下架");
+					}
+					if (carGoods.getBuyNumber() > carGoods.getInventory()) {
+						return ResponseEntity.Failure("商品[" + carGoods.getTitle() + "]库存不足");
+					}
+					OrderGoods orderGoods = new OrderGoods();
+					orderGoods.setGoodsId(carGoods.getGoodsId());
+					orderGoods.setTitle(carGoods.getTitle());
+					orderGoods.setImage(carGoods.getImage());
+					orderGoods.setPrice(carGoods.getPrice());// TODO 计算促销折扣后的价格
+					orderGoods.setOriginPrice(carGoods.getPrice());// 商品原始价格
+					orderGoods.setBuyNumber(carGoods.getBuyNumber());// 购买数量
+					orderSettle.getGoodsList().add(orderGoods);
+
+					BigDecimal _totalAmount = orderGoods.getOriginPrice().multiply(new BigDecimal(orderGoods.getBuyNumber()));
+					BigDecimal _realpayAmount = orderGoods.getPrice().multiply(new BigDecimal(orderGoods.getBuyNumber()));
+
+					totalAmount = totalAmount.add(_totalAmount);
+					realpayAmount = realpayAmount.add(_realpayAmount);
+					deductionAmount = deductionAmount.add(_totalAmount.subtract(_realpayAmount));
 				}
 			}
-			if (settleGoodses.size() != _goodsIds.size()) {
+			if (orderSettle.getGoodsList().size() != _goodsIds.size()) {
 				return ResponseEntity.Failure("商品信息改变，请刷新页面重新结算");
 			}
 		} else {
 			// 直接购买
 			Goods goods = goodsService.getGoodsInfo(Integer.parseInt(goodsIds));
 			if (goods == null) {
-				return ResponseEntity.Failure("商品不存在或已下架");
+				return ResponseEntity.Failure("商品[" + goods.getTitle() + "]不存在");
+			}
+			if (goods.isDeleted() || !goods.isShelves() || goods.getInventory() <= 0) {
+				return ResponseEntity.Failure("商品[" + goods.getTitle() + "]已下架");
 			}
 			if (buyNumber > goods.getInventory()) {
-				return ResponseEntity.Failure("购买数量不能大于商品库存量");
+				return ResponseEntity.Failure("商品[" + goods.getTitle() + "]库存不足");
 			}
+			OrderGoods orderGoods = new OrderGoods();
+			orderGoods.setGoodsId(goods.getId());
+			orderGoods.setTitle(goods.getTitle());
+			orderGoods.setImage(goods.getMainImage());
+			orderGoods.setPrice(goods.getPrice());// TODO 计算促销折扣后的价格
+			orderGoods.setOriginPrice(goods.getPrice());// 商品原始价格
+			orderGoods.setBuyNumber(buyNumber);// 购买数量
+			orderSettle.getGoodsList().add(orderGoods);
 
-			Map<String, Object> _goods = Maps.newHashMap();
-			_goods.put("id", goods.getId());
-			_goods.put("title", goods.getTitle());
-			_goods.put("image", goods.getMainImage());
-			_goods.put("price", goods.getPrice());
-			_goods.put("buyNumber", buyNumber);
-			BigDecimal _totalPrice = goods.getPrice().multiply(new BigDecimal(buyNumber)).setScale(2);
-			_goods.put("totalPrice", _totalPrice);
-			settleGoodses.add(_goods);
-			totalPrice = _totalPrice;
+			totalAmount = orderGoods.getOriginPrice().multiply(new BigDecimal(orderGoods.getBuyNumber()));
+			realpayAmount = orderGoods.getPrice().multiply(new BigDecimal(orderGoods.getBuyNumber()));
+			deductionAmount = totalAmount.subtract(realpayAmount);
 		}
 
-		Map<String, Object> data = Maps.newHashMap();
-		data.put("shippingAddress", shippingAddressService.getDefaultAddress(getLoginUser().getUid()));
-		data.put("goodsList", settleGoodses);
-		data.put("totalGoods", settleGoodses.size());
-		data.put("totalPrice", totalPrice);
-		data.put("token", UUID.randomUUID().toString());
-		// TODO 优惠计算、邮费
+		// 计算运费
+		int freight = calculateFreight(orderSettle);
+		totalAmount = totalAmount.add(new BigDecimal(freight));
+		realpayAmount = realpayAmount.add(new BigDecimal(freight));
 
-		return ResponseEntity.Success();
+		orderSettle.setTotalAmount(totalAmount);
+		orderSettle.setDeductionAmount(deductionAmount);
+		orderSettle.setRealpayAmount(realpayAmount);
+		orderSettle.setFreight(freight);
+
+		Map<String, Object> data = Maps.newHashMap();
+		data.put("shippingAddress", shippingAddressService.getDefaultAddress(getLoginUser().getUid()));// 默认收货地址
+		data.put("orderSettle", orderSettle);
+		String settleId = UUID.randomUUID().toString().replaceAll("-", "");
+		data.put("settleId", settleId);
+
+		request.getSession().setAttribute("_SETTLE_ID:" + settleId, data);
+		return ResponseEntity.Success(data);
+	}
+
+	// 邮费计算
+	private int calculateFreight(OrderSettle orderSettle) {
+		return 0;
 	}
 
 	/**
@@ -120,9 +159,29 @@ public class BuyController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/buy")
-	public ResponseEntity<?> buy(String settleId) {
+	public ResponseEntity<?> buy(HttpServletRequest request, String settleId, String leaveMessage, int addressId) {
+		OrderSettle orderSettle = (OrderSettle)request.getSession().getAttribute("_SETTLE_ID:" + settleId);
 
-		return ResponseEntity.Success();
+		CreateOrder createOrder = new CreateOrder();
+		createOrder.setUid(getLoginUser().getUid());
+		createOrder.setTotalAmount(orderSettle.getTotalAmount());
+		createOrder.setRealpayAmount(orderSettle.getRealpayAmount());
+		createOrder.setBalancepayAmount(new BigDecimal(0));
+		createOrder.setDeductionAmount(orderSettle.getDeductionAmount());
+		createOrder.setFreight(orderSettle.getFreight());
+		createOrder.setDiscounts(orderSettle.getDiscounts());
+		createOrder.setCoupons(null);
+		createOrder.setLeaveMessage(leaveMessage);
+		// 收货地址
+		ShippingAddress address = shippingAddressService.getAddress(getLoginUser().getUid(), addressId);
+		createOrder.setShippingAddress(
+				address.getProvince() + address.getCity() + StringUtils.trimToEmpty(address.getCounty()) + address.getDetailedAddress());
+		createOrder.setConsigneeName(address.getConsigneeName());
+		createOrder.setConsigneePhone(address.getConsigneePhone());
+		createOrder.setPostcode(address.getPostcode());
+		// 购买商品
+		createOrder.setGoodsList(orderSettle.getGoodsList());
+		return ResponseEntity.Success(orderService.createOrder(createOrder));
 	}
 
 	/**

@@ -22,8 +22,10 @@ public class OrderGoods extends IdEntity {
 	private String     title;
 	// 商品图片
 	private String     image;
-	// 商品价格
+	// 商品购买价格
 	private BigDecimal price;
+	// 商品原始价格
+	private BigDecimal originPrice;
 	@JsonIgnore
 	// 创建时间
 	private Date       createTime;
@@ -80,6 +82,14 @@ public class OrderGoods extends IdEntity {
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+
+	public BigDecimal getOriginPrice() {
+		return originPrice;
+	}
+
+	public void setOriginPrice(BigDecimal originPrice) {
+		this.originPrice = originPrice;
 	}
 
 	public Date getCreateTime() {

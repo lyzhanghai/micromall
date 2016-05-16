@@ -1,8 +1,6 @@
-package com.micromall.web.controller.tmp;
+package com.micromall.web.controller;
 
-import com.micromall.service.LogisticsService;
 import com.micromall.service.OrderService;
-import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.annotation.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,20 +19,17 @@ import javax.annotation.Resource;
 public class MyOrdersController extends BasisController {
 
 	@Resource
-	private OrderService     orderService;
-	@Resource
-	private LogisticsService logisticsService;
+	private OrderService orderService;
 
 	/**
-	 * 我的订单列表（包含各种状态的订单）[待付款、已付款/待发货、已收货、已完成]
+	 * 我的订单列表（包含各种状态的订单）[待付款、待发货、待收货、已完成、退货/取消]
 	 *
 	 * @param status 订单状态
-	 * @param p 分页页码
 	 * @return
 	 */
 	@RequestMapping(value = "/orders")
-	public ResponseEntity<?> orders(int status, @RequestParam(defaultValue = "1") int p) {
-		return ResponseEntity.Success(orderService.findOrders(getLoginUser().getUid(), status, p));
+	public ResponseEntity<?> orders(int status, @RequestParam(defaultValue = "1") int page, Integer limit) {
+		return ResponseEntity.Success(orderService.findOrders(getLoginUser().getUid(), status, page, resizeLimit(limit)));
 	}
 
 	/**
@@ -56,7 +51,7 @@ public class MyOrdersController extends BasisController {
 	 */
 	@RequestMapping(value = "/logistics")
 	public ResponseEntity<?> logistics(String orderNo) {
-		return ResponseEntity.Success(logisticsService.getLogisticsInfo(orderNo));
+		return ResponseEntity.Success(orderService.getLogisticsInfo(orderNo));
 	}
 
 	/**
@@ -77,8 +72,8 @@ public class MyOrdersController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/apply_refund")
-	public ResponseEntity<?> apply_refund(String orderNo) {
-		return ResponseEntity.Success(orderService.applyRefund(getLoginUser().getUid(), orderNo));
+	public ResponseEntity<?> apply_refund(String orderNo, String refundReason) {
+		return ResponseEntity.Success(orderService.applyRefund(getLoginUser().getUid(), orderNo, refundReason));
 	}
 
 	/**
