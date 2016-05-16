@@ -1,0 +1,17 @@
+<div class="htlist" bottom-scroll="load()">
+    <ul>
+        <li ng-repeat="item in listData track by $index" bindonce>
+            <a href="{{prefix}}detail?id={{item.goodsId}}" class="item ">
+                <div class="list-out-lay">
+                    <div class="list-out-img">
+                        <img lazy-img="{{item.image}}" class="ht-img">
+                    </div>
+                </div>
+                <div class="main">
+                    <h4 class="ng-binding">{{item.title}}</h4>
+                    <div class="price"><span class="left ng-binding">￥{{item.price}}</span></div>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>

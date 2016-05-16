@@ -4661,7 +4661,8 @@ a.hr1 {
   line-height: 1rem;
   border: 1px solid #eaeaea;
   border-radius: 3rem;
-  width: 3rem;
+  width: 3.3rem;
+  margin-right: .25rem;
   text-align: center;
   display: inline-block;
   background: #eaeaea;
@@ -4671,6 +4672,9 @@ a.hr1 {
   color: #73c612;
   border-color: #73c612;
   background: #fff;
+}
+.tab-htlist .index-tab a:last-child {
+  margin-right: 0;
 }
 .tab-htlist .tab-list {
   padding: .5rem;
