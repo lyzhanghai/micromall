@@ -99,21 +99,21 @@
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Column_sql"/>
         from order_goods
         where id = #{id,jdbcType=INTEGER}
     </select>
 
     <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Column_sql"/>
         from order_goods
         <include refid="Where_Clause"/>
     </select>
 
     <select id="selectMultiByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Column_sql"/>
         from order_goods
         <include refid="Where_Clause"/>
         <if test="orderBy != null">
@@ -123,7 +123,7 @@
 
     <select id="selectPageByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Column_sql"/>
         from order_goods
         <include refid="Where_Clause"/>
         <if test="orderBy != null">
@@ -133,7 +133,7 @@
 
     <select id="countByWhereClause" parameterType="com.micromall.utils.Condition" resultType="java.lang.Integer">
         select count(*)
-        <include refid="Base_Column_List"/>
+        <include refid="Column_sql"/>
         from order_goods
         <include refid="Where_Clause"/>
     </select>

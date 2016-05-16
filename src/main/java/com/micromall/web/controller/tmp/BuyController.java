@@ -18,7 +18,6 @@ import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.annotation.Authentication;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +31,7 @@ import java.util.UUID;
  * @author zhangzxiang91@gmail.com
  * @date 2016/04/11.
  */
-@RestController
+// @RestController
 @RequestMapping(value = "/api")
 @Authentication
 public class BuyController extends BasisController {
