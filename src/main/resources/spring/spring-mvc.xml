@@ -66,6 +66,7 @@
             <!-- admin-->
             <mvc:exclude-mapping path="/admin/**"/>
             <!-- static -->
+            <mvc:exclude-mapping path="/favicon.ico"/>
             <mvc:exclude-mapping path="/css/**"/>
             <mvc:exclude-mapping path="/js/**"/>
             <mvc:exclude-mapping path="/font/**"/>

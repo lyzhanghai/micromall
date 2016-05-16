@@ -186,7 +186,6 @@ public class InsertController {
 				// params.put("reduceAmoun", "18.5");// 折扣减免金额
 				// params.put("presentPrice", "18.5");// 折扣减免金额
 				params.put("imgurl", "http://211.149.241.76/images/tmp/goods_" + (random.nextInt(2) + 1) + "_promotion.png");
-
 				goods.setPromotionParams(params);
 			}
 			goods.setFreight(freights[random.nextInt(freights.length)]);

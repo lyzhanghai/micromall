@@ -51,6 +51,7 @@ public class GoodsService {
 				GoodsSearchResult result = new GoodsSearchResult();
 				result.setGoodsId(goods.getId());
 				result.setImage(goods.getMainImage());
+				result.setPromotion(goods.isPromotion());
 				BeanUtils.copyProperties(result, goods);
 				results.add(result);
 			}
