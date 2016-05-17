@@ -1,11 +1,11 @@
 /**
  * Created by kangdaye on 16/5/15.
  */
-app.controller('goodsListCrt',["$scope","$rootScope","$stateParams","goodsListCacheFactory","goodsListService", function($scope,$rootScope,$stateParams,goodsListCacheFactory,goodsListService) {
+app.controller('goodsListCtr',["$scope","$rootScope","$stateParams","goodsListCacheFactory","goodsListService", function($scope,$rootScope,$stateParams,goodsListCacheFactory,goodsListService) {
    var empty = false;
    var async = false;
 
-   $scope.indexConfData = [];
+   $scope.bannerConfData = {};
    $scope.tabData = goodsListCacheFactory.navTab;
    $scope.category = goodsListCacheFactory.category;
    $scope.listData = [];
@@ -20,6 +20,10 @@ app.controller('goodsListCrt',["$scope","$rootScope","$stateParams","goodsListCa
    $scope.searchList = function () {
       location.href = $rootScope.prefix + "goodsList.html?searchText="+ $scope.search;
    };
+
+   goodsListService.indexAdConfig(function (data) {
+      $scope.bannerConfData = data.data.banner;
+   });
 
    $scope.load = function(){
       if(!empty && !async){

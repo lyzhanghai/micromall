@@ -7,14 +7,15 @@
     <div class="index-tab">
         <a ng-class="{'active' : item.id == getData.categoryId}" href="{{prefix}}goodsList.html?categoryId={{item.id}}" ng-repeat="item in category track by $index">{{item.name}}</a>
     </div>
-    <div class="banner">
-        <ul>
-            <li>
-                <a href="javascript:;">
-                    <img src="images/banner.png">
+    <div class="carousel-lay">
+        <ul rn-carousel rn-carousel-index="carouselIndex6" rn-carousel-buffered style="height:8.25rem;">
+            <li bindonce ng-repeat="slide in bannerConfData track by $index">
+                <a >
+                    <img ng-src="{{::slide.image}}">
                 </a>
             </li>
         </ul>
+        <div class="carousel-page" rn-carousel-indicators ng-if="bannerConfData.length" slides="bannerConfData" rn-carousel-index="carouselIndex6"></div>
     </div>
     <div class="tab-list">
         <a href="javascript:;" ng-repeat="item in tabData track by $index" bindonce ng-class="{'active' : getData.sort === item.up || getData.sort === item.dowm}" ng-click="tabFilter(item.up,item.dowm)">

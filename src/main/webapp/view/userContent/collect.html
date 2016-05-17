@@ -1,0 +1,29 @@
+<div class="collect">
+    <div class="order-list">
+        <ul>
+            <li ng-repeat="item in listData track by item.goodsId" bindonce>
+                <div class="item-lay">
+                    <a href="{{prefix}}detail.html?goodsId={{::item.goodsId}}" class="item-img">
+                        <div class="img-lay">
+                            <img lazy-img="{{::item.image}}">
+                        </div>
+                    </a>
+                    <div class="item-info">
+                        <div class="item-title">{{::item.title}}</div>
+                        <div class="bottom">
+                            <div class="left">
+                                <em>￥{{::item.price}}</em>
+                            </div>
+                            <a class="right" ng-click="deleteItem(item.goodsId,$index)">
+                                <i class="iconfont icon-shanchu"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="ta-r collect-but">
+            <a href="javascript:;" class="hr1" ng-click="deleteAll()">全部删除</a>
+        </div>
+    </div>
+</div>

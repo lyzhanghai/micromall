@@ -50,25 +50,29 @@ ul[rn-carousel-transition="hexagon"] {
 }
 div.carousel-page{
   position: absolute;
-  bottom : .75rem;
-  right: .75rem;
+  bottom : .5rem;
+  right: .5rem;
   z-index: 999;
   text-align: right;
+  background: rgba(0,0,0,.15);
+  border-radius: .5rem;
+  padding: .2rem .25rem;
 }
 div.rn-carousel-indicator span {
   cursor: pointer;
   color: #fff;
   width: .6rem;
   height: .6rem;
-  margin: 0 2px;
+  margin: 0 .25rem;
   border-radius: 50%;
   font-size: 0;
-  background: rgb(241,241,241);
+  background: #fff;
   display: inline-block;
+  vertical-align: middle;
 }
 
 div.rn-carousel-indicator span.active {
-  background: rgb(206,206,206);
+  background: #ffe800;
 }
 
 /* prev/next controls */

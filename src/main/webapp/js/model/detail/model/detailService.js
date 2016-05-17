@@ -3,6 +3,10 @@
  */
 app.service('detailService',["$http", function($http) {
     this.detailData = function (getData,callback) {
-        $http.get(servicePath + '/goods/details',{params:getData}).success(callback);
+        $http.get(servicePath + 'goods/details',{params:getData}).success(callback);
+    };
+
+    this.addFavorite = function (postData,callback) {
+        $http.post(servicePath + 'favorite/join',postData).success(callback);
     };
 }]);
