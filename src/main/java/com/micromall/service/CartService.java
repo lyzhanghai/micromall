@@ -49,4 +49,8 @@ public class CartService {
 	public void deleteGoods(int uid, List<Integer> goodsIds) {
 		mapper.deleteByWhereClause(Criteria.create().andEqualTo("uid", uid).andIn("goods_id", goodsIds).build());
 	}
+
+	public void deleteAllGoods(int uid) {
+		mapper.deleteByWhereClause(Criteria.create().andEqualTo("uid", uid).build());
+	}
 }

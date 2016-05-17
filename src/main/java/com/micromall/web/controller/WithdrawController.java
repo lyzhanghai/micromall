@@ -8,7 +8,6 @@ import com.micromall.repository.entity.common.WithdrawStatus;
 import com.micromall.service.WithdrawService;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.Condition.Criteria;
-import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.annotation.Authentication;
 import org.apache.commons.lang3.StringUtils;
@@ -39,7 +38,7 @@ public class WithdrawController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/withdraw/apply")
-	public ResponseEntity<?> apply(float amount, String channel) {
+	public ResponseEntity<?> apply(int amount, String channel) {
 		if (amount < CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MIN_AMOUNT) {
 			return ResponseEntity.Failure("提现金额不得低于" + CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MIN_AMOUNT + "元");
 		}

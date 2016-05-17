@@ -21,6 +21,7 @@ public class WithdrawApplyRecord extends IdEntity {
 	/**
 	 * 提现渠道 @{@link WithdrawChannels}
 	 */
+	@JsonIgnore
 	private String     channel;
 	/**
 	 * 提现状态（待审核-->(审核通过 or 审核不通过)-->提现成功）{@link WithdrawStatus}
@@ -31,8 +32,10 @@ public class WithdrawApplyRecord extends IdEntity {
 	// 申请提现时间
 	private Date       applyTime;
 	// 审核时间
+	@JsonIgnore
 	private Date       auditTime;
 	// 提现完成时间
+	@JsonIgnore
 	private Date       completeTime;
 
 	public Integer getUid() {

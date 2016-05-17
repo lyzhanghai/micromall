@@ -54,4 +54,10 @@ public class FavoriteController extends BasisController {
 		return ResponseEntity.Success();
 	}
 
+	@RequestMapping(value = "/favorite/delete_all")
+	public ResponseEntity<?> delete_all() {
+		favoriteService.deleteAllGoods(getLoginUser().getUid());
+		return ResponseEntity.Success();
+	}
+
 }

@@ -44,7 +44,6 @@ public class ShippingAddressController extends BasisController {
 		validateAddress(address);
 		address.setUid(getLoginUser().getUid());
 		shippingAddressService.addAddress(address);
-
 		return ResponseEntity.Success(address);
 	}
 

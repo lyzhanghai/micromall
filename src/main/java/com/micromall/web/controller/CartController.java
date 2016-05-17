@@ -77,4 +77,10 @@ public class CartController extends BasisController {
 		cartService.deleteGoods(getLoginUser().getUid(), Arrays.asList(goodsId));
 		return ResponseEntity.Success();
 	}
+
+	@RequestMapping(value = "/cart/delete_all")
+	public ResponseEntity<?> delete_all() {
+		cartService.deleteAllGoods(getLoginUser().getUid());
+		return ResponseEntity.Success();
+	}
 }
