@@ -102,7 +102,7 @@ public class MemberCenterController extends BasisController {
 		CertifiedInfo certifiedInfo = certifiedInfoService.getCertifiedInfo(member.getId());
 		Map<String, Object> data = new HashMap<>();
 		data.put("uid", member.getId());
-		data.put("phone", member.getPhone());
+		// data.put("phone", member.getPhone());
 		data.put("nickname", member.getNickname());
 		data.put("avatar", member.getAvatar());
 		data.put("level", member.getLevel());

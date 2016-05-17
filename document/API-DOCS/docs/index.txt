@@ -170,3 +170,29 @@
     String      content #内容
     Date        createTime #发送时间
 =====================================================================================================================
+
+
+---------------------------------------------------------------------------------------------------------------------
+用户信息：/member/userinfo
+参数：无
+结果：
+{
+    "birthday": "1991-09-17",  生日
+    "uid": 10000, 用户id
+    "gender": "1", 性别（1:男，0:女）
+    "level": "lv0", 用户等级
+    "nickname": "普京大帝", 昵称
+    "commission": "0.00", 佣金账户金额
+    "totalSales": "0.00", 销售总额
+    "avatar": "/images/avatar/2016/5/60cae434b69c4b939f4c908b7dec0bc6.jpg", 头像
+    "myPromoteCode": "IzEwMDAw" 推广码
+    "certifiedInfo": {  认证信息
+      "name": "徐永康", 姓名
+      "phone": "13023658888", 手机号码
+      "idCarNo": "110101200501015838", 身份证号
+      "idCarImage1": "http://211.149.241.76/images/tmp/idCarImage1.png", 身份证正面照片
+      "idCarImage0": "http://211.149.241.76/images/tmp/idCarImage0.png", 身份证背面照片
+      "status": 0, 审核状态
+      "auditlog": "" 审核失败原因
+    },
+}

@@ -6,8 +6,8 @@
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="id_car_no" property="idCarNo" jdbcType="VARCHAR"/>
-        <result column="idcar_image1" property="idcarImage1" jdbcType="VARCHAR"/>
-        <result column="idcar_image0" property="idcarImage0" jdbcType="VARCHAR"/>
+        <result column="idcar_image1" property="idCarImage1" jdbcType="VARCHAR"/>
+        <result column="idcar_image0" property="idCarImage0" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="TINYINT"/>
         <result column="auditlog" property="auditlog" jdbcType="VARCHAR"/>
         <result column="audit_time" property="auditTime" jdbcType="TIMESTAMP"/>
@@ -22,7 +22,7 @@
     <insert id="insert" parameterType="com.micromall.repository.entity.CertifiedInfo">
         insert into certified_info (<include refid="Column_Sql"/>)
         values (#{uid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
-        #{idCarNo,jdbcType=VARCHAR}, #{idcarImage1,jdbcType=VARCHAR}, #{idcarImage0,jdbcType=VARCHAR},
+        #{idCarNo,jdbcType=VARCHAR}, #{idCarImage1,jdbcType=VARCHAR}, #{idCarImage0,jdbcType=VARCHAR},
         #{status,jdbcType=TINYINT}, #{auditlog,jdbcType=VARCHAR}, #{auditTime,jdbcType=TIMESTAMP},
         #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
     </insert>
@@ -39,11 +39,11 @@
             <if test="idCarNo != null">
                 id_car_no = #{idCarNo,jdbcType=VARCHAR},
             </if>
-            <if test="idcarImage1 != null">
-                idcar_image1 = #{idcarImage1,jdbcType=VARCHAR},
+            <if test="idCarImage1 != null">
+                idcar_image1 = #{idCarImage1,jdbcType=VARCHAR},
             </if>
-            <if test="idcarImage0 != null">
-                idcar_image0 = #{idcarImage0,jdbcType=VARCHAR},
+            <if test="idCarImage0 != null">
+                idcar_image0 = #{idCarImage0,jdbcType=VARCHAR},
             </if>
             <if test="status != null">
                 status = #{status,jdbcType=TINYINT},
