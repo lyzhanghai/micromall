@@ -4129,16 +4129,25 @@ a.hr1 {
 }
 .item-fixed {
   overflow: hidden;
+  background: #fff;
 }
 .item-fixed i {
   display: block;
-  height: 1.4rem;
-  line-height: 1.4rem;
+  height: 1.18rem;
+  line-height: 1.18rem;
   font-size: 1rem;
   color: #444444;
 }
+.item-fixed span {
+  display: inline-block;
+  line-height: .8rem;
+}
 .item-fixed a {
   float: left;
+}
+.item-fixed a.active,
+.item-fixed a.active i {
+  color: #e50039;
 }
 .item-fixed .share,
 .item-fixed .sc {

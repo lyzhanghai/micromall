@@ -24,9 +24,12 @@
     //})
 
     var route = [
-        {name : 'index', url: '/indexMain.html',templateUrl:'view/indexMain.html', controller: "indexCrt"},
-        {name : 'goodsList', url: '/goodsList.html?:{searchText || categoryId}',templateUrl:'view/goodsList.html', controller: "goodsListCrt"},
-        {name : 'detail', url: '/detail.html',templateUrl:'view/detail.html', controller: "detailCrt"}
+        {name : 'index', url: '/indexMain.html',templateUrl:'view/indexMain.html', controller: "indexCtr",tabSelectIndex : 1},
+        {name : 'goodsList', url: '/goodsList.html?:{searchText || categoryId}',templateUrl:'view/goodsList.html', controller: "goodsListCtr",tabSelectIndex : 2},
+        {name : 'detail', url: '/detail.html?:goodsId',templateUrl:'view/detail.html', controller: "detailCtr",tabSelectIndex : 2},
+        {name : 'userInfo/info', url: '/userContent/info.html',templateUrl:'view/userContent/info.html', controller: "userInfoCtr",tabSelectIndex : 3},
+        {name : 'userInfo/collect', url: '/userContent/collect.html',templateUrl:'view/userContent/collect.html', controller: "userCollectCtr",tabSelectIndex : 3}
+
     ];
 
     app.config(["$stateProvider","$urlRouterProvider","$httpProvider","lazyImgConfigProvider","czContentForConfigProvider",function($stateProvider, $urlRouterProvider,$httpProvider,lazyImgConfigProvider,czContentForConfigProvider) {
@@ -66,6 +69,7 @@
             var params = {
                 name : item.name,
                 url: item.url,
+                tabSelectIndex : item.tabSelectIndex,
                 views : {}
             };
             params.views[item.uiView || 'appState'] = {

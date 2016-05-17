@@ -57,14 +57,24 @@
 }
 .item-fixed{
   overflow: hidden;
+  background: #fff;
   i{
     display: block;
-    height: 1.4rem;
-    line-height: 1.4rem;
+    height: 1.18rem;
+    line-height: 1.18rem;
     font-size: 1rem;
     color: @gray-444;
   }
-  a{float:left;}
+  span{
+    display: inline-block;
+    line-height: .8rem;
+  }
+  a{
+    float:left;
+    &.active,&.active i{
+      color: @gray-base;
+    }
+  }
   .share,.sc{
     font-size: .6rem;color:#afaeae;width: 2.6rem;border:1px solid #eee;
     text-align: center;

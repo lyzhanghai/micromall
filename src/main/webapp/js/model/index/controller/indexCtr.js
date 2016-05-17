@@ -1,7 +1,7 @@
 /**
  * Created by kangdaye on 16/5/15.
  */
-app.controller('indexCrt',["$scope","$rootScope","indexService", function($scope,$rootScope,indexService) {
+app.controller('indexCtr',["$scope","$rootScope","indexService", function($scope,$rootScope,indexService) {
    $scope.indexConfData = {};
    $scope.indexRecommend = {};
    $scope.getData = {

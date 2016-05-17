@@ -1,0 +1,232 @@
+    <div class="user-info-top">
+      <section class="user-info">
+        <div class="user-info-main">
+          <a href="#/friend/info&amp;147620" class="info-lay">
+            <div class="img-lay">
+              <img ng-src="http://7u2fm4.com1.z0.glb.clouddn.com/119bead8-a8d9-4b6d-ad85-4954648d1835.png?imageView2/2/w/120/interlace/1/q/93"
+              src="http://7u2fm4.com1.z0.glb.clouddn.com/119bead8-a8d9-4b6d-ad85-4954648d1835.png?imageView2/2/w/120/interlace/1/q/93">
+            </div>
+            <div class="main-info">
+              <h3 class="tit">会员昵称</h3>
+              <p>会员等级:钻石</p>
+            </div>
+          </a>
+        </div>
+        <div class="user-info-most">
+            <a href="#/shopCart">
+              <p>
+                ID
+              </p>
+              <p>
+                12547
+              </p>
+            </a>
+            <a href="#/shopCart">
+              <p>
+                佣金
+              </p>
+              <p>
+                ￥12342
+              </p>
+            </a>
+            <a href="#/shopCart">
+              <p>
+                销售额
+              </p>
+              <p>
+                ￥13442
+              </p>
+            </a>
+        </div>
+      </section>
+      <section class="user-tab">
+          <a href="javascript:;" ng-class="{'active' : navTabSelectId === item.id}" ng-click="navTabClick(item.id)" ng-repeat="item in navTab track by $index">{{::item.name}}</a>
+      </section>
+    </div>
+
+    <article>
+      <section ng-if="navTabSelectId === 1">
+        <section class="user-table-retail">
+          <a href="#/shopCart">
+            <div class="info-tab-icon">
+              <i class="iconfont icon-gouwuche"></i>
+            </div>
+            <p>
+              购物车
+            </p>
+          </a>
+          <a href="#/user/incomeList">
+            <div class="info-tab-icon">
+              <i class="iconfont icon-xiaoxi icon-message"></i>
+              <span class="num">5</span>
+            </div>
+            <p>
+              我的消息
+            </p>
+          </a>
+          <a href="{{prefix}}userContent/collect.html">
+            <div class="info-tab-icon">
+              <i class="iconfont icon-shoucang icon-collect"></i>
+            </div>
+            <p>
+              我的收藏
+            </p>
+          </a>
+        </section>
+
+        <div class="panel-list user-list-lay">
+          <div class="user-order-state ng-scope">
+            <h4 class="order-title">
+              全部订单
+            </h4>
+            <section class="user-table">
+              <a href="#/order/statusList&amp;1">
+                <i class="iconfont icon-daifukuan"></i>
+                <p>
+                  待付款
+                </p>
+                <!-- ngIf: orderData.c1> 0 --></a>
+              <a href="#/order/statusList&amp;2">
+                <i class="iconfont icon-daifahuo"></i>
+                <p>
+                  待发货
+                </p>
+                <!-- ngIf: orderData.c2> 0 --></a>
+              <a href="#/order/statusList&amp;3">
+                <i class="iconfont icon-daishouhuo"></i>
+                <p>
+                  待收货
+                </p>
+                <!-- ngIf: orderData.c3> 0 -->
+                <span class="num">
+                    3
+                </span>
+                <!-- end ngIf: orderData.c3> 0 --></a>
+              <a href="#/order/statusList&amp;5">
+                <i class="iconfont icon-yiwanchengdingdan"></i>
+                <p>
+                  已完成
+                </p>
+              </a>
+              <a href="#/order/statusList&amp;5">
+                <i class="iconfont icon-tixian"></i>
+                <p>
+                  退款/取消
+                </p>
+              </a>
+            </section>
+          </div>
+          <div class="section">
+            <div class="wrapper">
+              <a href="#/user/member">
+                <i class="iconfont icon-dingwei left">
+                </i>
+                <span>
+                  收货地址管理
+                </span>
+                <i class="iconfont icon-qianjin right">
+                </i>
+              </a>
+            </div>
+          </div>
+          <div class="section">
+            <div class="wrapper">
+              <a href="#/user/feedback">
+                <i class="iconfont icon-help left">
+                </i>
+                <span>
+                  帮助中心
+                </span>
+                <i class="iconfont icon-qianjin right">
+                </i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section ng-if="navTabSelectId === 2">
+        <section class="user-table-retail">
+          <a href="#/shopCart">
+            <div class="info-tab-icon">
+              <i class="iconfont icon-fenxiao" style="background: #ff684f;"></i>
+            </div>
+            <p>
+              分销商
+            </p>
+          </a>
+          <a href="#/user/incomeList">
+            <div class="info-tab-icon">
+              <i class="iconfont icon-dingdan" style="background: #36dcb7;"></i>
+            </div>
+            <p>
+              分销订单
+            </p>
+          </a>
+          <a href="#/user/inviteCode">
+            <div class="info-tab-icon">
+              <i class="iconfont icon-shoudongtuiguang"></i>
+              <span class="num">5</span>
+            </div>
+            <p>
+              我的推广码
+            </p>
+          </a>
+        </section>
+
+        <div class="panel-list user-list-lay">
+          <div class="section order-start-top ">
+            <div class="wrapper">
+              <a href="#/user/myMessage">
+                <i class="iconfont icon-yongjin left" style="font-size: 1rem;"></i>
+                  <span>
+                    我的佣金
+                  </span>
+                  <span class="right">
+                    总共佣金:￥11111
+                  </span>
+              </a>
+            </div>
+          </div>
+          <div class="section order-start-top">
+            <div class="wrapper">
+              <a href="#/user/contact">
+                <i class="iconfont icon-tixian left" style="font-size: 1rem;">
+                </i>
+                  <span>
+                    申请提现
+                  </span>
+                <i class="iconfont icon-qianjin right">
+                </i>
+              </a>
+            </div>
+          </div>
+          <div class="section">
+            <div class="wrapper">
+              <a href="#/user/member">
+                <i class="iconfont icon-iconsvgtixianjilu left" style="font-size: .85rem;">
+                </i>
+                  <span>
+                    提现记录
+                  </span>
+                <i class="iconfont icon-qianjin right">
+                </i>
+              </a>
+            </div>
+          </div>
+          <div class="section order-start-top">
+            <div class="wrapper">
+              <a href="#/user/feedback">
+                <i class="iconfont icon-help left" style="font-size: 1rem;">
+                </i>
+                  <span>
+                    关于分销商
+                  </span>
+                <i class="iconfont icon-qianjin right">
+                </i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </article>

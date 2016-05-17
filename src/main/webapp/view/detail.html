@@ -1,6 +1,13 @@
 <div class="item">
-    <div class="banner">
-         <img src="../images/banner.png"/>
+    <div class="carousel-lay">
+        <ul rn-carousel rn-carousel-index="carouselIndex6" rn-carousel-buffered style="height:8.25rem;">
+            <li bindonce ng-repeat="slide in detailData.images track by $index">
+                <a >
+                    <img ng-src="{{slide}}">
+                </a>
+            </li>
+        </ul>
+        <div class="carousel-page" rn-carousel-indicators ng-if="detailData.images.length" slides="detailData.images" rn-carousel-index="carouselIndex6"></div>
     </div>
     <div class="item-text">
         <h3 class="item-title">
@@ -13,7 +20,7 @@
         <div class="item-sale-info">
             <span class="left">快递费:{{detailData.freight}}</span>
             <span class="content">库存{{detailData.inventory}}件</span>
-            <span class="right">155下单</span>
+            <span class="right">{{detailData.salesVolume}}下单</span>
         </div>
     </div>
     <div class="item-more">
@@ -23,16 +30,22 @@
         </div>
     </div>
 </div>
+
 <div class="item-fixed">
     <a href="javascript:;" class="share">
        <i class="iconfont icon-fenxiang"></i>
-       分享
+       <span>分享</span>
     </a>
-    <a href="javascript:;" class="sc">
+    <a href="javascript:;" class="sc" ng-class="{'active' : detailData.favorite}" ng-click="addFavorite()">
         <i class="iconfont icon-shoucang"></i>
-       收藏
+        <span>收藏</span>
     </a>
     <a href="javascript:;" class="add">加入购物车</a>
     <a href="javascript:;" class="buy">立即购买</a>
 </div>
+
+<div class="back">
+    <a>
+        <i class="iconfont icon-qianjin"></i>
+    </a>
 </div>
