@@ -1,0 +1,86 @@
+<!--<div class="banner" id="banner">-->
+    <!--<ul>-->
+        <!--<li>-->
+            <!--<a href="javascript:;">-->
+                <!--<img src="images/banner.png">-->
+            <!--</a>-->
+        <!--</li>-->
+    <!--</ul>-->
+<!--</div>-->
+<div class="new-index">
+    <form class="index-search" ng-submit="searchList()">
+        <img src="images/logo.png" class="index-logo"/>
+        <input class="index-search-text" placeholder="搜索全部商品" ng-model="search">
+        <!-- <i class="iconzfl icon-sousuo"></i> -->
+    </form>
+    <div class="carousel-lay index-carousel" rn-carousel rn-carousel-auto-slide=6 style="height: 8.25rem;">
+        <ul class="carousel-course index-carousel">
+            <li bindonce ng-repeat="item in indexConfData.banner track by $index">
+                <a >
+                    <img ng-src="{{item.image}}">
+                </a>
+            </li>
+        </ul>
+        <div class="carousel-page" rn-carousel-indicators ng-show="indexConfData.banner.length > 1" slides="indexConfData.banner" rn-carousel-index="bannerListIndex"></div>
+    </div>
+
+    <div class="hot-type-list">
+        <a>
+            <i class="iconfont icon-gushuzaliang"></i>
+            <p>大米杂粮</p>
+        </a>
+        <a>
+            <i class="iconfont icon-difangtechan" style="background: #50aaf6;"></i>
+            <p>各地特产</p>
+        </a>
+        <a>
+            <i class="iconfont icon-shipin" style="background: #e99f57;"></i>
+            <p>手作食材</p>
+        </a>
+        <a>
+            <i class="iconfont icon-shuiguo" style="background: #78c24f;"></i>
+            <p>时令水果</p>
+        </a>
+        <a>
+            <i class="iconfont icon-cuxiao" style="background: #fc5e6d;"></i>
+            <p>特价促销</p>
+        </a>
+    </div>
+    <div class="hot-sale">
+        <img class="hot-sale-title" src="images/title.png">
+        <div class="hot-sale-main">
+            <a href="{{::indexConfData.middle[0].link}}" class="left">
+                <img lazy-img="{{indexConfData.middle[0].image}}">
+            </a>
+            <div class="right">
+                <a href="{{::indexConfData.middle[1].link}}" class="hot-top">
+                    <img lazy-img="{{indexConfData.middle[1].image}}">
+                </a>
+                <div class="hot-bottom">
+                    <a href="{{::indexConfData.middle[2].link}}">
+                        <img lazy-img="{{indexConfData.middle[2].image}}">
+                    </a>
+                    <a href="{{::indexConfData.middle[3].link}}">
+                        <img lazy-img="{{indexConfData.middle[3].image}}">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hot-sale">
+        <img class="hot-sale-title" src="images/title.png">
+        <ul>
+            <li ng-repeat="item in indexRecommend track by $index" bindonce>
+                <a href="{{prefix}}detail?id={{item.goodsId}}">
+                    <img lazy-img="{{item.promotionParams.imgurl}}">
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="index-htlist">
+        <img class="hot-sale-title" src="images/index-list-bg.jpg">
+        <div ng-include="'/webapp/view/common/htlist.html'" ng-controller="htlistCrt"></div>
+    </div>
+</div>

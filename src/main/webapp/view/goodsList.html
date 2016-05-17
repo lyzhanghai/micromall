@@ -1,0 +1,29 @@
+<div class="tab-htlist">
+    <form class="index-search" ng-submit="searchList()">
+        <img src="images/logo.png" class="index-logo"/>
+        <input class="index-search-text" placeholder="搜索全部商品" ng-model="search">
+            <!-- <i class="iconzfl icon-sousuo"></i> -->
+    </form>
+    <div class="index-tab">
+        <a ng-class="{'active' : item.id == getData.categoryId}" href="{{prefix}}goodsList.html?categoryId={{item.id}}" ng-repeat="item in category track by $index">{{item.name}}</a>
+    </div>
+    <div class="banner">
+        <ul>
+            <li>
+                <a href="javascript:;">
+                    <img src="images/banner.png">
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-list">
+        <a href="javascript:;" ng-repeat="item in tabData track by $index" bindonce ng-class="{'active' : getData.sort === item.up || getData.sort === item.dowm}" ng-click="tabFilter(item.up,item.dowm)">
+            <span>{{item.name}}</span>
+            <div class="tab-list-sort">
+                <div class="arrow_box arrow_box_up" ng-class="{'blur' : getData.sort != item.up}"></div>
+                <div class="arrow_box arrow_box_down" ng-class="{'blur' : getData.sort != item.dowm}"></div>
+            </div>
+        </a>
+    </div>
+    <div ng-include="'/webapp/view/common/htlist.html'" ng-controller="htlistCrt"></div>
+</div>

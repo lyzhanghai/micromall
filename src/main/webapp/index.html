@@ -1,7 +1,8 @@
 
 <!DOCTYPE html>
-<html>
+<html ng-app="app" ng-controller="mainController">
 <head>
+    <base href="/webapp/">
     <meta charset="utf-8"/>
     <title>首页</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -21,131 +22,18 @@
     <link rel="shortcut icon" href="{{partner == '折疯了' ? 'img/favicon.ico' : 'img/partner/favicon.ico' }}" type="image/x-icon" />
 
     <link rel="stylesheet" href="css/iconfont.css"/>
+    <link rel="stylesheet" href="js/widget/czMobile/src/css/base.css"/>
+    <link rel="stylesheet" href="js/libs/carousel/angular-carousel.css"/>
     <link rel="stylesheet" href="css/theme.css"/>
 </head>
 <body>
     <div class="app-state" id="app-state">
-        <div class="new-index">
-            <div class="index-search">
-                <img src="images/logo.png" class="index-logo"/>
-                <input class="index-search-text" placeholder="搜索全部商品">
-                <!-- <i class="iconzfl icon-sousuo"></i> -->
-            </div>
-            <div class="banner">
-                <ul>
-                    <li>
-                        <a href="javascript:;">
-                            <img src="images/banner.png">
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="hot-type-list">
-                <a>
-                    <i class="iconfont icon-gushuzaliang"></i>
-                    <p>大米杂粮</p>
-                </a>
-                <a>
-                    <i class="iconfont icon-difangtechan" style="background: #50aaf6;"></i>
-                    <p>各地特产</p>
-                </a>
-                <a>
-                    <i class="iconfont icon-shipin" style="background: #e99f57;"></i>
-                    <p>手作食材</p>
-                </a>
-                <a>
-                    <i class="iconfont icon-shuiguo" style="background: #78c24f;"></i>
-                    <p>时令水果</p>
-                </a>
-                <a>
-                    <i class="iconfont icon-cuxiao" style="background: #fc5e6d;"></i>
-                    <p>特价促销</p>
-                </a>
-            </div>
-            <div class="hot-sale">
-                <img class="hot-sale-title" src="images/title.png">
-                <div class="hot-sale-main">
-                    <a href="javascript:;" class="left">
-                        <h2 class="tit">水果专区</h2>
-                        <p>新鲜水果 新鲜水果</p>
-                        <img src="images/income.jpg">
-                    </a>
-                    <div class="right">
-                        <a href="javascript:;" class="hot-top">
-                            <div class="top-main">
-                                <h2 class="tit">水果专区</h2>
-                                <p>新鲜水果 新鲜水果</p>
-                            </div>
-                            <img src="images/income.jpg" class="top-img">
-                        </a>
-                        <div class="hot-bottom">
-                            <a href="javascript:;">
-                                <h2 class="tit">水果专区</h2>
-                                <p>新鲜新新鲜水果</p>
-                                <img src="images/income.jpg">
-                            </a>
-                            <a href="javascript:;">
-                                <h2 class="tit">水果专区</h2>
-                                <p>新鲜鲜新鲜水果</p>
-                                <img src="images/income.jpg">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="hot-sale">
-                <img class="hot-sale-title" src="images/title.png">
-                <ul>
-                    <li>
-                        <a href="javascript:;">
-                            <img src="images/banner.png" >
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:;">
-                            <img src="images/banner.png" >
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="index-htlist">
-                <img class="hot-sale-title" src="images/index-list-bg.jpg">
-                <div class="htlist">
-                    <ul>
-                        <li>
-                            <a href="javascript:;" class="item ">
-                                <div class="list-out-lay">
-                                    <div class="list-out-img">
-                                         <img src="images/item.png" class="ht-img">
-                                    </div>
-                                </div>
-                                <div class="main">
-                                    <h4 class="ng-binding">雅诗兰黛(Estee Lauder) 奢宠白金紧颜系列眼霜</h4>
-                                    <div class="price"><span class="left ng-binding">￥1023</span></div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:;" class="item">
-                                <div class="list-out-lay">
-                                    <div class="list-out-img">
-                                        <img src="images/item.png" class="ht-img">
-                                    </div>
-                                </div>
-                                <div class="main">
-                                    <h4 class="ng-binding">雅诗兰黛(Estee Lauder) 奢宠白金紧颜系列眼霜</h4>
-                                    <div class="price"><span class="left ng-binding">￥1023</span></div>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+        <div ui-view="appState"></div>
+
         <div class="fix-bottom fix-bottom-show">
             <div class="fix-bottom-main">
-                <a href="#/index" class="active"><i class="iconfont icon-home"></i><p>首页</p></a>
-                <a href="#/type" class=""><i class="iconfont icon-fenlei"></i><p>商品</p></a>
+                <a href="{{prefix}}indexMain.html" class="active"><i class="iconfont icon-home"></i><p>首页</p></a>
+                <a href="{{perfix}}goodsList.html" class=""><i class="iconfont icon-fenlei"></i><p>商品</p></a>
                 <a href="#/type" class=""><i class="iconfont icon-xiazai"></i><p>我的</p></a>
                 <a href="#/user/info" class=""><i class="iconfont icon-gouwuche"></i><p>购物车</p></a>
             </div>
@@ -161,5 +49,43 @@
         </a>
     </div>
 </body>
-<script src="js/weight/bodySize.js"></script>
+<script src="js/httpPath.js"></script>
+<script src="js/widget/bodySize.js"></script>
+<script src="js/libs/angular.js"></script>
+<script src="js/libs/carousel/angular-carousel.js"></script>
+<script src="js/libs/angular-date-binder.js"></script>
+<script src="js/libs/angular-lazy-img.js"></script>
+<script src="js/libs/angular-sanitize.js"></script>
+<script src="js/libs/angular-touch.js"></script>
+<script src="js/libs/angular-ui-router.js"></script>
+<script src="js/libs/bindonce.js"></script>
+<script src="js/libs/fastclick.js"></script>
+<script src="js/libs/weixinjs.js"></script>
+
+<script src="js/widget/util.js"></script>
+<script src="js/widget/browser.js"></script>
+<script src="js/widget/czMobile/src/js/czMobile.all.js"></script>
+
+
+<script src="js/app.js"></script>
+<script src="js/run/route.js"></script>
+<script src="js/run/run.js"></script>
+<script src="js/run/httpResponse.js"></script>
+<script src="js/run/ios9RouteStart.js"></script>
+
+<script src="js/controller.js"></script>
+<script src="js/model/common/controller/htlistCrt.js"></script>
+<script src="js/model/common/model/htlistService.js"></script>
+
+
+<script src="js/model/index/controller/indexCrt.js"></script>
+<script src="js/model/index/model/indexService.js"></script>
+
+<script src="js/model/detail/controller/detailCrt.js"></script>
+<script src="js/model/detail/model/detailService.js"></script>
+
+<script src="js/model/goodsList/controller/goodsListCrt.js"></script>
+<script src="js/model/goodsList/model/goodsListService.js"></script>
+<script src="js/model/goodsList/model/goodsListCacheFactory.js"></script>
+
 </html>
