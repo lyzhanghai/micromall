@@ -1,15 +1,18 @@
     <div class="user-info-top">
       <section class="user-info">
         <div class="user-info-main">
-          <a href="#/friend/info&amp;147620" class="info-lay">
+          <a href="{{prefix}}userContent/setUp/setInfo.html" class="info-lay">
             <div class="img-lay">
-              <img ng-src="http://7u2fm4.com1.z0.glb.clouddn.com/119bead8-a8d9-4b6d-ad85-4954648d1835.png?imageView2/2/w/120/interlace/1/q/93"
-              src="http://7u2fm4.com1.z0.glb.clouddn.com/119bead8-a8d9-4b6d-ad85-4954648d1835.png?imageView2/2/w/120/interlace/1/q/93">
+              <img lazy-img="{{userInfoData.avatar}}">
             </div>
             <div class="main-info">
-              <h3 class="tit">会员昵称</h3>
-              <p>会员等级:钻石</p>
+              <h3 class="tit">{{userInfoData.nickname}}</h3>
+              <p>会员等级:{{userInfoData.level}}</p>
             </div>
+          </a>
+
+          <a href="{{prefix}}userContent/setUp.html" class="user-set">
+            <i class="iconfont icon-shezhi"></i>
           </a>
         </div>
         <div class="user-info-most">
@@ -18,7 +21,7 @@
                 ID
               </p>
               <p>
-                12547
+                {{userInfoData.uid}}
               </p>
             </a>
             <a href="#/shopCart">
@@ -26,7 +29,7 @@
                 佣金
               </p>
               <p>
-                ￥12342
+                ￥{{userInfoData.commission}}
               </p>
             </a>
             <a href="#/shopCart">
@@ -34,7 +37,7 @@
                 销售额
               </p>
               <p>
-                ￥13442
+                ￥{{userInfoData.totalSales}}
               </p>
             </a>
         </div>
@@ -58,7 +61,7 @@
           <a href="#/user/incomeList">
             <div class="info-tab-icon">
               <i class="iconfont icon-xiaoxi icon-message"></i>
-              <span class="num">5</span>
+              <!--<span class="num">5</span>-->
             </div>
             <p>
               我的消息
@@ -85,34 +88,45 @@
                 <p>
                   待付款
                 </p>
-                <!-- ngIf: orderData.c1> 0 --></a>
+                <span class="num">
+                    {{orderNum.waitPay}}
+                </span>
+              </a>
               <a href="#/order/statusList&amp;2">
                 <i class="iconfont icon-daifahuo"></i>
                 <p>
                   待发货
                 </p>
-                <!-- ngIf: orderData.c2> 0 --></a>
+                <span class="num">
+                    {{orderNum.waitDelivery}}
+                </span>
+              </a>
               <a href="#/order/statusList&amp;3">
                 <i class="iconfont icon-daishouhuo"></i>
                 <p>
                   待收货
                 </p>
-                <!-- ngIf: orderData.c3> 0 -->
                 <span class="num">
-                    3
+                    {{orderNum.waitReceive}}
                 </span>
-                <!-- end ngIf: orderData.c3> 0 --></a>
+              </a>
               <a href="#/order/statusList&amp;5">
                 <i class="iconfont icon-yiwanchengdingdan"></i>
                 <p>
                   已完成
                 </p>
+                <span class="num">
+                    {{orderNum.complete}}
+                </span>
               </a>
               <a href="#/order/statusList&amp;5">
                 <i class="iconfont icon-tixian"></i>
                 <p>
                   退款/取消
                 </p>
+                <span class="num">
+                    {{orderNum.refund_closed}}
+                </span>
               </a>
             </section>
           </div>
@@ -166,7 +180,6 @@
           <a href="#/user/inviteCode">
             <div class="info-tab-icon">
               <i class="iconfont icon-shoudongtuiguang"></i>
-              <span class="num">5</span>
             </div>
             <p>
               我的推广码
@@ -175,19 +188,19 @@
         </section>
 
         <div class="panel-list user-list-lay">
-          <div class="section order-start-top ">
-            <div class="wrapper">
-              <a href="#/user/myMessage">
-                <i class="iconfont icon-yongjin left" style="font-size: 1rem;"></i>
-                  <span>
-                    我的佣金
-                  </span>
-                  <span class="right">
-                    总共佣金:￥11111
-                  </span>
-              </a>
-            </div>
-          </div>
+          <!--<div class="section order-start-top ">-->
+            <!--<div class="wrapper">-->
+              <!--<a href="#/user/myMessage">-->
+                <!--<i class="iconfont icon-yongjin left" style="font-size: 1rem;"></i>-->
+                  <!--<span>-->
+                    <!--我的佣金-->
+                  <!--</span>-->
+                  <!--<span class="right">-->
+                    <!--总共佣金:￥11111-->
+                  <!--</span>-->
+              <!--</a>-->
+            <!--</div>-->
+          <!--</div>-->
           <div class="section order-start-top">
             <div class="wrapper">
               <a href="#/user/contact">
