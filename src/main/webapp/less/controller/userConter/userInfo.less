@@ -12,11 +12,19 @@
 }
 .user-info-main{
   position: relative;
+  text-align: center;
+  .user-set{
+    position: absolute;
+    right: .75rem;
+    top: 0;
+    color: #fff;
+    font-size: 1rem;
+  }
 }
 
 .user-info .info-lay {
   text-align: center;
-  display: block;
+  display: inline-block;
 }
 
 .user-info .img-lay {
@@ -26,7 +34,6 @@
   display: inline-block;
   border: 3px solid #fff;
   overflow: hidden;
-  margin-bottom: .2rem;
 }
 
 .user-info .img-lay img {
@@ -40,9 +47,10 @@
   p{color: #D4E3E4;}
 }
 .user-info .main-info .tit{
-  font-size: .7rem;
+  font-size: .9rem;
+  line-height: 1rem;
   font-weight: normal;
-  margin: .4rem 0;
+  margin: .65rem 0 .4rem;
 }
 
 
@@ -114,6 +122,7 @@
   &:last-child{border:none;}
   p{color: #fff;}
   p:first-child{color: #D4E3E4;}
+  font-size: .6rem;
 }
 
 .user-info .right{padding-left: 4rem; line-height: 1rem;padding-top: .5rem;font-size: .75rem; color: #979797;}
@@ -176,7 +185,7 @@
   line-height: 1rem;
   p{
     color: #a4a4a4;
-    font-size: .6rem;
+    font-size: .65rem;
   }
 }
 
@@ -195,7 +204,7 @@
   top: -0.3rem;
   color: @gray-text-bg;
   border: 1px solid @gray-text-bg;
-  border-radius: 50%;
+  border-radius: 45%;
   font-size: .45rem;
   height: .67rem;
   line-height: .67rem;

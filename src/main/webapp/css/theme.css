@@ -78,6 +78,7 @@ body {
   line-height: 20px;
   font-family: "Arial", "sans-serif";
   position: relative;
+  font-size: .5rem;
 }
 section {
   width: 100%;
@@ -684,7 +685,7 @@ a.transition:hover {
   left: .7rem;
   width: 1.75rem;
   height: 1.75rem;
-  line-height: 1.55rem;
+  line-height: 1.75rem;
   text-align: center;
   background: rgba(0, 0, 0, 0.4);
   border-radius: 50%;
@@ -1062,7 +1063,7 @@ a.hr1 {
 }
 .arrow_box_up {
   transform: rotate(-90deg);
-  margin-left: .07rem;
+  margin-left: .03rem;
 }
 .arrow_box_down {
   transform: rotate(-270deg);
@@ -1132,7 +1133,7 @@ a.hr1 {
   color: #e50039;
   background: #fff;
   border-radius: 50%;
-  margin: -0.05rem 0 0 -0.07rem;
+  margin: 0.05rem 0 0 -0.07rem;
   display: inline-block;
   vertical-align: middle;
 }
@@ -3555,10 +3556,18 @@ a.hr1 {
 }
 .user-info-main {
   position: relative;
+  text-align: center;
+}
+.user-info-main .user-set {
+  position: absolute;
+  right: .75rem;
+  top: 0;
+  color: #fff;
+  font-size: 1rem;
 }
 .user-info .info-lay {
   text-align: center;
-  display: block;
+  display: inline-block;
 }
 .user-info .img-lay {
   width: 3.1rem;
@@ -3567,7 +3576,6 @@ a.hr1 {
   display: inline-block;
   border: 3px solid #fff;
   overflow: hidden;
-  margin-bottom: .2rem;
 }
 .user-info .img-lay img {
   display: block;
@@ -3582,9 +3590,10 @@ a.hr1 {
   color: #D4E3E4;
 }
 .user-info .main-info .tit {
-  font-size: .7rem;
+  font-size: .9rem;
+  line-height: 1rem;
   font-weight: normal;
-  margin: .4rem 0;
+  margin: .65rem 0 .4rem;
 }
 .user-table-retail {
   overflow: hidden;
@@ -3650,6 +3659,7 @@ a.hr1 {
   width: 33%;
   float: left;
   border-right: 1px solid #8ab28e;
+  font-size: .6rem;
 }
 .user-info-most a:last-child {
   border: none;
@@ -3718,7 +3728,7 @@ a.hr1 {
 }
 .user-table a p {
   color: #a4a4a4;
-  font-size: .6rem;
+  font-size: .65rem;
 }
 .user-table i {
   color: #666666;
@@ -3734,7 +3744,7 @@ a.hr1 {
   top: -0.3rem;
   color: #ff0000;
   border: 1px solid #ff0000;
-  border-radius: 50%;
+  border-radius: 45%;
   font-size: .45rem;
   height: .67rem;
   line-height: .67rem;
@@ -4067,7 +4077,7 @@ a.hr1 {
   background: #fff;
 }
 .item .item-text .item-title {
-  font-size: .7rem;
+  font-size: .8rem;
   line-height: 1rem;
 }
 .item .item-text .item-info {
@@ -4087,7 +4097,7 @@ a.hr1 {
 .item .item-text .item-sale-info {
   position: relative;
   line-height: 1rem;
-  height: 40px;
+  overflow: hidden;
 }
 .item .item-text .item-sale-info span {
   width: 33%;
@@ -4132,10 +4142,11 @@ a.hr1 {
   background: #fff;
 }
 .item-fixed i {
+  margin-top: .4rem;
   display: block;
-  height: 1.18rem;
-  line-height: 1.18rem;
-  font-size: 1rem;
+  height: 1rem;
+  line-height: 1rem;
+  font-size: .9rem;
   color: #444444;
 }
 .item-fixed span {
@@ -4155,14 +4166,18 @@ a.hr1 {
   color: #afaeae;
   width: 2.6rem;
   border: 1px solid #eee;
+  height: 2.65rem;
   text-align: center;
+}
+.item-fixed .sc {
+  border-left: none;
 }
 .item-fixed .add,
 .item-fixed .buy {
   font-size: .8rem;
   background: #ff6600;
   width: 6.77rem;
-  line-height: 2rem;
+  line-height: 2.65rem;
   text-align: center;
   color: #fff;
 }
