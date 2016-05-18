@@ -51,7 +51,7 @@
 
     <insert id="insert" parameterType="com.micromall.repository.entity.OrderGoods" useGeneratedKeys="true" keyProperty="id">
         insert into order_goods (id, order_no, buy_number,
-        goods_id, title, image, price, create_time
+        goods_id, title, image, price,origin_price, create_time
         )
         values (#{id,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR}, #{buyNumber,jdbcType=INTEGER},
         #{goodsId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR},

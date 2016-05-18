@@ -38,4 +38,5 @@ public interface OrderMapper extends BaseMapper<Order> {
 	@Deprecated
 	int countByWhereClause(Condition condition);
 
+	List<Map<String,Object>> statisticsUserOrderCount(int uid);
 }

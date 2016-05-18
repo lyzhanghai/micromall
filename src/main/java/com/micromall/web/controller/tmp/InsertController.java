@@ -11,10 +11,14 @@ import com.micromall.repository.*;
 import com.micromall.repository.entity.*;
 import com.micromall.repository.entity.Properties;
 import com.micromall.repository.entity.common.GoodsTypes;
+import com.micromall.repository.entity.common.OrderStatus;
+import com.micromall.repository.entity.common.OrderStatus.RefundStatus;
 import com.micromall.repository.entity.common.PropKeys;
 import com.micromall.service.*;
 import com.micromall.utils.ChainMap;
+import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.Condition;
+import com.micromall.utils.OrderNumberUtils;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.annotation.Authentication;
 import org.apache.ibatis.session.RowBounds;
@@ -65,36 +69,140 @@ public class InsertController {
 
 	public static void main(String[] args) {
 
-		Map<String, Object> map = Maps.newHashMap();
-		List<Map<String, Object>> banner = Lists.newArrayList();
-		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
-		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
-		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
-		map.put("banner", banner);
-		List<Map<String, Object>> middle = Lists.newArrayList();
-		middle.add(new ChainMap<String, Object>().append("index", 1).append("image", "http://211.149.241.76/images/tmp/middle0.png")
-		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
-		middle.add(new ChainMap<String, Object>().append("index", 2).append("image", "http://211.149.241.76/images/tmp/middle1.png")
-		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
-		middle.add(new ChainMap<String, Object>().append("index", 3).append("image", "http://211.149.241.76/images/tmp/middle2.png")
-		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
-		middle.add(new ChainMap<String, Object>().append("index", 4).append("image", "http://211.149.241.76/images/tmp/middle3.png")
-		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
-		map.put("middle", middle);
-
-		System.out.println(JSON.toJSONString(map));
+		for (int i = 0; i < 100; i++) {
+			System.out.println(new Random().nextInt(6));
+		}
 	}
 
 	@RequestMapping(value = "/insert")
 	public ResponseEntity<?> insert() {
 		//		createMember();
-				createGoods();
-				createProperties();
+		//		createGoods();
+		//		createProperties();
 		//		createMessage();
 		//		createAddress();
 		//		createCartFavoriteGoods();
 
+		createOrders();
+
 		return ResponseEntity.Success();
+	}
+
+	private void createOrders() {
+		Random random = new Random();
+		for (int i = 0; i < 100; i++) {
+			Order order = new Order();
+			order.setUid(10000);
+			order.setTotalAmount(new BigDecimal(random.nextInt(500) + "." + random.nextInt(9)));
+			order.setRealpayAmount(new BigDecimal(199.5));
+			order.setBalancepayAmount(BigDecimal.ZERO);
+			order.setDeductionAmount(BigDecimal.ZERO);
+			order.setFreight(random.nextBoolean() ? 0 : (random.nextBoolean() ? 5 : 8));
+			order.setDiscounts(null);
+			order.setCoupons(null);
+			order.setLeaveMessage("这是买家留言");
+			order.setShippingAddress("浙江省杭州市西湖区学院路50号");
+			order.setConsigneeName("张三");
+			order.setConsigneePhone("13023657670");
+			order.setPostcode("321000");
+			// 系统
+			order.setOrderNo(OrderNumberUtils.generateNumber());
+			order.setStatus(OrderStatus.待支付);
+			order.setRefundStatus(RefundStatus.初始状态);
+			order.setCreateTime(new Date());
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(order.getCreateTime());
+			calendar.add(Calendar.MINUTE, CommonEnvConstants.ORDER_NOTPAY_TIMEOUT_CLOSE_TIME);
+			order.setTimeoutCloseTime(calendar.getTime());
+
+			switch (random.nextInt(6)) {
+				case OrderStatus.待支付:
+					break;
+				case OrderStatus.待发货:
+					order.setStatus(OrderStatus.待发货);
+					order.setPayTime(new Date());
+
+					if (random.nextBoolean()) {
+						if (random.nextBoolean()) {
+							// 申请退款
+							order.setRefundStatus(RefundStatus.申请退款);
+							order.setApplyRefundTime(new Date());
+							order.setRefundReason("不想买了....");
+						} else {
+							// 拒绝退款
+							order.setRefundStatus(RefundStatus.拒绝退款);
+						}
+					}
+					break;
+				case OrderStatus.待收货:
+					order.setStatus(OrderStatus.待收货);
+					order.setDeliveryCompany("顺丰快递");
+					order.setDeliveryCode("SF");
+					order.setDeliveryNumber("100093439400023232");
+					order.setDeliveryTime(new Date());
+					if (random.nextBoolean()) {
+						if (random.nextBoolean()) {
+							// 申请退款
+							order.setRefundStatus(RefundStatus.申请退款);
+							order.setApplyRefundTime(new Date());
+							order.setRefundReason("不想买了....");
+						} else {
+							// 拒绝退款
+							order.setRefundStatus(RefundStatus.拒绝退款);
+						}
+					}
+					break;
+				case OrderStatus.已收货:
+					order.setDeliveryCompany("顺丰快递");
+					order.setDeliveryCode("SF");
+					order.setDeliveryNumber("100093439400023232");
+					order.setDeliveryTime(new Date());
+					order.setStatus(OrderStatus.已收货);
+					order.setConfirmDeliveryTime(new Date());
+					if (random.nextBoolean()) {
+						if (random.nextBoolean()) {
+							// 申请退款
+							order.setRefundStatus(RefundStatus.申请退款);
+							order.setApplyRefundTime(new Date());
+							order.setRefundReason("不想买了....");
+						} else {
+							// 拒绝退款
+							order.setRefundStatus(RefundStatus.拒绝退款);
+						}
+					}
+					break;
+				case OrderStatus.已退款:
+					if (random.nextBoolean()) {
+						order.setDeliveryCompany("顺丰快递");
+						order.setDeliveryCode("SF");
+						order.setDeliveryNumber("100093439400023232");
+						order.setDeliveryTime(new Date());
+					}
+					order.setStatus(OrderStatus.已退款);
+					order.setRefundStatus(RefundStatus.同意退款);
+					order.setRefundCompleteTime(new Date());
+					break;
+				case OrderStatus.已关闭:
+					order.setStatus(OrderStatus.已关闭);
+					order.setCloseTime(new Date());
+					order.setCloselog(random.nextBoolean() ? "超时系统自动关闭订单" : "用户主动关闭订单");
+					break;
+			}
+			orderMapper.insert(order);
+			List<Goods> goodses = goodsMapper.selectPageByWhereClause(new Condition(), new RowBounds(0, random.nextInt(11) + 4));
+			for (Goods goods : goodses) {
+				OrderGoods orderGoods = new OrderGoods();
+				orderGoods.setOrderNo(order.getOrderNo());
+				orderGoods.setGoodsId(goods.getId());
+				orderGoods.setTitle(goods.getTitle());
+				orderGoods.setImage(goods.getMainImage());
+				orderGoods.setPrice(goods.getPrice());
+				orderGoods.setOriginPrice(goods.getPrice());
+				orderGoods.setBuyNumber(random.nextInt(10) + 1);
+				orderGoods.setCreateTime(new Date());
+				orderGoodsMapper.insert(orderGoods);
+			}
+		}
 	}
 
 	private void createCartFavoriteGoods() {
@@ -135,9 +243,12 @@ public class InsertController {
 	private void createProperties() {
 		Map<String, Object> map = Maps.newHashMap();
 		List<Map<String, Object>> banner = Lists.newArrayList();
-		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
-		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
-		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png").append("link", "http://www.micromall.com/xxx/xxx.html"));
+		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png")
+		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
+		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png")
+		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
+		banner.add(new ChainMap<String, Object>().append("image", "http://211.149.241.76/images/tmp/banner.png")
+		                                         .append("link", "http://www.micromall.com/xxx/xxx.html"));
 		map.put("banner", banner);
 		List<Map<String, Object>> middle = Lists.newArrayList();
 		middle.add(new ChainMap<String, Object>().append("index", 1).append("image", "http://211.149.241.76/images/tmp/middle0.png")
@@ -169,7 +280,8 @@ public class InsertController {
 			Goods goods = new Goods();
 			goods.setTitle("测试商品-" + i);
 			goods.setMainImage("http://211.149.241.76/images/tmp/goods.jpg");
-			goods.setImages(Arrays.asList("http://211.149.241.76/images/tmp/goods.jpg", "http://211.149.241.76/images/tmp/goods.jpg", "http://211.149.241.76/images/tmp/goods.jpg"));
+			goods.setImages(Arrays.asList("http://211.149.241.76/images/tmp/goods.jpg", "http://211.149.241.76/images/tmp/goods.jpg",
+					"http://211.149.241.76/images/tmp/goods.jpg"));
 
 			goods.setCategoryId(categorys[random.nextInt(categorys.length)]);
 			goods.setPrice(new BigDecimal(random.nextInt(500) + "." + random.nextInt(9)));

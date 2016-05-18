@@ -75,7 +75,7 @@
     </sql>
 
     <insert id="insert" parameterType="com.micromall.repository.entity.Order" useGeneratedKeys="true" keyProperty="id">
-        insert into order (<include refid="Column_sql"/>)
+        insert into orders (<include refid="Column_sql"/>)
         values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR},
         #{totalAmount,jdbcType=DECIMAL}, #{realpayAmount,jdbcType=DECIMAL}, #{balancepayAmount,jdbcType=DECIMAL},
         #{deductionAmount,jdbcType=DECIMAL}, #{freight,jdbcType=INTEGER},
@@ -90,7 +90,7 @@
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.micromall.repository.entity.Order">
-        update order
+        update orders
         <set>
             <if test="totalAmount != null">
                 total_amount = #{totalAmount,jdbcType=DECIMAL},
@@ -180,7 +180,7 @@
     <select id="selectOneByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
         select
         <include refid="Column_sql"/>
-        from order
+        from orders
         <include refid="Where_Clause"/>
     </select>
 
@@ -192,31 +192,38 @@
         refund_status as 'refundStatus',
         confirm_delivery_time as 'confirmDeliveryTime',
         timeout_close_time as 'timeoutCloseTime'
-        from order
+        from orders
         <include refid="Where_Clause"/>
         <if test="orderBy != null">
             order by ${orderBy}
         </if>
     </select>
 
+    <select id="statisticsUserOrderCount" parameterType="integer" resultType="java.util.HashMap">
+        SELECT
+        CASE
+        WHEN status = 0 THEN 'waitPay'
+        WHEN status = 1 THEN 'waitDelivery'
+        WHEN status = 2 THEN 'waitReceive'
+        WHEN status = 3 THEN 'complete'
+        WHEN status = 4 OR status = 5 THEN 'refund_closed'
+        ELSE status END AS 'name',
+        COUNT(*) AS 'count'
+        FROM `orders` WHERE uid = #{uid} GROUP BY status;
+    </select>
+
     <select id="distributionOrderAmountSum" parameterType="java.util.Map" resultType="java.util.HashMap">
         SELECT
-        CASE WHEN status = 0
-        THEN 'waitPay'
-        WHEN status = 1
-        THEN 'waitDelivery'
-        WHEN status = 2
-        THEN 'waitReceive'
-        WHEN status = 3
-        THEN 'complete'
-        WHEN status = 4
-        THEN 'refund'
-        WHEN status = 5
-        THEN 'closed'
+        CASE WHEN status = 0 THEN 'waitPay'
+        WHEN status = 1 THEN 'waitDelivery'
+        WHEN status = 2 THEN 'waitReceive'
+        WHEN status = 3 THEN 'complete'
+        WHEN status = 4 THEN 'refund'
+        WHEN status = 5 THEN 'closed'
         ELSE status
         END AS 'name',
         sum(total_amount) AS 'amount'
-        FROM `order`
+        FROM `orders`
         WHERE uid IN (
         SELECT lower_uid
         FROM distribution_relation
@@ -227,7 +234,7 @@
 
     <!--
      <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-         delete from order
+         delete from orders
          where id = #{id,jdbcType=INTEGER}
      </delete>
 
@@ -239,7 +246,7 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Column_sql"/>
-        from order
+        from orders
         where id = #{id,jdbcType=INTEGER}
     </select>
 
@@ -247,7 +254,7 @@
     <select id="selectMultiByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
         select
         <include refid="Base_Column_List"/>
-        from order
+        from orders
         <include refid="Where_Clause"/>
         <if test="orderBy != null">
             order by ${orderBy}
@@ -257,7 +264,7 @@
     <select id="selectPageByWhereClause" resultMap="BaseResultMap" parameterType="com.micromall.utils.Condition">
         select
         <include refid="Base_Column_List"/>
-        from order
+        from orders
         <include refid="Where_Clause"/>
         <if test="orderBy != null">
             order by ${orderBy}
@@ -267,7 +274,7 @@
     <select id="countByWhereClause" parameterType="com.micromall.utils.Condition" resultType="java.lang.Integer">
         select count(*)
         <include refid="Base_Column_List"/>
-        from order
+        from orders
         <include refid="Where_Clause"/>
     </select>
 

@@ -139,7 +139,7 @@ CREATE TABLE `certified_info` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户认证信息';
 
 
-CREATE TABLE `order` (
+CREATE TABLE `orders` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL COMMENT '所属用户id',
   `order_no` varchar(30) NOT NULL COMMENT '订单编号',
