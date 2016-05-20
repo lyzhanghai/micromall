@@ -91,7 +91,7 @@ public class Order extends IdEntity {
 	private Date   createTime;
 	// 修改时间
 	@JsonIgnore
-	private Date   updatTime;
+	private Date   updateTime;
 
 	// -------------前端展示字段------------
 	// 订单商品信息
@@ -339,12 +339,12 @@ public class Order extends IdEntity {
 		this.closelog = closelog;
 	}
 
-	public Date getUpdatTime() {
-		return updatTime;
+	public Date getUpdateTime() {
+		return updateTime;
 	}
 
-	public void setUpdatTime(Date updatTime) {
-		this.updatTime = updatTime;
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 
 	public List<OrderGoods> getGoodsList() {

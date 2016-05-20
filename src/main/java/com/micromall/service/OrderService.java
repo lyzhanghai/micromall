@@ -1,5 +1,7 @@
 package com.micromall.service;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.micromall.repository.CommissionRecordMapper;
 import com.micromall.repository.OrderGoodsMapper;
 import com.micromall.repository.OrderMapper;
@@ -22,10 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -48,6 +47,22 @@ public class OrderService {
 	@Resource
 	private CashAccountService     cashAccountService;
 
+	public Map<String, Integer> statistics(int uid) {
+		List<Map<String, Object>> orderCount = orderMapper.statisticsUserOrderCount(uid);
+		Map<String, Integer> data = Maps.newHashMap();
+		/*
+		lv1.put("waitPay", new BigDecimal(0));//未付款订单
+		lv1.put("waitDelivery", new BigDecimal(0));//待发货订单
+		lv1.put("waitReceive", new BigDecimal(0));//待收货订单
+		lv1.put("complete", new BigDecimal(0));//已完成订单
+		lv1.put("refund_closed", new BigDecimal(0));//已取消订单
+		*/
+		for (Map<String, Object> map : orderCount) {
+			data.put((String)map.get("name"), Integer.valueOf(map.get("count").toString()));
+		}
+		return data;
+	}
+
 	// [待付款、待发货、待收货、已完成、退货/取消]
 	@Transactional(readOnly = true)
 	public List<ListViewOrder> findOrders(int uid, int status, int page, int limit) {
@@ -55,9 +70,11 @@ public class OrderService {
 		criteria.andEqualTo("uid", uid);
 		if (status == OrderStatus.待支付 || status == OrderStatus.待发货 || status == OrderStatus.待收货 || status == OrderStatus.已收货) {
 			criteria.andEqualTo("status", status);
-		} else {
+		} else if (status == OrderStatus.已退款) {
 			// criteria.andGreaterThanOrEqualTo("status", OrderStatus.已退款);
 			criteria.andIn("status", Arrays.asList(OrderStatus.已退款, OrderStatus.已关闭));
+		} else {
+			return Lists.newArrayList();
 		}
 		List<ListViewOrder> orders = orderMapper.selectListViewPageByWhereClause(criteria.build("create_time desc"), new RowBounds(page, limit));
 		for (ListViewOrder viewOrder : orders) {
@@ -83,8 +100,8 @@ public class OrderService {
 	}
 
 	private boolean canApplyRefund(Integer status, Integer refundStatus, Date confirmDeliveryTime) {
-		if (status != OrderStatus.待发货 || status != OrderStatus.待收货 || status != OrderStatus.已收货 && (refundStatus != RefundStatus.初始状态
-				|| refundStatus != RefundStatus.拒绝退款)) {
+		if (!((status == OrderStatus.待发货 || status == OrderStatus.待收货 || status != OrderStatus.已收货) && (refundStatus == RefundStatus.初始状态
+				|| refundStatus == RefundStatus.拒绝退款))) {
 			return false;
 		}
 
@@ -126,11 +143,11 @@ public class OrderService {
 		order.setOrderNo(OrderNumberUtils.generateNumber());
 		order.setStatus(OrderStatus.待支付);
 		order.setRefundStatus(RefundStatus.初始状态);
+		order.setCreateTime(new Date());
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(order.getCreateTime());
 		calendar.add(Calendar.MINUTE, CommonEnvConstants.ORDER_NOTPAY_TIMEOUT_CLOSE_TIME);
 		order.setTimeoutCloseTime(calendar.getTime());
-		order.setCreateTime(new Date());
 		orderMapper.insert(order);
 
 		for (OrderGoods orderGoods : createOrder.getGoodsList()) {
@@ -183,7 +200,7 @@ public class OrderService {
 	private Order createModifyOrder(Order order) {
 		Order _ModifyOrder = new Order();
 		_ModifyOrder.setId(order.getId());
-		_ModifyOrder.setUpdatTime(new Date());
+		_ModifyOrder.setUpdateTime(new Date());
 		return _ModifyOrder;
 	}
 
@@ -330,4 +347,5 @@ public class OrderService {
 		_ModifyOrder.setRefundReason(refundReason);
 		return orderMapper.updateByPrimaryKey(_ModifyOrder) > 0;
 	}
+
 }
