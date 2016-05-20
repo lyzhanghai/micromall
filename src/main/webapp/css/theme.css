@@ -296,6 +296,17 @@ a.transition:hover {
 }
 /* =========================== color =========================== */
 /* =========================== media =========================== */
+.ng-modal-title {
+  text-align: center;
+  font-size: .8rem;
+  border-bottom-color: #eaeaea;
+}
+.ng-modal-dialog {
+  width: 80%;
+}
+.ng-modal-overlay {
+  opacity: 0.4;
+}
 @-webkit-keyframes scale {
   0% {
     -webkit-transform: scale(1);
@@ -2700,6 +2711,7 @@ a.hr1 {
 }
 .address-add .buttons a {
   width: 8.25rem;
+  font-size: .9rem;
   float: left;
   margin-left: .8rem;
   border: 1px solid #c0c0c0;
@@ -2717,54 +2729,30 @@ a.hr1 {
 .address-add .info-name input:disabled {
   background: #fff;
 }
-.site-select {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 999;
-  width: 100%;
-  height: 100%;
-  display: none;
-}
-.site-select .bg {
-  background: rgba(0, 0, 0, 0.3);
-  height: 100%;
-}
-.site-select .select-main-lay {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  margin: 0 10%;
-  width: 80%;
-  margin-top: -3rem;
-  background: #fff;
-}
-.site-select .select-main {
-  padding: 0.5rem 1rem 1rem 1rem;
-}
-.site-select .china-area-selector-wrapper {
+.china-area .china-area-selector-wrapper {
   display: block;
   overflow: hidden;
   height: 2rem;
   line-height: 2rem;
-  margin-top: 0.5rem;
+  margin-top: .5rem;
 }
-.site-select .china-area-selector-wrapper span {
+.china-area .select-main span {
   width: 8%;
   font-size: 0.75rem;
   float: left;
 }
-.site-select .china-area-selector-wrapper select {
+.china-area .select-main select {
   width: 90%;
   border: 1px solid #eeeeee;
   padding: 0.5rem 0;
   margin-left: 1%;
   text-indent: 0.25rem;
 }
-.site-select .buttons {
+.china-area .buttons {
   overflow: hidden;
+  margin: 0.5rem -10px 0 -10px;
 }
-.site-select .buttons button {
+.china-area .buttons button {
   font-size: 0.8rem;
   width: 50%;
   float: left;
@@ -2773,17 +2761,8 @@ a.hr1 {
   line-height: 2rem;
   background: #ededed;
 }
-.site-select .buttons .submit {
-  background: #e12957;
-}
-.site-select .site-select-title {
-  font-size: 0.8rem;
-  text-align: center;
-  color: #333333;
-  margin-bottom: 0.25rem;
-}
-.site-select-show {
-  display: block;
+.china-area .buttons .submit {
+  background: #ff4200;
 }
 /*好友详情*/
 .friend-empty {
@@ -3749,6 +3728,7 @@ a.hr1 {
   height: .67rem;
   line-height: .67rem;
   padding: 0 .25rem;
+  background: #fff;
 }
 .user-list-lay .wrapper i {
   vertical-align: middle;

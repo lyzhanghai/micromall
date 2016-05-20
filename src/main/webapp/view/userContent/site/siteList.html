@@ -1,0 +1,37 @@
+<div class="address-list">
+    <!-- ngRepeat: item in listData -->
+    <div class="checkbox-four" ng-repeat="item in listData track by item.id" bindonce>
+        <label>
+            <h4 class="list-title">
+                {{::item.consigneeName}}
+              <span>
+                {{::item.consigneePhone}}
+              </span>
+            </h4>
+            <p>
+                {{::item.province}}
+                {{::item.city}}
+                {{::item.county}}
+                {{::item.detailedAddress}}
+            </p>
+            <div class="address-option">
+                <div class="left">
+                    <input class="iconfont icon-xuanzhong" type="checkbox" ng-model="item.defaul">
+                    默认地址
+                </div>
+                <a href="{{prefix}}userContent/site/addEdit.html?id={{item.id}}">
+                    编辑
+                </a>
+                <a href="javascript:;" ng-click="deleteItem(item.id,$index)">
+                    删除
+                </a>
+            </div>
+        </label>
+    </div>
+
+    <div class="base-input-lay submit2">
+        <a href="{{prefix}}userContent/site/addEdit.html?type='add'" class="submit submit-margin">
+            新增地址
+        </a>
+    </div>
+</div>

@@ -3,6 +3,9 @@ var app = angular.module('app', [
     'ngSanitize',     //把ng-bind-html之类模版指令拆出来了
     'angularLazyImg',
     'angular-carousel',
+    'ngFileUpload',
+    'ngModal',
+    'china-area-selector',
     // 'china-area-selector',
     // 'angularDateBinder',
     'cz-mobile'
