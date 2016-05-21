@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Repository
 public interface CommissionRecordMapper extends BaseMapper<CommissionRecord> {
 
-	@Select("SELECT sum(commission_amount) FROM commission_record WHERE uid = #{uid}")
+	@Select("SELECT IFNULL(sum(commission_amount),0) FROM commission_record WHERE uid = #{uid}")
 	@ResultType(BigDecimal.class)
 	BigDecimal withdrawStat(int uid);
 }

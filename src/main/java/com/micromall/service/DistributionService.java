@@ -59,8 +59,6 @@ public class DistributionService {
 	@Transactional(readOnly = true)
 	public Map<String, Object> commissionStat(int uid) {
 		Map<String, Object> data = Maps.newHashMap();
-		Map<String, Object> lv1 = Maps.newHashMap();
-		Map<String, Object> lv2 = Maps.newHashMap();
 
 		CashAccount cashAccount = cashAccountService.getCashAccount(uid);
 		//提现中佣金
@@ -76,19 +74,25 @@ public class DistributionService {
 		data.put("withdrawOf", withdrawOf);//提现中佣金
 		data.put("totalSales", cashAccount.getTotalSales());//销售总额
 
+		Map<String, Object> lv1 = Maps.newHashMap();
+		lv1.put("waitPay", new BigDecimal(0));//未付款订单
+		lv1.put("waitDelivery", new BigDecimal(0));//待发货订单
+		lv1.put("waitReceive", new BigDecimal(0));//待收货订单
+		lv1.put("complete", new BigDecimal(0));//已完成订单
+		lv1.put("refund", new BigDecimal(0));//已退款订单
+		lv1.put("closed", new BigDecimal(0));//已取消订单
+		Map<String, Object> lv2 = Maps.newHashMap();
+		lv2.put("waitPay", new BigDecimal(0));//未付款订单
+		lv2.put("waitDelivery", new BigDecimal(0));//待发货订单
+		lv2.put("waitReceive", new BigDecimal(0));//待收货订单
+		lv2.put("complete", new BigDecimal(0));//已完成订单
+		lv2.put("refund", new BigDecimal(0));//已退款订单
+		lv2.put("closed", new BigDecimal(0));//已取消订单
 		data.put("lv1", lv1);//一级分销商
 		data.put("lv2", lv2);//一级分销商
 
 		List<Map<String, Object>> _lv1 = orderMapper.distributionOrderAmountSum(uid, 1);
 		List<Map<String, Object>> _lv2 = orderMapper.distributionOrderAmountSum(uid, 2);
-
-		/*
-		lv1.put("waitPay", new BigDecimal(0));//未付款订单
-		lv1.put("waitDelivery", new BigDecimal(0));//待发货订单
-		lv1.put("waitReceive", new BigDecimal(0));//待收货订单
-		lv1.put("complete", new BigDecimal(0));//已完成订单
-		lv1.put("closed", new BigDecimal(0));//已取消订单
-		*/
 
 		// 一级分销商：
 		for (Map<String, Object> map : _lv1) {

@@ -141,7 +141,7 @@
     </select>
 
     <select id="withdrawStat" parameterType="com.micromall.utils.Condition" resultType="java.math.BigDecimal">
-        select sum(amount)
+        select IFNULL(sum(amount),0)
         from withdraw_record
         <include refid="Where_Clause"/>
     </select>

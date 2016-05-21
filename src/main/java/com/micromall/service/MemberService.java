@@ -75,6 +75,7 @@ public class MemberService {
 		_updateMember.setId(member.getId());
 		_updateMember.setMyPromoteCode(Base64.encodeBase64String(("#" + member.getId()).getBytes()));
 		mapper.updateByPrimaryKey(_updateMember);
+		member.setMyPromoteCode(_updateMember.getMyPromoteCode());
 
 		// 创建资金账户
 		cashAccountService.createCashAccount(member.getId());

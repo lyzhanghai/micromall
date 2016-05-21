@@ -76,14 +76,14 @@ public class InsertController {
 
 	@RequestMapping(value = "/insert")
 	public ResponseEntity<?> insert() {
-		//		createMember();
+		createMember();
 		//		createGoods();
 		//		createProperties();
 		//		createMessage();
 		//		createAddress();
 		//		createCartFavoriteGoods();
 
-		createOrders();
+		//		createOrders();
 
 		return ResponseEntity.Success();
 	}
@@ -269,7 +269,15 @@ public class InsertController {
 
 	private void createMember() {
 		// Member member = memberService.registerForWechatId("_$SYSTEM_AUTH_TEST_WECHAT_USER");
-		Member member = memberService.registerForPhone("13023657670", "IzEwMDAw");
+		//Member member = memberService.registerForPhone("13023657670", "IzEwMDAw");
+
+		// 一级分销商
+		for (int i = 0; i < 10; i++) {
+			Member member = memberService.registerForPhone("1300000000" + i, "IzEwMDAw");
+			for (int j = 0; j < 8; j++) {
+				Member member1 = memberService.registerForPhone("13" + (i + 1) + "000000" + j, member.getMyPromoteCode());
+			}
+		}
 	}
 
 	private void createGoods() {
