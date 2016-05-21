@@ -23,7 +23,7 @@ public class DistributionController extends BasisController {
 	private DistributionService distributionService;
 
 	/**
-	 * 分销订单统计
+	 * 分销统计
 	 *
 	 * @return
 	 */
