@@ -1,189 +1,79 @@
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>{{partner}}</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="initial-scale=1, width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1, user-scalable=no" media="(device-height: 568px)">
-    <meta name="renderer" content="webkit">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-touch-fullscreen" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="full-screen" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="format-detection" content="telephone=no">
-    <meta name="format-detection" content="address=no">
-    <meta name="apple-mobile-web-app-status-bar-style" content="yes"/>
-    <meta name="description" content="原来国外这么便宜！100%正品保障，抢先下载还能领券哦！" />
-    <meta property="qc:admins" content="713116756205656745636" />
-
-    <link rel="shortcut icon" href="{{partner == '折疯了' ? 'img/favicon.ico' : 'img/partner/favicon.ico' }}" type="image/x-icon" />
-
-    <link rel="stylesheet" href="../css/iconfont.css"/>
-    <link rel="stylesheet" href="../css/theme.css"/>
-</head>
-<body>
-<div class="app">
-    <div class="app-state" id="app-state" style="min-height: 640px;">
-        <div class="order-list shop-cart-lay">
-            <!-- ngRepeat: item in shopData track by $index -->
-            <div class="shop-cart ng-scope" bindonce="" ng-repeat="item in shopData track by $index">
-                <ul>
-                    <!-- ngRepeat: childItem in item.shoppingCartListPOJOs track by $index
-                    -->
-                    <li>
-                        <div class="item">
-                            <div class="checkbox-four">
-                                <label>
-                                    <input class="iconfont icon-gouxuanjian ng-pristine ng-untouched ng-valid"
-                                           type="checkbox" ng-disabled="childItem.disabled" ng-model="childItem.checkSelect"
-                                           ng-change="childCheckSelect(item,childItem)">
-                                </label>
-                            </div>
-                            <a href="#/detail&amp;2376101" class="item-img">
-                                <div class="img-lay">
-                                    <img ng-src="http://img.zhefengle.com/052cd2ce356099d5205797bb3e17be6a.jpg?imageView2/2/w/120/interlace/1/q/93"
-                                         src="http://img.zhefengle.com/052cd2ce356099d5205797bb3e17be6a.jpg?imageView2/2/w/120/interlace/1/q/93">
-                                </div>
-                                <!-- ngIf: childItem.disabled -->
-                            </a>
-                            <div class="item-info">
-                                <a href="#/detail&amp;2376101">
-                                    【日本】ZOJIRUSHI 象印保温杯 SFCC20XA 2.0L
-                                </a>
-                                <div class="size-type">
-                                    <!-- ngIf: childItem.aPropertyName !=' ' && childItem.aPropertyName !='
-                                    无需设置' -->
-                                    <!-- ngIf: childItem.bPropertyName !=' ' && childItem.bPropertyName !='
-                                    无需设置' -->
-                                </div>
-                                <div class="singular">
-                                    <button class="iconfont icon-14052230 left" ng-disabled="childItem.disabled"
-                                            ng-click="upShopRedu(item,childItem)">
-                                    </button>
-                                    <input type="text" ng-disabled="childItem.disabled" ng-model="childItem.buyNum"
-                                           ng-blur="upShopBlurNum(childItem)" ng-focus="upShopFocusNum(childItem)"
-                                           ng-change="upShopNum(item,childItem)" class="ng-pristine ng-untouched ng-valid">
-                                    <button class="iconfont icon-14052229 right" ng-disabled="childItem.disabled"
-                                            ng-click="upShopPuls(item,childItem)">
-                                    </button>
-                                </div>
-                                <a href="javascript:;" class="delete" ng-click="deleteShop(item,childItem,$parent.$index,$index)">
-                                    <i class="iconfont icon-shanchu">
-                                    </i>
-                                </a>
-                            </div>
-                            <div class="price">￥236</div>
-                        </div>
-                        <div class="item-operate ng-hide" ng-show="childItem.showCountDown">
-                            <i class="iconfont icon-daojishi">
-                            </i>
-                              <span>
-                                剩余365天12小时41分钟
-                              </span>
-                        </div>
-                    </li>
-                    <!-- end ngRepeat: childItem in item.shoppingCartListPOJOs track by $index
-                    -->
-                    <li>
-                        <div class="item">
-                            <div class="checkbox-four">
-                                <label>
-                                    <input class="iconfont icon-gouxuanjian ng-pristine ng-untouched ng-valid"
-                                           type="checkbox" ng-disabled="childItem.disabled" ng-model="childItem.checkSelect"
-                                           ng-change="childCheckSelect(item,childItem)">
-                                </label>
-                            </div>
-                            <a href="#/detail&amp;2376101" class="item-img">
-                                <div class="img-lay">
-                                    <img ng-src="http://img.zhefengle.com/052cd2ce356099d5205797bb3e17be6a.jpg?imageView2/2/w/120/interlace/1/q/93"
-                                         src="http://img.zhefengle.com/052cd2ce356099d5205797bb3e17be6a.jpg?imageView2/2/w/120/interlace/1/q/93">
-                                </div>
-                                <!-- ngIf: childItem.disabled -->
-                            </a>
-                            <div class="item-info">
-                                <a href="#/detail&amp;2376101">
-                                    【日本】ZOJIRUSHI 象印保温杯 SFCC20XA 2.0L
-                                </a>
-                                <div class="size-type">
-                                    <!-- ngIf: childItem.aPropertyName !=' ' && childItem.aPropertyName !='
-                                    无需设置' -->
-                                    <!-- ngIf: childItem.bPropertyName !=' ' && childItem.bPropertyName !='
-                                    无需设置' -->
-                                </div>
-                                <div class="singular">
-                                    <button class="iconfont icon-14052230 left" ng-disabled="childItem.disabled"
-                                            ng-click="upShopRedu(item,childItem)">
-                                    </button>
-                                    <input type="text" ng-disabled="childItem.disabled" ng-model="childItem.buyNum"
-                                           ng-blur="upShopBlurNum(childItem)" ng-focus="upShopFocusNum(childItem)"
-                                           ng-change="upShopNum(item,childItem)" class="ng-pristine ng-untouched ng-valid">
-                                    <button class="iconfont icon-14052229 right" ng-disabled="childItem.disabled"
-                                            ng-click="upShopPuls(item,childItem)">
-                                    </button>
-                                </div>
-                                <a href="javascript:;" class="delete" ng-click="deleteShop(item,childItem,$parent.$index,$index)">
-                                    <i class="iconfont icon-shanchu">
-                                    </i>
-                                </a>
-                            </div>
-                            <div class="price">￥236</div>
-                        </div>
-                        <div class="item-operate ng-hide" ng-show="childItem.showCountDown">
-                            <i class="iconfont icon-daojishi">
-                            </i>
-                              <span>
-                                剩余365天12小时41分钟
-                              </span>
-                        </div>
-                    </li>
-                    <!-- end ngRepeat: childItem in item.shoppingCartListPOJOs track by $index
-                    -->
-                </ul>
-                <div class="cart-all">
-                   <span class="checkbox-four ">
-                      <label>
-                          <input class="iconfont icon-gouxuanjian" type="checkbox">
-                        <span>
-                          全选
-                        </span>
-                      </label>
-                       <!--<a href="javascript:;" ng-click="batchDelete()">批量删除</a>-->
-                    </span>
-                    <span class="right">
-                        共选择了<em>1</em>件商品
-                        <a href="javascript:;" class="hr1">全部清空</a>
-                    </span>
-                </div>
-            </div>
-
-
-            <div class="fix-bottom fix-bottom-show">
-                <div class="shop-balance shop-pay-info">
-                    <div class="fix-bm-al">
-                        <div class="shop-info">
-                            合计:<em>￥0</em>
-                            <span>(不含运费)</span>
-                        </div>
-                        <button class="submit">
-                            结算
-                        </button>
+<div class="order-list shop-cart-lay">
+    <div class="shop-cart">
+        <ul>
+            <li bindonce ng-repeat="item in shopData track by $index">
+                <div class="item">
+                    <div class="checkbox-four">
+                        <label>
+                            <input class="iconfont icon-xuanzhong"
+                                   type="checkbox" ng-disabled="item.disabled" ng-model="item.checkSelect"
+                                   ng-change="checkSelect(item,item)">
+                        </label>
                     </div>
+                    <a href="{{prefix}}detail.html?goodsId={{item.goodsId}}" class="item-img">
+                        <div class="img-lay">
+                            <img lazy-img="{{item.image}}">
+                        </div>
+                    </a>
+                    <div class="item-info">
+                        <a href="{{prefix}}detail.html?goodsId={{item.goodsId}}" class="item-title">
+                            {{item.title}}
+                        </a>
+                        <div class="singular">
+                            <button class="iconfont icon-14052230 left" ng-disabled="item.disabled"
+                                    ng-click="upShopRedu(item,item)">
+                            </button>
+                            <input type="text" ng-disabled="item.disabled" ng-model="item.buyNumber"
+                                   ng-blur="upShopBlurNum(item)" ng-focus="upShopFocusNum(item)"
+                                   ng-change="upShopNum(item,item)" class="ng-pristine ng-untouched ng-valid">
+                            <button class="iconfont icon-14052229 right" ng-disabled="item.disabled"
+                                    ng-click="upShopPuls(item,item)">
+                            </button>
+                            <a href="javascript:;" class="delete" ng-click="deleteShop(item,$index)">
+                                <i class="iconfont icon-shanchu">
+                                </i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="price">￥{{item.price}}</div>
                 </div>
-            </div>
+                <!--<div class="item-operate ng-hide" ng-show="item.showCountDown">-->
+                    <!--<i class="iconfont icon-daojishi">-->
+                    <!--</i>-->
+                      <!--<span>-->
+                        <!--剩余365天12小时41分钟-->
+                      <!--</span>-->
+                <!--</div>-->
+            </li>
+        </ul>
+        <div class="cart-all">
+           <span class="checkbox-four ">
+              <label>
+                  <input class="iconfont icon-xuanzhong" type="checkbox" ng-model="allCheckSelect" ng-change="allSelect()">
+                <span>
+                  全选
+                </span>
+              </label>
+               <!--<a href="javascript:;" ng-click="batchDelete()">批量删除</a>-->
+            </span>
+            <span class="right">
+                共选择了<em>{{shopInfo.selectLength}}</em>件商品
+                <a href="javascript:;" class="hr1" ng-click="deleteAll()">全部清空</a>
+            </span>
         </div>
-        <!-- ngIf: shopData.length==0 -->
     </div>
+
     <div class="fix-bottom fix-bottom-show">
-        <div class="fix-bottom-main">
-            <a href="#/index" class="active"><i class="iconfont icon-home"></i><p>首页</p></a>
-            <a href="#/type" class=""><i class="iconfont icon-fenlei"></i><p>商品</p></a>
-            <a href="#/type" class=""><i class="iconfont icon-wode"></i><p>我的</p></a>
-            <a href="#/user/info" class=""><i class="iconfont icon-gouwuche"></i><p>购物车</p></a>
+        <div class="shop-balance shop-pay-info">
+            <div class="fix-bm-al">
+                <div class="shop-info">
+                    合计:<em>￥{{shopInfo.total}}</em>
+                    <span>(不含运费)</span>
+                </div>
+                <button class="submit">
+                    结算
+                </button>
+            </div>
         </div>
     </div>
 </div>
-</body>
-<script src="../js/tools/weight/bodySize.js"></script>
-</html>

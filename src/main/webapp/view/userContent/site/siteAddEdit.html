@@ -1,0 +1,74 @@
+<form class="address-add" name="addRess">
+    <div class="form-info-main">
+        <div class="info-lay error-right">
+            <label class="info-name error-label">
+              <span class="info-text-name">
+                姓名:
+              </span>
+              <div class="set-input">
+                <input type="text" name="userName" placeholder="姓名" ng-model="addressItemData.consigneeName">
+              </div>
+            </label>
+        </div>
+        <div class="info-lay error-right">
+            <div class="info-name error-label">
+                <span class="info-text-name">
+                    手机:
+                </span>
+                <div class="set-input">
+                    <input type="text" name="phone" placeholder="请输入手机号码" ng-model="addressItemData.consigneePhone">
+                    <!--<div class="error ng-scope ng-hide" ng-show="addRess.phone.$error.phone &amp;&amp; addRess.formVaild">-->
+                        <!--手机格式不正确-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+        <div class="info-lay error-right">
+            <div class="info-name error-label" ng-click="toggleModal()">
+                <span class="info-text-name">
+                    所在地区:
+                </span>
+                <div class="set-input">
+                    <input type="text" name="phone" placeholder="所在地区" ng-model="address.site">
+                </div>
+                <i class="iconfont icon-qianjin">
+
+                </i>
+            </div>
+        </div>
+        <div class="info-lay error-right">
+            <div class="info-name error-label">
+                <span class="info-text-name">
+                    详细地址:
+                </span>
+                <div class="set-input">
+                    <input type="text" name="phone" placeholder="详细地址" ng-model="addressItemData.detailedAddress">
+                </div>
+            </div>
+        </div>
+        <div class="info-lay error-right">
+            <div class="info-name error-label">
+                <span class="info-text-name">
+                    编码:
+                </span>
+                <div class="set-input">
+                    <input type="text" name="phone" placeholder="编码" ng-model="addressItemData.postcode">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="buttons">
+        <a href="javascript:;" back>取&nbsp;&nbsp;消</a>
+        <a href="javascript:;" class="submit" ng-click="submit()">保&nbsp;&nbsp;存</a>
+    </div>
+</form>
+
+<modal-dialog class="china-area" show='modalShown' dialog-title='请选择省市县' on-close='logClose()'>
+    <div class="select-main">
+        <china-area-selector-with-wrapper region="$parent.$parent.address"></china-area-selector-with-wrapper>
+    </div>
+    <div class="buttons">
+        <button type="button" ng-click="toggleModal()">取消</button>
+        <button type="button" class="submit" ng-click="siteSelect()">确定</button>
+    </div>
+</modal-dialog>

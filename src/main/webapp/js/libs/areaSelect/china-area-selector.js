@@ -2,9 +2,9 @@ angular.module('china-area-selector', ['__chinaAreaSelectorTemplates__'])
     .service('chinaAreaSelectService', ['$http', function ($http) {
         this.getChinaAreaSelectData = function(callback){
             $http({
-                method:'POST',
+                method:'GET',
                 cache: true,
-                url: '/js/libs/areaSelect/areaData.json',
+                url: './js/libs/areaSelect/areaData.json',
                 dataType: 'json'
             }).success(function(data, status) {
                 callback(data);
@@ -53,17 +53,17 @@ angular.module('china-area-selector', ['__chinaAreaSelectorTemplates__'])
                 var getAdjustiveRegion = function (paramRegion) {
                     var region = angular.copy(paramRegion || {});
                     if (indexOf(scope.provinces, region.province) === -1) {
-                        region.province = region.city = region.area = '';
+                        region.province = region.city = region.county = '';
                         return region;
                     }
                     var cities = getCities(region.province);
                     if (indexOf(cities, region.city) === -1) {
-                        region.city = region.area = '';
+                        region.city = region.county = '';
                         return region;
                     }
                     var areas = getAreas(region.province, region.city);
-                    if (indexOf(areas, region.area) === -1) {
-                        region.area = '';
+                    if (indexOf(areas, region.county) === -1) {
+                        region.county = '';
                         return region;
                     }
                     return region;
@@ -80,9 +80,10 @@ angular.module('china-area-selector', ['__chinaAreaSelectorTemplates__'])
                         var cityIndex = indexOf(scope.citys, scope.region.city);
                         $city.val(cityIndex > -1 ? cityIndex : '');
 
-                        var areaIndex = indexOf(scope.areas, scope.region.area);
+                        var areaIndex = indexOf(scope.areas, scope.region.county);
                         $area.val(areaIndex > -1 ? areaIndex : '');
                     },0);
+                    scope.region.site = region.province + region.city + region.county;
                 };
 
                 chinaAreaSelectService.getChinaAreaSelectData(function(data){

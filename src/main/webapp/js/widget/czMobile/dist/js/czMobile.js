@@ -12,7 +12,6 @@
         'cz-countdown',          //倒计时
         'cz-sideslip-load',      //手势左右滑动,切换下一页或者加载下一条
         'cz-back-top',           //返回顶部
-        'cz-history',               //重写返回按钮
         'cz-form-validate',      //表单校验
         'cz-drag-to',            //左滑动,在右边划出选项框
         'cz-mask',               //dialog 之类弹层,添加背景上,禁用滚动条
