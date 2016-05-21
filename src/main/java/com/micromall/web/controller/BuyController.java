@@ -1,15 +1,14 @@
-package com.micromall.web.controller.tmp;
+package com.micromall.web.controller;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.micromall.repository.entity.*;
-import com.micromall.service.CartService;
-import com.micromall.service.GoodsService;
-import com.micromall.service.OrderService;
-import com.micromall.service.ShippingAddressService;
+import com.micromall.repository.entity.common.OrderStatus;
+import com.micromall.service.*;
 import com.micromall.service.vo.CreateOrder;
 import com.micromall.service.vo.OrderSettle;
+import com.micromall.utils.HttpServletUtils;
 import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.annotation.Authentication;
@@ -41,6 +40,10 @@ public class BuyController extends BasisController {
 	private ShippingAddressService shippingAddressService;
 	@Resource
 	private OrderService           orderService;
+	@Resource
+	private WechatPaymentService   wechatPaymentService;
+	@Resource
+	private MemberService          memberService;
 
 	/**
 	 * 结算
@@ -78,8 +81,8 @@ public class BuyController extends BasisController {
 					orderGoods.setTitle(carGoods.getTitle());
 					orderGoods.setImage(carGoods.getImage());
 					orderGoods.setPrice(carGoods.getPrice());
-					orderGoods.setOriginPrice(carGoods.getPrice());// 商品原始价格
-					orderGoods.setBuyNumber(carGoods.getBuyNumber());// 购买数量
+					orderGoods.setOriginPrice(carGoods.getPrice());
+					orderGoods.setBuyNumber(carGoods.getBuyNumber());
 					orderSettle.getGoodsList().add(orderGoods);
 					totalAmount = totalAmount.add(orderGoods.getPrice().multiply(new BigDecimal(orderGoods.getBuyNumber())));
 				}
@@ -103,9 +106,9 @@ public class BuyController extends BasisController {
 			orderGoods.setGoodsId(goods.getId());
 			orderGoods.setTitle(goods.getTitle());
 			orderGoods.setImage(goods.getMainImage());
-			orderGoods.setPrice(goods.getPrice());// TODO 计算促销折扣后的价格
-			orderGoods.setOriginPrice(goods.getPrice());// 商品原始价格
-			orderGoods.setBuyNumber(buyNumber);// 购买数量
+			orderGoods.setPrice(goods.getPrice());
+			orderGoods.setOriginPrice(goods.getOriginPrice());
+			orderGoods.setBuyNumber(buyNumber);
 			orderSettle.getGoodsList().add(orderGoods);
 			totalAmount = orderGoods.getOriginPrice().multiply(new BigDecimal(orderGoods.getBuyNumber()));
 		}
@@ -113,14 +116,13 @@ public class BuyController extends BasisController {
 		// 计算运费
 		int freight = calculateFreight(orderSettle);
 		totalAmount = totalAmount.add(new BigDecimal(freight));
-		orderSettle.setTotalAmount(totalAmount);
+		orderSettle.setTotalAmount(totalAmount.setScale(2, BigDecimal.ROUND_DOWN));
 		orderSettle.setFreight(freight);
 
 		String settleId = UUID.randomUUID().toString().replaceAll("-", "");
 		Map<String, Object> data = Maps.newHashMap();
 		data.put("shippingAddress", shippingAddressService.getDefaultAddress(getLoginUser().getUid()));// 默认收货地址
 		data.put("orderSettle", orderSettle);
-		// data.put("discounts", new ArrayList<>());// 可用的折扣
 		// data.put("coupons", new ArrayList<>());// 可选的优惠劵
 		data.put("settleId", settleId);
 
@@ -143,13 +145,11 @@ public class BuyController extends BasisController {
 	public ResponseEntity<?> buy(HttpServletRequest request, String settleId, String leaveMessage, int addressId) {
 		OrderSettle orderSettle = (OrderSettle)request.getSession().getAttribute("_SETTLE_ID:" + settleId);
 		if (orderSettle == null) {
-
+			return ResponseEntity.Failure("当前访问页面已失效，请重新提交申请");
 		}
 		CreateOrder createOrder = new CreateOrder();
 		createOrder.setUid(getLoginUser().getUid());
 		createOrder.setTotalAmount(orderSettle.getTotalAmount());
-		createOrder.setRealpayAmount(BigDecimal.ZERO);
-		createOrder.setBalancepayAmount(new BigDecimal(0));
 		createOrder.setDeductionAmount(BigDecimal.ZERO);
 		createOrder.setFreight(orderSettle.getFreight());
 		createOrder.setDiscounts(Lists.newArrayList());
@@ -177,9 +177,21 @@ public class BuyController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/pay")
-	public ResponseEntity<?> pay(String orderNo) {
-
-		return ResponseEntity.Success();
+	public ResponseEntity<?> pay(HttpServletRequest request, String orderNo) {
+		Order order = orderService.getOrder(getLoginUser().getUid(), orderNo);
+		if (order == null) {
+			return ResponseEntity.Failure("订单不存在");
+		}
+		if (order.getStatus() == OrderStatus.已关闭) {
+			return ResponseEntity.Failure("订单已关闭");
+		} else if (order.getStatus() != OrderStatus.待支付) {
+			return ResponseEntity.Failure("订单已支付");
+		}
+		Member member = memberService.get(getLoginUser().getUid());
+		if (StringUtils.isEmpty(member.getWechatId())) {
+			return ResponseEntity.Failure("无法使用微信支付");
+		}
+		return ResponseEntity.Success(wechatPaymentService.pay(order, member.getWechatId(), HttpServletUtils.getRequestIP(request)));
 	}
 
 }

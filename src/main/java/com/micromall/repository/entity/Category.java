@@ -4,6 +4,7 @@ package com.micromall.repository.entity;
  * Created by zhangzx on 16/3/23.
  * 商品类目
  */
+@Deprecated
 public class Category extends IdEntity {
 
 	// 类目名称

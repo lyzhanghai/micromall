@@ -22,15 +22,12 @@ public class Order extends IdEntity {
 	private String                    orderNo;
 	// 订单总金额
 	private BigDecimal                totalAmount;
-	// 实付金额
-	private BigDecimal                realpayAmount;
-	// 余额支付金额
-	private BigDecimal                balancepayAmount;
-	// 优惠抵扣金额（优惠劵/商品优惠抵扣金额+实付金额=订单总金额）
+	// 优惠抵扣金额
 	private BigDecimal                deductionAmount;
 	// 运费
 	private Integer                   freight;
 	// 订单优惠信息(JSON)
+	@Deprecated
 	private List<Map<String, Object>> discounts;
 	// 使用的优惠劵(JSON)
 	@JsonIgnore
@@ -127,22 +124,6 @@ public class Order extends IdEntity {
 
 	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
-	}
-
-	public BigDecimal getRealpayAmount() {
-		return realpayAmount;
-	}
-
-	public void setRealpayAmount(BigDecimal realpayAmount) {
-		this.realpayAmount = realpayAmount;
-	}
-
-	public BigDecimal getBalancepayAmount() {
-		return balancepayAmount;
-	}
-
-	public void setBalancepayAmount(BigDecimal balancepayAmount) {
-		this.balancepayAmount = balancepayAmount;
 	}
 
 	public BigDecimal getDeductionAmount() {

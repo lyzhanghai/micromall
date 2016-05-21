@@ -2,7 +2,7 @@
  * Copyright (C), 2014-2015, 杭州小卡科技有限公司
  * Created by ciwei@xiaokakeji.com on 2016/05/12.
  */
-package com.micromall.web.controller.tmp;
+package com.micromall.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
@@ -14,6 +14,7 @@ import com.micromall.repository.entity.common.GoodsTypes;
 import com.micromall.repository.entity.common.OrderStatus;
 import com.micromall.repository.entity.common.OrderStatus.RefundStatus;
 import com.micromall.repository.entity.common.PropKeys;
+import com.micromall.repository.entity.common.WithdrawStatus;
 import com.micromall.service.*;
 import com.micromall.utils.ChainMap;
 import com.micromall.utils.CommonEnvConstants;
@@ -76,16 +77,45 @@ public class InsertController {
 
 	@RequestMapping(value = "/insert")
 	public ResponseEntity<?> insert() {
-		createMember();
+		//		createMember();
 		//		createGoods();
 		//		createProperties();
 		//		createMessage();
 		//		createAddress();
 		//		createCartFavoriteGoods();
-
 		//		createOrders();
+		createWithdraw();
 
 		return ResponseEntity.Success();
+	}
+
+	private void createWithdraw() {
+
+		Random random = new Random();
+		for (int i = 0; i < 20; i++) {
+			WithdrawApplyRecord record = new WithdrawApplyRecord();
+			record.setUid(10000);
+			record.setAmount(new BigDecimal(random.nextInt(5000)));
+			record.setChannel("WECHAT");
+			record.setApplyTime(new Date());
+			switch (random.nextInt(3)) {
+				case WithdrawStatus.待审核:
+					record.setStatus(WithdrawStatus.待审核);
+					break;
+				case WithdrawStatus.审核通过:
+					record.setStatus(WithdrawStatus.审核通过);
+					record.setAuditlog("通过审核");
+					record.setAuditTime(new Date());
+					record.setCompleteTime(new Date());
+					break;
+				case WithdrawStatus.审核不通过:
+					record.setStatus(WithdrawStatus.审核不通过);
+					record.setAuditlog("未通过身份认证");
+					record.setAuditTime(new Date());
+					break;
+			}
+		}
+
 	}
 
 	private void createOrders() {
@@ -293,18 +323,18 @@ public class InsertController {
 
 			goods.setCategoryId(categorys[random.nextInt(categorys.length)]);
 			goods.setPrice(new BigDecimal(random.nextInt(500) + "." + random.nextInt(9)));
+			goods.setOriginPrice(goods.getPrice());
 			goods.setInventory(random.nextInt(1000));
 			goods.setShelves(true);
 			goods.setType(GoodsTypes.普通商品);
 			goods.setPromotion(false);
 			if (random.nextInt(10) < 3) {
 				goods.setPromotion(true);
+				goods.setPrice(goods.getOriginPrice().multiply(new BigDecimal(0.85)).setScale(2, BigDecimal.ROUND_DOWN));
 				Map<String, Object> params = Maps.newHashMap();
 				params.put("type", "single:discount");// 促销类型
 				params.put("discount", "0.85");// 折扣
 				params.put("discountName", "85折");// 折扣名称
-				// params.put("reduceAmoun", "18.5");// 折扣减免金额
-				// params.put("presentPrice", "18.5");// 折扣减免金额
 				params.put("imgurl", "http://211.149.241.76/images/tmp/goods_" + (random.nextInt(2) + 1) + "_promotion.png");
 				goods.setPromotionParams(params);
 			}

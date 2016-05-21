@@ -1,4 +1,4 @@
-package com.micromall.payment.dto.common;
+package com.micromall.repository.entity.common;
 
 public interface PaymentStatus {
 

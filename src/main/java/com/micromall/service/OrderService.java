@@ -86,6 +86,11 @@ public class OrderService {
 	}
 
 	@Transactional(readOnly = true)
+	public Order getOrder(int uid, String orderNo) {
+		return orderMapper.selectOneByWhereClause(Criteria.create().andEqualTo("uid", uid).andEqualTo("order_no", orderNo).build());
+	}
+
+	@Transactional(readOnly = true)
 	public OrderDetails getOrderDetails(int uid, String orderNo) {
 		Order order = orderMapper.selectOneByWhereClause(Criteria.create().andEqualTo("uid", uid).andEqualTo("order_no", orderNo).build());
 		if (order == null) {
@@ -131,8 +136,6 @@ public class OrderService {
 		// 下单
 		order.setUid(createOrder.getUid());
 		order.setTotalAmount(createOrder.getTotalAmount());
-		order.setRealpayAmount(createOrder.getRealpayAmount());
-		order.setBalancepayAmount(createOrder.getBalancepayAmount());
 		order.setDeductionAmount(createOrder.getDeductionAmount());
 		order.setFreight(createOrder.getFreight());
 		order.setDiscounts(createOrder.getDiscounts());
@@ -165,7 +168,7 @@ public class OrderService {
 		return order;
 	}
 
-	public boolean refundProcess(String orderNo, boolean agreed) {
+	public boolean refundAudit(String orderNo, boolean agreed) {
 		Order order = orderMapper.selectOneByWhereClause(Criteria.create().andEqualTo("order_no", orderNo).build());
 		if (order == null) {
 			throw new LogicException("订单不存在");

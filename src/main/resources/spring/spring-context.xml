@@ -30,10 +30,6 @@
 
     <bean class="com.micromall.utils.SpringBeanUtils" scope="singleton"/>
 
-    <bean class="com.micromall.payment.utils.PropertiesHelper">
-        <property name="propertiesDir" value="${payment.properties.dir}"></property>
-    </bean>
-
     <bean id="paymentNotifyTaskThreadPool"
           class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
         <!-- 核心线程数 -->

@@ -18,6 +18,8 @@ public class WithdrawApplyRecord extends IdEntity {
 	private Integer    uid;
 	// 提现金额
 	private BigDecimal amount;
+	// 提现后的佣金余额
+	private BigDecimal balance;
 	/**
 	 * 提现渠道 @{@link WithdrawChannels}
 	 */
@@ -52,6 +54,14 @@ public class WithdrawApplyRecord extends IdEntity {
 
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
+	}
+
+	public BigDecimal getBalance() {
+		return balance;
+	}
+
+	public void setBalance(BigDecimal balance) {
+		this.balance = balance;
 	}
 
 	public String getChannel() {

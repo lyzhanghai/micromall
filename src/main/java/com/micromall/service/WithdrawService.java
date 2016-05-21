@@ -95,10 +95,58 @@ public class WithdrawService {
 		WithdrawApplyRecord withdrawRecord = new WithdrawApplyRecord();
 		withdrawRecord.setUid(uid);
 		withdrawRecord.setAmount(withdraw_amount);
+		withdrawRecord.setBalance(cashAccount.getCommission());
 		withdrawRecord.setChannel(channel);
 		withdrawRecord.setStatus(WithdrawStatus.待审核);
 		withdrawRecord.setApplyTime(new Date());
 		withdrawRecordMapper.insert(withdrawRecord);
+	}
+
+	public boolean withdrawAudit(int id, String auditlog, boolean agreed) {
+		WithdrawApplyRecord record = withdrawRecordMapper.selectByPrimaryKey(id);
+		if (record == null) {
+			throw new LogicException("提现申请记录不存在");
+		}
+		if (record.getStatus() != WithdrawStatus.待审核) {
+			throw new LogicException("不能重复审核");
+		}
+
+		WithdrawApplyRecord _Modify = new WithdrawApplyRecord();
+		_Modify.setId(record.getId());
+		_Modify.setAuditTime(new Date());
+		if (agreed) {
+			_Modify.setStatus(WithdrawStatus.审核通过);
+			_Modify.setAuditlog("通过审核");
+			_Modify.setCompleteTime(new Date());
+			withdrawRecordMapper.updateByPrimaryKey(_Modify);
+		} else {
+			_Modify.setStatus(WithdrawStatus.审核不通过);
+			_Modify.setAuditlog(auditlog);
+			withdrawRecordMapper.updateByPrimaryKey(_Modify);
+
+			CashAccount cashAccount = cashAccountService.getCashAccount(record.getUid());
+			if (cashAccount == null) {
+				throw new LogicException("会员账户信息错误");
+			}
+			// 账户金额恢复
+			if (cashAccountService.incrementCommission(record.getUid(), record.getAmount()) == 0) {
+				throw new LogicException("退回会员佣金账户提现金额失败");
+			}
+			cashAccount = cashAccountService.getCashAccount(record.getUid());
+
+			// 账户资金变动记录
+			CashRecord cashRecord = new CashRecord();
+			cashRecord.setUid(record.getUid());
+			cashRecord.setCashType(CashTypes.佣金账户余额);
+			cashRecord.setAmount(record.getAmount());//取负
+			cashRecord.setType(CashChangeTypes.佣金提现退款);
+			cashRecord.setBalance(cashAccount.getBalance());
+			cashRecord.setCommission(cashAccount.getCommission());
+			cashRecord.setContent("佣金提现失败回退");
+			cashRecord.setCreateTime(new Date());
+			cashRecordMapper.insert(cashRecord);
+		}
+		return true;
 	}
 
 }

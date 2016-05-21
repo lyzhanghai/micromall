@@ -28,6 +28,8 @@ public class Goods extends IdEntity {
 	private Integer             categoryId;
 	// 商品价格
 	private BigDecimal          price;
+	// 商品原始价格
+	private BigDecimal          originPrice;
 	// 商品库存
 	private Integer             inventory;
 	// 是否上架（商品卖完后自动下架）
@@ -115,6 +117,14 @@ public class Goods extends IdEntity {
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+
+	public BigDecimal getOriginPrice() {
+		return originPrice;
+	}
+
+	public void setOriginPrice(BigDecimal originPrice) {
+		this.originPrice = originPrice;
 	}
 
 	public Integer getInventory() {
