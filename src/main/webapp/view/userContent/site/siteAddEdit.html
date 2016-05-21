@@ -29,7 +29,7 @@
                     所在地区:
                 </span>
                 <div class="set-input">
-                    <input type="text" name="phone" placeholder="所在地区" ng-model="addressItemData.site">
+                    <input type="text" name="phone" placeholder="所在地区" ng-model="address.site">
                 </div>
                 <i class="iconfont icon-qianjin">
 
@@ -58,18 +58,17 @@
         </div>
     </div>
     <div class="buttons">
-        <a href="javascript:;">取&nbsp;&nbsp;消</a>
+        <a href="javascript:;" back>取&nbsp;&nbsp;消</a>
         <a href="javascript:;" class="submit" ng-click="submit()">保&nbsp;&nbsp;存</a>
     </div>
 </form>
 
-
 <modal-dialog class="china-area" show='modalShown' dialog-title='请选择省市县' on-close='logClose()'>
     <div class="select-main">
-        <china-area-selector-with-wrapper region="address"></china-area-selector-with-wrapper>
+        <china-area-selector-with-wrapper region="$parent.$parent.address"></china-area-selector-with-wrapper>
     </div>
     <div class="buttons">
-        <button type="button" ng-click="selectClose()">取消</button>
+        <button type="button" ng-click="toggleModal()">取消</button>
         <button type="button" class="submit" ng-click="siteSelect()">确定</button>
     </div>
 </modal-dialog>

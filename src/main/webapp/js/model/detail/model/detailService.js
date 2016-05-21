@@ -9,4 +9,8 @@ app.service('detailService',["$http", function($http) {
     this.addFavorite = function (postData,callback) {
         $http.post(servicePath + 'favorite/join',postData).success(callback);
     };
+
+    this.addCart = function (postData,callback) {
+        $http.post(servicePath + 'cart/join',postData).success(callback);
+    };
 }]);

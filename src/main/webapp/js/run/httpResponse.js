@@ -4,7 +4,7 @@
 app.factory('authHttpResponseInterceptor',['$q','$location','$rootScope','$timeout',function($q,$location,$rootScope,$timeout){
     return {
         request: function (config) {
-            if(config.url.indexOf('-') > -1){
+            if(config.url.indexOf('-') > -1 || config.url.indexOf('json') > -1){
                 return config;
             }
             if(config.method == 'GET'){

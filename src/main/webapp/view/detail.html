@@ -40,12 +40,35 @@
         <i class="iconfont icon-shoucang"></i>
         <span>收藏</span>
     </a>
-    <a href="javascript:;" class="add">加入购物车</a>
-    <a href="javascript:;" class="buy">立即购买</a>
+    <a href="javascript:;" class="add" ng-click="go('addCart')">加入购物车</a>
+    <a href="javascript:;" class="buy" ng-click="go('buy')">立即购买</a>
 </div>
 
 <div class="back" back>
     <a>
         <i class="iconfont icon-qianjin"></i>
     </a>
+</div>
+
+<div class="buy-dialog" ng-class="{'buy-dialog-show' : buyDialog}">
+    <div class="buy-content-lay">
+        <a href="javascript" class="buy-close" ng-click="buyDialogToggle()">X</a>
+        <section class="goods-info">
+            <img lazy-img="{{detailData.images[0]}}" class="goods-img">
+            <span class="price">￥{{detailData.price}}</span>
+            <span>(剩余{{detailData.inventory}}件)</span>
+        </section>
+        <section class="goods-evt">
+            <div class="left">购买数量</div>
+            <div class="shop-num">
+                <button ng-click="numOption('puls')">+</button>
+                <input type="text" ng-model="getData.buyNumber" ng-blur="shopBlurNum()" ng-change="shopChangeNum()">
+                <button ng-click="numOption('redu')">-</button>
+            </div>
+        </section>
+        <div class="detail-buy-info base-input-lay">
+            <button class="submit submit2" ng-click="addCart()" ng-if="goModel == 'addCart'">加入购物车</button>
+            <button class="submit" ng-click="addCart()" ng-if="goModel !== 'addCart'">选好了,立即购买</button>
+        </div>
+    </div>
 </div>

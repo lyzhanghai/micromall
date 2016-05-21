@@ -9,4 +9,8 @@ app.service('siteListService',["$http", function($http) {
     this.delete = function (postData,callback) {
         $http.post(servicePath + 'address/delete',postData).success(callback);
     };
+
+    this.defaulAddress = function (postData,callback) {
+        $http.post(servicePath + 'address/update',postData).success(callback);
+    };
 }]);

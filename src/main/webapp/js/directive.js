@@ -9,6 +9,7 @@ app.directive('back',['$timeout',function($timeout){
 
                 elm.bind('click',function(){
                     window.history.go(-1);
+                    console.log(1)
                 });
             },0);
         }

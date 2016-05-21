@@ -27,13 +27,13 @@
         {name : 'index', url: '/indexMain.html',templateUrl:'view/indexMain.html', controller: "indexCtr",tabSelectIndex : 1},
         {name : 'goodsList', url: '/goodsList.html?:{searchText || categoryId}',templateUrl:'view/goodsList.html', controller: "goodsListCtr",tabSelectIndex : 2},
         {name : 'detail', url: '/detail.html?:goodsId',templateUrl:'view/detail.html', controller: "detailCtr",tabSelectIndex : 2},
+        {name : 'shopCart', url: '/shopCart.html',templateUrl:'view/shopCart.html', controller: "shopCartCtr",tabSelectIndex : 4},
         {name : 'userInfo/info', url: '/userContent/info.html',templateUrl:'view/userContent/info.html', controller: "userInfoCtr",tabSelectIndex : 3},
         {name : 'userInfo/collect', url: '/userContent/collect.html',templateUrl:'view/userContent/collect.html', controller: "userCollectCtr",tabSelectIndex : 3},
         {name : 'userInfo/setUp', url: '/userContent/setUp.html',templateUrl:'view/userContent/setUp.html', controller: "",tabSelectIndex : 3},
         {name : 'userInfo/setInfo', url: '/userContent/setUp/setInfo.html',templateUrl:'view/userContent/setUp/setInfo.html', controller: "setInfoCtr",tabSelectIndex : 3},
         {name : 'userInfo/siteList', url: '/userContent/site/list.html',templateUrl:'view/userContent/site/siteList.html', controller: "siteListCtr",tabSelectIndex : 3},
-        {name : 'userInfo/siteAddEdit', url: '/userContent/site/addEdit.html?:{type || id}',templateUrl:'view/userContent/site/siteAddEdit.html', controller: "siteAddEditCtr",tabSelectIndex : 3}
-
+        {name : 'userInfo/siteAddEdit', url: '/userContent/site/addEdit.html?:id',templateUrl:'view/userContent/site/siteAddEdit.html', controller: "siteAddEditCtr",tabSelectIndex : 3}
     ];
 
     app.config(["$stateProvider","$urlRouterProvider","$httpProvider","lazyImgConfigProvider","czContentForConfigProvider",function($stateProvider, $urlRouterProvider,$httpProvider,lazyImgConfigProvider,czContentForConfigProvider) {

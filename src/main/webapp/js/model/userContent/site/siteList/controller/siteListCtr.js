@@ -15,5 +15,11 @@ app.controller('siteListCtr',["$scope","siteListService","messageFactory", funct
             $scope.listData.splice(index,1);
             messageFactory({text:'删除成功'});
         })
-    }
+    };
+
+    $scope.defaulAddress = function(item){
+        siteListService.defaulAddress(item,function(){
+            messageFactory({text : '设为默认地址成功'});
+        })
+    };
 }]);

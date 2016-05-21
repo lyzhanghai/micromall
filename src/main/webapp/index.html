@@ -35,8 +35,8 @@
             <div class="fix-bottom-main">
                 <a href="{{prefix}}indexMain.html" ng-class="{'active' : targetScope == 1}"><i class="iconfont icon-home"></i><p>首页</p></a>
                 <a href="{{prefix}}goodsList.html"  ng-class="{'active' : targetScope == 2}"><i class="iconfont icon-fenlei"></i><p>商品</p></a>
-                <a href="{{prefix}}/userContent/info.html"  ng-class="{'active' : targetScope == 3}"><i class="iconfont icon-xiazai"></i><p>我的</p></a>
-                <a href="#/user/info" class=""><i class="iconfont icon-gouwuche"></i><p>购物车</p></a>
+                <a href="{{prefix}}userContent/info.html"  ng-class="{'active' : targetScope == 3}"><i class="iconfont icon-xiazai"></i><p>我的</p></a>
+                <a href="{{prefix}}shopCart.html" class=""><i class="iconfont icon-gouwuche"></i><p>购物车</p></a>
             </div>
         </div>
     </div>
@@ -80,6 +80,9 @@
 <script src="js/run/ios9RouteStart.js"></script>
 
 <script src="js/controller.js"></script>
+<script src="js/directive.js"></script>
+
+
 <script src="js/model/common/controller/htlistCtr.js"></script>
 <script src="js/model/common/model/htlistService.js"></script>
 
@@ -89,9 +92,11 @@
 <script src="js/model/detail/controller/detailCtr.js"></script>
 <script src="js/model/detail/model/detailService.js"></script>
 
-<script src="js/model/goodsList/controller/goodsListCtr.js"></script>
-<script src="js/model/goodsList/model/goodsListService.js"></script>
-<script src="js/model/goodsList/model/goodsListCacheFactory.js"></script>
+<script src="js/model/detail/controller/detailCtr.js"></script>
+<script src="js/model/detail/model/detailService.js"></script>
+
+<script src="js/model/shopCart/controller/shopCart.js"></script>
+<script src="js/model/shopCart/model/shopCartService.js"></script>
 
 
 <script src="js/model/userContent/userInfo/controller/userInfoCtr.js"></script>

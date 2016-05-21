@@ -1,38 +1,38 @@
 /**
  * Created by kangdaye on 16/5/20.
  */
-app.controller('siteAddEditCtr',["$scope","siteAddEditService","messageFactory", function($scope,siteAddEditService,messageFactory) {
+app.controller('siteAddEditCtr',["$scope","$stateParams","siteAddEditService","messageFactory", function($scope,$stateParams,siteAddEditService,messageFactory) {
+    var id = $stateParams.id;
+
     $scope.toggleModal = function() {
         $scope.modalShown = !$scope.modalShown;
     };
 
     $scope.addressItemData = {};
+    $scope.address = {};
 
-    // if($scope.model != 'add'){
-    //     userService.site({
-    //         op:'getter',
-    //         addressId:$scope.model
-    //     },function(data){
-    //         $scope.postData = data.model;
-    //         $scope.postData.address = data.model.addressDetail;
-    //         $scope.postData.op = 'edit';
-    //         $scope.postData.site = $scope.postData.province + $scope.postData.city + $scope.postData.country;
-    //         $scope.address.province = $scope.postData.province;
-    //         $scope.address.city = $scope.postData.city;
-    //         $scope.address.area = $scope.postData.country;
-    //     })
-    // }
+    if(id){
+        $scope.addressItemData.id = id;
+        siteAddEditService.addressGet($scope.addressItemData,function(data){
+            $scope.addressItemData = data.data;
+            angular.extend($scope.address,$scope.addressItemData);
+        });
+    }
 
     $scope.siteSelect =function(){ //选择地区成功
-        $scope.addressItemData.site = $scope.address.province + $scope.address.city + $scope.address.area;
-        $scope.addressItemData.province = $scope.address.province;
-        $scope.addressItemData.city = $scope.address.city;
-        $scope.addressItemData.county = $scope.address.area;
+        angular.extend($scope.addressItemData,$scope.address);
+        $scope.toggleModal();
     };
 
     $scope.submit = function(){ //提交
-        siteAddEditService.addressAdd($scope.addressItemData,function(){
-            window.history.go(-1);
-        });
+        if(id){
+            siteAddEditService.addressUpdate($scope.addressItemData,function(){
+                window.history.go(-1);
+            });
+        }else{
+            siteAddEditService.addressAdd($scope.addressItemData,function(){
+                window.history.go(-1);
+            });
+        }
     };
 }]);
