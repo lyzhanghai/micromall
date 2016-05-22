@@ -124,10 +124,8 @@ public class InsertController {
 			Order order = new Order();
 			order.setUid(10000);
 			order.setTotalAmount(new BigDecimal(random.nextInt(500) + "." + random.nextInt(9)));
-			order.setRealpayAmount(new BigDecimal(199.5));
-			order.setBalancepayAmount(BigDecimal.ZERO);
 			order.setDeductionAmount(BigDecimal.ZERO);
-			order.setFreight(random.nextBoolean() ? 0 : (random.nextBoolean() ? 5 : 8));
+			order.setFreight(0);
 			order.setDiscounts(null);
 			order.setCoupons(null);
 			order.setLeaveMessage("这是买家留言");
