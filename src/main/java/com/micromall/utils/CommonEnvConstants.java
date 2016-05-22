@@ -45,7 +45,7 @@ public final class CommonEnvConstants {
 	/* 服务器请求处理出错，跳转到的页面 */
 	public static final String SERVER_ERROR_REDIRECT_URL        = PropertyConfigurerUtils.getString("server.error.redirect_url");
 	/* 访问的页面找不到，跳转到的页面 */
-	public static final String SERVER_NOTFOUND_REDIRECT_URL     = PropertyConfigurerUtils.getString("server.notfound.redirect_url");
+	public static final String SERVER_INDEX_REDIRECT_URL        = PropertyConfigurerUtils.getString("server.index.redirect_url");
 
 	/**
 	 * =============== 手机号码登录配置 ===============

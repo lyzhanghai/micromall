@@ -9,7 +9,6 @@ import com.micromall.service.*;
 import com.micromall.service.vo.CreateOrder;
 import com.micromall.service.vo.OrderSettle;
 import com.micromall.utils.HttpServletUtils;
-import com.micromall.web.controller.BasisController;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.annotation.Authentication;
 import org.apache.commons.lang3.StringUtils;
@@ -118,10 +117,10 @@ public class BuyController extends BasisController {
 		totalAmount = totalAmount.add(new BigDecimal(freight));
 		orderSettle.setTotalAmount(totalAmount.setScale(2, BigDecimal.ROUND_DOWN));
 		orderSettle.setFreight(freight);
+		orderSettle.setAddress(shippingAddressService.getDefaultAddress(getLoginUser().getUid()));// 默认收货地址
 
 		String settleId = UUID.randomUUID().toString().replaceAll("-", "");
 		Map<String, Object> data = Maps.newHashMap();
-		data.put("shippingAddress", shippingAddressService.getDefaultAddress(getLoginUser().getUid()));// 默认收货地址
 		data.put("orderSettle", orderSettle);
 		// data.put("coupons", new ArrayList<>());// 可选的优惠劵
 		data.put("settleId", settleId);
@@ -142,7 +141,7 @@ public class BuyController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/buy")
-	public ResponseEntity<?> buy(HttpServletRequest request, String settleId, String leaveMessage, int addressId) {
+	public ResponseEntity<?> buy(HttpServletRequest request, String settleId, String leaveMessage) {
 		OrderSettle orderSettle = (OrderSettle)request.getSession().getAttribute("_SETTLE_ID:" + settleId);
 		if (orderSettle == null) {
 			return ResponseEntity.Failure("当前访问页面已失效，请重新提交申请");
@@ -156,7 +155,7 @@ public class BuyController extends BasisController {
 		createOrder.setCoupons(Lists.newArrayList());
 		createOrder.setLeaveMessage(leaveMessage);
 		// 收货地址
-		ShippingAddress address = shippingAddressService.getAddress(getLoginUser().getUid(), addressId);
+		ShippingAddress address = orderSettle.getAddress();
 		createOrder.setShippingAddress(
 				address.getProvince() + address.getCity() + StringUtils.trimToEmpty(address.getCounty()) + address.getDetailedAddress());
 		createOrder.setConsigneeName(address.getConsigneeName());
@@ -167,7 +166,10 @@ public class BuyController extends BasisController {
 
 		// 创建订单
 		Order order = orderService.createOrder(createOrder);
-		return ResponseEntity.Success(orderService.getOrderDetails(order.getUid(), order.getOrderNo()));
+		Map<String, Object> data = Maps.newHashMap();
+		data.put("orderNo", order.getOrderNo());
+		data.put("amount", order.getTotalAmount());
+		return ResponseEntity.Success(data);
 	}
 
 	/**

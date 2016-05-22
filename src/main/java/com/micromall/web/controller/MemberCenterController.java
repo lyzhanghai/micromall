@@ -124,7 +124,7 @@ public class MemberCenterController extends BasisController {
 	 * @return
 	 */
 	@RequestMapping(value = "/update_basisinfo")
-	public ResponseEntity<?> update_basisinfo(String nickname, String gender, String birthday) {
+	public ResponseEntity<?> update_basisinfo(String nickname, String gender, @Deprecated String birthday) {
 		if (StringUtils.isEmpty(nickname)) {
 			ResponseEntity.Failure("昵称不能为空");
 		}

@@ -81,6 +81,7 @@ public class GoodsController extends BasisController {
 		if (goods.getInventory() <= 0) {
 			goods.setShelves(false);
 		}
+		// TODO 运费计算
 		return ResponseEntity.Success(goods);
 	}
 
