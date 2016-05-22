@@ -34,17 +34,17 @@ public class WithdrawController extends BasisController {
 	 * 申请提现
 	 *
 	 * @param amount 提现金额
-	 * @param channel 提现渠道
 	 * @return
 	 */
 	@RequestMapping(value = "/withdraw/apply")
-	public ResponseEntity<?> apply(int amount, String channel) {
+	public ResponseEntity<?> apply(int amount) {
 		if (amount < CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MIN_AMOUNT) {
 			return ResponseEntity.Failure("提现金额不得低于" + CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MIN_AMOUNT + "元");
 		}
 		if (amount > CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MAX_AMOUNT) {
 			return ResponseEntity.Failure("提现金额不得大于" + CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MAX_AMOUNT + "元");
 		}
+		String channel = "WECHAT";
 		if (StringUtils.isEmpty(channel)) {
 			return ResponseEntity.Failure("未选择提现渠道");
 		}

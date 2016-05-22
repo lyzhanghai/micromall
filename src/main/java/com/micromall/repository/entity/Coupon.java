@@ -8,6 +8,7 @@ import java.util.Date;
  * Created by zhangzx on 16/3/23.
  * 用户优惠券
  */
+@Deprecated
 public class Coupon extends IdEntity {
 
 	// 所属用户id

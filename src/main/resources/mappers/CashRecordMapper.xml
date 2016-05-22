@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.micromall.repository.CashRecordMapper">
+    <resultMap id="BaseResultMap" type="com.micromall.repository.entity.CashRecord">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="cash_type" property="cashType" jdbcType="TINYINT"/>
+        <result column="amount" property="amount" jdbcType="DECIMAL"/>
+        <result column="balance" property="balance" jdbcType="DECIMAL"/>
+        <result column="commission" property="commission" jdbcType="DECIMAL"/>
+        <result column="type" property="type" jdbcType="TINYINT"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.micromall.repository.entity.CashRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into cash_record (id, uid, cash_type, amount, balance, commission, type, content, create_time)
+        values (
+        #{id,jdbcType=INTEGER},
+        #{uid,jdbcType=INTEGER},
+        #{cashType,jdbcType=TINYINT},
+        #{amount,jdbcType=DECIMAL},
+        #{balance,jdbcType=DECIMAL},
+        #{commission,jdbcType=DECIMAL},
+        #{type,jdbcType=TINYINT},
+        #{content,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+</mapper>

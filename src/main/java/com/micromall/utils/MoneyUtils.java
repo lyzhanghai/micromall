@@ -1,4 +1,4 @@
-package com.micromall.payment.utils;
+package com.micromall.utils;
 
 
 public class MoneyUtils {

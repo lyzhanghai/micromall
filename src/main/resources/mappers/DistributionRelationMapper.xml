@@ -73,7 +73,7 @@
 
     <select id="lowerMemberStat" resultType="int" parameterType="java.util.Map">
         SELECT count(*) FROM
-        distribution_relation t1 LEFT JOIN member t2 ON t1.lower_uid = t2.id
+        distribution_relation t1 RIGHT JOIN member t2 ON t1.lower_uid = t2.id
         WHERE
         t1.uid = #{uid}
         <if test="level != null">

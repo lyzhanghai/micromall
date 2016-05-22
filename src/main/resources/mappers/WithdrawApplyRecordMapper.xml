@@ -5,6 +5,7 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="uid" property="uid" jdbcType="INTEGER"/>
         <result column="amount" property="amount" jdbcType="DECIMAL"/>
+        <result column="balance" property="balance" jdbcType="DECIMAL"/>
         <result column="channel" property="channel" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="TINYINT"/>
         <result column="auditlog" property="auditlog" jdbcType="VARCHAR"/>
@@ -14,7 +15,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id, uid, amount, channel, status, auditlog, apply_time, audit_time, complete_time
+        id, uid, amount, balance, channel, status, auditlog, apply_time, audit_time, complete_time
     </sql>
 
     <sql id="Where_Clause">
@@ -50,9 +51,9 @@
     </sql>
 
     <insert id="insert" parameterType="com.micromall.repository.entity.WithdrawApplyRecord" useGeneratedKeys="true" keyProperty="id">
-        insert into withdraw_record (id, uid, amount,channel, status, auditlog,apply_time, audit_time, complete_time
+        insert into withdraw_record (id, uid, amount,balance,channel, status, auditlog,apply_time, audit_time, complete_time
         )
-        values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL},
+        values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, #{balance,jdbcType=DECIMAL},
         #{channel,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{auditlog,jdbcType=VARCHAR},
         #{applyTime,jdbcType=TIMESTAMP}, #{auditTime,jdbcType=TIMESTAMP}, #{completeTime,jdbcType=TIMESTAMP}
         )
@@ -66,6 +67,9 @@
             </if>
             <if test="amount != null">
                 amount = #{amount,jdbcType=DECIMAL},
+            </if>
+            <if test="balance != null">
+                balance = #{balance,jdbcType=DECIMAL},
             </if>
             <if test="channel != null">
                 channel = #{channel,jdbcType=VARCHAR},
@@ -141,7 +145,7 @@
     </select>
 
     <select id="withdrawStat" parameterType="com.micromall.utils.Condition" resultType="java.math.BigDecimal">
-        select sum(amount)
+        select IFNULL(sum(amount),0)
         from withdraw_record
         <include refid="Where_Clause"/>
     </select>

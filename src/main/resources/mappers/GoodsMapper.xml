@@ -7,6 +7,7 @@
         <result column="main_image" property="mainImage" jdbcType="VARCHAR"/>
         <result column="category_id" property="categoryId" jdbcType="INTEGER"/>
         <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="origin_price" property="originPrice" jdbcType="DECIMAL"/>
         <result column="inventory" property="inventory" jdbcType="INTEGER"/>
         <result column="shelves" property="shelves" jdbcType="CHAR"/>
         <result column="type" property="type" jdbcType="TINYINT"/>
@@ -25,7 +26,7 @@
         <result column="product_params" property="productParams" jdbcType="LONGVARCHAR"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, title, main_image, category_id, price, inventory, shelves, type, promotion,
+        id, title, main_image, category_id, price,origin_price, inventory, shelves, type, promotion,
         promotion_params, freight, sort, sales_volume, deleted, create_time, update_time
     </sql>
     <sql id="Full_Column_List">
@@ -75,12 +76,12 @@
 
     <insert id="insert" parameterType="com.micromall.repository.entity.Goods" useGeneratedKeys="true" keyProperty="id">
         insert into goods (id, title, main_image,
-        category_id, price, inventory,shelves, type, promotion,
+        category_id, price,origin_price, inventory,shelves, type, promotion,
         sort, sales_volume, deleted,create_time, update_time, images,
         promotion_params, descr, product_params, freight
         )
         values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{mainImage,jdbcType=VARCHAR},
-        #{categoryId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{inventory,jdbcType=INTEGER},
+        #{categoryId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{originPrice,jdbcType=DECIMAL}, #{inventory,jdbcType=INTEGER},
         #{shelves,jdbcType=CHAR}, #{type,jdbcType=TINYINT}, #{promotion,jdbcType=CHAR},
         #{sort,jdbcType=SMALLINT}, #{salesVolume,jdbcType=INTEGER}, #{deleted,jdbcType=CHAR},
         #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{images,jdbcType=LONGVARCHAR},
@@ -101,6 +102,9 @@
             </if>
             <if test="price != null">
                 price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="originPrice != null">
+                origin_price = #{originPrice,jdbcType=DECIMAL},
             </if>
             <if test="inventory != null">
                 inventory = #{inventory,jdbcType=INTEGER},

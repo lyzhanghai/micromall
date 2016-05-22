@@ -6,7 +6,6 @@
         <result column="uid" property="uid" jdbcType="INTEGER"/>
         <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
         <result column="total_amount" property="totalAmount" jdbcType="DECIMAL"/>
-        <result column="realpay_amount" property="realpayAmount" jdbcType="DECIMAL"/>
         <result column="balancepay_amount" property="balancepayAmount" jdbcType="DECIMAL"/>
         <result column="deduction_amount" property="deductionAmount" jdbcType="DECIMAL"/>
         <result column="freight" property="freight" jdbcType="INTEGER"/>
@@ -68,7 +67,7 @@
     </sql>
 
     <sql id="Column_sql">
-        id, uid, order_no, total_amount, realpay_amount, balancepay_amount, deduction_amount,freight,discounts
+        id, uid, order_no, total_amount, deduction_amount,freight,discounts
         , coupons,leave_message, status,refund_status, shipping_address, consignee_name, consignee_phone, postcode,
         delivery_company, delivery_code, delivery_number, delivery_time, pay_time, confirm_delivery_time, apply_refund_time,
         refund_complete_time, refund_reason,close_time, closelog, timeout_close_time,create_time, update_time
@@ -77,7 +76,7 @@
     <insert id="insert" parameterType="com.micromall.repository.entity.Order" useGeneratedKeys="true" keyProperty="id">
         insert into orders (<include refid="Column_sql"/>)
         values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{orderNo,jdbcType=VARCHAR},
-        #{totalAmount,jdbcType=DECIMAL}, #{realpayAmount,jdbcType=DECIMAL}, #{balancepayAmount,jdbcType=DECIMAL},
+        #{totalAmount,jdbcType=DECIMAL},
         #{deductionAmount,jdbcType=DECIMAL}, #{freight,jdbcType=INTEGER},
         #{discounts,jdbcType=LONGVARCHAR}, #{coupons,jdbcType=LONGVARCHAR},
         #{leaveMessage,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT},#{refundStatus,jdbcType=TINYINT},
@@ -94,12 +93,6 @@
         <set>
             <if test="totalAmount != null">
                 total_amount = #{totalAmount,jdbcType=DECIMAL},
-            </if>
-            <if test="realpayAmount != null">
-                realpay_amount = #{realpayAmount,jdbcType=DECIMAL},
-            </if>
-            <if test="balancepayAmount != null">
-                balancepay_amount = #{balancepayAmount,jdbcType=DECIMAL},
             </if>
             <if test="deductionAmount != null">
                 deduction_amount = #{deductionAmount,jdbcType=DECIMAL},

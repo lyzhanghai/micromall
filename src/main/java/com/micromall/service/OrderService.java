@@ -14,10 +14,12 @@ import com.micromall.repository.entity.common.OrderStatus.RefundStatus;
 import com.micromall.service.vo.CreateOrder;
 import com.micromall.service.vo.ListViewOrder;
 import com.micromall.service.vo.LogisticsInfo;
+import com.micromall.service.vo.OrderDetails;
 import com.micromall.utils.CommonEnvConstants;
 import com.micromall.utils.Condition.Criteria;
 import com.micromall.utils.LogicException;
 import com.micromall.utils.OrderNumberUtils;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +39,7 @@ public class OrderService {
 
 	private static ExecutorService executor = Executors.newFixedThreadPool(1);
 	@Resource
-	MemberService memberService;
+	private MemberService          memberService;
 	@Resource
 	private OrderMapper            orderMapper;
 	@Resource
@@ -46,17 +48,12 @@ public class OrderService {
 	private CommissionRecordMapper commissionRecordMapper;
 	@Resource
 	private CashAccountService     cashAccountService;
+	@Resource
+	private CartService            cartService;
 
 	public Map<String, Integer> statistics(int uid) {
 		List<Map<String, Object>> orderCount = orderMapper.statisticsUserOrderCount(uid);
 		Map<String, Integer> data = Maps.newHashMap();
-		/*
-		lv1.put("waitPay", new BigDecimal(0));//未付款订单
-		lv1.put("waitDelivery", new BigDecimal(0));//待发货订单
-		lv1.put("waitReceive", new BigDecimal(0));//待收货订单
-		lv1.put("complete", new BigDecimal(0));//已完成订单
-		lv1.put("refund_closed", new BigDecimal(0));//已取消订单
-		*/
 		for (Map<String, Object> map : orderCount) {
 			data.put((String)map.get("name"), Integer.valueOf(map.get("count").toString()));
 		}
@@ -89,14 +86,25 @@ public class OrderService {
 	}
 
 	@Transactional(readOnly = true)
-	public Order getOrderDetails(int uid, String orderNo) {
+	public Order getOrder(int uid, String orderNo) {
+		return orderMapper.selectOneByWhereClause(Criteria.create().andEqualTo("uid", uid).andEqualTo("order_no", orderNo).build());
+	}
+
+	@Transactional(readOnly = true)
+	public OrderDetails getOrderDetails(int uid, String orderNo) {
 		Order order = orderMapper.selectOneByWhereClause(Criteria.create().andEqualTo("uid", uid).andEqualTo("order_no", orderNo).build());
 		if (order == null) {
 			throw new LogicException("订单不存在");
 		}
-		order.setCanApplyRefund(canApplyRefund(order.getStatus(), order.getRefundStatus(), order.getConfirmDeliveryTime()));
-		order.setGoodsList(orderGoodsMapper.selectMultiByWhereClause(Criteria.create().andEqualTo("order_no", orderNo).build()));
-		return order;
+		OrderDetails details = new OrderDetails();
+		try {
+			BeanUtils.copyProperties(details, order);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		details.setCanApplyRefund(canApplyRefund(order.getStatus(), order.getRefundStatus(), order.getConfirmDeliveryTime()));
+		details.setGoodsList(orderGoodsMapper.selectMultiByWhereClause(Criteria.create().andEqualTo("order_no", orderNo).build()));
+		return details;
 	}
 
 	private boolean canApplyRefund(Integer status, Integer refundStatus, Date confirmDeliveryTime) {
@@ -128,8 +136,6 @@ public class OrderService {
 		// 下单
 		order.setUid(createOrder.getUid());
 		order.setTotalAmount(createOrder.getTotalAmount());
-		order.setRealpayAmount(createOrder.getRealpayAmount());
-		order.setBalancepayAmount(createOrder.getBalancepayAmount());
 		order.setDeductionAmount(createOrder.getDeductionAmount());
 		order.setFreight(createOrder.getFreight());
 		order.setDiscounts(createOrder.getDiscounts());
@@ -150,15 +156,19 @@ public class OrderService {
 		order.setTimeoutCloseTime(calendar.getTime());
 		orderMapper.insert(order);
 
+		List<Integer> goodsIds = Lists.newArrayList();
 		for (OrderGoods orderGoods : createOrder.getGoodsList()) {
+			goodsIds.add(orderGoods.getGoodsId());
 			orderGoods.setOrderNo(order.getOrderNo());
 			orderGoods.setCreateTime(new Date());
 			orderGoodsMapper.insert(orderGoods);
 		}
+		// 从购物车删除购买的商品
+		cartService.deleteGoods(order.getUid(), goodsIds);
 		return order;
 	}
 
-	public boolean refundProcess(String orderNo, boolean agreed) {
+	public boolean refundAudit(String orderNo, boolean agreed) {
 		Order order = orderMapper.selectOneByWhereClause(Criteria.create().andEqualTo("order_no", orderNo).build());
 		if (order == null) {
 			throw new LogicException("订单不存在");

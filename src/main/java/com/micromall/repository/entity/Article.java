@@ -8,6 +8,7 @@ import java.util.Date;
  * Created by zhangzx on 16/3/23.
  * 文章
  */
+@Deprecated
 public class Article extends IdEntity {
 
 	/**

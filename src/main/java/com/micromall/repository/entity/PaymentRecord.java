@@ -17,24 +17,12 @@ public class PaymentRecord extends IdEntity {
 	private String     payChannel;
 	// 支付方式
 	private String     payMethod;
-	// 支付平台
-	private String     platformType;
 	// 第三方支付平台交易流水号
 	private String     tradeNo;
-	// 异步通知地址
-	private String     backNotifyUrl;
-	// 前端通知地址
-	private String     frontNotifyUrl;
 	// 支付IP
-	private String     payIp;
-	// 扩展数据
-	private String     extend;
+	private String     ip;
 	// 支付状态
 	private String     payStatus;
-	// 支付通知状态
-	private String     notifyStatus;
-	// 退款状态
-	private String     refundStatus;
 	// 是否删除
 	private Boolean    deleted;
 	// 创建时间
@@ -74,14 +62,6 @@ public class PaymentRecord extends IdEntity {
 		this.payMethod = payMethod;
 	}
 
-	public String getPlatformType() {
-		return platformType;
-	}
-
-	public void setPlatformType(String platformType) {
-		this.platformType = platformType;
-	}
-
 	public String getTradeNo() {
 		return tradeNo;
 	}
@@ -90,36 +70,12 @@ public class PaymentRecord extends IdEntity {
 		this.tradeNo = tradeNo;
 	}
 
-	public String getBackNotifyUrl() {
-		return backNotifyUrl;
+	public String getIp() {
+		return ip;
 	}
 
-	public void setBackNotifyUrl(String backNotifyUrl) {
-		this.backNotifyUrl = backNotifyUrl;
-	}
-
-	public String getFrontNotifyUrl() {
-		return frontNotifyUrl;
-	}
-
-	public void setFrontNotifyUrl(String frontNotifyUrl) {
-		this.frontNotifyUrl = frontNotifyUrl;
-	}
-
-	public String getPayIp() {
-		return payIp;
-	}
-
-	public void setPayIp(String payIp) {
-		this.payIp = payIp;
-	}
-
-	public String getExtend() {
-		return extend;
-	}
-
-	public void setExtend(String extend) {
-		this.extend = extend;
+	public void setIp(String ip) {
+		this.ip = ip;
 	}
 
 	public String getPayStatus() {
@@ -128,22 +84,6 @@ public class PaymentRecord extends IdEntity {
 
 	public void setPayStatus(String payStatus) {
 		this.payStatus = payStatus;
-	}
-
-	public String getNotifyStatus() {
-		return notifyStatus;
-	}
-
-	public void setNotifyStatus(String notifyStatus) {
-		this.notifyStatus = notifyStatus;
-	}
-
-	public String getRefundStatus() {
-		return refundStatus;
-	}
-
-	public void setRefundStatus(String refundStatus) {
-		this.refundStatus = refundStatus;
 	}
 
 	public Boolean isDeleted() {

@@ -20,11 +20,7 @@ public class CreateOrder {
 	private int                       uid;
 	// 订单总金额
 	private BigDecimal                totalAmount;
-	// 实付金额
-	private BigDecimal                realpayAmount;
-	// 余额支付金额
-	private BigDecimal                balancepayAmount;
-	// 优惠抵扣金额（优惠劵/商品优惠抵扣金额+实付金额=订单总金额）
+	// 优惠抵扣金额（优惠劵+实付金额=订单总金额）
 	private BigDecimal                deductionAmount;
 	// 运费
 	private int                       freight;
@@ -59,22 +55,6 @@ public class CreateOrder {
 
 	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
-	}
-
-	public BigDecimal getRealpayAmount() {
-		return realpayAmount;
-	}
-
-	public void setRealpayAmount(BigDecimal realpayAmount) {
-		this.realpayAmount = realpayAmount;
-	}
-
-	public BigDecimal getBalancepayAmount() {
-		return balancepayAmount;
-	}
-
-	public void setBalancepayAmount(BigDecimal balancepayAmount) {
-		this.balancepayAmount = balancepayAmount;
 	}
 
 	public BigDecimal getDeductionAmount() {

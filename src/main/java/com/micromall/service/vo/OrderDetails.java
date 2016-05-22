@@ -1,6 +1,10 @@
-package com.micromall.repository.entity;
+/*
+ * Copyright (C), 2014-2015, 杭州小卡科技有限公司
+ * Created by ciwei@xiaokakeji.com on 2016/05/21.
+ */
+package com.micromall.service.vo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.micromall.repository.entity.OrderGoods;
 import com.micromall.repository.entity.common.OrderStatus;
 import com.micromall.repository.entity.common.OrderStatus.RefundStatus;
 
@@ -10,31 +14,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by zhangzx on 16/3/23.
- * 订单信息
+ * @author ciwei@xiaokakeji.com
+ * @date 2016/05/21.
  */
-public class Order extends IdEntity {
+public class OrderDetails {
 
-	// 所属用户id
-	@JsonIgnore
-	private Integer                   uid;
 	// 订单编号
 	private String                    orderNo;
 	// 订单总金额
 	private BigDecimal                totalAmount;
-	// 优惠抵扣金额
+	// 实付金额
+	private BigDecimal                realpayAmount;
+	// 余额支付金额
+	private BigDecimal                balancepayAmount;
+	// 优惠抵扣金额（优惠劵/商品优惠抵扣金额+实付金额=订单总金额）
 	private BigDecimal                deductionAmount;
 	// 运费
 	private Integer                   freight;
 	// 订单优惠信息(JSON)
-	@Deprecated
 	private List<Map<String, Object>> discounts;
 	// 使用的优惠劵(JSON)
-	@JsonIgnore
 	private List<Map<String, Object>> coupons;
-	// 买家留言
-	@JsonIgnore
-	private String                    leaveMessage;
 	/**
 	 * 订单当前状态 {@link OrderStatus}
 	 */
@@ -59,48 +59,23 @@ public class Order extends IdEntity {
 
 	// 发货物流公司
 	private String deliveryCompany;
-	// 发货物流公司代码
-	private String deliveryCode;
 	// 发货物流单号
 	private String deliveryNumber;
 	// 发货时间
 	private Date   deliveryTime;
 
 	// 订单支付时间
-	private Date   payTime;
-	// 订单确认收货时间
-	private Date   confirmDeliveryTime;
-	// 订单申请退款时间
-	private Date   applyRefundTime;
-	// 订单退款完成时间
-	@Deprecated
-	private Date   refundCompleteTime;
-	// 订单申请退款原因
-	private String refundReason;
+	private Date payTime;
 	// 订单关闭时间
-	private Date   closeTime;
-	// 关闭日志
-	private String closelog;
-	// 超时未支付自动关闭时间
-	@JsonIgnore
-	private Date   timeoutCloseTime;
+	private Date closeTime;
 	// 订单创建时间
-	private Date   createTime;
-	// 修改时间
-	@JsonIgnore
-	private Date   updateTime;
+	private Date createTime;
 
 	// -------------前端展示字段------------
 	// 订单商品信息
 	private List<OrderGoods> goodsList;
 	// 能否申请退款
 	private boolean          canApplyRefund;
-	// 物流信息
-	// private LogisticsInfo    logistics;
-	// 支付信息
-	// private PaymentRecord         paymentInfo;
-	// 退款信息
-	// private RefundApplyRecord     refundInfo;
 
 	public String getOrderNo() {
 		return orderNo;
@@ -110,20 +85,28 @@ public class Order extends IdEntity {
 		this.orderNo = orderNo;
 	}
 
-	public Integer getUid() {
-		return uid;
-	}
-
-	public void setUid(Integer uid) {
-		this.uid = uid;
-	}
-
 	public BigDecimal getTotalAmount() {
 		return totalAmount;
 	}
 
 	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
+	}
+
+	public BigDecimal getRealpayAmount() {
+		return realpayAmount;
+	}
+
+	public void setRealpayAmount(BigDecimal realpayAmount) {
+		this.realpayAmount = realpayAmount;
+	}
+
+	public BigDecimal getBalancepayAmount() {
+		return balancepayAmount;
+	}
+
+	public void setBalancepayAmount(BigDecimal balancepayAmount) {
+		this.balancepayAmount = balancepayAmount;
 	}
 
 	public BigDecimal getDeductionAmount() {
@@ -156,14 +139,6 @@ public class Order extends IdEntity {
 
 	public void setCoupons(List<Map<String, Object>> coupons) {
 		this.coupons = coupons;
-	}
-
-	public String getLeaveMessage() {
-		return leaveMessage;
-	}
-
-	public void setLeaveMessage(String leaveMessage) {
-		this.leaveMessage = leaveMessage;
 	}
 
 	public Integer getStatus() {
@@ -222,36 +197,12 @@ public class Order extends IdEntity {
 		this.deliveryCompany = deliveryCompany;
 	}
 
-	public String getDeliveryCode() {
-		return deliveryCode;
-	}
-
-	public void setDeliveryCode(String deliveryCode) {
-		this.deliveryCode = deliveryCode;
-	}
-
 	public String getDeliveryNumber() {
 		return deliveryNumber;
 	}
 
 	public void setDeliveryNumber(String deliveryNumber) {
 		this.deliveryNumber = deliveryNumber;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public Date getPayTime() {
-		return payTime;
-	}
-
-	public void setPayTime(Date payTime) {
-		this.payTime = payTime;
 	}
 
 	public Date getDeliveryTime() {
@@ -262,38 +213,12 @@ public class Order extends IdEntity {
 		this.deliveryTime = deliveryTime;
 	}
 
-	public Date getConfirmDeliveryTime() {
-		return confirmDeliveryTime;
+	public Date getPayTime() {
+		return payTime;
 	}
 
-	public void setConfirmDeliveryTime(Date confirmDeliveryTime) {
-		this.confirmDeliveryTime = confirmDeliveryTime;
-	}
-
-	public Date getApplyRefundTime() {
-		return applyRefundTime;
-	}
-
-	public void setApplyRefundTime(Date applyRefundTime) {
-		this.applyRefundTime = applyRefundTime;
-	}
-
-	@Deprecated
-	public Date getRefundCompleteTime() {
-		return refundCompleteTime;
-	}
-
-	@Deprecated
-	public void setRefundCompleteTime(Date refundCompleteTime) {
-		this.refundCompleteTime = refundCompleteTime;
-	}
-
-	public String getRefundReason() {
-		return refundReason;
-	}
-
-	public void setRefundReason(String refundReason) {
-		this.refundReason = refundReason;
+	public void setPayTime(Date payTime) {
+		this.payTime = payTime;
 	}
 
 	public Date getCloseTime() {
@@ -304,28 +229,12 @@ public class Order extends IdEntity {
 		this.closeTime = closeTime;
 	}
 
-	public Date getTimeoutCloseTime() {
-		return timeoutCloseTime;
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setTimeoutCloseTime(Date timeoutCloseTime) {
-		this.timeoutCloseTime = timeoutCloseTime;
-	}
-
-	public String getCloselog() {
-		return closelog;
-	}
-
-	public void setCloselog(String closelog) {
-		this.closelog = closelog;
-	}
-
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
 	public List<OrderGoods> getGoodsList() {

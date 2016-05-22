@@ -1,4 +1,4 @@
-package com.micromall.payment.utils;
+package com.micromall.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.*;

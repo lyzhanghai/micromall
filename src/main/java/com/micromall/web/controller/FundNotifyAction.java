@@ -1,4 +1,4 @@
-package com.micromall.payment.controller;
+package com.micromall.web.controller;
 
 import com.micromall.payment.dto.VerityRequest;
 import com.micromall.payment.dto.VerityResult;

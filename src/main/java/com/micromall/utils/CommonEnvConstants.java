@@ -22,6 +22,12 @@ public final class CommonEnvConstants {
 	public static final String WEIXIN_APPID                     = PropertyConfigurerUtils.getString("weixin.appid");
 	/* 微信公众号SECRET_KEY */
 	public static final String WEIXIN_APP_SECRET                = PropertyConfigurerUtils.getString("weixin.app_secret");
+	/* 商户号 */
+	public static final String WEIXIN_MCHID                     = PropertyConfigurerUtils.getString("weixin.mchid");
+	/* 异步通知回调地址 */
+	public static final String WEIXIN_NOTIFY_URL                = PropertyConfigurerUtils.getString("weixin.notifyUrl");
+	/* 统一下单url */
+	public static final String WEIXIN_UNIFIEDORDER_URL          = PropertyConfigurerUtils.getString("weixin.unifiedorderUrl");
 	/* 微信用户授权作用域 */
 	public static final String WEIXIN_AUTH_SCOPE                = PropertyConfigurerUtils.getString("weixin.auth.scope");
 	/* 微信用户登录授权接口 */
