@@ -10,11 +10,8 @@ import com.google.common.collect.Maps;
 import com.micromall.repository.*;
 import com.micromall.repository.entity.*;
 import com.micromall.repository.entity.Properties;
-import com.micromall.repository.entity.common.GoodsTypes;
-import com.micromall.repository.entity.common.OrderStatus;
+import com.micromall.repository.entity.common.*;
 import com.micromall.repository.entity.common.OrderStatus.RefundStatus;
-import com.micromall.repository.entity.common.PropKeys;
-import com.micromall.repository.entity.common.WithdrawStatus;
 import com.micromall.service.*;
 import com.micromall.utils.ChainMap;
 import com.micromall.utils.CommonEnvConstants;
@@ -70,9 +67,9 @@ public class InsertController {
 
 	public static void main(String[] args) {
 
-		for (int i = 0; i < 100; i++) {
-			System.out.println(new Random().nextInt(6));
-		}
+		Map<String, Object> productParams = Maps.newHashMap();
+		productParams.put(ProductParamsKeys.WEIGHT, "2.5");
+		System.out.println(JSON.toJSONString(productParams));
 	}
 
 	@RequestMapping(value = "/insert")
@@ -96,6 +93,7 @@ public class InsertController {
 			WithdrawApplyRecord record = new WithdrawApplyRecord();
 			record.setUid(10000);
 			record.setAmount(new BigDecimal(random.nextInt(5000)));
+			record.setBalance(new BigDecimal(98000));
 			record.setChannel("WECHAT");
 			record.setApplyTime(new Date());
 			switch (random.nextInt(3)) {
@@ -114,6 +112,7 @@ public class InsertController {
 					record.setAuditTime(new Date());
 					break;
 			}
+			withdrawApplyRecordMapper.insert(record);
 		}
 
 	}
@@ -338,11 +337,9 @@ public class InsertController {
 			}
 			goods.setFreight(freights[random.nextInt(freights.length)]);
 			goods.setDescr("商品描述.");
-			/*Map<String, Object> productParams = Maps.newHashMap();
-			productParams.put(ProductParamsKeys.重量, "10KG");
-			productParams.put(ProductParamsKeys.产地, "北京");
-			productParams.put(ProductParamsKeys.生产日期, "2016-03-18");
-			goods.setProductParams(productParams);*/
+			Map<String, Object> productParams = Maps.newHashMap();
+			productParams.put(ProductParamsKeys.WEIGHT, "2.5");
+			goods.setProductParams(productParams);
 			goods.setSort(0);
 			goods.setSalesVolume(random.nextInt(5000));
 			goods.setDeleted(false);

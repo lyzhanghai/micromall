@@ -4,6 +4,7 @@
  */
 package com.micromall.service.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.micromall.repository.entity.OrderGoods;
 import com.micromall.repository.entity.common.OrderStatus;
 import com.micromall.repository.entity.common.OrderStatus.RefundStatus;
@@ -23,17 +24,17 @@ public class OrderDetails {
 	private String                    orderNo;
 	// 订单总金额
 	private BigDecimal                totalAmount;
-	// 实付金额
-	private BigDecimal                realpayAmount;
-	// 余额支付金额
-	private BigDecimal                balancepayAmount;
 	// 优惠抵扣金额（优惠劵/商品优惠抵扣金额+实付金额=订单总金额）
 	private BigDecimal                deductionAmount;
 	// 运费
 	private Integer                   freight;
 	// 订单优惠信息(JSON)
+	@JsonIgnore
+	@Deprecated
 	private List<Map<String, Object>> discounts;
 	// 使用的优惠劵(JSON)
+	@JsonIgnore
+	@Deprecated
 	private List<Map<String, Object>> coupons;
 	/**
 	 * 订单当前状态 {@link OrderStatus}
@@ -91,22 +92,6 @@ public class OrderDetails {
 
 	public void setTotalAmount(BigDecimal totalAmount) {
 		this.totalAmount = totalAmount;
-	}
-
-	public BigDecimal getRealpayAmount() {
-		return realpayAmount;
-	}
-
-	public void setRealpayAmount(BigDecimal realpayAmount) {
-		this.realpayAmount = realpayAmount;
-	}
-
-	public BigDecimal getBalancepayAmount() {
-		return balancepayAmount;
-	}
-
-	public void setBalancepayAmount(BigDecimal balancepayAmount) {
-		this.balancepayAmount = balancepayAmount;
 	}
 
 	public BigDecimal getDeductionAmount() {

@@ -108,7 +108,7 @@ public class OrderService {
 	}
 
 	private boolean canApplyRefund(Integer status, Integer refundStatus, Date confirmDeliveryTime) {
-		if (!((status == OrderStatus.待发货 || status == OrderStatus.待收货 || status != OrderStatus.已收货) && (refundStatus == RefundStatus.初始状态
+		if (!((status == OrderStatus.待发货 || status == OrderStatus.待收货 || status == OrderStatus.已收货) && (refundStatus == RefundStatus.初始状态
 				|| refundStatus == RefundStatus.拒绝退款))) {
 			return false;
 		}

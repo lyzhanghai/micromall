@@ -27,10 +27,12 @@ public class Order extends IdEntity {
 	// 运费
 	private Integer                   freight;
 	// 订单优惠信息(JSON)
+	@JsonIgnore
 	@Deprecated
 	private List<Map<String, Object>> discounts;
 	// 使用的优惠劵(JSON)
 	@JsonIgnore
+	@Deprecated
 	private List<Map<String, Object>> coupons;
 	// 买家留言
 	@JsonIgnore

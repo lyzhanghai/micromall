@@ -56,15 +56,30 @@
         <include refid="Where_Clause"/>
     </delete>
 
-    <select id="selectCartGoods" resultType="com.micromall.repository.entity.CartGoods" parameterType="java.lang.Integer">
+    <resultMap id="selectCartGoodsResultMap" type="com.micromall.repository.entity.CartGoods">
+        <result column="goods_id" property="goodsId" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="image" property="image" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="origin_price" property="originPrice" jdbcType="DECIMAL"/>
+        <result column="buy_number" property="buyNumber" jdbcType="INTEGER"/>
+        <result column="inventory" property="inventory" jdbcType="INTEGER"/>
+        <result column="product_params" property="productParams" jdbcType="LONGVARCHAR"/>
+        <result column="invalid" property="invalid" jdbcType="CHAR"/>
+
+    </resultMap>
+
+    <select id="selectCartGoods" resultMap="selectCartGoodsResultMap" parameterType="java.lang.Integer">
         <![CDATA[
             SELECT
-                t2.id AS goodsId,
-                t2.title AS title,
+                t2.id AS goods_id,
+                t2.title,
                 t2.main_image AS image,
-                t2.price AS price,
-                t1.buy_number AS buyNumber,
-                t2.inventory AS inventory,
+                t2.price,
+                t2.origin_price,
+                t1.buy_number ,
+                t2.inventory ,
+                t2.product_params ,
                 CASE WHEN t2.deleted != '0' OR t2.shelves != '1' OR t2.inventory <= 0
                     THEN '1'
                 ELSE '0'

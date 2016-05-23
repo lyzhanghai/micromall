@@ -7,7 +7,9 @@ package com.micromall.repository.entity.common;
 public class ProductParamsKeys {
 	// 固定参数
 
-	public static final String 重量   = "重量";
-	public static final String 产地   = "产地";
-	public static final String 生产日期 = "生产日期";
+	public static final String WEIGHT = "weight";
+
+	//	public static final String 重量   = "重量";
+	//	public static final String 产地   = "产地";
+	//	public static final String 生产日期 = "生产日期";
 }
