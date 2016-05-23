@@ -5,7 +5,7 @@
                 预收益
             </h1>
             <p class="balance">
-                ￥0
+                ￥{{data.commissionIncome}}
             </p>
             <p>
                 可提现日期：每周周一的08：00-20:00
@@ -13,7 +13,7 @@
         </div>
         <div class="right">
             <!-- ngIf: data.info.remainingSum -->
-            <a href="#/user/distributorDraw" class="distributor-submit">
+            <a href="{{prefix}}userContent/distributor/distributorDraw.html" class="distributor-submit">
                 去提现
                 <i class="iconfont icon-qianjin"></i>
             </a>
@@ -24,74 +24,81 @@
             <i class="iconfont icon-tixian" style="color: #3ebb01;font-size:1.1rem;"></i>
             <div class="type-main">
                 <p class="type-tit">可提现佣金</p>
-                <p>￥22222</p>
+                <p>￥{{data.canWithdraw}}</p>
             </div>
         </a>
         <a href="javascript:;">
             <i class="iconfont icon-tx" style="color: #f5ac10;font-size:1.1rem;"></i>
             <div class="type-main">
                 <p class="type-tit">已提现佣金</p>
-                <p>￥22222</p>
+                <p>￥{{data.hasWithdraw}}</p>
             </div>
         </a>
         <a href="javascript:;">
             <i class="iconfont icon-daishenhe" style="color: #ff6000;font-size: 1.2rem;"></i>
             <div class="type-main">
                 <p class="type-tit">审核中佣金</p>
-                <p>￥22222</p>
+                <p>￥{{data.withdrawOf}}</p>
             </div>
         </a>
         <a href="javascript:;">
             <i class="iconfont icon-iconfontyonghu13" style="color: #3a87e5;font-size: 1.15rem;"></i>
             <div class="type-main">
                 <p class="type-tit">总销量额</p>
-                <p>￥22222</p>
+                <p>￥{{data.totalSales}}</p>
             </div>
         </a>
     </div>
     <div class="distributor-water">
         <div class="nav-tab">
-            <a href="javascript:;" style="width:50%;" class="active">一级分销商</a>
-            <a href="javascript:;" style="width:50%;">二级分销商</a>
+            <a href="javascript:;" ng-class="{'active' : tabSelectId === item.id}" ng-click="distributorListToggle(item.id)" ng-repeat="item in tab track by $index">{{::item.name}}</a>
         </div>
         <div class="panel-list user-list-lay">
             <div class="section">
                 <div class="wrapper">
-                    <a href="#/user/member">
+                    <a href="javascript:;">
                         <span>未付款订单</span>
-                        <em class="right gray">￥123</em>
+                        <em class="right gray">￥{{distributorTabList.waitPay}}</em>
                     </a>
                 </div>
             </div>
             <div class="section">
                 <div class="wrapper">
-                    <a href="#/user/member">
+                    <a href="javascript:;">
                         <span>待发货订单</span>
-                        <em class="right gray">￥123</em>
+                        <em class="right gray">￥{{distributorTabList.waitDelivery}}</em>
                     </a>
                 </div>
             </div>
             <div class="section">
                 <div class="wrapper">
-                    <a href="#/user/member">
+                    <a href="javascript:;">
                         <span>待收货订单</span>
-                        <em class="right gray">￥123</em>
+                        <em class="right gray">￥{{distributorTabList.waitReceive}}</em>
                     </a>
                 </div>
             </div>
             <div class="section">
                 <div class="wrapper">
-                    <a href="#/user/member">
+                    <a href="javascript:;">
                         <span>已完成订单</span>
-                        <em class="right gray">￥123</em>
+                        <em class="right gray">￥{{distributorTabList.complete}}</em>
                     </a>
                 </div>
             </div>
             <div class="section">
                 <div class="wrapper">
-                    <a href="#/user/member">
+                    <a href="javascript:;">
+                        <span>已退款订单</span>
+                        <em class="right gray">￥{{distributorTabList.refund}}</em>
+                    </a>
+                </div>
+            </div>
+            <div class="section">
+                <div class="wrapper">
+                    <a href="javascript:;">
                         <span>已取消订单</span>
-                        <em class="right gray">￥123</em>
+                        <em class="right gray">￥{{distributorTabList.closed}}</em>
                     </a>
                 </div>
             </div>

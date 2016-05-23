@@ -1,7 +1,7 @@
 
 <div class="my-distributor">
     <div class="nav-tab">
-        <a href="javascript:;" ng-class="{'active' : getData.level === item.level}" ng-repeat="item in navTab track by $index" bindonce ng-click="navTabClick(item.level)">{{::item.name}}({{::distributorsData.startData[item.level]}})</a>
+        <a href="javascript:;" style="width: 33.33%;" ng-class="{'active' : getData.level === item.level}" ng-repeat="item in navTab track by $index" bindonce ng-click="navTabClick(item.level)">{{::item.name}}({{::distributorsData.startData[item.level]}})</a>
     </div>
     <ul class="friend-list-item" bottom-scroll="load()">
         <!-- ngRepeat: item in data.listData track by $index -->
