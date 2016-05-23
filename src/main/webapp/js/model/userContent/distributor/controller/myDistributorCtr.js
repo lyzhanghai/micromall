@@ -1,7 +1,7 @@
 /**
  * Created by kangdaye on 16/5/15.
  */
-app.controller('myDistributorCtr',["$scope","$rootScope","myDistributorService","myDistributorCacheFactory", function($scope,$rootScope,myDistributorService,myDistributorCacheFactory) {
+app.controller('myDistributorCtr',["$scope","$rootScope","myDistributorService","distributorCacheFactory", function($scope,$rootScope,myDistributorService,distributorCacheFactory) {
     var empty = false;
     $scope.async = false;
     $scope.distributorsData = {
@@ -14,7 +14,7 @@ app.controller('myDistributorCtr',["$scope","$rootScope","myDistributorService",
         limit : 10
     };
 
-    $scope.navTab = myDistributorCacheFactory.navTab;
+    $scope.navTab = distributorCacheFactory.myDistributorNavTab;
 
     myDistributorService.distributorsStat(function(data){
         $scope.distributorsData.startData = data.data;

@@ -1,9 +1,9 @@
 /**
  * Created by kangdaye on 16/5/15.
  */
-app.factory('myDistributorCacheFactory', function($http) {
+app.factory('distributorCacheFactory', function($http) {
     return {
-        navTab : [
+        myDistributorNavTab : [
             {name:'全部'},
             {level:'lv1',name:'一级'},
             {level:'lv2',name:'二级'}
