@@ -21,7 +21,7 @@ public class NotFoundHandler extends AbstractController {
 		if (HttpServletUtils.isAjaxRequest(request)) {
 			HttpServletUtils.responseWriter(request, response, ResponseEntity.Failure("请求地址[{" + (request.getRequestURI()) + "}]不存在"));
 		} else {
-			request.getRequestDispatcher(CommonEnvConstants.SERVER_NOTFOUND_REDIRECT_URL).forward(request, response);
+			request.getRequestDispatcher(CommonEnvConstants.SERVER_INDEX_REDIRECT_URL).forward(request, response);
 		}
 		return null;
 	}

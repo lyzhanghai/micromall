@@ -102,7 +102,7 @@ public class WithdrawController extends BasisController {
 	 */
 	@RequestMapping(value = "/withdraw/records")
 	public ResponseEntity<?> records(String status) {
-		Criteria criteria = Criteria.create().andEqualTo("uid", getLoginUser());
+		Criteria criteria = Criteria.create().andEqualTo("uid", getLoginUser().getUid());
 		if (status != null) {
 			switch (status) {
 				case "audit":

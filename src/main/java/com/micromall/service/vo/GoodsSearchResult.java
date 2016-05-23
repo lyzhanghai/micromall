@@ -1,5 +1,6 @@
 package com.micromall.service.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.micromall.repository.entity.common.GoodsTypes;
 
 import java.math.BigDecimal;
@@ -11,25 +12,34 @@ import java.util.Map;
 public class GoodsSearchResult {
 
 	// 商品ID
-	private int                 goodsId;
+	private int        goodsId;
 	// 商品标题
-	private String              title;
+	private String     title;
 	// 商品图片
-	private String              image;
+	private String     image;
 	// 商品价格
-	private BigDecimal          price;
+	private BigDecimal price;
+	// 商品原价
+	private BigDecimal originPrice;
+	// 商品销量
+	private int        salesVolume;
+
+	// ------------------------------------------------------------------------------------------------------------------------------
+
 	/**
 	 * 商品类型（普通商品、会员充值卡）{@link GoodsTypes}
 	 */
+	@JsonIgnore
+	@Deprecated
 	private int                 type;
-	// 商品销量
-	private int                 salesVolume;
 	// 是否促销商品
+	@JsonIgnore
+	@Deprecated
 	private boolean             promotion;
 	// 促销配置
+	@JsonIgnore
+	@Deprecated
 	private Map<String, Object> promotionParams;
-	// 运费
-	private int                 freight;
 
 	public int getGoodsId() {
 		return goodsId;
@@ -61,6 +71,14 @@ public class GoodsSearchResult {
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+
+	public BigDecimal getOriginPrice() {
+		return originPrice;
+	}
+
+	public void setOriginPrice(BigDecimal originPrice) {
+		this.originPrice = originPrice;
 	}
 
 	public int getType() {
@@ -95,11 +113,4 @@ public class GoodsSearchResult {
 		this.promotionParams = promotionParams;
 	}
 
-	public int getFreight() {
-		return freight;
-	}
-
-	public void setFreight(int freight) {
-		this.freight = freight;
-	}
 }

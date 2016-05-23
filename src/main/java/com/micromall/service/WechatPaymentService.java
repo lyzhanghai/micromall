@@ -50,7 +50,7 @@ public class WechatPaymentService {
 		paymentRecord.setAmount(order.getTotalAmount());
 		paymentRecord.setPayChannel("WECHAT");
 		paymentRecord.setPayMethod("OfficialAccounts");
-		paymentRecord.setPayIp(ip);
+		paymentRecord.setIp(ip);
 		paymentRecord.setPayStatus(PaymentStatus.WAIT_PAY);
 		paymentRecord.setCreateTime(new Date());
 		paymentRecordMapper.insert(paymentRecord);

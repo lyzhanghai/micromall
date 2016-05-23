@@ -294,6 +294,7 @@ public class OrderService {
 				commissionRecord.setCreateTime(new Date());
 				commissionRecordMapper.insert(commissionRecord);
 				cashAccountService.incrementCommission(lv1.getId(), commissionRecord.getCommissionAmount());
+				cashAccountService.incrementTotalSales(lv1.getId(), order.getTotalAmount());
 
 				if (lv1.getParentUid() != null) {
 					// 二级分销商商佣金计算
@@ -312,6 +313,7 @@ public class OrderService {
 					commissionRecord.setCreateTime(new Date());
 					commissionRecordMapper.insert(commissionRecord);
 					cashAccountService.incrementCommission(lv2.getId(), commissionRecord.getCommissionAmount());
+					cashAccountService.incrementTotalSales(lv2.getId(), order.getTotalAmount());
 				}
 			});
 		}

@@ -32,33 +32,33 @@ public class Goods extends IdEntity {
 	private BigDecimal          originPrice;
 	// 商品库存
 	private Integer             inventory;
-	// 是否上架（商品卖完后自动下架）
+	// 是否上架（商品卖完后自动下架）(详情页、收藏、购物车用到)
 	private Boolean             shelves;
 	/**
 	 * 商品类型（普通商品、会员充值卡）{@link GoodsTypes}
 	 */
+	@JsonIgnore
 	private Integer             type;
 	// 是否促销商品
+	@JsonIgnore
 	private Boolean             promotion;
 	/**
 	 * 促销配置(JSON数据) {@link PromotionConfigKeys}
 	 */
+	@JsonIgnore
 	private Map<String, Object> promotionParams;
-	// TODO 运费模型
-	//private boolean    freeFreight;// 是否免运费
-	//private boolean    fixedFreight;// 是否固定运费
-	// 运费
-	private Integer             freight;
+	// 运费模板id
+	@JsonIgnore
+	private Integer             freightId;
 	// 商品描述
 	private String              descr;
 	/**
 	 * 产品参数(JSON数据) {@link ProductParamsKeys}
 	 */
-	@JsonIgnore
-	@Deprecated
 	private Map<String, Object> productParams;
 	// 商品销量
 	private Integer             salesVolume;
+
 	// 商品排序
 	@JsonIgnore
 	private Integer             sort;
@@ -73,11 +73,10 @@ public class Goods extends IdEntity {
 	private Date                updateTime;
 
 	// -------------前端展示字段------------
-	// 所属类目
-	@Deprecated
-	private String  categoryName;
 	// 是否已经收藏
 	private boolean favorite;
+	// 运费
+	private Integer freight;
 
 	public String getTitle() {
 		return title;
@@ -175,6 +174,14 @@ public class Goods extends IdEntity {
 		this.freight = freight;
 	}
 
+	public Integer getFreightId() {
+		return freightId;
+	}
+
+	public void setFreightId(Integer freightId) {
+		this.freightId = freightId;
+	}
+
 	public String getDescr() {
 		return descr;
 	}
@@ -183,12 +190,10 @@ public class Goods extends IdEntity {
 		this.descr = descr;
 	}
 
-	@Deprecated
 	public Map<String, Object> getProductParams() {
 		return productParams;
 	}
 
-	@Deprecated
 	public void setProductParams(Map<String, Object> productParams) {
 		this.productParams = productParams;
 	}
@@ -231,16 +236,6 @@ public class Goods extends IdEntity {
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
-	}
-
-	@Deprecated
-	public String getCategoryName() {
-		return categoryName;
-	}
-
-	@Deprecated
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
 	}
 
 	public boolean isFavorite() {

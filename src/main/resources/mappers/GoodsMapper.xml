@@ -13,7 +13,7 @@
         <result column="type" property="type" jdbcType="TINYINT"/>
         <result column="promotion" property="promotion" jdbcType="CHAR"/>
         <result column="promotion_params" property="promotionParams" jdbcType="LONGVARCHAR"/>
-        <result column="freight" property="freight" jdbcType="INTEGER"/>
+        <result column="freight_id" property="freightId" jdbcType="INTEGER"/>
         <result column="sort" property="sort" jdbcType="SMALLINT"/>
         <result column="sales_volume" property="salesVolume" jdbcType="INTEGER"/>
         <result column="deleted" property="deleted" jdbcType="CHAR"/>
@@ -27,7 +27,7 @@
     </resultMap>
     <sql id="Base_Column_List">
         id, title, main_image, category_id, price,origin_price, inventory, shelves, type, promotion,
-        promotion_params, freight, sort, sales_volume, deleted, create_time, update_time
+        promotion_params, freight_id, sort, sales_volume, deleted, create_time, update_time
     </sql>
     <sql id="Full_Column_List">
         images, descr, product_params
@@ -78,14 +78,14 @@
         insert into goods (id, title, main_image,
         category_id, price,origin_price, inventory,shelves, type, promotion,
         sort, sales_volume, deleted,create_time, update_time, images,
-        promotion_params, descr, product_params, freight
+        promotion_params, descr, product_params, freight_id
         )
         values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{mainImage,jdbcType=VARCHAR},
         #{categoryId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{originPrice,jdbcType=DECIMAL}, #{inventory,jdbcType=INTEGER},
         #{shelves,jdbcType=CHAR}, #{type,jdbcType=TINYINT}, #{promotion,jdbcType=CHAR},
         #{sort,jdbcType=SMALLINT}, #{salesVolume,jdbcType=INTEGER}, #{deleted,jdbcType=CHAR},
         #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{images,jdbcType=LONGVARCHAR},
-        #{promotionParams,jdbcType=LONGVARCHAR}, #{descr,jdbcType=LONGVARCHAR}, #{productParams,jdbcType=LONGVARCHAR}, #{freight,jdbcType=INTEGER}
+        #{promotionParams,jdbcType=LONGVARCHAR}, #{descr,jdbcType=LONGVARCHAR}, #{productParams,jdbcType=LONGVARCHAR}, #{freightId,jdbcType=INTEGER}
         )
     </insert>
     <update id="updateByPrimaryKey" parameterType="com.micromall.repository.entity.Goods">
@@ -149,8 +149,8 @@
             <if test="productParams != null">
                 product_params = #{productParams,jdbcType=LONGVARCHAR},
             </if>
-            <if test="freight != null">
-                freight = #{freight,jdbcType=INTEGER},
+            <if test="freightId != null">
+                freight_id = #{freightId,jdbcType=INTEGER},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER} and deleted = 0

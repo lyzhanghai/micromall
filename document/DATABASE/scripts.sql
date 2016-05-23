@@ -150,7 +150,7 @@ CREATE TABLE `goods` (
   `type` tinyint(4) NOT NULL COMMENT '商品类型（普通商品、会员充值卡）',
   `promotion` char(1) NOT NULL COMMENT '是否促销商品',
   `promotion_params` text COMMENT '促销配置',
-  `freight` mediumint(9) NOT NULL COMMENT '运费',
+  `freight_id` int(11) NOT NULL COMMENT '运费模板id',
   `descr` text NOT NULL COMMENT '商品描述',
   `product_params` text NULL COMMENT '产品参数',
   `sort` smallint(6) NOT NULL COMMENT '商品排序',
