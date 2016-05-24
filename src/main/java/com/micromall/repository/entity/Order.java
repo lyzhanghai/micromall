@@ -35,7 +35,6 @@ public class Order extends IdEntity {
 	@Deprecated
 	private List<Map<String, Object>> coupons;
 	// 买家留言
-	@JsonIgnore
 	private String                    leaveMessage;
 	/**
 	 * 订单当前状态 {@link OrderStatus}

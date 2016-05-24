@@ -60,7 +60,7 @@ public class BuyController extends BasisController {
 		if (StringUtils.isEmpty(goodsIds)) {
 			return ResponseEntity.Failure(cart ? "请选择要购买的商品" : "请选择要购买的商品");
 		}
-		if (!cart && buyNumber == null || buyNumber.intValue() <= 0) {
+		if (!cart && (buyNumber == null || buyNumber.intValue() <= 0)) {
 			return ResponseEntity.Failure("购买数量不能小于1件");
 		}
 
@@ -134,6 +134,12 @@ public class BuyController extends BasisController {
 		return ResponseEntity.Success(data);
 	}
 
+	/**
+	 * @param request
+	 * @param settleId
+	 * @param addressId
+	 * @return
+	 */
 	// 邮费计算
 	@RequestMapping(value = "/cart/settle/calculateFreight")
 	public ResponseEntity<?> calculateFreight(HttpServletRequest request, String settleId, int addressId) {

@@ -45,6 +45,9 @@ public class OrderDetails {
 	 */
 	private Integer                   refundStatus;
 
+	// 买家留言
+	private String                    leaveMessage;
+
 	// ----------------------------- 收货信息
 
 	// 收货地址信息（省、市、区/县、详细地址）
@@ -141,6 +144,14 @@ public class OrderDetails {
 
 	public void setRefundStatus(Integer refundStatus) {
 		this.refundStatus = refundStatus;
+	}
+
+	public String getLeaveMessage() {
+		return leaveMessage;
+	}
+
+	public void setLeaveMessage(String leaveMessage) {
+		this.leaveMessage = leaveMessage;
 	}
 
 	public String getShippingAddress() {
