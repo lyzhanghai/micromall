@@ -163,6 +163,7 @@ public class InsertController {
 					break;
 				case OrderStatus.待收货:
 					order.setStatus(OrderStatus.待收货);
+					order.setPayTime(new Date());
 					order.setDeliveryCompany("顺丰快递");
 					order.setDeliveryCode("SF");
 					order.setDeliveryNumber("100093439400023232");
@@ -180,6 +181,7 @@ public class InsertController {
 					}
 					break;
 				case OrderStatus.已收货:
+					order.setPayTime(new Date());
 					order.setDeliveryCompany("顺丰快递");
 					order.setDeliveryCode("SF");
 					order.setDeliveryNumber("100093439400023232");
@@ -199,6 +201,7 @@ public class InsertController {
 					}
 					break;
 				case OrderStatus.已退款:
+					order.setPayTime(new Date());
 					if (random.nextBoolean()) {
 						order.setDeliveryCompany("顺丰快递");
 						order.setDeliveryCode("SF");

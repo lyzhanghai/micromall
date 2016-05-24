@@ -68,6 +68,7 @@ public class OrderDetails {
 	// 订单支付时间
 	private Date payTime;
 	// 订单关闭时间
+	@JsonIgnore
 	private Date closeTime;
 	// 订单创建时间
 	private Date createTime;
