@@ -39,9 +39,9 @@
         {name : 'userInfo/myDistributor', url: '/userContent/distributor/myDistributor.html',templateUrl:'view/userContent/distributor/myDistributor.html', controller: "myDistributorCtr",tabSelectIndex : 3},
         {name : 'userInfo/distributorOrder', url: '/userContent/distributor/distributorOrder.html',templateUrl:'view/userContent/distributor/distributorOrder.html', controller: "distributorOrderCtr",tabSelectIndex : 3},
         {name : 'userInfo/distributorDraw', url: '/userContent/distributor/distributorDraw.html',templateUrl:'view/userContent/distributor/distributorDraw.html', controller: "distributorDrawCtr",tabSelectIndex : 3},
-        {name : 'userInfo/distributorRecord', url: '/userContent/distributor/distributorRecord.html',templateUrl:'view/userContent/distributor/distributorRecord.html', controller: "distributorRecordCtr",tabSelectIndex : 3}
+        {name : 'userInfo/distributorRecord', url: '/userContent/distributor/distributorRecord.html',templateUrl:'view/userContent/distributor/distributorRecord.html', controller: "distributorRecordCtr",tabSelectIndex : 3},
 
-
+        {name : 'order/myOrderList', url: '/order/myOrder/myOrderList.html',templateUrl:'view/order/myOrder/myOrderList.html', controller: "myOrderListCtr",tabSelectIndex : 3}
     ];
 
     app.config(["$stateProvider","$urlRouterProvider","$httpProvider","lazyImgConfigProvider","czContentForConfigProvider",function($stateProvider, $urlRouterProvider,$httpProvider,lazyImgConfigProvider,czContentForConfigProvider) {

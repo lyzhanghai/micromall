@@ -1,0 +1,67 @@
+<div class="nav-tab">
+  <a href="javascript:;" ng-class="{'active' : getData.status === navItem.id}" style="width:20%;" ng-repeat="navItem in navTab track by $index" bindonce ng-click="navTabClick(navItem.id)">
+    {{navItem.name}}
+  </a>
+</div>
+<!-- ngRepeat: item in listData track by $index -->
+<div class="order-start-lay" ng-repeat="item in listData track by $index" bindonce bottom-scroll="load()">
+  <div class="order-title">
+    <span class="num">
+      订单号:{{::item.orderNo}}
+    </span>
+    <a href="javascript:;" class="start">
+      订单详情
+      <i class="iconzfl icon-youjiantou">
+      </i>
+    </a>
+    <p class="time" ng-show="postData.orderStatus == 1">
+      <span countdown="" countdown-data="item.orderNo" countdown-start="付款时间还剩余" countdown-end="已失效" class="ng-isolate-scope"></span>
+    </p>
+  </div>
+  <div class="order-list">
+    <ul>
+        <li ng-repeat="childItem in item.goodsList track by $index" bindonce>
+            <div class="item-lay">
+                <a href="#/detail&amp;2531191" class="item-img">
+                    <div class="img-lay">
+                        <img lazy-img="{{::childItem.image}}">
+                    </div>
+                </a>
+                <div class="item-info">
+                    <div class="item-title ng-binding">
+                        {{::childItem.title}}
+                    </div>
+                    <div class="bottom">
+                        <div class="left">
+                            <em>￥{{::childItem.price}}</em>
+                            <s ng-if="childItem.price != childItem.originPrice">￥{{::childItem.originPrice}}</s>
+                        </div>
+                        <div class="right">
+                        <span>
+                          数量:{{::childItem.buyNumber}}件
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <!-- ngIf: postData.orderStatus <=3 -->
+    <section class="start-buttons item-list">
+      <span>合计:￥{{::item.totalAmount}}</span>
+      <div class="operation">
+        <div>
+          <button class="close" ng-click="dialogClick(item.orderNum)">
+            取消订单
+          </button>
+          <button ng-click="goPay(item.orderNum,item.orderFee)">
+            付款
+          </button>
+        </div>
+        <!-- ngIf: postData.orderStatus==3 -->
+        <!-- ngIf: postData.orderStatus==2 -->
+      </div>
+    </section>
+    <!-- end ngIf: postData.orderStatus <=3 -->
+  </div>
+</div>
