@@ -1,9 +1,11 @@
 package com.micromall.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.micromall.repository.entity.common.ProductParamsKeys;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by zhangzx on 16/3/23.
@@ -29,10 +31,19 @@ public class CartGoods extends IdEntity {
 	private String     image;
 	// 商品价格
 	private BigDecimal price;
+	// 商品原始价格
+	private BigDecimal originPrice;
 	// 库存量
 	private int        inventory;
 	// 是否已经失效
 	private boolean    invalid;
+
+	/**
+	 * 产品参数(JSON数据) {@link ProductParamsKeys}
+	 * 下单购买时用到
+	 */
+	@JsonIgnore
+	private Map<String, Object> productParams;
 
 	public CartGoods() {
 	}
@@ -106,6 +117,14 @@ public class CartGoods extends IdEntity {
 		this.price = price;
 	}
 
+	public BigDecimal getOriginPrice() {
+		return originPrice;
+	}
+
+	public void setOriginPrice(BigDecimal originPrice) {
+		this.originPrice = originPrice;
+	}
+
 	public int getInventory() {
 		return inventory;
 	}
@@ -120,5 +139,13 @@ public class CartGoods extends IdEntity {
 
 	public void setInvalid(boolean invalid) {
 		this.invalid = invalid;
+	}
+
+	public Map<String, Object> getProductParams() {
+		return productParams;
+	}
+
+	public void setProductParams(Map<String, Object> productParams) {
+		this.productParams = productParams;
 	}
 }

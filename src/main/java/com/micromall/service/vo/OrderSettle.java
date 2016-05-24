@@ -17,23 +17,31 @@ import java.util.List;
  */
 public class OrderSettle {
 
+	private String          settleId;
 	// 订单总金额
 	private BigDecimal      totalAmount;
-	// 实付金额
-	// private BigDecimal                realpayAmount;
-	// 余额支付金额
-	// private BigDecimal                balancepayAmount;
-	// 优惠抵扣金额（优惠劵/商品优惠抵扣金额+实付金额=订单总金额）
-	// private BigDecimal                deductionAmount;
 	// 运费
 	private int             freight;
+	// 收货地址
 	private ShippingAddress address;
+	// 总重量
+	private BigDecimal      totalWeight;
+	// 订单商品信息
+	private List<OrderGoods> goodsList = new ArrayList<>();
+	// 优惠抵扣金额（优惠劵/商品优惠抵扣金额+实付金额=订单总金额）
+	// private BigDecimal                deductionAmount;
 	// 订单优惠信息(JSON)
 	//	private List<Map<String, Object>> discounts;
 	// 使用的优惠劵(JSON)
 	// private List<Map<String, Object>> coupons;
-	// 订单商品信息
-	private List<OrderGoods> goodsList = new ArrayList<>();
+
+	public String getSettleId() {
+		return settleId;
+	}
+
+	public void setSettleId(String settleId) {
+		this.settleId = settleId;
+	}
 
 	public BigDecimal getTotalAmount() {
 		return totalAmount;
@@ -57,6 +65,14 @@ public class OrderSettle {
 
 	public void setAddress(ShippingAddress address) {
 		this.address = address;
+	}
+
+	public BigDecimal getTotalWeight() {
+		return totalWeight;
+	}
+
+	public void setTotalWeight(BigDecimal totalWeight) {
+		this.totalWeight = totalWeight;
 	}
 
 	public List<OrderGoods> getGoodsList() {

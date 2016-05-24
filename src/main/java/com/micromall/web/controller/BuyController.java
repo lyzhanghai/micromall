@@ -5,14 +5,17 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.micromall.repository.entity.*;
 import com.micromall.repository.entity.common.OrderStatus;
+import com.micromall.repository.entity.common.ProductParamsKeys;
 import com.micromall.service.*;
 import com.micromall.service.vo.CreateOrder;
 import com.micromall.service.vo.OrderSettle;
 import com.micromall.utils.HttpServletUtils;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.annotation.Authentication;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +29,7 @@ import java.util.UUID;
  * @author zhangzxiang91@gmail.com
  * @date 2016/04/11.
  */
-// @RestController
+@RestController
 @RequestMapping(value = "/api")
 @Authentication
 public class BuyController extends BasisController {
@@ -61,8 +64,9 @@ public class BuyController extends BasisController {
 			return ResponseEntity.Failure("购买数量不能小于1件");
 		}
 
-		OrderSettle orderSettle = new OrderSettle();
+		OrderSettle settle = new OrderSettle();
 		BigDecimal totalAmount = new BigDecimal(0);
+		BigDecimal totalWeight = new BigDecimal(0);
 		if (cart) {
 			// 购物车结算
 			Set<String> _goodsIds = Sets.newHashSet(StringUtils.split(goodsIds, ","));
@@ -80,13 +84,17 @@ public class BuyController extends BasisController {
 					orderGoods.setTitle(carGoods.getTitle());
 					orderGoods.setImage(carGoods.getImage());
 					orderGoods.setPrice(carGoods.getPrice());
-					orderGoods.setOriginPrice(carGoods.getPrice());
+					orderGoods.setOriginPrice(carGoods.getOriginPrice());
 					orderGoods.setBuyNumber(carGoods.getBuyNumber());
-					orderSettle.getGoodsList().add(orderGoods);
+					settle.getGoodsList().add(orderGoods);
 					totalAmount = totalAmount.add(orderGoods.getPrice().multiply(new BigDecimal(orderGoods.getBuyNumber())));
+					if (MapUtils.isNotEmpty(carGoods.getProductParams()) && carGoods.getProductParams().containsKey(ProductParamsKeys.WEIGHT)) {
+						totalWeight = totalWeight.add(new BigDecimal(carGoods.getProductParams().get(ProductParamsKeys.WEIGHT).toString()));
+					}
+
 				}
 			}
-			if (orderSettle.getGoodsList().size() != _goodsIds.size()) {
+			if (settle.getGoodsList().size() != _goodsIds.size()) {
 				return ResponseEntity.Failure("商品信息改变，请刷新页面重新结算");
 			}
 		} else {
@@ -108,30 +116,39 @@ public class BuyController extends BasisController {
 			orderGoods.setPrice(goods.getPrice());
 			orderGoods.setOriginPrice(goods.getOriginPrice());
 			orderGoods.setBuyNumber(buyNumber);
-			orderSettle.getGoodsList().add(orderGoods);
+			settle.getGoodsList().add(orderGoods);
 			totalAmount = orderGoods.getOriginPrice().multiply(new BigDecimal(orderGoods.getBuyNumber()));
+			if (MapUtils.isNotEmpty(goods.getProductParams()) && goods.getProductParams().containsKey(ProductParamsKeys.WEIGHT)) {
+				totalWeight = new BigDecimal(goods.getProductParams().get(ProductParamsKeys.WEIGHT).toString());
+			}
 		}
 
-		// 计算运费
-		int freight = calculateFreight(orderSettle);
-		totalAmount = totalAmount.add(new BigDecimal(freight));
-		orderSettle.setTotalAmount(totalAmount.setScale(2, BigDecimal.ROUND_DOWN));
-		orderSettle.setFreight(freight);
-		orderSettle.setAddress(shippingAddressService.getDefaultAddress(getLoginUser().getUid()));// 默认收货地址
-
-		String settleId = UUID.randomUUID().toString().replaceAll("-", "");
+		settle.setSettleId(UUID.randomUUID().toString().replaceAll("-", ""));
+		settle.setTotalAmount(totalAmount.setScale(2, BigDecimal.ROUND_DOWN));
+		settle.setTotalWeight(totalWeight.setScale(2, BigDecimal.ROUND_DOWN));
+		settle.setFreight(0);
 		Map<String, Object> data = Maps.newHashMap();
-		data.put("orderSettle", orderSettle);
-		// data.put("coupons", new ArrayList<>());// 可选的优惠劵
-		data.put("settleId", settleId);
-
-		request.getSession().setAttribute("_SETTLE_ID:" + settleId, data);
+		data.put("settle", settle);
+		data.put("address", shippingAddressService.getDefaultAddress(getLoginUser().getUid()));
+		request.getSession().setAttribute("_SETTLE_ID:" + settle.getSettleId(), settle);
 		return ResponseEntity.Success(data);
 	}
 
 	// 邮费计算
-	private int calculateFreight(OrderSettle orderSettle) {
-		return 0;
+	@RequestMapping(value = "/cart/settle/calculateFreight")
+	public ResponseEntity<?> calculateFreight(HttpServletRequest request, String settleId, int addressId) {
+		OrderSettle settle = (OrderSettle)request.getSession().getAttribute("_SETTLE_ID:" + settleId);
+		if (settle == null) {
+			return ResponseEntity.Failure("当前访问页面已失效，请重新提交申请");
+		}
+		ShippingAddress address = shippingAddressService.getAddress(getLoginUser().getUid(), addressId);
+		if (address == null) {
+			return ResponseEntity.Failure("收货地址不存在");
+		}
+		settle.setAddress(address);
+		settle.setFreight(999);// TODO 运费计算
+		settle.setTotalAmount(settle.getTotalAmount().add(new BigDecimal(settle.getFreight())));
+		return ResponseEntity.Success(settle);
 	}
 
 	/**
@@ -140,32 +157,39 @@ public class BuyController extends BasisController {
 	 * @param settleId 商品id
 	 * @return
 	 */
-	@RequestMapping(value = "/buy")
+	@RequestMapping(value = "/cart/settle/buy")
 	public ResponseEntity<?> buy(HttpServletRequest request, String settleId, String leaveMessage) {
-		OrderSettle orderSettle = (OrderSettle)request.getSession().getAttribute("_SETTLE_ID:" + settleId);
-		if (orderSettle == null) {
+		OrderSettle settle = (OrderSettle)request.getSession().getAttribute("_SETTLE_ID:" + settleId);
+		if (settle == null) {
 			return ResponseEntity.Failure("当前访问页面已失效，请重新提交申请");
 		}
+		if (settle.getAddress() == null) {
+			return ResponseEntity.Failure("请选择收货地址");
+		}
+
+		// TODO 商品校验
+
 		CreateOrder createOrder = new CreateOrder();
 		createOrder.setUid(getLoginUser().getUid());
-		createOrder.setTotalAmount(orderSettle.getTotalAmount());
+		createOrder.setTotalAmount(settle.getTotalAmount());
 		createOrder.setDeductionAmount(BigDecimal.ZERO);
-		createOrder.setFreight(orderSettle.getFreight());
+		createOrder.setFreight(settle.getFreight());
 		createOrder.setDiscounts(Lists.newArrayList());
 		createOrder.setCoupons(Lists.newArrayList());
 		createOrder.setLeaveMessage(leaveMessage);
 		// 收货地址
-		ShippingAddress address = orderSettle.getAddress();
+		ShippingAddress address = settle.getAddress();
 		createOrder.setShippingAddress(
 				address.getProvince() + address.getCity() + StringUtils.trimToEmpty(address.getCounty()) + address.getDetailedAddress());
 		createOrder.setConsigneeName(address.getConsigneeName());
 		createOrder.setConsigneePhone(address.getConsigneePhone());
 		createOrder.setPostcode(address.getPostcode());
 		// 购买商品
-		createOrder.setGoodsList(orderSettle.getGoodsList());
+		createOrder.setGoodsList(settle.getGoodsList());
 
 		// 创建订单
 		Order order = orderService.createOrder(createOrder);
+		request.getSession().removeAttribute("_SETTLE_ID:" + settleId);
 		Map<String, Object> data = Maps.newHashMap();
 		data.put("orderNo", order.getOrderNo());
 		data.put("amount", order.getTotalAmount());
@@ -178,7 +202,7 @@ public class BuyController extends BasisController {
 	 * @param orderNo
 	 * @return
 	 */
-	@RequestMapping(value = "/pay")
+	@RequestMapping(value = "/order/pay")
 	public ResponseEntity<?> pay(HttpServletRequest request, String orderNo) {
 		Order order = orderService.getOrder(getLoginUser().getUid(), orderNo);
 		if (order == null) {
@@ -193,6 +217,9 @@ public class BuyController extends BasisController {
 		if (StringUtils.isEmpty(member.getWechatId())) {
 			return ResponseEntity.Failure("无法使用微信支付");
 		}
+
+		// TODO 商品校验
+
 		return ResponseEntity.Success(wechatPaymentService.pay(order, member.getWechatId(), HttpServletUtils.getRequestIP(request)));
 	}
 
