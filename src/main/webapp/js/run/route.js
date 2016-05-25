@@ -41,7 +41,10 @@
         {name : 'userInfo/distributorDraw', url: '/userContent/distributor/distributorDraw.html',templateUrl:'view/userContent/distributor/distributorDraw.html', controller: "distributorDrawCtr",tabSelectIndex : 3},
         {name : 'userInfo/distributorRecord', url: '/userContent/distributor/distributorRecord.html',templateUrl:'view/userContent/distributor/distributorRecord.html', controller: "distributorRecordCtr",tabSelectIndex : 3},
 
-        {name : 'order/myOrderList', url: '/order/myOrder/myOrderList.html',templateUrl:'view/order/myOrder/myOrderList.html', controller: "myOrderListCtr",tabSelectIndex : 3}
+        {name : 'order/createOrder', url: '/order/createOrder.html?:goodsIds&:buyNumber&:cart',templateUrl:'view/order/createOrder.html', controller: "createOrderCtr",tabSelectIndex : 3},
+        {name : 'order/myOrderList', url: '/order/myOrder/myOrderList.html',templateUrl:'view/order/myOrder/myOrderList.html', controller: "myOrderListCtr",tabSelectIndex : 3},
+        {name : 'order/myOrderDetail', url: '/order/myOrder/myOrderDetail.html?:orderNo',templateUrl:'view/order/myOrder/myOrderDetail.html', controller: "myOrderDetailCtr",tabSelectIndex : 3},
+        {name : 'order/logistic', url: '/order/logistic.html?:orderNo',templateUrl:'view/order/logistic.html', controller: "logisticCtr",tabSelectIndex : 3}
     ];
 
     app.config(["$stateProvider","$urlRouterProvider","$httpProvider","lazyImgConfigProvider","czContentForConfigProvider",function($stateProvider, $urlRouterProvider,$httpProvider,lazyImgConfigProvider,czContentForConfigProvider) {

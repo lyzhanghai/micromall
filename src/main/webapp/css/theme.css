@@ -840,6 +840,10 @@ button.submit {
   border: none;
   width: 100%;
 }
+a.submit2,
+button.submit2 {
+  background: #ff4200;
+}
 .green {
   background: #2bbc1c;
 }
@@ -2416,7 +2420,6 @@ a.hr1 {
   color: #999999;
   border-color: #999999;
   padding: 0 .15rem;
-  margin-right: .5rem;
 }
 .order-start-lay .item-list {
   background: #fff;
@@ -2433,6 +2436,32 @@ a.hr1 {
 .order-start-lay .item-list button {
   margin: -0.1rem 0 0 0.25rem;
 }
+.apply-efund .ng-modal-dialog {
+  padding: 0;
+}
+.apply-efund .ng-modal-close-x {
+  display: none;
+}
+.apply-efund .efund-text {
+  width: 100%;
+  border: none;
+  height: 4rem;
+  padding: .5rem;
+  font-size: .7rem;
+  color: #444444;
+}
+.apply-efund .buttons button {
+  float: left;
+  background: none;
+  width: 50%;
+  border: 1px solid #eaeaea;
+  border-bottom: none;
+  border-right: none;
+  line-height: 2rem;
+}
+.apply-efund .buttons button:first-child {
+  border-left: none;
+}
 /*订单状态详情*/
 .statr-info-lay .time {
   text-align: left;
@@ -2444,6 +2473,10 @@ a.hr1 {
 .statr-info-lay .time span {
   font-size: .65rem;
   color: #333333;
+}
+.statr-info-lay .shop-balance a {
+  border: none;
+  margin-top: 0;
 }
 .statr-info-lay .time .start {
   float: right;
