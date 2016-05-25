@@ -41,7 +41,8 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		logger.info("请求 [{}], 参数 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
+		logger.info("sessionId:" + request.getSession().getId() + "请求 [{}], 参数 [{}]",
+				new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
 		if (_forbidden(request, response)) {
 			return false;
 		}
