@@ -99,8 +99,12 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 		}
 
 		if (HttpServletUtils.isAjaxRequest(request)) {
+			logger.info("用户未登录访问：请求 [{}], 参数 [{}]  直接返回JSON：", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap()),
+					ResponseEntity.NotLogin(redirectUrl).toJSONString()});
 			HttpServletUtils.responseWriter(request, response, ResponseEntity.NotLogin(redirectUrl));
 		} else {
+			logger.info("用户未登录访问：请求 [{}], 参数 [{}]  跳转到微信登录：",
+					new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), redirectUrl});
 			response.sendRedirect(redirectUrl);
 		}
 	}
