@@ -8,9 +8,8 @@ app.controller('detailCtr',["$scope","$rootScope","$stateParams","detailService"
    var async = false;
 
    $scope.buyDialog = false;
-   $scope.goModel = 'addCart';
    $scope.detailData = {};
-   $scope.getData = angular.extend({buyNumber : 1},defaultData);
+   $scope.getData = angular.extend({buyNumber : 1,cart : false},defaultData);
 
    detailService.detailData(defaultData,function (data) {
       $scope.detailData = data.data;
@@ -60,15 +59,25 @@ app.controller('detailCtr',["$scope","$rootScope","$stateParams","detailService"
       $scope.buyDialog = !$scope.buyDialog;
    };
 
-   $scope.go = function(model){
-      $scope.goModel = model;
+   $scope.go = function(isAddCart){
+      $scope.getData.cart = isAddCart;
       $scope.buyDialogToggle();
    };
 
-   $scope.addCart = function(){
-      detailService.addCart($scope.getData,function (data) {
-         $scope.buyDialogToggle();
-         messageFactory({text : '加入购物车成功'});
-      });
+   $scope.placeOrder = function(){
+      var getData = {
+         goodsIds : defaultData.goodsId,
+         buyNumber : $scope.getData.buyNumber,
+         cart : $scope.getData.cart
+      };
+
+      if(!$scope.getData.cart){
+         location.href = $rootScope.prefix + 'order/createOrder.html?' + angular.param(getData);
+      }else{
+         detailService.addCart($scope.getData,function (data) {
+            $scope.buyDialogToggle();
+            messageFactory({text : '加入购物车成功'});
+         });
+      }
    };
 }]);

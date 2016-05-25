@@ -132,7 +132,7 @@
   color: rgb(153, 153, 153);
   border-color: rgb(153, 153, 153);
   padding: 0 .15rem;
-  margin-right: .5rem;
+  //margin-right: .5rem;
 }
 
 .order-start-lay .item-list {
@@ -151,4 +151,31 @@
 .order-start-lay .item-list a,
 .order-start-lay .item-list button {
   margin: -0.1rem 0 0 0.25rem;
+}
+
+.apply-efund{
+  .ng-modal-dialog{padding: 0;}
+  .ng-modal-close-x{
+    display: none;
+  }
+  .efund-text{
+    width: 100%;
+    border: none;
+    height: 4rem;
+    padding: .5rem;
+    font-size: .7rem;
+    color: @gray-444;
+  }
+  .buttons{
+    button{
+      float: left;
+      background: none;
+      width: 50%;
+      border:1px solid @gray-ea;
+      border-bottom: none;
+      border-right: none;
+      line-height: 2rem;
+      &:first-child{border-left: none;}
+    }
+  }
 }

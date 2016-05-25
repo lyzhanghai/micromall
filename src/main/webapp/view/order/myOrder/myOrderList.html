@@ -9,7 +9,7 @@
     <span class="num">
       订单号:{{::item.orderNo}}
     </span>
-    <a href="javascript:;" class="start">
+    <a href="{{prefix}}order/myOrder/myOrderDetail.html?orderNo={{item.orderNo}}" class="start">
       订单详情
       <i class="iconzfl icon-youjiantou">
       </i>
@@ -49,19 +49,50 @@
     <!-- ngIf: postData.orderStatus <=3 -->
     <section class="start-buttons item-list">
       <span>合计:￥{{::item.totalAmount}}</span>
-      <div class="operation">
-        <div>
-          <button class="close" ng-click="dialogClick(item.orderNum)">
-            取消订单
-          </button>
-          <button ng-click="goPay(item.orderNum,item.orderFee)">
-            付款
-          </button>
-        </div>
-        <!-- ngIf: postData.orderStatus==3 -->
-        <!-- ngIf: postData.orderStatus==2 -->
+      <div class="operation" ng-switch="getData.status">
+          <div ng-switch-when="0">
+            <button class="close" ng-click="orderClose(item.orderNo,$index)">
+              取消订单
+            </button>
+            <button ng-click="goPay(item.orderNo,$index)">
+              付款
+            </button>
+          </div>
+          <div ng-switch-when="1">
+              <button class="close" ng-click="orderClose(item.orderNo)">
+                  取消订单
+              </button>
+          </div>
+          <div ng-switch-when="2">
+              <button class="close" ng-click="applyEfund(item.orderNo)">
+                  申请退款
+              </button>
+              <a href="{{prefix}}order/logistic.html?orderNo={{item.orderNo}}" class="close">
+                  查看物流
+              </a>
+              <button ng-click="confirmDelivery(item.orderNo,$index)">
+                  确认收货
+              </button>
+          </div>
+          <div ng-switch-when="3">
+              <button class="close" ng-click="applyEfund(item.orderNo)">
+                  申请退款
+              </button>
+              <a href="{{prefix}}order/logistic.html?orderNo={{item.orderNo}}" class="close">
+                  查看物流
+              </a>
+          </div>
       </div>
     </section>
     <!-- end ngIf: postData.orderStatus <=3 -->
   </div>
 </div>
+
+
+<modal-dialog show='applyEfundMoadl' class="apply-efund">
+    <textarea placeholder="请填写理由,以便我们能提供更好的服务!" ng-model="applyEfundItemData.refundReason" class="efund-text"></textarea>
+    <div class="buttons">
+        <button type="button" ng-click="efundMoadlTot()">取消</button>
+        <button type="button" ng-click="applyEfundSuc()">确定</button>
+    </div>
+</modal-dialog>

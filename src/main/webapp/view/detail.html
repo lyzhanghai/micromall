@@ -40,8 +40,8 @@
         <i class="iconfont icon-shoucang"></i>
         <span>收藏</span>
     </a>
-    <a href="javascript:;" class="add" ng-click="go('addCart')">加入购物车</a>
-    <a href="javascript:;" class="buy" ng-click="go('buy')">立即购买</a>
+    <a href="javascript:;" class="add" ng-click="go(true)">加入购物车</a>
+    <a href="javascript:;" class="buy" ng-click="go(false)">立即购买</a>
 </div>
 
 <div class="back" back>
@@ -67,8 +67,8 @@
             </div>
         </section>
         <div class="detail-buy-info base-input-lay">
-            <button class="submit submit2" ng-click="addCart()" ng-if="goModel == 'addCart'">加入购物车</button>
-            <button class="submit" ng-click="addCart()" ng-if="goModel !== 'addCart'">选好了,立即购买</button>
+            <button class="submit submit2" ng-click="placeOrder()" ng-if="getData.cart">加入购物车</button>
+            <button class="submit" ng-click="placeOrder()" ng-if="!getData.cart">选好了,立即购买</button>
         </div>
     </div>
 </div>

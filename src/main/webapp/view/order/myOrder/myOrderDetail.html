@@ -1,181 +1,93 @@
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>{{partner}}</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="initial-scale=1, width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1, user-scalable=no" media="(device-height: 568px)">
-    <meta name="renderer" content="webkit">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-touch-fullscreen" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="full-screen" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="format-detection" content="telephone=no">
-    <meta name="format-detection" content="address=no">
-    <meta name="apple-mobile-web-app-status-bar-style" content="yes"/>
-    <meta name="description" content="原来国外这么便宜！100%正品保障，抢先下载还能领券哦！" />
-    <meta property="qc:admins" content="713116756205656745636" />
-
-    <link rel="shortcut icon" href="{{partner == '折疯了' ? 'img/favicon.ico' : 'img/partner/favicon.ico' }}" type="image/x-icon" />
-
-    <link rel="stylesheet" href="../../../css/theme.css"/>
-</head>
-<body>
-    <div class="app">
-      <!-- uiView: appState -->
-      <div class="app-state" id="app-state">
-        <!--<div cz-content-for="navCenter">{{detailData.orderStatus == 1 ? '等待买家付款' : '订单详情'}}</div>-->
-        <div class="statr-info-lay ng-scope">
-          <!-- ngIf: detailData.preferentialPriceText -->
-          <div class="time">
-            <span class="ng-binding">
-              下单时间：2016-05-02 23:36
-            </span>
-            <span class="start ng-binding">
-              待付款
-            </span>
-          </div>
-          <div class="user-info">
-            <div class="info">
-              <span class="left ng-binding">
-                李星剑
-              </span>
-              <span class="right ng-binding">
-                18268270336
-              </span>
-            </div>
-            <p class="ng-binding">
-              浙江省杭州市西湖区元茂大厦2003
-            </p>
-          </div>
-          <div class="order-list">
-            <!-- ngRepeat: item in detailData.shopOfOrderPOJOs -->
-            <ul>
-              <!-- ngRepeat: childItem in item.itemOrders -->
-              <li>
-                  <div class="item-lay">
-                      <a href="#/detail&amp;2531191" class="item-img">
-                          <div class="img-lay">
-                              <img ng-src="http://img.zhefengle.com/fc6901c7b23c2479004321b557cb538c.jpg?imageView2/2/w/610/interlace/1/q/93"
-                                   src="http://img.zhefengle.com/fc6901c7b23c2479004321b557cb538c.jpg?imageView2/2/w/610/interlace/1/q/93">
-                          </div>
-                      </a>
-                      <div class="item-info">
-                          <div class="item-title ng-binding">
-                              瑞士军表(Swiss Military) 男士休闲手表
-                          </div>
-                          <div class="bottom">
-                              <div class="left">
-                                  <em>￥2174</em>
-                                  <s>￥21711</s>
-                              </div>
-                              <div class="right">
-                              <span>
-                                数量:1件
-                              </span>
-                              </div>
-                          </div>
+<div class="statr-info-lay">
+  <div class="time">
+    <span class="ng-binding">
+      下单时间：{{orderDetail.createTime}}
+    </span>
+    <span class="start">
+      {{!orderDetail.status ? '待支付' : ''}}
+      {{orderDetail.status === 1 ? '待发货' : ''}}
+      {{orderDetail.status === 2 ? '待收货' : ''}}
+      {{orderDetail.status === 3 ? '已收货' : ''}}
+      {{orderDetail.status === 4 ? '已退款' : ''}}
+      {{orderDetail.status === 5 ? '已关闭' : ''}}
+    </span>
+  </div>
+  <div class="user-info">
+    <div class="info">
+      <span class="left">
+        {{orderDetail.consigneeName}}
+      </span>
+      <span class="right">
+        {{orderDetail.consigneePhone}}
+      </span>
+    </div>
+    <p>
+        {{orderDetail.shippingAddress}}
+    </p>
+  </div>
+  <div class="order-list">
+    <ul>
+      <li ng-repeat="item in orderDetail.goodsList track by $index" bindonce>
+          <div class="item-lay">
+              <a href="{{prefix}}detail.html?goodsId={{item.goodsId}}" class="item-img">
+                  <div class="img-lay">
+                      <img lazy-img="{{item.image}}">
+                  </div>
+              </a>
+              <div class="item-info">
+                  <div class="item-title">
+                      {{item.title}}
+                  </div>
+                  <div class="bottom">
+                      <div class="left">
+                          <em>￥{{item.price}}</em>
+                          <s ng-if="item.originPrice > item.price">￥{{item.originPrice}}</s>
+                      </div>
+                      <div class="right">
+                      <span>
+                        数量:{{item.buyNumber}}件
+                      </span>
                       </div>
                   </div>
-              </li>
-              <li>
-                  <div class="item-lay">
-                      <a href="#/detail&amp;2531191" class="item-img">
-                          <div class="img-lay">
-                              <img ng-src="http://img.zhefengle.com/fc6901c7b23c2479004321b557cb538c.jpg?imageView2/2/w/610/interlace/1/q/93"
-                                   src="http://img.zhefengle.com/fc6901c7b23c2479004321b557cb538c.jpg?imageView2/2/w/610/interlace/1/q/93">
-                          </div>
-                      </a>
-                      <div class="item-info">
-                          <div class="item-title ng-binding">
-                              瑞士军表(Swiss Military) 男士休闲手表
-                          </div>
-                          <div class="bottom">
-                              <div class="left">
-                                  <em>￥2174</em>
-                                  <s>￥21711</s>
-                              </div>
-                              <div class="right">
-                              <span>
-                                数量:1件
-                              </span>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </li>
-              <!-- end ngRepeat: childItem in item.itemOrders -->
-              </ul>
-            <!-- end ngRepeat: item in detailData.shopOfOrderPOJOs -->
-          </div>
-          <div class="panel-list">
-            <!-- ngIf: detailData.preferentialTaxTotal -->
-            <div class="wrapper">
-              总重量
-              <span class="right ng-binding">
-                12.35KG
-              </span>
-            </div>
-            <!-- ngIf: detailData.usaDeliverFee -->
-            <!-- ngIf: detailData.deliverTaxTotal -->
-            <div class="wrapper ng-scope" ng-if="detailData.deliverTaxTotal">
-              配送方式:
-              <span class="right ng-binding">
-                快递￥60
-              </span>
-            </div>
-            <!-- end ngIf: detailData.deliverTaxTotal -->
-            <!-- ngIf: detailData.seaTaxTotal -->
-            <!-- ngIf: detailData.lostTaxTotal -->
-            <!-- ngIf: detailData.income -->
-            <!-- ngIf: detailData.ticketMoney -->
-            <div class="wrapper ng-scope" ng-if="detailData.ticketMoney">
-              买家留言
-              <span class="right ng-binding">
-              </span>
-            </div>
-            <!-- end ngIf: detailData.ticketMoney -->
-            <!--<div class="wrapper" style="text-align: right;">-->
-            <!--<span>共 {{detailData.buyNum}} 件</span>-->
-            <!--</div>-->
-            <!-- ngIf: detailData.orderDesc -->
-          </div>
-          <div class="shop-balance ng-scope" >
-              <span class="shop-one">
-                合计:
-                <span class="ng-binding">
-                  ￥87
-                </span>
-              </span>
-              <!-- ngIf: detailData.orderStatus==1 -->
-              <div class="shop-option ng-scope" ng-if="detailData.orderStatus == 1">
-                <a href="javascript:;" class="submit" ng-click="goPay(detailData.orderFee)">
-                  提交订单
-                </a>
               </div>
-              <!-- end ngIf: detailData.orderStatus==1 -->
-              <!-- ngIf: detailData.orderStatus==3 -->
           </div>
-        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="panel-list">
+    <div class="wrapper">
+      总重量
+      <span class="right">
+        {{orderDetail.totalWeight}}KG
+      </span>
+    </div>
+    <div class="wrapper">
+      配送方式:
+      <span class="right">
+        快递￥{{orderDetail.freight}}
+      </span>
+    </div>
+    <div class="wrapper">
+      买家留言
+      <span class="right">
+          {{orderDetail.leaveMessage}}
+      </span>
+    </div>
+  </div>
+  <div class="shop-balance" >
+      <span class="shop-one">
+        合计:
+        <span class="ng-binding">
+          ￥{{orderDetail.totalAmount}}
+        </span>
+      </span>
+      <div class="shop-option">
+          <a href="javascript:;" class="submit" ng-click="goPay()" ng-if="!orderDetail.status">
+              立刻付款
+          </a>
+          <a href="javascript:;" class="submit submit2" ng-click="confirmDelivery()" ng-if="orderDetail.status === 2">
+              确认收货
+          </a>
       </div>
-      <!-- ngIf: indexTab -->
-    </div>
-    <div class="fix-bottom fix-bottom-show">
-        <div class="fix-bottom-main">
-            <a href="#/index" class="active"><i class="iconzfl icon-shouyexuanzhong"></i><p>首页</p></a>
-            <a href="#/type" class=""><i class="iconzfl icon-sousuolianxiang"></i><p>商品</p></a>
-            <a href="#/circle/loveSunList" class="fix-love-lun-tab ">
-                <div class="bottom-main">
-                    <i class="iconzfl icon-aishaiweidianji"></i>
-                    <span class="">0</span>
-                </div>
-                <p>我的</p>
-            </a>
-            <a href="#/user/info" class=""><i class="iconzfl icon-gerenzhongxin"></i><p>购物车</p></a>
-        </div>
-    </div>
-</body>
-<script src="../../js/tools/weight/bodySize.js"></script>
-</html>
+  </div>
+</div>
