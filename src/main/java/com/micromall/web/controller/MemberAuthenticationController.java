@@ -154,11 +154,11 @@ public class MemberAuthenticationController {
 					_params.put("access_token", access_token);
 					_params.put("openid", openid);
 					_params.put("lang", "zh_CN");
-
+					logger.info("微信请求参数：" + JSON.toJSONString(_params) + "  地址：" + CommonEnvConstants.WEIXIN_USERINFO_URL);
 					org.springframework.http.ResponseEntity<String> responseEntity = HttpUtils
 							.executeRequest(CommonEnvConstants.WEIXIN_USERINFO_URL, _params, String.class);
 					if (responseEntity.getStatusCode() == HttpStatus.OK && StringUtils.isNotEmpty(responseEntity.getBody())) {
-						JSONObject jsonObject = JSON.parseObject(new String(responseEntity.getBody().getBytes(Charset.forName("gbk"))));
+						JSONObject jsonObject = JSON.parseObject(new String(responseEntity.getBody().getBytes(Charset.forName("utf-8"))));
 						member.setNickname(jsonObject.getString("nickname"));
 						String avatar = UploadUtils.upload(CommonEnvConstants.UPLOAD_MEMBER_IMAGES_DIR, jsonObject.getString("headimgurl"));
 						member.setAvatar(avatar);
