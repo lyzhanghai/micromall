@@ -41,17 +41,12 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		logger.info("sessionId:" + request.getSession().getId() + "请求 [{}], 参数 [{}]",
-				new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
 		if (_forbidden(request, response)) {
 			return false;
 		}
 
 		LoginUser loginUser = _getLoginUser(request);
-		logger.info("请求 [{}], 参数 [{}] 登录用户 [{}]",
-				new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), JSON.toJSONString(loginUser)});
 		if (loginUser != null) {
-			logger.info("请求 [{}], 参数 [{}] 用户已登录", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
 			if (_isShareSource(request)) {
 				_processShareRequest(request, loginUser);
 			}
@@ -65,7 +60,6 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 		Authentication authentication = _getHandlerAuthentication(handler);
 		if (!isMatch(request, privacys) && (isExclude(request) || (handler instanceof HandlerMethod && (authentication == null || !authentication
 				.force())))) {
-			logger.info("请求 [{}], 参数 [{}] 过滤登录", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
 			return true;
 		}
 
@@ -100,12 +94,8 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 		}
 
 		if (HttpServletUtils.isAjaxRequest(request)) {
-			logger.info("用户未登录访问：请求 [{}], 参数 [{}]  直接返回JSON：", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap()),
-					ResponseEntity.NotLogin(redirectUrl).toJSONString()});
 			HttpServletUtils.responseWriter(request, response, ResponseEntity.NotLogin(redirectUrl));
 		} else {
-			logger.info("用户未登录访问：请求 [{}], 参数 [{}]  跳转到微信登录：",
-					new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap()), redirectUrl});
 			response.sendRedirect(redirectUrl);
 		}
 	}
@@ -127,11 +117,11 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 	private LoginUser _getLoginUser(HttpServletRequest request) {
 		LoginUser loginUser = (LoginUser)request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY);
 
-		//		boolean debugAuth = CommonEnvConstants.ENV.isDevEnv() && !request.getParameterMap().containsKey(
-		//				"testAuth")/* && request.getParameterMap().containsKey("debugAuth")*/;
-		//		if (debugAuth) {
-		//			loginUser = _MockLogin(request);
-		//		}
+		boolean debugAuth = CommonEnvConstants.ENV.isDevEnv() && !request.getParameterMap().containsKey(
+				"testAuth")/* && request.getParameterMap().containsKey("debugAuth")*/;
+		if (debugAuth) {
+			loginUser = _MockLogin(request);
+		}
 		return loginUser;
 	}
 
