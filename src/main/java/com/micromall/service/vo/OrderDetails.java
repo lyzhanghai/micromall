@@ -28,6 +28,8 @@ public class OrderDetails {
 	private BigDecimal                deductionAmount;
 	// 运费
 	private Integer                   freight;
+	// 商品总重量
+	private BigDecimal                totalWeight;
 	// 订单优惠信息(JSON)
 	@JsonIgnore
 	@Deprecated
@@ -44,6 +46,9 @@ public class OrderDetails {
 	 * 退款状态 {@link RefundStatus}
 	 */
 	private Integer                   refundStatus;
+
+	// 买家留言
+	private String leaveMessage;
 
 	// ----------------------------- 收货信息
 
@@ -68,6 +73,7 @@ public class OrderDetails {
 	// 订单支付时间
 	private Date payTime;
 	// 订单关闭时间
+	@JsonIgnore
 	private Date closeTime;
 	// 订单创建时间
 	private Date createTime;
@@ -110,6 +116,14 @@ public class OrderDetails {
 		this.freight = freight;
 	}
 
+	public BigDecimal getTotalWeight() {
+		return totalWeight;
+	}
+
+	public void setTotalWeight(BigDecimal totalWeight) {
+		this.totalWeight = totalWeight;
+	}
+
 	public List<Map<String, Object>> getDiscounts() {
 		return discounts;
 	}
@@ -140,6 +154,14 @@ public class OrderDetails {
 
 	public void setRefundStatus(Integer refundStatus) {
 		this.refundStatus = refundStatus;
+	}
+
+	public String getLeaveMessage() {
+		return leaveMessage;
+	}
+
+	public void setLeaveMessage(String leaveMessage) {
+		this.leaveMessage = leaveMessage;
 	}
 
 	public String getShippingAddress() {

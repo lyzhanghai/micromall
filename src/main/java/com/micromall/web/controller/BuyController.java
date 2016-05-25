@@ -43,7 +43,7 @@ public class BuyController extends BasisController {
 	@Resource
 	private OrderService           orderService;
 	@Resource
-	private WechatPaymentService   wechatPaymentService;
+	private WeixinPaymentService   weixinPaymentService;
 	@Resource
 	private MemberService          memberService;
 
@@ -60,7 +60,7 @@ public class BuyController extends BasisController {
 		if (StringUtils.isEmpty(goodsIds)) {
 			return ResponseEntity.Failure(cart ? "请选择要购买的商品" : "请选择要购买的商品");
 		}
-		if (!cart && buyNumber == null || buyNumber.intValue() <= 0) {
+		if (!cart && (buyNumber == null || buyNumber.intValue() <= 0)) {
 			return ResponseEntity.Failure("购买数量不能小于1件");
 		}
 
@@ -134,6 +134,12 @@ public class BuyController extends BasisController {
 		return ResponseEntity.Success(data);
 	}
 
+	/**
+	 * @param request
+	 * @param settleId
+	 * @param addressId
+	 * @return
+	 */
 	// 邮费计算
 	@RequestMapping(value = "/cart/settle/calculateFreight")
 	public ResponseEntity<?> calculateFreight(HttpServletRequest request, String settleId, int addressId) {
@@ -174,6 +180,7 @@ public class BuyController extends BasisController {
 		createOrder.setTotalAmount(settle.getTotalAmount());
 		createOrder.setDeductionAmount(BigDecimal.ZERO);
 		createOrder.setFreight(settle.getFreight());
+		createOrder.setTotalWeight(settle.getTotalWeight());
 		createOrder.setDiscounts(Lists.newArrayList());
 		createOrder.setCoupons(Lists.newArrayList());
 		createOrder.setLeaveMessage(leaveMessage);
@@ -220,7 +227,7 @@ public class BuyController extends BasisController {
 
 		// TODO 商品校验
 
-		return ResponseEntity.Success(wechatPaymentService.pay(order, member.getWechatId(), HttpServletUtils.getRequestIP(request)));
+		return ResponseEntity.Success(weixinPaymentService.pay(order, member.getWechatId(), HttpServletUtils.getRequestIP(request)));
 	}
 
 }

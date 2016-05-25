@@ -1,0 +1,41 @@
+{
+  "code": 0,
+  "msg": "",
+  "data": {
+    "orderNo": "201605190038148344541195",    订单号
+    "totalAmount": 179.6,                     订单金额
+    "deductionAmount": 0,                     订单优惠金额
+    "freight": 8,                             运费
+    "status": 3,                  订单状态（待支付 = 0,待发货 = 1,待收货 = 2,已收货 = 3,已退款 = 4,已关闭 = 5）
+    "refundStatus": 0,            退款状态退款状态（初始状态(未申请退款) = 0;申请退款 = 1;拒绝退款 = 2;同意退款 = 3）
+    "shippingAddress": "浙江省杭州市西湖区学院路50号",   收货地址
+    "consigneeName": "张三",                          收货人姓名
+    "consigneePhone": "13023657670",                  收货人电话号码
+    "postcode": "321000",                             收货地址邮编
+    "deliveryCompany": "顺丰快递",                 发货物流公司（订单状态为“2、3”时才有值）
+    "deliveryNumber": "100093439400023232",       发货物流单号（订单状态为“2、3”时才有值）
+    "deliveryTime": "2016-05-19 00:38:15",        发货时间（订单状态为“2、3”时才有值）
+    "payTime": "2016-05-19 00:38:15",           支付时间（订单状态为“1、2、3”时才有值）
+    "closeTime": "2016-05-19 00:38:15",         订单关闭时间（订单状态为“5”时才有值）
+    "createTime": "2016-05-19 00:38:15",        订单创建时间
+    "canApplyRefund": false,                    此订单能否申请退款
+    "goodsList": [                    订单包含商品列表
+      {
+        "buyNumber": 7,           购买数量
+        "goodsId": 1,             商品id
+        "title": "测试商品-0",      商品名称
+        "image": "http://211.149.241.76/images/tmp/goods.jpg",    商品图片
+        "price": 382.4,           商品购买价格
+        "originPrice": 382.4      商品原价
+      },
+      {
+        "buyNumber": 9,
+        "goodsId": 2,
+        "title": "测试商品-1",
+        "image": "http://211.149.241.76/images/tmp/goods.jpg",
+        "price": 150.4,
+        "originPrice": 150.4
+      }
+    ]
+  }
+}

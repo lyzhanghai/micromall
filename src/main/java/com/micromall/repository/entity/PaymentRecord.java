@@ -13,10 +13,6 @@ public class PaymentRecord extends IdEntity {
 	private String     orderNo;
 	// 订单金额
 	private BigDecimal amount;
-	// 支付渠道
-	private String     payChannel;
-	// 支付方式
-	private String     payMethod;
 	// 第三方支付平台交易流水号
 	private String     tradeNo;
 	// 支付IP
@@ -44,22 +40,6 @@ public class PaymentRecord extends IdEntity {
 
 	public void setAmount(BigDecimal amount) {
 		this.amount = amount;
-	}
-
-	public String getPayChannel() {
-		return payChannel;
-	}
-
-	public void setPayChannel(String payChannel) {
-		this.payChannel = payChannel;
-	}
-
-	public String getPayMethod() {
-		return payMethod;
-	}
-
-	public void setPayMethod(String payMethod) {
-		this.payMethod = payMethod;
 	}
 
 	public String getTradeNo() {

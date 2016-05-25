@@ -408,6 +408,204 @@
     }
   ]
 }
+---------------------------------------------------------------------------------------------------------------------
+订单详情：/my_orders/details
+参数：
+    String orderNo 订单号
+结果：
+{
+  "code": 0,
+  "msg": "",
+  "data": {
+    "orderNo": "201605190038148344541195",    订单号
+    "totalAmount": 179.6,                     订单金额
+    "deductionAmount": 0,                     订单优惠金额
+    "freight": 8,                             运费
+    "status": 3,                  订单状态（待支付 = 0,待发货 = 1,待收货 = 2,已收货 = 3,已退款 = 4,已关闭 = 5）
+    "refundStatus": 0,            退款状态退款状态（初始状态(未申请退款) = 0;申请退款 = 1;拒绝退款 = 2;同意退款 = 3）
+    "shippingAddress": "浙江省杭州市西湖区学院路50号",   收货地址
+    "consigneeName": "张三",                          收货人姓名
+    "consigneePhone": "13023657670",                  收货人电话号码
+    "postcode": "321000",                             收货地址邮编
+    "deliveryCompany": "顺丰快递",                 发货物流公司（订单状态为“2、3”时才有值）
+    "deliveryNumber": "100093439400023232",       发货物流单号（订单状态为“2、3”时才有值）
+    "deliveryTime": "2016-05-19 00:38:15",        发货时间（订单状态为“2、3”时才有值）
+    "payTime": "2016-05-19 00:38:15",           支付时间（订单状态为“1、2、3”时才有值）
+    "closeTime": "2016-05-19 00:38:15",         订单关闭时间（订单状态为“5”时才有值）
+    "createTime": "2016-05-19 00:38:15",        订单创建时间
+    "canApplyRefund": false,                    此订单能否申请退款
+    "leaveMessage": "包装包好一点",                留言
+    "goodsList": [                    订单包含商品列表
+      {
+        "buyNumber": 7,           购买数量
+        "goodsId": 1,             商品id
+        "title": "测试商品-0",      商品名称
+        "image": "http://211.149.241.76/images/tmp/goods.jpg",    商品图片
+        "price": 382.4,           商品购买价格
+        "originPrice": 382.4      商品原价
+      },
+      {
+        "buyNumber": 9,
+        "goodsId": 2,
+        "title": "测试商品-1",
+        "image": "http://211.149.241.76/images/tmp/goods.jpg",
+        "price": 150.4,
+        "originPrice": 150.4
+      }
+    ]
+  }
+}
+---------------------------------------------------------------------------------------------------------------------
+确认收货：/my_orders/confirm_delivery
+参数：
+    String orderNo 订单号
+结果：
+{
+  "code": 0,
+  "data": true   (true:确认收货成功，false:确认收货失败)
+}
+---------------------------------------------------------------------------------------------------------------------
+申请退款：/my_orders/apply_refund
+参数：
+    String orderNo 订单号
+    String refundReason 退款原因
+结果：
+{
+  "code": 0,
+  "data": true   (true:申请退款成功，false:申请退款失败)
+}
+---------------------------------------------------------------------------------------------------------------------
+关闭订单：/my_orders/close
+参数：
+    String orderNo 订单号
+结果：
+{
+  "code": 0,
+  "data": true   (true:关闭成功，false:关闭失败)
+}
+---------------------------------------------------------------------------------------------------------------------
+物流信息：/my_orders/logistics
+参数：
+    String orderNo 订单号
+结果：
+
+
+
+
+*******下单购买接口：
+---------------------------------------------------------------------------------------------------------------------
+购物车结算：/cart/settle
+参数：
+    String goodsIds 商品id，多个商品id使用 , 分割
+    boolean cart 结算来源（1：购物车，2：直接购买）
+    int buyNumber 购买数量，直接购买模式下生效
+结果：
+{
+  "code": 0,
+  "msg": "",
+  "data": {
+    "address": { 用户默认地址
+      "id": 8,
+      "province": "广东省",
+      "city": "珠海市",
+      "county": "市辖区",
+      "detailedAddress": "源源大道33好",
+      "consigneeName": "李四",
+      "consigneePhone": "13023657670",
+      "postcode": "321000",
+      "defaul": true
+    },
+    "settle": {  订单结算信息
+      "settleId": "b5960e75a63d41068106ec3303c69bf0",   结算id
+      "totalAmount": 2523.4,  订单总金额
+      "freight": 0,   订单运费（调用/cart/settle/calculateFreight接口后才有值）
+      "address": null,  收货地址（调用/cart/settle/calculateFreight接口后才有值）
+      "totalWeight": 5, 总重量
+      "goodsList": [ 购买商品列表
+        {
+          "buyNumber": 5,  购买数量
+          "goodsId": 249,  商品id
+          "title": "测试商品-248",   商品名称
+          "image": "http://211.149.241.76/images/tmp/goods.jpg",  商品图片
+          "price": 370.7,  商品购买价格
+          "originPrice": 370.7  商品原价
+        },
+        {
+          "buyNumber": 3,
+          "goodsId": 250,
+          "title": "测试商品-249",
+          "image": "http://211.149.241.76/images/tmp/goods.jpg",
+          "price": 223.3,
+          "originPrice": 223.3
+        }
+      ]
+    }
+  }
+}
+---------------------------------------------------------------------------------------------------------------------
+运费计算：/cart/settle/calculateFreight
+参数：
+	 String settleId  结算id
+	 int addressId   收货地址id
+结果：
+{
+  "code": 0,
+  "msg": "",
+  "data": {
+    "settleId": "b5960e75a63d41068106ec3303c69bf0",
+    "totalAmount": 3522.4,  最新计算的订单总金额
+    "freight": 999,         最新结算的订单运费
+    "totalWeight": 5,
+    "address": {
+      "id": 8,
+      "province": "广东省",
+      "city": "珠海市",
+      "county": "市辖区",
+      "detailedAddress": "源源大道33好",
+      "consigneeName": "李四",
+      "consigneePhone": "13023657670",
+      "postcode": "321000",
+      "defaul": true
+    },
+    "goodsList": [
+      {
+        "buyNumber": 5,
+        "goodsId": 249,
+        "title": "测试商品-248",
+        "image": "http://211.149.241.76/images/tmp/goods.jpg",
+        "price": 370.7,
+        "originPrice": 370.7
+      },
+      {
+        "buyNumber": 3,
+        "goodsId": 250,
+        "title": "测试商品-249",
+        "image": "http://211.149.241.76/images/tmp/goods.jpg",
+        "price": 223.3,
+        "originPrice": 223.3
+      }
+    ]
+  }
+}
+---------------------------------------------------------------------------------------------------------------------
+下单购买：/cart/settle/buy
+参数：
+    String settleId  结算id
+    String leaveMessage  留言
+结果：
+{
+  "code": 0,
+  "msg": "",
+  "data": {
+    "amount": 3522.4,  订单金额
+    "orderNo": "2016052500451672672640"  订单号
+  }
+}
+---------------------------------------------------------------------------------------------------------------------
+订单支付：/order/pay
+参数：
+    String orderNo 订单号
+结果：
 
 
 

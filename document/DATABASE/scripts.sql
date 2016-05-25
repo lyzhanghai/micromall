@@ -193,6 +193,7 @@ CREATE TABLE `orders` (
   `total_amount` decimal(10,2) NOT NULL COMMENT '订单总金额',
   `deduction_amount` decimal(10,2) NOT NULL COMMENT '优惠劵抵扣金额',
   `freight` mediumint(9) NOT NULL COMMENT '运费',
+  `total_weight` DECIMAL(10,1) NOT NULL COMMENT '商品总重量',
   `discounts` text COMMENT '订单优惠信息',
   `coupons` text COMMENT '使用的优惠劵',
   `leave_message` varchar(300) DEFAULT NULL COMMENT '买家留言',

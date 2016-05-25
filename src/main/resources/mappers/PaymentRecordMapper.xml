@@ -6,8 +6,6 @@
         id id,
         order_no orderNo,
         amount amount,
-        pay_channel payChannel,
-        pay_method payMethod,
         trade_no tradeNo,
         ip ip,
         pay_status payStatus,
@@ -49,13 +47,11 @@
     </sql>
 
     <insert id="insert" parameterType="com.micromall.repository.entity.PaymentRecord" useGeneratedKeys="true" keyProperty="id">
-        insert into payment_record (<include refid="all_column"/>)
+        insert into payment_record (id,order_no,amount,trade_no,ip,pay_status,deleted,create_time,update_time)
         values (
         #{id,jdbcType=INTEGER},
         #{orderNo,jdbcType=VARCHAR},
         #{amount,jdbcType=DECIMAL},
-        #{payChannel,jdbcType=VARCHAR},
-        #{payMethod,jdbcType=VARCHAR},
         #{tradeNo,jdbcType=VARCHAR},
         #{ip,jdbcType=VARCHAR},
         #{payStatus,jdbcType=VARCHAR},
@@ -64,5 +60,41 @@
         #{updateTime,jdbcType=TIMESTAMP}
         )
     </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.micromall.repository.entity.PaymentRecord">
+        update payment_record
+        <set>
+            <if test="tradeNo != null">
+                trade_no = #{tradeNo,jdbcType=VARCHAR},
+            </if>
+            <if test="payStatus != null">
+                pay_status = #{payStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=CHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectOneByWhereClause" resultType="com.micromall.repository.entity.PaymentRecord" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="all_column"/>
+        from payment_record
+        <include refid="Where_Clause"/>
+    </select>
+
+    <select id="selectMultiByWhereClause" resultType="com.micromall.repository.entity.PaymentRecord" parameterType="com.micromall.utils.Condition">
+        select
+        <include refid="all_column"/>
+        from payment_record
+        <include refid="Where_Clause"/>
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+    </select>
 
 </mapper> 
