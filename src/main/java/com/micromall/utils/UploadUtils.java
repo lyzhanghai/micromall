@@ -1,6 +1,7 @@
 package com.micromall.utils;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -32,7 +33,10 @@ public class UploadUtils {
 			buffer.append(File.separator);
 		}
 		buffer.append(calendar.get(Calendar.YEAR)).append(File.separator).append(calendar.get(Calendar.MONTH) + 1).append(File.separator)
-		      .append(UUID.randomUUID().toString().replaceAll("-", "")).append(".").append(_get_suffix(filename));
+		      .append(UUID.randomUUID().toString().replaceAll("-", ""));
+		if (StringUtils.isNotEmpty(filename) && filename.indexOf(".") != -1) {
+			buffer.append(".").append(_get_suffix(filename));
+		}
 		return buffer.toString();
 	}
 
@@ -56,7 +60,7 @@ public class UploadUtils {
 	}
 
 	public static String upload(String dir, String downloadUrl) {
-		String path = _build_file_path(dir, downloadUrl);
+		String path = _build_file_path(dir, null);
 		File file = new File(CommonEnvConstants.UPLOAD_ROOT_DIR, path);
 		_mkdirs(file);
 
