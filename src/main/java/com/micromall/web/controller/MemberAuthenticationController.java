@@ -158,7 +158,7 @@ public class MemberAuthenticationController {
 					org.springframework.http.ResponseEntity<String> responseEntity = HttpUtils
 							.executeRequest(CommonEnvConstants.WEIXIN_USERINFO_URL, _params, String.class);
 					if (responseEntity.getStatusCode() == HttpStatus.OK && StringUtils.isNotEmpty(responseEntity.getBody())) {
-						JSONObject jsonObject = JSON.parseObject(new String(responseEntity.getBody().getBytes(Charset.forName("utf-8"))));
+						JSONObject jsonObject = JSON.parseObject(new String(responseEntity.getBody().getBytes(Charset.forName("gbk"))));
 						member.setNickname(jsonObject.getString("nickname"));
 						String avatar = UploadUtils.upload(CommonEnvConstants.UPLOAD_MEMBER_IMAGES_DIR, jsonObject.getString("headimgurl"));
 						member.setAvatar(avatar);
