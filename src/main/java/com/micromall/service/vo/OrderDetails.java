@@ -28,6 +28,8 @@ public class OrderDetails {
 	private BigDecimal                deductionAmount;
 	// 运费
 	private Integer                   freight;
+	// 商品总重量
+	private BigDecimal                totalWeight;
 	// 订单优惠信息(JSON)
 	@JsonIgnore
 	@Deprecated
@@ -46,7 +48,7 @@ public class OrderDetails {
 	private Integer                   refundStatus;
 
 	// 买家留言
-	private String                    leaveMessage;
+	private String leaveMessage;
 
 	// ----------------------------- 收货信息
 
@@ -112,6 +114,14 @@ public class OrderDetails {
 
 	public void setFreight(Integer freight) {
 		this.freight = freight;
+	}
+
+	public BigDecimal getTotalWeight() {
+		return totalWeight;
+	}
+
+	public void setTotalWeight(BigDecimal totalWeight) {
+		this.totalWeight = totalWeight;
 	}
 
 	public List<Map<String, Object>> getDiscounts() {

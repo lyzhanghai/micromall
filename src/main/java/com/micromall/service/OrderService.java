@@ -138,6 +138,7 @@ public class OrderService {
 		order.setTotalAmount(createOrder.getTotalAmount());
 		order.setDeductionAmount(createOrder.getDeductionAmount());
 		order.setFreight(createOrder.getFreight());
+		order.setTotalWeight(createOrder.getTotalWeight());
 		order.setDiscounts(createOrder.getDiscounts());
 		order.setCoupons(createOrder.getCoupons());
 		order.setLeaveMessage(createOrder.getLeaveMessage());

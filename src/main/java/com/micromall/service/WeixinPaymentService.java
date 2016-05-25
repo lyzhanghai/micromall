@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -27,33 +28,78 @@ import java.util.Map.Entry;
  * @date 2016/04/27.
  */
 @Service
-public class WechatPaymentService {
+public class WeixinPaymentService {
 
-	private static Logger logger   = LoggerFactory.getLogger(WechatPaymentService.class);
+	private static Logger logger   = LoggerFactory.getLogger(WeixinPaymentService.class);
 	private static String SIGN_KEY = "sign";
 	@Resource
 	private PaymentRecordMapper paymentRecordMapper;
+
+	public void payNotify(String requestData) {
+		Map<String, Object> resultMap = XmlUtils.convertToMap(requestData);
+		if (!"SUCCESS".equals(resultMap.get("return_code"))) {
+
+		}
+
+		if (!"SUCCESS".equals(resultMap.get("result_code"))) {
+
+		}
+
+		if (!verifySign(resultMap)) {
+
+		}
+
+		String orderNo = (String)resultMap.get("out_trade_no");
+		String tradeNo = (String)resultMap.get("transaction_id");
+		BigDecimal amount = new BigDecimal(MoneyUtils.fen2yuan(Long.valueOf((String)resultMap.get("total_fee"))));
+
+		// 重复通知
+		List<PaymentRecord> records = paymentRecordMapper.selectMultiByWhereClause(
+				Criteria.create().andEqualTo("deleted", false).andEqualTo("pay_status", PaymentStatus.SUCCESS).andEqualTo("order_no", orderNo)
+				        .build());
+		if (records.size() > 0) {
+			return;
+		}
+
+		// 原始订单不存在
+		records = paymentRecordMapper
+				.selectMultiByWhereClause(Criteria.create().andEqualTo("deleted", false).andEqualTo("order_no", orderNo).build());
+		if (records.size() == 0) {
+			return;
+		}
+
+		PaymentRecord paymentRecord = null;
+		paymentRecord.setPayStatus(PaymentStatus.SUCCESS);
+		paymentRecord.setTradeNo(tradeNo);
+	}
 
 	@Transactional
 	public String pay(Order order, String openid, String ip) {
 		logger.info("[微信支付请求参数]:[订单号:{}, openid:{}, ip:{}]", order.getOrderNo(), openid, ip);
 
 		// 判断所有的订单，看是否有已支付的
-		PaymentRecord paymentRecord = paymentRecordMapper.selectOneByWhereClause(
-				Criteria.create().andEqualTo("status", PaymentStatus.SUCCESS).andEqualTo("order_no", order.getOrderNo()).build());
+		List<PaymentRecord> paymentRecords = paymentRecordMapper
+				.selectMultiByWhereClause(Criteria.create().andEqualTo("deleted", false).andEqualTo("order_no", order.getOrderNo()).build());
 
-		if (paymentRecord != null) {
-			throw new LogicException("已经支付成功，请勿重复支付");
+		if (!paymentRecords.isEmpty()) {
+			for (PaymentRecord record : paymentRecords) {
+				if (record.getPayStatus().equals(PaymentStatus.SUCCESS)) {
+					throw new LogicException("已经支付成功，请勿重复支付");
+				} else {
+					PaymentRecord _update = new PaymentRecord();
+					_update.setId(record.getId());
+					_update.setDeleted(true);
+					_update.setUpdateTime(new Date());
+					paymentRecordMapper.updateByPrimaryKey(record);
+				}
+			}
 		}
-		paymentRecord = new PaymentRecord();
+		PaymentRecord paymentRecord = new PaymentRecord();
 		paymentRecord.setOrderNo(order.getOrderNo());
 		paymentRecord.setAmount(order.getTotalAmount());
-		paymentRecord.setPayChannel("WECHAT");
-		paymentRecord.setPayMethod("OfficialAccounts");
 		paymentRecord.setIp(ip);
 		paymentRecord.setPayStatus(PaymentStatus.WAIT_PAY);
 		paymentRecord.setCreateTime(new Date());
-		paymentRecordMapper.insert(paymentRecord);
 		paymentRecordMapper.insert(paymentRecord);
 
 		Map<String, String> params = Maps.newHashMap();

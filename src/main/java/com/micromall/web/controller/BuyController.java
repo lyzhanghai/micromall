@@ -43,7 +43,7 @@ public class BuyController extends BasisController {
 	@Resource
 	private OrderService           orderService;
 	@Resource
-	private WechatPaymentService   wechatPaymentService;
+	private WeixinPaymentService   weixinPaymentService;
 	@Resource
 	private MemberService          memberService;
 
@@ -180,6 +180,7 @@ public class BuyController extends BasisController {
 		createOrder.setTotalAmount(settle.getTotalAmount());
 		createOrder.setDeductionAmount(BigDecimal.ZERO);
 		createOrder.setFreight(settle.getFreight());
+		createOrder.setTotalWeight(settle.getTotalWeight());
 		createOrder.setDiscounts(Lists.newArrayList());
 		createOrder.setCoupons(Lists.newArrayList());
 		createOrder.setLeaveMessage(leaveMessage);
@@ -226,7 +227,7 @@ public class BuyController extends BasisController {
 
 		// TODO 商品校验
 
-		return ResponseEntity.Success(wechatPaymentService.pay(order, member.getWechatId(), HttpServletUtils.getRequestIP(request)));
+		return ResponseEntity.Success(weixinPaymentService.pay(order, member.getWechatId(), HttpServletUtils.getRequestIP(request)));
 	}
 
 }

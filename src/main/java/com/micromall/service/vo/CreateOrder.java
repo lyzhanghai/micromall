@@ -24,6 +24,8 @@ public class CreateOrder {
 	private BigDecimal                deductionAmount;
 	// 运费
 	private int                       freight;
+	// 商品总重量
+	private BigDecimal                totalWeight;
 	// 订单优惠信息(JSON)
 	private List<Map<String, Object>> discounts;
 	// 使用的优惠劵(JSON)
@@ -71,6 +73,14 @@ public class CreateOrder {
 
 	public void setFreight(int freight) {
 		this.freight = freight;
+	}
+
+	public BigDecimal getTotalWeight() {
+		return totalWeight;
+	}
+
+	public void setTotalWeight(BigDecimal totalWeight) {
+		this.totalWeight = totalWeight;
 	}
 
 	public List<Map<String, Object>> getDiscounts() {

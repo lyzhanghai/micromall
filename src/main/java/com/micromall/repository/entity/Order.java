@@ -26,6 +26,8 @@ public class Order extends IdEntity {
 	private BigDecimal                deductionAmount;
 	// 运费
 	private Integer                   freight;
+	// 商品总重量
+	private BigDecimal                   totalWeight;
 	// 订单优惠信息(JSON)
 	@JsonIgnore
 	@Deprecated
@@ -141,6 +143,14 @@ public class Order extends IdEntity {
 
 	public void setFreight(Integer freight) {
 		this.freight = freight;
+	}
+
+	public BigDecimal getTotalWeight() {
+		return totalWeight;
+	}
+
+	public void setTotalWeight(BigDecimal totalWeight) {
+		this.totalWeight = totalWeight;
 	}
 
 	public List<Map<String, Object>> getDiscounts() {
