@@ -99,6 +99,7 @@ public class WeixinPaymentService {
 		paymentRecord.setAmount(order.getTotalAmount());
 		paymentRecord.setIp(ip);
 		paymentRecord.setPayStatus(PaymentStatus.WAIT_PAY);
+		paymentRecord.setDeleted(false);
 		paymentRecord.setCreateTime(new Date());
 		paymentRecordMapper.insert(paymentRecord);
 

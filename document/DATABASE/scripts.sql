@@ -242,8 +242,6 @@ CREATE TABLE `payment_record` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `order_no` varchar(30) NOT NULL COMMENT '所属订单',
   `amount` decimal(10,2) NOT NULL COMMENT '订单金额',
-  `pay_channel` varchar(10) NOT NULL COMMENT '支付渠道',
-  `pay_method` varchar(10) NOT NULL COMMENT '支付方式',
   `trade_no` varchar(80) NULL COMMENT '所属订单',
   `ip` varchar(30) NOT NULL COMMENT '支付IP',
   `pay_status` char(4) NOT NULL COMMENT '支付状态',
