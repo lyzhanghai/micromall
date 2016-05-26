@@ -39,7 +39,8 @@ app.controller('createOrderCtr',["$scope","$rootScope","$stateParams","createOrd
                 orderNo : data.data.orderNo,
                 price : data.data.amount
             };
-            location.href = $rootScope.prefix + 'order/pay.html?' + angular.param(getData);
+            var goUrl = location.origin + $rootScope.prefix + 'order/pay.html?' + angular.param(getData);
+            location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa66a636535c987db&redirect_uri='+ encodeURIComponent(goUrl) +'&response_type=code&scope=snsapi_base&state=123#wechat_redirect';
         });
     }
 }]);

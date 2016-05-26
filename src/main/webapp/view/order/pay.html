@@ -8,15 +8,15 @@
                     <div class="item-title">微信支付</div>
                     <p>推荐安装微信5.0及以上版本使用</p>
                 </div>
-                <input class="iconzfl icon-gouxuanjian" type="radio" name="pay" value="wx" ng-model="payOption">
+                <!--<input class="iconzfl icon-gouxuanjian" type="radio" name="pay" value="wx" ng-model="payOption">-->
             </label>
         </li>
     </ul>
     <div id="go-pay"></div>
 </div>
-<div class="shop-balance" ng-style="{'margin-left' : -bodyInfo.width/2 + 'px'}">
+<div class="shop-balance">
         <span class="shop-one">
-            合计:<span>￥{{price}}</span>
+            合计:<span>￥{{data.price}}</span>
         </span>
     <a href="javascript:;" class="submit" ng-click="submit()">付款</a>
 </div>
