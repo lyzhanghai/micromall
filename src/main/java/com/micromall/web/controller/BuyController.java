@@ -117,7 +117,7 @@ public class BuyController extends BasisController {
 			orderGoods.setOriginPrice(goods.getOriginPrice());
 			orderGoods.setBuyNumber(buyNumber);
 			settle.getGoodsList().add(orderGoods);
-			totalAmount = orderGoods.getOriginPrice().multiply(new BigDecimal(orderGoods.getBuyNumber()));
+			totalAmount = orderGoods.getPrice().multiply(new BigDecimal(orderGoods.getBuyNumber()));
 			if (MapUtils.isNotEmpty(goods.getProductParams()) && goods.getProductParams().containsKey(ProductParamsKeys.WEIGHT)) {
 				totalWeight = new BigDecimal(goods.getProductParams().get(ProductParamsKeys.WEIGHT).toString());
 			}
@@ -152,7 +152,7 @@ public class BuyController extends BasisController {
 			return ResponseEntity.Failure("收货地址不存在");
 		}
 		settle.setAddress(address);
-		settle.setFreight(999);// TODO 运费计算
+		settle.setFreight(0);// TODO 运费计算
 		settle.setTotalAmount(settle.getTotalAmount().add(new BigDecimal(settle.getFreight())));
 		return ResponseEntity.Success(settle);
 	}
