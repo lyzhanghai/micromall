@@ -10,6 +10,7 @@ import com.micromall.utils.Condition.Criteria;
 import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.annotation.Authentication;
 import com.micromall.web.security.entity.LoginUser.LoginType;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -149,15 +154,52 @@ public class MemberAuthenticationController {
 				}
 
 				try {
-					_params.clear();
+					BufferedReader reader = null;
+					HttpURLConnection connection = null;
+					StringBuilder builder = new StringBuilder();
+					try {
+						String url = CommonEnvConstants.WEIXIN_USERINFO_URL + "?access_token=" + access_token + "&openid=" + openid + "&lang=zh_CN";
+						connection = (HttpURLConnection)new URL(url).openConnection();
+						reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
+						String line;
+						while ((line = reader.readLine()) != null) {
+							builder.append(line);
+						}
+					} catch (Exception e) {
+						throw e;
+					} finally {
+						IOUtils.closeQuietly(reader);
+						if (connection != null) {
+							connection.disconnect();
+						}
+					}
+
+					JSONObject jsonObject = JSON.parseObject(builder.toString());
+					member.setNickname(jsonObject.getString("nickname"));
+					String avatar = UploadUtils.upload(CommonEnvConstants.UPLOAD_MEMBER_IMAGES_DIR, jsonObject.getString("headimgurl"));
+					member.setAvatar(avatar);
+					if (StringUtils.isEmpty(avatar)) {
+						member.setAvatar(CommonEnvConstants.MEMBER_DEFAULT_AVATAR);
+					}
+					String gender = jsonObject.getString("sex");
+					member.setGender(("1".equals(gender) || "0".equals(gender)) ? gender : null);
+
+					Member _updateMember = new Member();
+					_updateMember.setId(member.getId());
+					_updateMember.setNickname(member.getNickname());
+					_updateMember.setAvatar(member.getAvatar());
+					_updateMember.setGender(member.getGender());
+					memberService.update(_updateMember);
+
+					/*_params.clear();
 					_params.put("access_token", access_token);
 					_params.put("openid", openid);
 					_params.put("lang", "zh_CN");
-
+					logger.info("微信请求参数：" + JSON.toJSONString(_params) + "  地址：" + CommonEnvConstants.WEIXIN_USERINFO_URL);
 					org.springframework.http.ResponseEntity<String> responseEntity = HttpUtils
 							.executeRequest(CommonEnvConstants.WEIXIN_USERINFO_URL, _params, String.class);
 					if (responseEntity.getStatusCode() == HttpStatus.OK && StringUtils.isNotEmpty(responseEntity.getBody())) {
-						JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
+						JSONObject jsonObject = JSON.parseObject(new String(responseEntity.getBody().getBytes(Charset.forName("utf-8"))));
 						member.setNickname(jsonObject.getString("nickname"));
 						String avatar = UploadUtils.upload(CommonEnvConstants.UPLOAD_MEMBER_IMAGES_DIR, jsonObject.getString("headimgurl"));
 						member.setAvatar(avatar);
@@ -173,7 +215,7 @@ public class MemberAuthenticationController {
 						_updateMember.setAvatar(member.getAvatar());
 						_updateMember.setGender(member.getGender());
 						memberService.update(_updateMember);
-					}
+					}*/
 				} catch (Exception e) {
 					logger.error("获取微信用户信息出错：", e);
 				}

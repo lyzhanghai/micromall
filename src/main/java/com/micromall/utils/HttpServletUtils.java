@@ -12,7 +12,7 @@ public class HttpServletUtils {
 	private static Logger logger = LoggerFactory.getLogger(HttpServletUtils.class);
 
 	public static boolean isAjaxRequest(HttpServletRequest request) {
-		return "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
+		return "XMLHttpRequest".equals(request.getHeader("X-Requested-With")) || "true".equals(request.getParameter("PAJAX"));
 	}
 
 	public static String getRequestIP(HttpServletRequest request) {
