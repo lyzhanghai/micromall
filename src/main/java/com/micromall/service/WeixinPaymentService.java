@@ -74,7 +74,7 @@ public class WeixinPaymentService {
 	}
 
 	@Transactional
-	public String pay(Order order, String openid, String ip) {
+	public Map<String, String> pay(Order order, String openid, String ip) {
 		logger.info("[微信支付请求参数]:[订单号:{}, openid:{}, ip:{}]", order.getOrderNo(), openid, ip);
 
 		// 判断所有的订单，看是否有已支付的
@@ -150,12 +150,12 @@ public class WeixinPaymentService {
 					JSON.toJSONString(request_content), responseEntity.getBody());
 			throw new LogicException("支付失败，请稍后再试");
 		}
-		String result = _get_paydata(response);
-		logger.info("微信支付处理结果:{}", result);
+		Map<String, String> result = _get_paydata(response);
+		logger.info("微信支付处理结果:{}", JSON.toJSONString(result));
 		return result;
 	}
 
-	private String _get_paydata(Map<String, Object> prepayData) {
+	private Map<String, String> _get_paydata(Map<String, Object> prepayData) {
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("appId", CommonEnvConstants.WEIXIN_APPID);
 		param.put("package", "prepay_id=" + prepayData.get("prepay_id"));
@@ -163,7 +163,7 @@ public class WeixinPaymentService {
 		param.put("timeStamp", (System.currentTimeMillis() / 1000) + "");
 		param.put("signType", "MD5");
 		param.put("paySign", _get_signature(param));
-		return JSON.toJSONString(param);
+		return param;
 	}
 
 	private boolean verifySign(Map<String, Object> params) {
