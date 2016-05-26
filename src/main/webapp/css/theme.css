@@ -2306,6 +2306,11 @@ a.hr1 {
   max-width: 2rem;
   margin-top: .75rem;
 }
+.pay-lay .shop-balance {
+  position: fixed;
+  bottom: 2.3rem;
+  left: 0;
+}
 /**
  * Created by chenmingkang on 16/3/29.
  */
