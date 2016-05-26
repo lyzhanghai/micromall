@@ -49,6 +49,7 @@ app.controller('payCtr',["$scope","$rootScope","$stateParams","payService",funct
     }
 
     $scope.submit = function(){
+        alert(1)
         payService.pay({
             orderNo : $scope.data.orderNo
         },function(data){
