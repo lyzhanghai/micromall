@@ -183,8 +183,12 @@ app.controller('shopCartCtr',["$scope","$rootScope","shopCartService","confirmFa
 
 
     $scope.submit = function(){  //结算
-        var goodsIds = encodeURIComponent($scope.shopInfo.selectArray.join('||'));
-        location.href = $rootScope.prefix + 'order/creatOrder&shopCart&' + goodsIds;
+        var  getData = {
+            goodsIds : $scope.shopInfo.selectArray.join(','),
+            cart : true
+        };
+
+        location.href = $rootScope.prefix + 'order/createOrder.html?' + angular.param(getData);
     };
 
     shopCartService.cartList(function(data){
