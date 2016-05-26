@@ -2069,7 +2069,6 @@ a.hr1 {
   color: #666666;
 }
 .creat-order-top li .top-info-lay {
-  padding-left: 1.75rem;
   line-height: 1rem;
   padding-right: 1.1rem;
 }
@@ -2084,6 +2083,9 @@ a.hr1 {
   text-overflow: ellipsis;
   -o-text-overflow: ellipsis;
   overflow: hidden;
+}
+.creat-order-lay {
+  padding-bottom: 2.3rem;
 }
 .creat-order-lay .list-title {
   background: #fff;
@@ -2188,6 +2190,9 @@ a.hr1 {
 }
 .creat-order-lay .balance-change:disabled {
   background: #fff;
+}
+.creat-order-lay .fix-bottom {
+  bottom: 2.3rem;
 }
 .coupons-show {
   display: block;

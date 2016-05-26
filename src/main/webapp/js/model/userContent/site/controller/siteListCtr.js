@@ -1,7 +1,7 @@
 /**
  * Created by kangdaye on 16/5/20.
  */
-app.controller('siteListCtr',["$scope","siteListService","messageFactory", function($scope,siteListService,messageFactory) {
+app.controller('siteListCtr',["$scope","$stateParams","siteListService","messageFactory", function($scope,$stateParams,siteListService,messageFactory) {
     $scope.listData = [];
     
     siteListService.addressList(function(data){
@@ -18,8 +18,21 @@ app.controller('siteListCtr',["$scope","siteListService","messageFactory", funct
     };
 
     $scope.defaulAddress = function(item){
+        if($stateParams.isSelectAddress){
+            sessionStorage.selectAddress = JSON.stringify(item);
+            window.history.back();
+            return;
+        }
+        if(item.defaul){
+            return;
+        }
         siteListService.defaulAddress(item,function(){
             messageFactory({text : '设为默认地址成功'});
+            $scope.listData.forEach(function(selectItem){
+                if(selectItem.id != id){
+                    selectItem.defaul = false;
+                }
+            });
         })
     };
 }]);

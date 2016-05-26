@@ -1,0 +1,22 @@
+<div class="pay-lay">
+    <!--<h1 class="pay-title">请选择支付方式</h1>-->
+    <ul>
+        <li>
+            <label class="checkbox-four">
+                <i class="iconzfl icon-weixinpng"></i>
+                <div class="item">
+                    <div class="item-title">微信支付</div>
+                    <p>推荐安装微信5.0及以上版本使用</p>
+                </div>
+                <input class="iconzfl icon-gouxuanjian" type="radio" name="pay" value="wx" ng-model="payOption">
+            </label>
+        </li>
+    </ul>
+    <div id="go-pay"></div>
+</div>
+<div class="shop-balance" ng-style="{'margin-left' : -bodyInfo.width/2 + 'px'}">
+        <span class="shop-one">
+            合计:<span>￥{{price}}</span>
+        </span>
+    <a href="javascript:;" class="submit" ng-click="submit()">付款</a>
+</div>
