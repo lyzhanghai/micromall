@@ -5,13 +5,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.ResourceHttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
+import org.springframework.http.converter.xml.SourceHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.xml.transform.Source;
 import java.io.File;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -19,6 +29,16 @@ public class HttpUtils {
 
 	private final static RestTemplate rest   = new RestTemplate();
 	private final static Logger       logger = LoggerFactory.getLogger(HttpUtils.class);
+
+	static {
+		List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
+		messageConverters.add(new ByteArrayHttpMessageConverter());
+		messageConverters.add(new StringHttpMessageConverter(Charset.forName("utf-8")));
+		messageConverters.add(new ResourceHttpMessageConverter());
+		messageConverters.add(new SourceHttpMessageConverter<Source>());
+		messageConverters.add(new AllEncompassingFormHttpMessageConverter());
+		rest.setMessageConverters(messageConverters);
+	}
 
 	public static <T> ResponseEntity<T> executeRequest(String url, String content, Class<T> clazz) {
 		// 执行请求
