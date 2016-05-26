@@ -33,7 +33,7 @@
         {name : 'userInfo/setUp', url: '/userContent/setUp.html',templateUrl:'view/userContent/setUp.html', controller: "",tabSelectIndex : 3},
         {name : 'userInfo/setInfo', url: '/userContent/setUp/setInfo.html',templateUrl:'view/userContent/setUp/setInfo.html', controller: "setInfoCtr",tabSelectIndex : 3},
         {name : 'userInfo/identity', url: '/userContent/setUp/identity.html',templateUrl:'view/userContent/setUp/identity.html', controller: "identityCtr",tabSelectIndex : 3},
-        {name : 'userInfo/siteList', url: '/userContent/site/list.html',templateUrl:'view/userContent/site/siteList.html', controller: "siteListCtr",tabSelectIndex : 3},
+        {name : 'userInfo/siteList', url: '/userContent/site/list.html?:isSelectAddress',templateUrl:'view/userContent/site/siteList.html', controller: "siteListCtr",tabSelectIndex : 3},
         {name : 'userInfo/siteAddEdit', url: '/userContent/site/addEdit.html?:id',templateUrl:'view/userContent/site/siteAddEdit.html', controller: "siteAddEditCtr",tabSelectIndex : 3},
 
         {name : 'userInfo/myDistributor', url: '/userContent/distributor/myDistributor.html',templateUrl:'view/userContent/distributor/myDistributor.html', controller: "myDistributorCtr",tabSelectIndex : 3},
@@ -42,6 +42,7 @@
         {name : 'userInfo/distributorRecord', url: '/userContent/distributor/distributorRecord.html',templateUrl:'view/userContent/distributor/distributorRecord.html', controller: "distributorRecordCtr",tabSelectIndex : 3},
 
         {name : 'order/createOrder', url: '/order/createOrder.html?:goodsIds&:buyNumber&:cart',templateUrl:'view/order/createOrder.html', controller: "createOrderCtr",tabSelectIndex : 3},
+        {name : 'order/pay', url: '/order/pay.html?:orderNo&:price',templateUrl:'view/order/pay.html', controller: "payCtr",tabSelectIndex : 3},
         {name : 'order/myOrderList', url: '/order/myOrder/myOrderList.html',templateUrl:'view/order/myOrder/myOrderList.html', controller: "myOrderListCtr",tabSelectIndex : 3},
         {name : 'order/myOrderDetail', url: '/order/myOrder/myOrderDetail.html?:orderNo',templateUrl:'view/order/myOrder/myOrderDetail.html', controller: "myOrderDetailCtr",tabSelectIndex : 3},
         {name : 'order/logistic', url: '/order/logistic.html?:orderNo',templateUrl:'view/order/logistic.html', controller: "logisticCtr",tabSelectIndex : 3}
