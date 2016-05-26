@@ -36,6 +36,7 @@ public class WeixinPaymentService {
 	private PaymentRecordMapper paymentRecordMapper;
 
 	public void payNotify(String requestData) {
+		logger.info("微信支付回调：" + requestData);
 		Map<String, Object> resultMap = XmlUtils.convertToMap(requestData);
 		if (!"SUCCESS".equals(resultMap.get("return_code"))) {
 
