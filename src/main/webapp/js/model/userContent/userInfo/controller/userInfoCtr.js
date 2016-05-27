@@ -1,6 +1,7 @@
 app.controller('userInfoCtr',["$scope","userInfoCacheFactory","userInfoService", function($scope,userInfoCacheFactory,userInfoService) {
     $scope.orderNum = {};
     $scope.navTab = userInfoCacheFactory.navTab;
+    $scope.orderStateData = userInfoCacheFactory.orderState;
 
     $scope.navTabClick = function(id){
         $scope.navTabSelectId = id;

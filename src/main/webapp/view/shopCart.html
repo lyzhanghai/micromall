@@ -70,7 +70,8 @@
                     合计:<em>￥{{shopInfo.total}}</em>
                     <span>(不含运费)</span>
                 </div>
-                <button class="submit" ng-click="submit()">
+                {{shopInfo.selectArray.length}}
+                <button class="submit" ng-disabled="!shopInfo.selectArray.length" ng-click="submit()">
                     结算
                 </button>
             </div>
