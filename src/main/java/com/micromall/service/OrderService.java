@@ -220,7 +220,7 @@ public class OrderService {
 		if (order == null) {
 			throw new LogicException("订单不存在");
 		}
-		if (order.getStatus() != OrderStatus.待发货) {
+		if (order.getStatus() != OrderStatus.待支付) {
 			throw new LogicException("订单状态异常");
 		}
 
