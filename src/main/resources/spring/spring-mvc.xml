@@ -90,7 +90,7 @@
     </mvc:interceptors>
 
     <!-- 静态资源映射-->
-    <mvc:resources mapping="/images/**" location="file:${upload.root.dir}/images/"/>
+    <mvc:resources mapping="/images/**" location="/images/, file:${upload.root.dir}/images/"/>
     <mvc:resources mapping="/resSatic/**" location="/resSatic/"/>
 
     <!-- 文件上传 -->
