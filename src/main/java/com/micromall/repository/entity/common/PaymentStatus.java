@@ -7,5 +7,5 @@ public interface PaymentStatus {
 	//支付成功
 	String SUCCESS  = "1";
 	//订单关闭
-	String CLOSED   = "9";
+	// String CLOSED   = "9";
 }

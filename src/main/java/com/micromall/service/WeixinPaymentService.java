@@ -19,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.math.BigDecimal;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -34,44 +36,70 @@ public class WeixinPaymentService {
 	private static String SIGN_KEY = "sign";
 	@Resource
 	private PaymentRecordMapper paymentRecordMapper;
+	@Resource
+	private OrderService        orderService;
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader reader = new BufferedReader(new FileReader("/Users/zhangzx/work/my-work/micromall/src/main/java/com/micromall/utils/x.xml"));
+		StringBuilder builder = new StringBuilder();
+		String line;
+		while ((line = reader.readLine()) != null) {
+			builder.append(line);
+		}
+		reader.close();
+		ResponseEntity<String> responseEntity = HttpUtils
+				.executeRequest("https://api.mch.weixin.qq.com/pay/unifiedorder", builder.toString(), String.class);
+		System.out.println(responseEntity.getBody());
+	}
 
 	public void payNotify(String requestData) {
-		logger.info("微信支付回调：" + requestData);
+		logger.info("[微信支付回调]:通知内容:{}", requestData);
 		Map<String, Object> resultMap = XmlUtils.convertToMap(requestData);
 		if (!"SUCCESS".equals(resultMap.get("return_code"))) {
+			logger.error("[微信支付回调]:支付失败, 通知内容:{}", requestData);
+		} else if (!"SUCCESS".equals(resultMap.get("result_code"))) {
+			logger.error("[微信支付回调]:支付失败, 通知内容:{}", requestData);
+		} else if (!verifySign(resultMap)) {
+			logger.error("[微信支付回调]:签名验证失败, 通知内容:{}", requestData);
+		} else {
+			String orderNo = (String)resultMap.get("out_trade_no");
+			String tradeNo = (String)resultMap.get("transaction_id");
 
+			List<PaymentRecord> records = paymentRecordMapper
+					.selectMultiByWhereClause(Criteria.create().andEqualTo("deleted", false).andEqualTo("order_no", orderNo).build());
+			PaymentRecord paymentRecord = null;
+			for (PaymentRecord record : records) {
+				if (record.getPayStatus().equals(PaymentStatus.SUCCESS)) {
+					logger.error("[微信支付回调]:重复支付, 订单号:{}  通知内容:{}", orderNo, requestData);
+					return;
+				} /*else if (record.getPayStatus().equals(PaymentStatus.CLOSED)) {
+					logger.info("[微信支付回调]:订单已关闭, 订单号:{}  通知内容:{}", orderNo, requestData);
+					return;
+				}*/ else if (record.getPayStatus().equals(PaymentStatus.WAIT_PAY)) {
+					paymentRecord = record;
+				}
+			}
+			if (paymentRecord == null) {
+				logger.error("[微信支付回调]:原始订单不存, 订单号:{}  通知内容:{}", orderNo, requestData);
+				return;
+			}
+			try {
+				logger.info("[微信支付回调]:修改支付记录状态, 支付记录:{}  通知内容:{}", JSON.toJSONString(paymentRecord), requestData);
+				paymentRecord.setPayStatus(PaymentStatus.SUCCESS);
+				paymentRecord.setTradeNo(tradeNo);
+				paymentRecord.setDeleted(false);
+				paymentRecord.setUpdateTime(new Date());
+				paymentRecordMapper.updateByPrimaryKey(paymentRecord);
+			} catch (Exception e) {
+				logger.error("[微信支付回调]:修改支付记录状态出错, 支付记录:{}  通知内容:{}", JSON.toJSONString(paymentRecord), requestData, e);
+			}
+			try {
+				logger.info("[微信支付回调]:通知订单支付成功, 订单号:{}", orderNo);
+				orderService.paySuccess(orderNo);
+			} catch (Exception e) {
+				logger.error("[微信支付回调]:通知订单支付成功接口调用出错, 订单号:{}", orderNo, e);
+			}
 		}
-
-		if (!"SUCCESS".equals(resultMap.get("result_code"))) {
-
-		}
-
-		if (!verifySign(resultMap)) {
-
-		}
-
-		String orderNo = (String)resultMap.get("out_trade_no");
-		String tradeNo = (String)resultMap.get("transaction_id");
-		BigDecimal amount = new BigDecimal(MoneyUtils.fen2yuan(Long.valueOf((String)resultMap.get("total_fee"))));
-
-		// 重复通知
-		List<PaymentRecord> records = paymentRecordMapper.selectMultiByWhereClause(
-				Criteria.create().andEqualTo("deleted", false).andEqualTo("pay_status", PaymentStatus.SUCCESS).andEqualTo("order_no", orderNo)
-				        .build());
-		if (records.size() > 0) {
-			return;
-		}
-
-		// 原始订单不存在
-		records = paymentRecordMapper
-				.selectMultiByWhereClause(Criteria.create().andEqualTo("deleted", false).andEqualTo("order_no", orderNo).build());
-		if (records.size() == 0) {
-			return;
-		}
-
-		PaymentRecord paymentRecord = null;
-		paymentRecord.setPayStatus(PaymentStatus.SUCCESS);
-		paymentRecord.setTradeNo(tradeNo);
 	}
 
 	@Transactional
@@ -117,7 +145,7 @@ public class WeixinPaymentService {
 		// params.put("fee_type", FEE_TYPE);
 		params.put("total_fee", MoneyUtils.yuan2Fen(order.getTotalAmount().doubleValue()));
 		params.put("spbill_create_ip", ip);
-		// params.put("time_start", DateUtils.format(new Date(),DateUtils.YYYYMMDDHHMMSS));
+		params.put("time_start", DateUtils.format(new Date(), DateUtils.YYYYMMDDHHMMSS));
 		// params.put("time_expire", "");
 		// params.put("goods_tag", request.getExtendParams().get(GOODS_TAGS_KEY));
 		params.put("notify_url", CommonEnvConstants.WEIXIN_NOTIFY_URL);
@@ -158,7 +186,7 @@ public class WeixinPaymentService {
 	}
 
 	private Map<String, String> _get_paydata(Map<String, Object> prepayData) {
-		Map<String, String> param = new HashMap<String, String>();
+		Map<String, String> param = new HashMap<>();
 		param.put("appId", CommonEnvConstants.WEIXIN_APPID);
 		param.put("package", "prepay_id=" + prepayData.get("prepay_id"));
 		param.put("nonceStr", RandomStringUtils.random(16, true, true));
@@ -181,7 +209,7 @@ public class WeixinPaymentService {
 
 	private String _get_signature(Map<String, String> params) {
 		StringBuilder builder = new StringBuilder();
-		List<String> keys = new ArrayList<String>(params.keySet());
+		List<String> keys = new ArrayList<>(params.keySet());
 		Collections.sort(keys);
 		for (String key : keys) {
 			if (StringUtils.isEmpty(params.get(key)) || SIGN_KEY.equals(key)) {
@@ -189,7 +217,7 @@ public class WeixinPaymentService {
 			}
 			builder.append(key).append("=").append(params.get(key)).append("&");
 		}
-		builder.append("key=").append(CommonEnvConstants.WEIXIN_APP_SECRET);
+		builder.append("key=").append(CommonEnvConstants.WEIXIN_SECRET_KEY);
 		return DigestUtils.md5Hex(builder.toString()).toUpperCase();
 	}
 

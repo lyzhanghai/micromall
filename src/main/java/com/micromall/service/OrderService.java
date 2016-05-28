@@ -236,7 +236,7 @@ public class OrderService {
 					return;
 				}
 
-				// 一级分销商商佣金计算
+				// 一级分销商销售额计算
 				Member lv1 = memberService.get(member.getParentUid());
 				if (lv1 == null || lv1.isDeleted()) {
 					return;
@@ -244,7 +244,7 @@ public class OrderService {
 				cashAccountService.incrementTotalSales(lv1.getId(), orderAmount);
 
 				if (lv1.getParentUid() != null) {
-					// 二级分销商商佣金计算
+					// 二级分销商销售额计算
 					Member lv2 = memberService.get(lv1.getParentUid());
 					if (lv2 == null || lv2.isDeleted()) {
 						return;

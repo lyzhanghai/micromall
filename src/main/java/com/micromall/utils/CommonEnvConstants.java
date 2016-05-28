@@ -24,6 +24,8 @@ public final class CommonEnvConstants {
 	public static final String WEIXIN_APP_SECRET                = PropertyConfigurerUtils.getString("weixin.app_secret");
 	/* 商户号 */
 	public static final String WEIXIN_MCHID                     = PropertyConfigurerUtils.getString("weixin.mchid");
+	/* 商户secuityKey */
+	public static final String WEIXIN_SECRET_KEY                = PropertyConfigurerUtils.getString("weixin.secuity_key");
 	/* 异步通知回调地址 */
 	public static final String WEIXIN_NOTIFY_URL                = PropertyConfigurerUtils.getString("weixin.notifyUrl");
 	/* 统一下单url */

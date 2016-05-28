@@ -3,6 +3,8 @@ package com.micromall.web.controller;
 import com.micromall.service.WeixinPaymentService;
 import com.micromall.web.security.annotation.Authentication;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -20,16 +22,18 @@ import java.io.InputStreamReader;
 @Authentication(force = false)
 public class WeixinNotifyAction {
 
+	private static Logger logger = LoggerFactory.getLogger(WeixinNotifyAction.class);
 	@Resource
 	private WeixinPaymentService weixinPaymentService;
 
-	@RequestMapping("/payment/weixin/notify")
+	@RequestMapping("/weixin/payment/notify")
 	public void notify(HttpServletRequest request, HttpServletResponse response) {
+		String requestData = null;
 		try {
-			weixinPaymentService.payNotify(getRequestData(request));
-			this.write(response, "");
+			weixinPaymentService.payNotify((requestData = getRequestData(request)));
+			this.write(response, "<xml><return_code>SUCCESS</return_code><return_msg>OK</return_msg></xml>");
 		} catch (Exception e) {
-			// TODO: handle exception
+			logger.error("微信支付回调通知处理出错, 通知内容：{}", requestData, e);
 		}
 	}
 

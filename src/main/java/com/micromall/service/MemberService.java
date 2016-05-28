@@ -28,12 +28,6 @@ public class MemberService {
 	@Resource
 	private DistributionService distributionService;
 
-	public static void main(String[] args) {
-		System.out.println(Base64.encodeBase64String(("#" + "879777").getBytes()));
-		System.out.println(Base64.encodeBase64String(("#" + "168288").getBytes()));
-		System.out.println(Base64.encodeBase64String(("#" + "100001").getBytes()));
-	}
-
 	public boolean update(Member member) {
 		member.setUpdateTime(new Date());
 		return mapper.updateByPrimaryKey(member) > 0;
@@ -60,6 +54,7 @@ public class MemberService {
 		member.setLevel(MemberLevels.LV_0);
 		member.setDeleted(false);
 		member.setRegisterTime(new Date());
+		// member.setMyPromoteCode(RandomStringUtils.randomAlphanumeric(8));
 		// 关联上级分销商
 		if (StringUtils.isNotEmpty(usePromoteCode)) {
 			Member parent = mapper.selectOneByWhereClause(Criteria.create().andEqualTo("my_promote_code", usePromoteCode).build());
