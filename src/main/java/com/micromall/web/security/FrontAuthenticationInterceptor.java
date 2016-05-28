@@ -81,7 +81,8 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 	}
 
 	private void _processNotLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		logger.info("用户未登录访问：请求 [{}], 参数 [{}]", new Object[]{request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
+		logger.info("用户未登录访问：请求 [{}], 参数 [{}]",
+				new Object[]{request.getServerName() + request.getRequestURI(), JSON.toJSONString(request.getParameterMap())});
 		String _agent = request.getHeader("User-Agent");
 		// 请求是否来自于微信
 		boolean weixin = (_agent != null && _agent.contains("MicroMessenger"));
