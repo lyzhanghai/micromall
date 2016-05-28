@@ -67,11 +67,7 @@
             <mvc:exclude-mapping path="/admin/**"/>
             <!-- static -->
             <mvc:exclude-mapping path="/favicon.ico"/>
-            <mvc:exclude-mapping path="/css/**"/>
-            <mvc:exclude-mapping path="/js/**"/>
-            <mvc:exclude-mapping path="/font/**"/>
-            <mvc:exclude-mapping path="/less/**"/>
-            <mvc:exclude-mapping path="/less/**"/>
+            <mvc:exclude-mapping path="/resSatic/**"/>
             <bean class="com.micromall.web.security.FrontAuthenticationInterceptor">
                 <property name="privacys">
                     <list>
@@ -94,14 +90,8 @@
     </mvc:interceptors>
 
     <!-- 静态资源映射-->
-    <mvc:resources mapping="/images/**" location="/images/, file:${upload.root.dir}/images/"/>
-    <mvc:resources mapping="/css/**" location="/css/"/>
-    <mvc:resources mapping="/js/**" location="/js/"/>
-    <mvc:resources mapping="/font/**" location="/font/"/>
-    <mvc:resources mapping="/less/**" location="/less/"/>
-    <mvc:resources mapping="/less/**" location="/less/"/>
-    <mvc:resources mapping="/static/**" location="/static/"/>
-    <mvc:resources mapping="/view/**" location="/view/"/>
+    <mvc:resources mapping="/images/**" location="file:${upload.root.dir}/images/"/>
+    <mvc:resources mapping="/resSatic/**" location="/resSatic/"/>
 
     <!-- 文件上传 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
