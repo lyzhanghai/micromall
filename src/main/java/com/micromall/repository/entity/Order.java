@@ -27,7 +27,7 @@ public class Order extends IdEntity {
 	// 运费
 	private Integer                   freight;
 	// 商品总重量
-	private BigDecimal                   totalWeight;
+	private BigDecimal                totalWeight;
 	// 订单优惠信息(JSON)
 	@JsonIgnore
 	@Deprecated

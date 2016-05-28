@@ -65,6 +65,8 @@ public class OrderDetails {
 
 	// 发货物流公司
 	private String deliveryCompany;
+	// 发货物流公司代码
+	private String deliveryCode;
 	// 发货物流单号
 	private String deliveryNumber;
 	// 发货时间
@@ -202,6 +204,14 @@ public class OrderDetails {
 
 	public void setDeliveryCompany(String deliveryCompany) {
 		this.deliveryCompany = deliveryCompany;
+	}
+
+	public String getDeliveryCode() {
+		return deliveryCode;
+	}
+
+	public void setDeliveryCode(String deliveryCode) {
+		this.deliveryCode = deliveryCode;
 	}
 
 	public String getDeliveryNumber() {
