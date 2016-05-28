@@ -83,49 +83,13 @@
               全部订单
             </h4>
             <section class="user-table">
-              <a href="#/order/statusList&amp;1">
-                <i class="iconfont icon-daifukuan"></i>
+              <a href="{{::startItem.href}}" ng-repeat="startItem in orderStateData track by $index">
+                <i class="iconfont {{::startItem.icon}}"></i>
                 <p>
-                  待付款
+                  {{::startItem.name}}
                 </p>
-                <span class="num">
-                    {{orderNum.waitPay}}
-                </span>
-              </a>
-              <a href="#/order/statusList&amp;2">
-                <i class="iconfont icon-daifahuo"></i>
-                <p>
-                  待发货
-                </p>
-                <span class="num">
-                    {{orderNum.waitDelivery}}
-                </span>
-              </a>
-              <a href="#/order/statusList&amp;3">
-                <i class="iconfont icon-daishouhuo"></i>
-                <p>
-                  待收货
-                </p>
-                <span class="num">
-                    {{orderNum.waitReceive}}
-                </span>
-              </a>
-              <a href="#/order/statusList&amp;5">
-                <i class="iconfont icon-yiwanchengdingdan"></i>
-                <p>
-                  已完成
-                </p>
-                <span class="num">
-                    {{orderNum.complete}}
-                </span>
-              </a>
-              <a href="#/order/statusList&amp;5">
-                <i class="iconfont icon-tixian"></i>
-                <p>
-                  退款/取消
-                </p>
-                <span class="num">
-                    {{orderNum.refund_closed}}
+                <span class="num" ng-if="orderNum[item.key]">
+                    {{::orderNum[item.key]}}
                 </span>
               </a>
             </section>
