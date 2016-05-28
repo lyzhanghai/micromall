@@ -94,9 +94,11 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 		}
 
 		if (HttpServletUtils.isAjaxRequest(request)) {
+			logger.info("跳转到微信登录:" + ResponseEntity.NotLogin(redirectUrl).toJSONString());
 			HttpServletUtils.responseWriter(request, response, ResponseEntity.NotLogin(redirectUrl));
 		} else {
 			response.sendRedirect(redirectUrl);
+			logger.info("跳转到微信登录:" + redirectUrl);
 		}
 	}
 
@@ -117,11 +119,11 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 	private LoginUser _getLoginUser(HttpServletRequest request) {
 		LoginUser loginUser = (LoginUser)request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY);
 
-		boolean debugAuth = CommonEnvConstants.ENV.isDevEnv() && !request.getParameterMap().containsKey(
-				"testAuth")/* && request.getParameterMap().containsKey("debugAuth")*/;
-		if (debugAuth) {
-			loginUser = _MockLogin(request);
-		}
+		//		boolean debugAuth = CommonEnvConstants.ENV.isDevEnv() && !request.getParameterMap().containsKey(
+		//				"testAuth")/* && request.getParameterMap().containsKey("debugAuth")*/;
+		//		if (debugAuth) {
+		//			loginUser = _MockLogin(request);
+		//		}
 		return loginUser;
 	}
 
