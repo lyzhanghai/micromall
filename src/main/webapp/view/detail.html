@@ -1,6 +1,6 @@
-<div class="item">
+<div class="detail-item">
     <div class="carousel-lay">
-        <ul rn-carousel rn-carousel-index="carouselIndex6" rn-carousel-buffered style="height:8.25rem;">
+        <ul rn-carousel rn-carousel-index="carouselIndex6" rn-carousel-buffered style="height:18.75rem;background: #fff;">
             <li bindonce ng-repeat="slide in detailData.images track by $index">
                 <a >
                     <img ng-src="{{slide}}">
@@ -14,11 +14,11 @@
             {{detailData.title}}
         </h3>
         <div class="item-info">
-            <p class=" price">￥{{detailData.price}}</p>
-            <p class="height">重量:{{detailData.productParams.weight}}</p>
+            <em><span class="price">￥{{detailData.price}}</span><s ng-if="detailData.originPrice > detailData.price">￥{{detailData.originPrice}}</s></em>
+            <p class="height">重量:{{detailData.productParams.weight}}KG</p>
         </div>
         <div class="item-sale-info">
-            <span class="left">快递费:{{detailData.freight}}</span>
+            <span class="left">快递费:{{detailData.freight ? detailData.freight + '元' : '免运费'}}</span>
             <span class="content">库存{{detailData.inventory}}件</span>
             <span class="right">{{detailData.salesVolume}}下单</span>
         </div>
@@ -32,21 +32,23 @@
 </div>
 
 <div class="item-fixed">
-    <a href="javascript:;" class="share">
-       <i class="iconfont icon-fenxiang"></i>
-       <span>分享</span>
-    </a>
-    <a href="javascript:;" class="sc" ng-class="{'active' : detailData.favorite}" ng-click="addFavorite()">
-        <i class="iconfont icon-shoucang"></i>
-        <span>收藏</span>
-    </a>
-    <a href="javascript:;" class="add" ng-click="go(true)">加入购物车</a>
-    <a href="javascript:;" class="buy" ng-click="go(false)">立即购买</a>
+    <div class="item-fixed-lay">
+        <a href="javascript:;" class="share">
+           <i class="iconfont icon-fenxiang"></i>
+           <span>分享</span>
+        </a>
+        <a href="javascript:;" class="sc" ng-class="{'active' : detailData.favorite}" ng-click="addFavorite()">
+            <i class="iconfont icon-shoucang"></i>
+            <span>收藏</span>
+        </a>
+        <a href="javascript:;" class="add" ng-click="go(true)">加入购物车</a>
+        <a href="javascript:;" class="buy" ng-click="go(false)">立即购买</a>
+    </div>
 </div>
 
 <div class="back" back>
     <a>
-        <i class="iconfont icon-qianjin"></i>
+        <i class="iconfont icon-back"></i>
     </a>
 </div>
 
@@ -72,3 +74,7 @@
         </div>
     </div>
 </div>
+
+<style>
+    .fix-bottom.fix-bottom-show{display: none;}
+</style>

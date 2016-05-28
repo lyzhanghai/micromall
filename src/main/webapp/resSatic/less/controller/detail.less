@@ -1,0 +1,214 @@
+.detail{
+  padding-bottom: 0;
+}
+.detail-item{
+  .banner img{width: 100%;}
+  .item-text{
+    padding: .5rem;
+    background: #fff;
+    .item-title{
+      font-size: .8rem;line-height: 1rem;
+    }
+    .item-info{
+      overflow:hidden;
+      line-height: 1.5rem;
+      .price{color: #ff3600;font-size: .9rem;}
+      .height{float: right;color: #aaa;font-size: .75rem;}
+    }
+    .item-sale-info{
+      position: relative;
+      line-height: 1rem;
+      overflow: hidden;
+      span{
+        width:33%;
+        color: #c8c8c8;
+        font-size: .7rem;
+        text-align: center;
+        &:first-child{
+          text-align:left;
+        }
+        &:last-child{
+          text-align:right;
+        }
+        &.left{
+          float: left;
+        }
+        &.content{
+          position:absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+        &.right{
+          float: right;
+        }
+      }
+
+    }
+
+  }
+}
+.item-more{
+  margin-top: .5rem;
+  .item-more-title{
+    font-size: .7rem;color: #353535;line-height: 1.2rem;background: #fff;padding: .25rem .5rem;
+  }
+  img{display: block;width: 100%;}
+}
+.item-fixed{
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  height: 2.65rem;
+  width: 100%;
+  text-align: center;
+  .item-fixed-lay{
+    background: #fff;
+    display: inline-block;
+    overflow: hidden;
+  }
+  i{
+    margin-top: .4rem;
+    display: block;
+    height: 1rem;
+    line-height: 1rem;
+    font-size: .9rem;
+    color: @gray-444;
+  }
+  span{
+    display: inline-block;
+    line-height: .8rem;
+  }
+  a{
+    float:left;
+    &.active,&.active i{
+      color: @gray-base;
+    }
+  }
+  .share,.sc{
+    font-size: .6rem;color:#afaeae;width: 2.6rem;border:1px solid #eee;height:2.65rem;
+    text-align: center;
+  }
+  .sc{border-left:none;}
+  .add,.buy{font-size: .8rem;background: #ff6600; width: 6.77rem;line-height: 2.65rem;text-align: center;color: #fff;}
+  .buy{background: #ee0000;}
+}
+.sold-info{
+  li{
+    border-bottom: 1px solid #eee;padding: .5rem;
+    .img{
+      width: 4rem;height:4rem;float:left;
+    }
+    .info{
+      padding-left: 4.5rem;
+      h3{font-size: .7rem;color: #5c5c5c;}//2行省略。。。。
+      .new-price{color: #ff2a00;font-size: .8rem;}
+      .old-price{color: #bfbfbf;font-size: .6rem;}//下滑线
+      .number{float:right;font-size: .6rem;}
+    }
+  }
+  .sold-info-more{
+    span{display:block;border-bottom: 1px solid #eee;
+      em{float:left;color: #000;font-size: .6rem;}
+    }
+    .buyer{}
+  }
+  .most{
+    span{
+      padding: .5rem 0;line-height:1rem;color: #3b3b3b;
+      em{color: #ee0000;}
+    }
+    a{float:right;width:5rem;}
+  }
+}
+
+
+.buy-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  display: none;
+  z-index: 999999;
+  background: rgba(0,0,0,0.4);
+  .buy-content-lay {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 12.5rem;
+    margin: 0 auto;
+    background: #fff;
+    //padding-bottom: .25rem;
+    padding: .75rem;
+    .buy-close{
+      position: absolute;
+      top: .75rem;
+      right: 0.75rem;
+      font-size: .5rem;
+      line-height: 1rem;
+      color: #000;
+      border:1px solid #000;
+      border-radius: 50%;
+      width: 1rem;
+      height: 1rem;
+      display: block;
+      text-align: center;
+    }
+    section{
+      height: auto;
+    }
+    .goods-info{
+      .goods-img{
+        width:4.5rem;
+        height: 4.5rem;
+        margin-top: -2.25rem;
+        border: 2px solid #fff;
+      }
+      span{
+        display: inline-block;
+        vertical-align: top;
+        color: @gray;
+        font-size: .8rem;
+        margin-left: .25rem;
+      }
+      .price{
+        color: @gray-base;
+      }
+    }
+    .goods-evt{
+      overflow: hidden;
+      margin-top: .8rem;
+      .left{
+        float: left;
+        font-size: .7rem;
+        line-height: 1.5rem;
+      }
+      .shop-num{
+        color: @gray;
+        button,input{
+          float: right;
+          height: 1.5rem;
+          width: 1.5rem;
+          border: 1px solid #f0f0f0;
+          line-height: 1.2rem;
+          background: none;
+          font-size: .7rem;
+        }
+        input{
+          border-right:none;
+          border-left:none;
+          padding: 0 .25rem;
+        }
+      }
+    }
+    .detail-buy-info{
+      margin-top: 3.8rem;
+    }
+  }
+  &.buy-dialog-show{
+    display: block;
+  }
+}

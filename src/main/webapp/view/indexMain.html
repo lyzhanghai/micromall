@@ -2,14 +2,14 @@
     <!--<ul>-->
         <!--<li>-->
             <!--<a href="javascript:;">-->
-                <!--<img src="images/banner.png">-->
+                <!--<img src="resSatic/images/banner.png">-->
             <!--</a>-->
         <!--</li>-->
     <!--</ul>-->
 <!--</div>-->
 <div class="new-index">
     <form class="index-search" ng-submit="searchList()">
-        <img src="images/logo.png" class="index-logo"/>
+        <img src="resSatic/images/logo.png" class="index-logo"/>
         <input class="index-search-text" placeholder="搜索全部商品" ng-model="search">
         <!-- <i class="iconzfl icon-sousuo"></i> -->
     </form>
@@ -25,29 +25,29 @@
     </div>
 
     <div class="hot-type-list">
-        <a>
+        <a href="{{prefix}}goodsList.html?categoryId=101">
             <i class="iconfont icon-gushuzaliang"></i>
             <p>大米杂粮</p>
         </a>
-        <a>
+        <a href="{{prefix}}goodsList.html?categoryId=102">
             <i class="iconfont icon-difangtechan" style="background: #50aaf6;"></i>
             <p>各地特产</p>
         </a>
-        <a>
+        <a href="{{prefix}}goodsList.html?categoryId=103">
             <i class="iconfont icon-shipin" style="background: #e99f57;"></i>
             <p>手作食材</p>
         </a>
-        <a>
+        <a href="{{prefix}}goodsList.html?categoryId=104">
             <i class="iconfont icon-shuiguo" style="background: #78c24f;"></i>
             <p>时令水果</p>
         </a>
-        <a>
+        <a href="{{prefix}}goodsList.html?categoryId=105">
             <i class="iconfont icon-cuxiao" style="background: #fc5e6d;"></i>
             <p>特价促销</p>
         </a>
     </div>
     <div class="hot-sale">
-        <img class="hot-sale-title" src="images/new－product.png">
+        <img class="hot-sale-title" src="resSatic/images/new－product.png">
         <div class="hot-sale-main">
             <a href="{{::indexConfData.middle[0].link}}" class="left">
                 <img lazy-img="{{indexConfData.middle[0].image}}">
@@ -69,7 +69,7 @@
     </div>
 
     <div class="hot-sale">
-        <img class="hot-sale-title" src="images/special.png">
+        <img class="hot-sale-title" src="resSatic/images/special.png">
         <ul>
             <li ng-repeat="item in indexRecommend track by $index" bindonce>
                 <a href="{{prefix}}detail?id={{item.goodsId}}">
@@ -80,7 +80,7 @@
     </div>
 
     <div class="index-htlist">
-        <img class="hot-sale-title" src="images/index-list-bg.jpg">
+        <img class="hot-sale-title" src="resSatic/images/index-list-bg.jpg">
         <div ng-include="'/view/common/htlist.html'" ng-controller="htlistCrt"></div>
     </div>
 </div>

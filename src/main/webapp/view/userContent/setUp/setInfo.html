@@ -1,4 +1,4 @@
-<form name="setInfoForm" class="form-info-main set-info-main">
+<form name="setInfoForm" class="form-info-main set-info-main" form-validate>
     <div class="set-info-lay" style="position: relative;">
         <div class="info-lay info-name up-img-lay" id="up-img-lay">
             <span class="info-text-name">
@@ -19,7 +19,7 @@
                   昵称:
                 </span>
                 <div class="set-input">
-                    <input type="text" ng-model="userInfo.nickname">
+                    <input type="text" ng-model="userInfo.nickname" name="userName" validate='{"required":"用户名不能为空"}' required>
                 </div>
             </label>
         </div>
@@ -30,11 +30,11 @@
                 </span>
                 <div class="set-input">
                     <label class="checkbox-four">
-                        <input type="radio" value="2" name="sex" class="iconfont icon-xuanzhong" ng-model="userInfo.gender">
+                        <input type="radio" value="2" name="sex" class="iconfont icon-gouxuanjian" ng-model="userInfo.gender">
                         女
                     </label>
                     <label class="checkbox-four">
-                        <input type="radio" value="1" name="sex" class="iconfont icon-xuanzhong" ng-model="userInfo.gender">
+                        <input type="radio" value="1" name="sex" class="iconfont icon-gouxuanjian" ng-model="userInfo.gender">
                         男
                     </label>
                 </div>
@@ -43,7 +43,7 @@
     </div>
 
     <div class="base-input-lay submit2">
-        <button class="submit submit-margin" ng-click="submit()">
+        <button class="submit submit-margin" form-submit="submit()">
             保&nbsp;&nbsp;存
         </button>
     </div>

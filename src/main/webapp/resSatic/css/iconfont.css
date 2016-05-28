@@ -1,0 +1,53 @@
+
+@font-face {font-family: "iconfont";
+  src: url('../font/iconfont.eot?t=1462627723'); /* IE9*/
+  src: url('../font/iconfont.eot?t=1462627723#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('../font/iconfont.woff?t=1462627723') format('woff'), /* chrome, firefox */
+  url('../font/iconfont.ttf?t=1462627723') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('../font/iconfont.svg?t=1462627723#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  /*font-size:16px;*/
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-xiaoxi:before { content: "\e60f"; }
+.icon-gushuzaliang:before { content: "\e600"; }
+.icon-shezhi:before { content: "\e610"; }
+.icon-yongjin:before { content: "\e611"; }
+.icon-home:before { content: "\e602"; }
+.icon-gouxuanjian:before { content: "\e601"; }
+.icon-dingwei:before { content: "\e617"; }
+.icon-back:before { content: "\e604"; }
+.icon-fenxiao:before { content: "\e612"; }
+.icon-fenxiang:before { content: "\e605"; }
+.icon-difangtechan:before { content: "\e606"; }
+.icon-dingdan:before { content: "\e613"; }
+.icon-daishouhuo:before { content: "\e618"; }
+.icon-weixinpng:before { content: "\e623"; }
+.icon-weixuanzhong:before { content: "\e607"; }
+.icon-daishenhe:before { content: "\e61f"; }
+.icon-gouwuche:before { content: "\e608"; }
+.icon-shanchu:before { content: "\e619"; }
+.icon-iconfontyonghu13:before { content: "\e620"; }
+.icon-shoucang:before { content: "\e609"; }
+.icon-daifukuan:before { content: "\e61a"; }
+.icon-iconsvgtixianjilu:before { content: "\e614"; }
+.icon-help:before { content: "\e61b"; }
+.icon-shuiguo:before { content: "\e60a"; }
+.icon-yiwanchengdingdan:before { content: "\e61c"; }
+.icon-daifahuo:before { content: "\e61d"; }
+.icon-cuxiao:before { content: "\e60b"; }
+.icon-tx:before { content: "\e621"; }
+.icon-tixian:before { content: "\e622"; }
+.icon-shipin:before { content: "\e60c"; }
+.icon-fenlei:before { content: "\e60d"; }
+.icon-tixian1:before { content: "\e615"; }
+.icon-shoudongtuiguang:before { content: "\e616"; }
+.icon-huidingbu:before { content: "\e60e"; }
+.icon-qianjin:before { content: "\e61e"; }
+.icon-xiazai:before { content: "\e603"; }
