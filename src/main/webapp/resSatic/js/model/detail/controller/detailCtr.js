@@ -20,7 +20,11 @@ app.controller('detailCtr',["$scope","$rootScope","$stateParams","detailService"
          async = true;
          detailService.addFavorite(defaultData,function (data) {
             $scope.detailData.favorite = !$scope.detailData.favorite;
-            messageFactory({text : '收藏成功'});
+            if($scope.detailData.favorite){
+               messageFactory({text : '收藏成功'});
+            }else {
+               messageFactory({text : '取消收藏'});
+            }
             async = false;
          });
       }

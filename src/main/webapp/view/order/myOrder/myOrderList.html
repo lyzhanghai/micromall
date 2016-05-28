@@ -1,5 +1,5 @@
 <div class="nav-tab">
-  <a href="javascript:;" ng-class="{'active' : getData.status === navItem.id}" style="width:20%;" ng-repeat="navItem in navTab track by $index" bindonce ng-click="navTabClick(navItem.id)">
+  <a href="{{prefix}}order/myOrder/myOrderList.html?status={{navItem.id}}" ng-class="{'active' : getData.status == navItem.id}" style="width:20%;" ng-repeat="navItem in navTab track by $index" bindonce>
     {{navItem.name}}
   </a>
 </div>
@@ -13,8 +13,8 @@
       订单详情
       <i class="iconfont icon-qianjin"></i>
     </a>
-    <p class="time" ng-show="postData.orderStatus == 1">
-      <span countdown="" countdown-data="item.orderNo" countdown-start="付款时间还剩余" countdown-end="已失效" class="ng-isolate-scope"></span>
+    <p class="time" ng-show="getData.status == 0">
+      <span countdown="" countdown-data="item.timeoutCloseTime" countdown-start="付款时间还剩余" countdown-end="已失效" class="ng-isolate-scope"></span>
     </p>
   </div>
   <div class="order-list">

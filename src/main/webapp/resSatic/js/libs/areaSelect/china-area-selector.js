@@ -4,7 +4,7 @@ angular.module('china-area-selector', ['__chinaAreaSelectorTemplates__'])
             $http({
                 method:'GET',
                 cache: true,
-                url: './js/libs/areaSelect/areaData.json',
+                url: './resSatic/js/libs/areaSelect/areaData.json',
                 dataType: 'json'
             }).success(function(data, status) {
                 callback(data);

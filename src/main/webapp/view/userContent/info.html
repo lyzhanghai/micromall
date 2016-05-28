@@ -83,7 +83,7 @@
               全部订单
             </h4>
             <section class="user-table">
-              <a href="{{::startItem.href}}" ng-repeat="startItem in orderStateData track by $index">
+              <a href="{{::prefix}}order/myOrder/myOrderList.html?status={{::startItem.hrefStatus}}" ng-repeat="startItem in orderStateData track by $index">
                 <i class="iconfont {{::startItem.icon}}"></i>
                 <p>
                   {{::startItem.name}}

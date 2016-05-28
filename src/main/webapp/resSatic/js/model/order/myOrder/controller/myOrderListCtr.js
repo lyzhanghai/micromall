@@ -1,11 +1,11 @@
 /**
  * Created by kangdaye on 16/5/24.
  */
-app.controller('myOrderListCtr',["$scope","$rootScope","myOrderListService","orderCacheFactory","confirmFactory","messageFactory",function($scope,$rootScope,myOrderListService,orderCacheFactory,confirmFactory,messageFactory) {
+app.controller('myOrderListCtr',["$scope","$rootScope","$stateParams","myOrderListService","orderCacheFactory","confirmFactory","messageFactory",function($scope,$rootScope,$stateParams,myOrderListService,orderCacheFactory,confirmFactory,messageFactory) {
     var empty = false;
      $scope.applyEfundMoadl = false;
     $scope.getData = {
-        status : 0,
+        status : $stateParams.status,
         page : 1,
         limit : 10
     };
@@ -35,21 +35,21 @@ app.controller('myOrderListCtr',["$scope","$rootScope","myOrderListService","ord
         });
     };
 
-    $scope.navTabClick = function(id){
-        $scope.getData.status = id;
-        $scope.getData.page = 1;
-        empty = false;
-        $scope.listData = [];
-        $scope.load();
-    };
-
     $scope.orderClose = function(orderNo,index){
-        myOrderListService.closeOrder({
-            orderNo : orderNo
-        },function(){
-            messageFactory({text : '关闭订单成功'});
-            $scope.listData.splice(index,1);
-        })
+        confirmFactory({
+            scope:$scope,
+            text:'确定要关闭订单？',
+            option:{
+                go:function(){
+                    myOrderListService.closeOrder({
+                        orderNo : orderNo
+                    },function(){
+                        messageFactory({text : '关闭订单成功'});
+                        $scope.listData.splice(index,1);
+                    });
+                }
+            }
+        });
     };
 
     $scope.confirmDelivery = function(orderNo,index){
