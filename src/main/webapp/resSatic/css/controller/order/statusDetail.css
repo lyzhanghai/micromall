@@ -10,6 +10,10 @@
   font-size: .65rem;
   color: #333333;
 }
+.statr-info-lay .shop-balance a {
+  border: none;
+  margin-top: 0;
+}
 .statr-info-lay .time .start {
   float: right;
   color: #e30039;
