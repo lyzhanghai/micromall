@@ -27,7 +27,7 @@ app.factory('authHttpResponseInterceptor',['$q','$location','$rootScope','$timeo
                         location.href = response.data.data;
                         break;
                     case '1':
-                        messageFactory({text:'系统出错请刷新'});
+                        messageFactory({text: response.data.msg});
                 }
                 $rootScope.loading = false;
                 return $q.reject(response);
