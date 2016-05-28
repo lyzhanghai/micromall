@@ -37,6 +37,17 @@ public class ListViewOrder {
 	// 超时未支付自动关闭时间
 	private Date             timeoutCloseTime;
 
+	// ----------------------------- 物流信息
+
+	// 发货物流公司
+	private String deliveryCompany;
+	// 发货物流公司代码
+	private String deliveryCode;
+	// 发货物流单号
+	private String deliveryNumber;
+	// 发货时间
+	private Date   deliveryTime;
+
 	public String getOrderNo() {
 		return orderNo;
 	}
@@ -99,5 +110,37 @@ public class ListViewOrder {
 
 	public void setTimeoutCloseTime(Date timeoutCloseTime) {
 		this.timeoutCloseTime = timeoutCloseTime;
+	}
+
+	public String getDeliveryCompany() {
+		return deliveryCompany;
+	}
+
+	public void setDeliveryCompany(String deliveryCompany) {
+		this.deliveryCompany = deliveryCompany;
+	}
+
+	public String getDeliveryCode() {
+		return deliveryCode;
+	}
+
+	public void setDeliveryCode(String deliveryCode) {
+		this.deliveryCode = deliveryCode;
+	}
+
+	public String getDeliveryNumber() {
+		return deliveryNumber;
+	}
+
+	public void setDeliveryNumber(String deliveryNumber) {
+		this.deliveryNumber = deliveryNumber;
+	}
+
+	public Date getDeliveryTime() {
+		return deliveryTime;
+	}
+
+	public void setDeliveryTime(Date deliveryTime) {
+		this.deliveryTime = deliveryTime;
 	}
 }

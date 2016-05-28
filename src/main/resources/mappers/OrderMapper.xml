@@ -188,7 +188,11 @@
         status,
         refund_status as 'refundStatus',
         confirm_delivery_time as 'confirmDeliveryTime',
-        timeout_close_time as 'timeoutCloseTime'
+        timeout_close_time as 'timeoutCloseTime',
+        delivery_company deliveryCompany,
+        delivery_code deliveryCode,
+        delivery_number deliveryNumber,
+        delivery_time deliveryTime
         from orders
         <include refid="Where_Clause"/>
         <if test="orderBy != null">
