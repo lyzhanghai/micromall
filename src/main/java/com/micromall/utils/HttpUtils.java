@@ -16,7 +16,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import javax.xml.transform.Source;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class HttpUtils {
 		messageConverters.add(new ByteArrayHttpMessageConverter());
 		messageConverters.add(new StringHttpMessageConverter(Charset.forName("utf-8")));
 		messageConverters.add(new ResourceHttpMessageConverter());
-		messageConverters.add(new SourceHttpMessageConverter<Source>());
+		messageConverters.add(new SourceHttpMessageConverter<>());
 		messageConverters.add(new AllEncompassingFormHttpMessageConverter());
 		rest.setMessageConverters(messageConverters);
 	}
