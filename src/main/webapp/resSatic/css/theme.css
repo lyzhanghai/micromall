@@ -300,6 +300,7 @@ a.transition:hover {
   text-align: center;
   font-size: .8rem;
   border-bottom-color: #eaeaea;
+  font-weight: normal;
 }
 .ng-modal-dialog {
   width: 80%;
@@ -743,7 +744,7 @@ a.hr1 {
   line-height: 1.5rem;
   padding: 0 .5rem;
   font-size: .7rem;
-  color: #e5e5e5;
+  color: #777777;
   width: 12.5rem;
   margin-left: .5rem;
   border-radius: 5rem;
@@ -1675,6 +1676,7 @@ button:disabled {
   border: 1px solid #e5e5e5;
   border-left: none;
   border-right: none;
+  height: 2.52rem;
 }
 .nav-tab a {
   float: left;
@@ -2630,9 +2632,11 @@ button:disabled {
 .china-area .select-main select {
   width: 90%;
   border: 1px solid #eeeeee;
-  padding: 0.5rem 0;
+  padding: .4rem 0;
   margin-left: 1%;
   text-indent: 0.25rem;
+  background: #fff;
+  border-radius: 0;
 }
 .china-area .buttons {
   overflow: hidden;
@@ -2649,6 +2653,9 @@ button:disabled {
 }
 .china-area .buttons .submit {
   background: #ff4200;
+}
+.china-area .ng-modal-close {
+  display: none;
 }
 /*好友详情*/
 .friend-empty {
@@ -3610,10 +3617,10 @@ button:disabled {
   top: -0.3rem;
   color: #ff0000;
   border: 1px solid #ff0000;
-  border-radius: 45%;
+  border-radius: 15rem;
   font-size: .45rem;
-  height: .8rem;
-  line-height: .7rem;
+  height: .65rem;
+  line-height: .58rem;
   padding: 0 .25rem;
   background: #fff;
 }
@@ -3734,7 +3741,7 @@ button:disabled {
   float: right;
 }
 .distributor-info .come-title {
-  font-size: .55rem;
+  font-size: .6rem;
   font-weight: normal;
 }
 .distributor-info .left .balance {
@@ -4135,9 +4142,9 @@ button:disabled {
   top: .75rem;
   right: 0.75rem;
   font-size: .5rem;
-  line-height: 1rem;
-  color: #000;
-  border: 1px solid #000;
+  line-height: .9rem;
+  color: #777777;
+  border: 1px solid #777777;
   border-radius: 50%;
   width: 1rem;
   height: 1rem;
@@ -4173,22 +4180,25 @@ button:disabled {
   line-height: 1.5rem;
 }
 .buy-dialog .buy-content-lay .goods-evt .shop-num {
-  color: #9e9e9e;
+  float: right;
 }
 .buy-dialog .buy-content-lay .goods-evt .shop-num button,
 .buy-dialog .buy-content-lay .goods-evt .shop-num input {
-  float: right;
-  height: 1.5rem;
+  text-align: center;
+  color: #777777;
+  float: left;
   width: 1.5rem;
-  border: 1px solid #f0f0f0;
-  line-height: 1.2rem;
+  border: 1px solid #eaeaea;
+  line-height: 1.5rem;
   background: none;
-  font-size: .7rem;
+  font-size: .6rem;
 }
 .buy-dialog .buy-content-lay .goods-evt .shop-num input {
+  width: 2rem;
   border-right: none;
   border-left: none;
   padding: 0 .25rem;
+  border-radius: 0;
 }
 .buy-dialog .buy-content-lay .detail-buy-info {
   margin-top: 3.8rem;
@@ -4513,37 +4523,52 @@ button:disabled {
   margin: 0 0.125rem;
 }
 .shop-cart-lay .fix-bottom {
-  height: 5rem;
+  bottom: 2.5rem;
+  height: 2.3rem;
+  line-height: 2.3rem;
 }
 .shop-pay-info {
   overflow: hidden;
   width: 100%;
 }
 .singular {
+  border: 1px solid #eaeaea;
+  display: inline-block;
   margin-top: .25rem;
   vertical-align: middle;
+  overflow: hidden;
+  height: 1.1rem;
 }
 .singular button {
-  color: #e50039;
   display: inline-block;
   width: 1rem;
   text-align: center;
-  font-size: 1rem;
+  font-size: .6rem;
   height: 1.05rem;
-  line-height: 1.05rem;
   vertical-align: middle;
   border: none;
   background: none;
 }
+.singular button:before {
+  display: block;
+  margin-top: -0.1rem;
+}
 .singular input {
-  width: 1rem;
-  margin: 0 0.1rem;
-  padding: 0.1rem 0.25rem;
-  border: 1px solid #ececec;
+  width: 2rem;
+  padding: 0 .25rem;
+  border: 1px solid #eaeaea;
   font-size: .65rem;
   text-align: center;
-  border-radius: 4px;
   vertical-align: middle;
+  border-top: none;
+  border-bottom: none;
+  border-radius: 0;
+  line-height: 1.1rem;
+}
+.singular button,
+.singular input {
+  color: #777777;
+  float: left;
 }
 .overdue,
 .overdue .overdue-bg {
@@ -4650,15 +4675,15 @@ button:disabled {
   display: inline-block;
   margin-top: -0.15rem;
 }
-.tab-htlist .tab-list a .tab-list-sort .arrow_box {
-  margin-top: .1rem;
+.tab-htlist .tab-list a .tab-list-sort i {
+  line-height: .4rem;
+  display: block;
+}
+.tab-htlist .tab-list a .tab-list-sort i.blur {
+  color: #e5e5e5;
 }
 .tab-htlist .tab-list a.active {
   color: #36b81e;
-}
-.tab-htlist .tab-list a .blur.arrow_box:after,
-.tab-htlist .tab-list a .blur.arrow_box:before {
-  border-left-color: #e5e5e5;
 }
 .tab-htlist .htlist {
   background: none;

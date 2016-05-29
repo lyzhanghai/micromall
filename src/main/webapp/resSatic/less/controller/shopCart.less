@@ -225,7 +225,9 @@
 }
 
 .shop-cart-lay .fix-bottom{
-  height: 5rem;
+  bottom: 2.5rem;
+  height: 2.3rem;
+  line-height: 2.3rem;
 }
 
 .shop-pay-info {
@@ -234,32 +236,42 @@
 }
 
 .singular {
+  border:1px solid @gray-ea;
+  display: inline-block;
   margin-top: .25rem;
   vertical-align: middle;
-}
-
-.singular button {
-  color: rgb(229, 0, 57);
-  display: inline-block;
-  width: 1rem;
-  text-align: center;
-  font-size: 1rem;
-  height: 1.05rem;
-  line-height: 1.05rem;
-  vertical-align: middle;
-  border: none;
-  background: none;
-}
-
-.singular input {
-  width: 1rem;
-  margin: 0 0.1rem;
-  padding: 0.1rem 0.25rem;
-  border: 1px solid rgb(236, 236, 236);
-  font-size: .65rem;
-  text-align: center;
-  border-radius: 4px;
-  vertical-align: middle;
+  overflow: hidden;
+  height: 1.1rem;
+  button{
+    display: inline-block;
+    width: 1rem;
+    text-align: center;
+    font-size: .6rem;
+    height: 1.05rem;
+    vertical-align: middle;
+    border: none;
+    background: none;
+    &:before{
+      display: block;
+      margin-top: -.1rem;
+    }
+  }
+  input {
+    width: 2rem;
+    padding: 0 .25rem;
+    border: 1px solid @gray-ea;
+    font-size: .65rem;
+    text-align: center;
+    vertical-align: middle;
+    border-top:none;
+    border-bottom: none;
+    border-radius: 0;
+    line-height: 1.1rem;
+  }
+  button,input{
+    color: @gray-777;
+    float: left;
+  }
 }
 
 //商品卖完文案

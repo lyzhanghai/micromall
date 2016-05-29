@@ -21,8 +21,10 @@
         <a href="javascript:;" ng-repeat="item in tabData track by $index" bindonce ng-class="{'active' : getData.sort === item.up || getData.sort === item.dowm}" ng-click="tabFilter(item.up,item.dowm)">
             <span>{{item.name}}</span>
             <div class="tab-list-sort">
-                <div class="arrow_box arrow_box_up" ng-class="{'blur' : getData.sort != item.up}"></div>
-                <div class="arrow_box arrow_box_down" ng-class="{'blur' : getData.sort != item.dowm}"></div>
+                <i class="iconfont icon-shangsanjiao" ng-class="{'blur' : getData.sort != item.up}"></i>
+                <i class="iconfont icon-xiasanjiaoxiao" ng-class="{'blur' : getData.sort != item.dowm}"></i>
+                <!--<div class="arrow_box arrow_box_up" ng-class="{'blur' : getData.sort != item.up}"></div>-->
+                <!--<div class="arrow_box arrow_box_down" ng-class="{'blur' : getData.sort != item.dowm}"></div>-->
             </div>
         </a>
     </div>

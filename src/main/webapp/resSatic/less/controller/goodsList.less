@@ -47,14 +47,15 @@
         vertical-align: middle;
         display: inline-block;
         margin-top: -0.15rem;
-        .arrow_box{
-          margin-top: .1rem;
+        i{
+          line-height: .4rem;
+          display: block;
+          &.blur{color: @gray-e5;}
         }
       }
       &.active{
         color: @gray-host;
       }
-      .blur.arrow_box:after,.blur.arrow_box:before{border-left-color: @gray-e5;}
     }
   }
   .htlist{background: none;border: none;padding-bottom: 0;}
