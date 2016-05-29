@@ -16,15 +16,20 @@ app.controller('detailCtr',["$scope","$rootScope","$stateParams","detailService"
    });
 
    $scope.addFavorite  = function(){
-      if(!async){
-         async = true;
+      if(async){
+         return;
+      }
+      async = true;
+      if(!$scope.detailData.favorite){
          detailService.addFavorite(defaultData,function (data) {
             $scope.detailData.favorite = !$scope.detailData.favorite;
-            if($scope.detailData.favorite){
-               messageFactory({text : '收藏成功'});
-            }else {
-               messageFactory({text : '取消收藏'});
-            }
+            messageFactory({text : '收藏成功'});
+            async = false;
+         });
+      }else {
+         detailService.deleteFavorite(defaultData,function (data) {
+            $scope.detailData.favorite = !$scope.detailData.favorite;
+            messageFactory({text : '取消收藏'});
             async = false;
          });
       }

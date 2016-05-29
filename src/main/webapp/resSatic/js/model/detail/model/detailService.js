@@ -10,6 +10,10 @@ app.service('detailService',["$http", function($http) {
         $http.post(servicePath + 'favorite/join',postData).success(callback);
     };
 
+    this.deleteFavorite = function (postData,callback) {
+        $http.post(servicePath + 'favorite/delete',postData).success(callback);
+    };
+
     this.addCart = function (postData,callback) {
         $http.post(servicePath + 'cart/join',postData).success(callback);
     };
