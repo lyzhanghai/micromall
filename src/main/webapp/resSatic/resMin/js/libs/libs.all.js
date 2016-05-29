@@ -36173,7 +36173,7 @@ angular.module('china-area-selector', ['__chinaAreaSelectorTemplates__'])
             $http({
                 method:'GET',
                 cache: true,
-                url: './js/libs/areaSelect/areaData.json',
+                url: './resSatic/js/libs/areaSelect/areaData.json',
                 dataType: 'json'
             }).success(function(data, status) {
                 callback(data);
@@ -38869,27 +38869,30 @@ angular.module('angular-carousel.shifty', [])
 ;(function() {
     'use strict';
     angular.module('cz-mobile', [
-        'cz-for-scroll',         //无限滚动,用于假数据循环展现
-        'cz-to-load',            //上啦加载
         'cz-bottom-scroll',      //滚动加载
-        'cz-type-sort',          //a-z,手势滑动'点击,页面滚动到定位到A-Z字母,提示A-Z
         'cz-countdown',          //倒计时
-        'cz-sideslip-load',      //手势左右滑动,切换下一页或者加载下一条
         'cz-back-top',           //返回顶部
         'cz-form-validate',      //表单校验
-        'cz-drag-to',            //左滑动,在右边划出选项框
         'cz-mask',               //dialog 之类弹层,添加背景上,禁用滚动条
         'cz-content-for',        //头部,只需要改变文字,或者隐藏.
-        'cz-scroll-dom-hide',
 
         'cz-message',            //消息提示
         'cz-share',              //分享三端,微信,QQ,微博
         'cz-confirm',            //确定,取消弹出框
         'cz-cache',              //数据缓存-可以缓存类似service层的数据
-        'cz-open-app',           //打开App
         'cz-cookie',             //cookie
         'cz-util'            //节点流
-    ]);
+    ]).run(['$rootScope',function($rootScope){
+        $rootScope.bodyInfo = bodyInfo();
+
+        function bodyInfo(){
+            return{
+                width : document.body.clientWidth < 750 ? document.body.clientWidth : 750,
+                height : document.documentElement.clientHeight > 0 ? document.documentElement.clientHeight : window.innerHeight
+            };
+        };
+
+    }]);
 
     angular.module('cz-util', [
         'cz-throttle'            //节点流
@@ -39055,42 +39058,40 @@ angular.module('angular-carousel.shifty', [])
  */
 ;(function(){
     'use strict';
-    angular.module('cz-message',[]).factory('messageFactory',['$rootScope','$timeout', function($rootScope,$timeout) {
+    angular.module('cz-message',[]).factory('messageFactory',['$rootScope','$timeout','$compile', function($rootScope,$timeout,$compile) {
+        var time = time || undefined;
+        var scope = $rootScope.$new();
+
         return function(o){
-            var option = {
-                time : 4000,
-                text:''
-            };
+            $timeout(function(){
+                var option = {
+                    time : 3000,
+                    text:''
+                };
+                angular.extend(option,o);
+                var elm = (function(){
+                    return document.getElementById('messageTop');
+                }());
+                scope.messageText = option.text;
 
-            angular.extend(option,o);
-            var scope = $rootScope.$new();
-            var elm = (function(){
-                return document.getElementById('messageTop');
-            }());
-            var html = '<div class="message-top" id="messageTop">' +
-                            '<div class="message-main-lay">'+
-                                '<div class="message-main">'+
-                                    '<div class="message-bg"></div>'+
-                                    '<div class="message-text">'+ option.text +'</div>'+
-                                '</div>'+
-                            '</div>'+
+                if(!elm){
+                    // angular.element(document.body).append(html);
+                    var html = '<div class="message-top" id="messageTop" ng-show="messageText">' +
+                        '<div class="message-main-lay">'+
+                        '<div class="message-main">'+
+                        '<div class="message-text">{{messageText}}</div>'+
+                        '</div>'+
+                        '</div>'+
                         '</div>';
-            var elmHtml = angular.element(html);
-            if(!elm){
-                angular.element(document.body).append(elmHtml[0]);
-            }
+                    angular.element(document.body).append($compile(html)(scope))
+                }
 
-            //else{
-            //    elm.getElementsByClassName('massage-text')[0].innerHTML = option.text;
-            //}
-
-            setTimeout(function(){
-                elm = null;
-                scope.$destroy();
-                elmHtml.remove();
-                elmHtml = null;
-            },option.time);
-
+                $timeout.cancel(time);
+                time = $timeout(function(){
+                    elm = null;
+                    scope.messageText = '';
+                },option.time);
+            },0)
         }
     }]);
 }());
@@ -39196,7 +39197,7 @@ angular.module('angular-carousel.shifty', [])
         }
     }]);
 }());
-;
+
 /**
  * Created by chenmingkang on 16/3/1.
  *
@@ -39226,7 +39227,7 @@ angular.module('angular-carousel.shifty', [])
         };
     }]);
 }());
-;
+
 /**
  * Created by chenmingkang on 16/3/1.
  */
@@ -39269,7 +39270,7 @@ angular.module('angular-carousel.shifty', [])
         }
     }])
 }());
-;
+
 /**
  * Created by chenmingkang on 16/3/1.
  *
@@ -39380,7 +39381,7 @@ angular.module('angular-carousel.shifty', [])
         }
     }]);
 }());
-;
+
 /**
  * Created by chenmingkang on 16/3/1.
  *
@@ -39515,7 +39516,7 @@ angular.module('angular-carousel.shifty', [])
         };
     }])
 }());
-;
+
 /**
  * Created by chenmingkang on 16/3/1.
  */
@@ -39547,7 +39548,7 @@ angular.module('angular-carousel.shifty', [])
         };
     });
 }());
-;
+
 /**
  * Created by chenmingkang on 16/3/1.
  */
@@ -39589,7 +39590,7 @@ angular.module('angular-carousel.shifty', [])
         }
     }]);
 }());
-;
+
 /**
  * Created by chenmingkang on 16/3/1.
  */
@@ -39597,231 +39598,35 @@ angular.module('angular-carousel.shifty', [])
 ;(function() {
     'use strict';
     angular.module('cz-mobile', [
-        'cz-for-scroll',         //无限滚动,用于假数据循环展现
-        'cz-to-load',            //上啦加载
         'cz-bottom-scroll',      //滚动加载
-        'cz-type-sort',          //a-z,手势滑动'点击,页面滚动到定位到A-Z字母,提示A-Z
         'cz-countdown',          //倒计时
-        'cz-sideslip-load',      //手势左右滑动,切换下一页或者加载下一条
         'cz-back-top',           //返回顶部
-        // 'cz-history',               //重写返回按钮
         'cz-form-validate',      //表单校验
-        'cz-drag-to',            //左滑动,在右边划出选项框
         'cz-mask',               //dialog 之类弹层,添加背景上,禁用滚动条
         'cz-content-for',        //头部,只需要改变文字,或者隐藏.
-        'cz-scroll-dom-hide',
 
         'cz-message',            //消息提示
         'cz-share',              //分享三端,微信,QQ,微博
         'cz-confirm',            //确定,取消弹出框
         'cz-cache',              //数据缓存-可以缓存类似service层的数据
-        'cz-open-app',           //打开App
         'cz-cookie',             //cookie
         'cz-util'            //节点流
-    ]);
+    ]).run(['$rootScope',function($rootScope){
+        $rootScope.bodyInfo = bodyInfo();
+
+        function bodyInfo(){
+            return{
+                width : document.body.clientWidth < 750 ? document.body.clientWidth : 750,
+                height : document.documentElement.clientHeight > 0 ? document.documentElement.clientHeight : window.innerHeight
+            };
+        };
+
+    }]);
 
     angular.module('cz-util', [
         'cz-throttle'            //节点流
     ]);
-}());;
-/**
- * Created by chenmingkang on 16/3/1.
- *
- * dragMoveCssFactory    滑动时的css动画
- * dragTemplateFactory   template 模版
- * dragBindFnFactory     负责提供绑定数据的fn
- * dragFnFactory         主要是桥接的factory
- * dragToLay             指令是父节点的数据绑定
- * dragToDismiss         是当个元素的指令
- *
- */
-;(function(){
-    'use strict';
-
-    angular.module('cz-drag-to',[]).factory('dragMoveCssFactory',function() {
-        function tarnsform(elm,x){
-            elm.css({
-                '-webkit-transform': 'translate3d(' + x + 'px, 0, 0)',
-                '-moz-transform': 'translate3d(' + x + 'px, 0, 0)',
-                '-ms-transform': 'translate3d(' + x + 'px,, 0, 0)',
-                'transform': 'translate3d(' + x + 'px,, 0, 0)'
-            });
-        }
-        return {
-            tarnsform : tarnsform
-        };
-    }).factory('dragTemplateFactory',function() {
-        var fns = {
-            templateItem : function(elm){   //item模版
-                var template = '<div class="drag-to-dismiss">' +
-                                    '<div ng-click="dragBgClick($event)" class="drag-to-bg"></div>'+
-                                    '<div class="drag-buttons"><a href="javascript:;" class="success" style="line-height : '+ elm[0].offsetHeight +'px;" ng-repeat="item in dragOption.texts track by $index" ng-click="successClick($event,$index)">{{item}}</a></div>'+
-                               '</div>';
-                return template;
-            },
-            templateBg : function(){  //bg模版
-                var templateBg = '<div class="drag-bg" ng-if="dragBgShow" ng-click="dragBgClick($event)"></div>';
-                return templateBg
-            }
-        };
-        return fns;
-    }).factory('dragBindFnFactory',["$timeout","$compile","$rootScope","dragMoveCssFactory",function($timeout,$compile,$rootScope,dragMoveCssFactory) {
-        var fns = function(elm,scope){
-            var domDismiss = elm[0].querySelector('.drag-to-dismiss');
-            var maxLeft = domDismiss.offsetWidth;
-
-            domDismiss.style.right = -maxLeft + 'px';
-            return {
-                start : function(evt,evtPosition){   //开始移动的事件
-                    evtPosition.startX = evt.x;
-                    evtPosition.startY = evt.y;
-                },
-                move : function(evt,evtPosition){
-                    if(!evtPosition.startX || !evtPosition.startY){   //有一些端不兼容
-                        this.start(evt,evtPosition);
-                    }
-                    evtPosition.moveX = evt.x;
-                    evtPosition.moveY = evt.y;
-                    evtPosition.totalY = evtPosition.moveY - evtPosition.totalY;
-                    evtPosition.totalX = - (evtPosition.moveX - evtPosition.startX) > maxLeft ? -maxLeft : evtPosition.moveX - evtPosition.startX;   //移动只能移动到最大值
-                    dragMoveCssFactory.tarnsform(elm,evtPosition.totalX);
-                },
-                end : function(evtPosition,$scopePar){
-                    scope.$apply(function(){
-                        evtPosition.startX = 0;
-                        evtPosition.startY = 0;
-
-                        if(evtPosition.totalX < 0){   //给他添加效果或者class
-                            dragMoveCssFactory.tarnsform(elm,-maxLeft,elm);
-                            $scopePar.dragBgShow = true;
-                            elm.addClass('drag-active');  //删除激活样式
-                        }else{
-                            dragMoveCssFactory.tarnsform(elm,2);
-                            evtPosition = {};
-                        }
-
-                        //evtPosition.totalX = 0;
-                    });
-                }
-            }
-        };
-        return fns;
-    }]).factory('dragFnFactory',["$timeout","$compile","$swipe","dragTemplateFactory","dragBindFnFactory","dragMoveCssFactory",function($timeout,$compile,$swipe,dragTemplateFactory,dragBindFnFactory,dragMoveCssFactory) {
-        var evtPosition = initPosition();
-
-        function initPosition(){   //init的一些基本参数
-            return {
-                startX : 0,
-                startY : 0,
-                moveX : 0,
-                moveY : 0,
-                totalX : 0,
-                totalY : 0
-            };
-        }
-
-        function closeBg(dragDiv,event,$scopePar){   //关闭背景
-            angular.forEach(dragDiv.find('li'),function(item){
-                var $item = angular.element(item);
-                dragMoveCssFactory.tarnsform($item,2);
-                $item.removeClass('drag-active');  //删除激活样式
-            });
-            $scopePar.dragBgShow = false;
-            evtPosition = initPosition();
-            event.stopPropagation();
-        }
-
-        function initBindEvt(elm,scope,$scopePar){  //绑定事件,添加元素
-            function init(){
-                var templateItem = dragTemplateFactory.templateItem(elm);
-                elm.css('position','relative').append($compile(templateItem)(scope));
-                $timeout(function(){
-                    bindEvt();
-                },0);
-            }
-
-            function bindEvt(){
-                var dargBindFn = dragBindFnFactory(elm,scope);
-                $swipe.bind(elm, {
-                    start : function(evt,event){
-                        dargBindFn.start(evt,evtPosition)
-                    },
-                    move : function(evt,event){
-                        dargBindFn.move(evt,evtPosition)
-                    },
-                    end : function(evt,event){
-                        dargBindFn.end(evtPosition,$scopePar);
-                    },
-                    cancel:function(event){
-                        evtPosition = initPosition();
-                    }
-                });
-                scope.$on('$destroy',function(){
-                    elm.off();
-                });
-            }
-            return init();
-        }
-
-        return {
-            initBindEvt : initBindEvt,
-            closeBg : closeBg
-        };
-    }]).directive('dragToLay',["$timeout","$compile","dragFnFactory","dragTemplateFactory",function($timeout,$compile,dragFnFactory,dragTemplateFactory) {
-        return {
-            restrict: 'EA',
-            scope:{
-                dragOption : '='
-            },
-            controller: ['$element',"$attrs","$scope", function($element,$attrs,$scope) {
-                this.$scopePar = $scope;
-                this.dragOption = $scope.dragOption;
-                this.dragLayElm = $element;
-            }],
-            link : function(scope, elm, attrs) {
-                //var $getElmByDrag = function(){
-                //    var getDragBg = document.getElementsByClassName('drag-bg');
-                //    return angular.element(getDragBg);
-                //}();
-                //if(!$getElmByDrag.length){
-                //    var templateBg = dragTemplateFactory.templateBg();
-                //    angular.element(document.getElementsByClassName('app')[0]).append($compile(templateBg)(scope));
-                //}
-
-                var templateBg = dragTemplateFactory.templateBg();
-                angular.element(document.getElementsByClassName('app')[0]).append($compile(templateBg)(scope));
-
-                scope.dragBgClick = function(event){  //bg关闭的事件
-                    dragFnFactory.closeBg(elm,event,scope);
-                }
-            }
-        }
-    }]).directive('dragToDismiss',["$timeout","dragFnFactory",function($timeout,dragFnFactory) {
-        return {
-            restrict: 'EA',
-            require: '^?dragToLay',
-            scope : false,
-            link : function(scope, elm, attrs,dragToLayController) {
-                $timeout(function(){
-                    var dragData = eval('(' + attrs.dragData + ')');    //获取数据
-                    var dragDiv = dragToLayController.dragLayElm;
-
-                    scope.dragOption = dragToLayController.dragOption; //获取参数
-                    dragFnFactory.initBindEvt(elm,scope,dragToLayController.$scopePar);
-
-                    scope.successClick = function(event,index){
-                        dragFnFactory.closeBg(dragDiv,event,dragToLayController.$scopePar);
-                        scope.dragOption.callback[index](dragData);
-                    };
-                },0);
-            }
-        }
-    }])
 }());
-
-
-
-;
 /**
  * Created by chenmingkang on 16/3/1.
  */
@@ -39931,7 +39736,160 @@ angular.module('angular-carousel.shifty', [])
         }
     }]);
 }());
-;
+
+/**
+ * Created by chenmingkang on 16/3/1.
+ *
+ * 幕布,禁止滚动条滚动,适用于原生滚动条
+ */
+;(function(){
+    'use strict';
+
+    angular.module('cz-mask',[]).directive('mask',["$timeout",function($timeout) {
+        return {
+            restrict: 'EA',
+            scope : {
+                maskToggle : '='
+            },
+            link : function(scope, elm, attrs) {
+                var $win = angular.element(window);
+                var watchMask;
+                $timeout(function(){
+                    elm.bind('touchmove', function(evt) {
+                        evt.preventDefault();
+                    });
+
+                    watchMask = scope.$watch('maskToggle',function(newVal,lodVal){
+                        if(newVal){
+                            $win.on('mousewheel',function(evt){
+                                evt.preventDefault();
+                                evt.stopPropagation();
+                                return false;
+                            });
+                        }else{
+                            $win.off('mousewheel');
+                        }
+                    });
+
+                    scope.$on('$destroy',function(){
+                        elm.off();
+                        $win.off('mousewheel');
+                        watchMask();
+                    })
+                },0);
+            }
+        }
+    }]);
+}());
+
+/**
+ * Created by chenmingkang on 16/3/1.
+ */
+;(function(){
+    'use strict';
+    angular.module('cz-message',[]).factory('messageFactory',['$rootScope','$timeout','$compile', function($rootScope,$timeout,$compile) {
+        var time = time || undefined;
+        var scope = $rootScope.$new();
+
+        return function(o){
+            $timeout(function(){
+                var option = {
+                    time : 3000,
+                    text:''
+                };
+                angular.extend(option,o);
+                var elm = (function(){
+                    return document.getElementById('messageTop');
+                }());
+                scope.messageText = option.text;
+
+                if(!elm){
+                    // angular.element(document.body).append(html);
+                    var html = '<div class="message-top" id="messageTop" ng-show="messageText">' +
+                        '<div class="message-main-lay">'+
+                        '<div class="message-main">'+
+                        '<div class="message-text">{{messageText}}</div>'+
+                        '</div>'+
+                        '</div>'+
+                        '</div>';
+                    angular.element(document.body).append($compile(html)(scope))
+                }
+
+                $timeout.cancel(time);
+                time = $timeout(function(){
+                    elm = null;
+                    scope.messageText = '';
+                },option.time);
+            },0)
+        }
+    }]);
+}());
+
+/**
+ * Created by chenmingkang on 16/3/1.
+ */
+;(function(){
+    'use strict';
+    angular.module('cz-share',[]).factory('shareFactory', ['$rootScope','messageFactory','partnerUrlFactory',function($rootScope,messageFactory,partnerUrlFactory) {
+        return function(option){
+            var o = {
+                title: '', // 分享标题
+                desc: '原来国外这么便宜！100%正品保障，抢先下载还能领券哦！', // 分享描述
+                link: location.href, // 分享链接
+                imgUrl:  partnerUrlFactory.bizChannel ? 'http://m.zhefengle.cn/img/partner/logo.png' : 'http://m.zhefengle.cn/img/logo.png', // 分享图标
+                type: '',
+                dataUrl: '',
+                success: function () {
+
+                },
+                cancel: function () {
+                    messageFactory({text:'已取消分享'});
+                    $scope.$apply();
+                }
+            };
+            angular.extend(o,option);
+
+            if($rootScope.browser.v.weixin){
+                wx.ready(function(){
+                    wx.onMenuShareAppMessage(o);
+                    wx.onMenuShareTimeline(o);
+                    wx.onMenuShareQQ(o);
+                    wx.onMenuShareWeibo(o);
+                });
+            }
+        };
+    }]);
+}());
+/**
+ * Created by chenmingkang on 16/3/1.
+ */
+;(function(){
+    'use strict';
+    angular.module('cz-throttle',[]).factory("throttleFactory",['$rootScope','$timeout', function($rootScope,$timeout) {   //节点流，滚动事件之类多次会导致性功能低下；
+        return function(fn, threshhold, scope){
+            threshhold || (threshhold = 250);
+            var last,
+                deferTimer;
+            return function () {
+                var context = scope || this;
+
+                var now = +new Date,
+                    args = arguments;
+                if (last && now < last + threshhold) {
+                    // hold on to it
+                    $timeout.cancel(deferTimer);
+                    deferTimer = $timeout(function () {
+                        last = now;
+                        fn.apply(context, args);
+                    }, threshhold);
+                } else {
+                    last = now;
+                    fn.apply(context, args);
+                }
+            };
+        };
+    }]);
+}());
 /**
  * Created by chenmingkang on 16/3/1.
  */
@@ -39939,27 +39897,55 @@ angular.module('angular-carousel.shifty', [])
     'use strict';
 // angular.validateAddMethod
 //
-    angular.module('cz-form-validate',[]).factory('validateFactory',['$compile',function($compile) {
+    angular.module('cz-form-validate',[]).provider('formValidateConfig', function() {
+        this.options = {
+            errorClass      : '',
+            errorMessage    : 'tip'
+        };
+        this.$get = function() {
+            var options = this.options;
+            return {
+                getOptions: function() {
+                    return angular.extend({},options);
+                }
+            };
+        };
+
+        this.setOptions = function(options) {
+            angular.extend(this.options, options);
+        };
+    }).factory('validateFactory',['$compile','formValidateConfig',function($compile,formValidateConfig) {
         var rule = {};
+        var opt = formValidateConfig.getOptions();
         function provide(scope,elm,attrs,controllers){
             var ngModelCtrl = controllers[0];
             function validate(){
                 var formCtrl = controllers[1];
                 var formName = formCtrl.form.attr("name");
-                var elmName = elm.attr("name");
-
+                var elmName = attrs.name;
                 /*转换前端传过来的校验规则*/
-                var rule = elm.attr('validate');
-                var ruleRpe = rule.replace(/:/g,",");
-                var ruleArray = ruleRpe.substr(1,rule.length-2).split(",");
 
-                angular.forEach(ruleArray,function(item,index){
-                    if(index % 2 == 0){
+                if(opt.errorMessage === 'tip'){     //表示使用消息提示那种错误消息
+                    formCtrl.formCrt.formValidateElmRule.push({
+                        elmName : elmName,
+                        rule : scope.validate
+                    });
+                }else{
+                    for(var n in scope.validate){
                         ngModelCtrl.$setValidity(item, false);
-                        elm.after($compile('<div class="error" ng-show="'+ formName +'.'+ elmName +'.$error.'+ item +' && '+ formName +'.formVaild">'+ ruleArray[index + 1] +'</div>')(scope))
+                        elm.after($compile('<div class="error" ng-show="'+ formName +'.'+ elmName +'.$error.'+ n +' && '+ formName +'.formVaild">'+ scope.validate[n] +'</div>')(scope))
                     }
-                });
-            };
+
+                    // var ruleRpe = rule.replace(/:/g,",");
+                    // var ruleArray = ruleRpe.substr(1,rule.length-2).split(",");
+                    // angular.forEach(ruleArray,function(item,index){
+                    //     if(index % 2 == 0){
+                    //         ngModelCtrl.$setValidity(item, false);
+                    //         elm.after($compile('<div class="error" ng-show="'+ formName +'.'+ elmName +'.$error.'+ item +' && '+ formName +'.formVaild">'+ ruleArray[index + 1] +'</div>')(scope))
+                    //     }
+                    // });
+                }
+            }
 
             function matchRule(rules){   //负责匹配校验规则
                 var valiDataType = attrs.validateType;/*校验数据类型*/
@@ -39974,7 +39960,7 @@ angular.module('angular-carousel.shifty', [])
                     injectRule('equalTo',rules['equalTo']);   //注入校验规则
                     equalTo('equalTo',rules['equalTo']);  //注入两端的监听
                 }
-            };
+            }
 
             function validateItem(validateName,newVal,callback){   //负责校验每个单独元素规则
                 var ngModelCtrl = controllers[0];
@@ -39987,10 +39973,10 @@ angular.module('angular-carousel.shifty', [])
             }
 
             function injectRule(validateName,callback){   //注入校验规则
-               scope.$watch(attrs.ngModel, function(newVal){
+               scope.$parent.$watch(attrs.ngModel, function(newVal){
                     validateItem(validateName,newVal,callback);
                 });
-            };
+            }
 
             function equalTo(validateName,callback){  //如密码,确定密码,两端绑定
                 var tarElm = angular.element(document.getElementById(attrs.equalTo));
@@ -40030,22 +40016,41 @@ angular.module('angular-carousel.shifty', [])
         return validateFns;
     }]).run(['validateFactory',function(validateFactory){
         validateFactory().addRule(angular.validateAddMethod);
-    }]).directive('formSubmit', function() {
+    }]).directive('formSubmit',['messageFactory',function(messageFactory) {
         return {
             restrict : 'EA',
             require: ['^?formValidate'],
+            scope : {
+                formSubmit : '&'
+            },
             controller: ['$element',"$attrs", function($element,$attrs) {
                 this.formSubmit = $element;
             }],
             link: function (scope, elm, attrs,formController) {
                 var form = formController[0].form;
+                var formCrt = formController[0].formCrt;
                 var formName = form.attr("name");
+
                 elm.on('click',function(){
-                    if(scope[formName].$valid){
-                        scope[formName].formVaild = false;
-                        scope.$eval(attrs.formSubmit);
+                    console.log(formCrt[formName].$valid)
+                    if(formCrt[formName].$valid){
+                        formCrt[formName].formVaild = false;
+                        scope.formSubmit();
                     }else{
-                        scope[formName].formVaild = true;
+                        for(var i = 0;i < formCrt.formValidateElmRule.length;i++){
+                            var item = formCrt.formValidateElmRule[i];
+                            var isValidTrue = formCrt[formName][item.elmName].$valid;
+                            if(!isValidTrue){
+                                var errorNameObj = formCrt[formName][item.elmName].$error;
+                                for(var n in errorNameObj){
+                                    if(item.rule[n]){
+                                        messageFactory({text : item.rule[n]})
+                                    }
+                                }
+                                return;
+                            }
+                        }
+                        formCrt[formName].formVaild = true;
                     }
                 });
 
@@ -40054,11 +40059,14 @@ angular.module('angular-carousel.shifty', [])
                 });
             }
         }
-    }).directive('formValidate', function() {
+    }]).directive('formValidate', function() {
         return {
             restrict: 'EA',
             require: ['^?formSubmit'],
-            controller: ['$element', "$attrs", function ($element, $attrs) {
+            scope : true,
+            controller: ['$scope','$element', "$attrs", function ($scope,$element, $attrs) {
+                $scope.formValidateElmRule = [];
+                this.formCrt = $scope;
                 this.form = $element;
             }],
             link : function(scope, elm, attrs) {
@@ -40068,9 +40076,13 @@ angular.module('angular-carousel.shifty', [])
     }).directive('validate', ['$compile','$timeout','validateFactory',function($compile,$timeout,validateFactory) {
         return {
             restrict : 'EA',
+            scope : {
+                validateType : '@',
+                validate : '='
+            },
             require: ['ngModel','^?formValidate'],
             link : function(scope, elm, attrs,controllers) {
-                validateFactory(scope,attrs,controllers).run(elm)
+                 validateFactory(scope,attrs,controllers).run(elm);
             }
         }
     }])
@@ -40088,7 +40100,7 @@ angular.module('angular-carousel.shifty', [])
 
 
 
-;
+
 /**
  * Created by chenmingkang on 16/3/11.
  *
@@ -40105,12 +40117,24 @@ angular.module('angular-carousel.shifty', [])
             var res = new RegExp(/^[0-9]*$/);
             return newVal && res.test(newVal);
         },
+        price : function(newVal){
+            var res = new RegExp(/^\d+(\.\d+)?$/);
+            return newVal && res.test(newVal);
+        },
+        priceUnZero : function(newVal){
+            var res = new RegExp(/^\d+(\.\d+)?$/);
+            return newVal && res.test(newVal) && newVal > 0;
+        },
         equalTo : function(newVal,$elm){ //两端绑定
             var tarElm = function(){
                 var id = $elm.attr('equal-to');
                 return document.getElementById(id);
             }();
             return tarElm.value == newVal;
+        },
+        notChinese : function(newVal){
+            var res = new RegExp(/[\u4e00-\u9fa5]+/);
+            return newVal && !res.test(newVal);
         }
     };
 })(angular);
@@ -40168,771 +40192,8 @@ angular.module('angular-carousel.shifty', [])
 //            tarVal = newVal || '';
 //            repeatFn();
 //        });
-//    };
-/**
- * Created by chenmingkang on 16/3/1.
- *
- * 幕布,禁止滚动条滚动,适用于原生滚动条
- */
-;(function(){
-    'use strict';
-
-    angular.module('cz-mask',[]).directive('mask',["$timeout",function($timeout) {
-        return {
-            restrict: 'EA',
-            scope : {
-                maskToggle : '='
-            },
-            link : function(scope, elm, attrs) {
-                var $win = angular.element(window);
-                var watchMask;
-                $timeout(function(){
-                    elm.bind('touchmove', function(evt) {
-                        evt.preventDefault();
-                    });
-
-                    watchMask = scope.$watch('maskToggle',function(newVal,lodVal){
-                        if(newVal){
-                            $win.on('mousewheel',function(evt){
-                                evt.preventDefault();
-                                evt.stopPropagation();
-                                return false;
-                            });
-                        }else{
-                            $win.off('mousewheel');
-                        }
-                    });
-
-                    scope.$on('$destroy',function(){
-                        elm.off();
-                        $win.off('mousewheel');
-                        watchMask();
-                    })
-                },0);
-            }
-        }
-    }]);
-}());
-;
-/**
- * Created by chenmingkang on 16/3/1.
- */
-;(function(){
-    'use strict';
-    angular.module('cz-message',[]).factory('messageFactory',['$rootScope','$timeout', function($rootScope,$timeout) {
-        return function(o){
-            var option = {
-                time : 4000,
-                text:''
-            };
-
-            angular.extend(option,o);
-            var scope = $rootScope.$new();
-            var elm = (function(){
-                return document.getElementById('messageTop');
-            }());
-            var html = '<div class="message-top" id="messageTop">' +
-                            '<div class="message-main-lay">'+
-                                '<div class="message-main">'+
-                                    '<div class="message-bg"></div>'+
-                                    '<div class="message-text">'+ option.text +'</div>'+
-                                '</div>'+
-                            '</div>'+
-                        '</div>';
-            var elmHtml = angular.element(html);
-            if(!elm){
-                angular.element(document.body).append(elmHtml[0]);
-            }
-
-            //else{
-            //    elm.getElementsByClassName('massage-text')[0].innerHTML = option.text;
-            //}
-
-            setTimeout(function(){
-                elm = null;
-                scope.$destroy();
-                elmHtml.remove();
-                elmHtml = null;
-            },option.time);
-
-        }
-    }]);
-}());
-;
-/**
- * Created by chenmingkang on 16/3/1.
- */
-;(function(){
-    'use strict';
-    angular.module('cz-open-app',[]).factory('openAppFactory',['$rootScope','confirmFactory',function($rootScope,confirmFactory) {
-        var indexUrl = 'zhefengle:m.zhefengle.cn';
-        var scope = $rootScope.$new();
-        var option = {};
-        var ua = navigator.userAgent,
-            loadIframe,
-            win = window;
-
-        var confirm = {  //设置微信里面跳转APP信息
-            text:'亲，请选择要去的地方',
-            closeText:'去下载',
-            goText:'去app',
-            option:{
-                close:function(){
-                    location.href = option.wxAndroidUrl;
-                },
-                go:function(){
-                    var goHref = encodeURIComponent(option.appurl);
-                    location.href='https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa6ddfd2bf5f24af7&redirect_uri='+ goHref +'&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect';
-                }
-            }
-        };
-        var init = function(){
-            option = {
-                appurl : indexUrl,
-                wxAndroidUrl : "http://a.app.qq.com/o/simple.jsp?pkgname=com.vanwell.module.zhefengle.app",
-                androidUrl :  "http://7u2fm4.com1.z0.glb.clouddn.com/084131b4-dc0f-46e0-8bf6-b7cbc6779bda.apk"
-            };
-        };
-        init();
-
-        scope.$on('$destroy', function(){
-            init();  //路由跳转都默认设置回去
-        });
-
-        function getIntentIframe(){
-            if(!loadIframe){
-                var iframe = document.createElement("iframe");
-                iframe.style.cssText = "display:none;width:0px;height:0px;";
-                document.body.appendChild(iframe);
-                loadIframe = iframe;
-            }
-            return loadIframe;
-        }
-
-        function getChromeIntent(url){
-            return  url;
-        }
-        var appInstall = {
-            isChrome:ua.match(/Chrome\/([\d.]+)/) || ua.match(/CriOS\/([\d.]+)/),
-            isAndroid:ua.match(/(Android);?[\s\/]+([\d.]+)?/),
-            timeout:500,
-            /**
-             * 尝试跳转appurl,如果跳转失败，进入h5url   //appurl于后台对接好的接口,//h5url 没有的时候去下载页面   //wxurl 微信专属跳到应用宝页面
-             */
-            open:function(){
-                var t = Date.now();
-                appInstall.openApp(option.appurl);
-                setTimeout(function(){
-                    if(Date.now() - t < appInstall.timeout+100){
-                        appInstall.openH5();
-                    }
-                },appInstall.timeout)
-            },
-            openApp:function(){
-                if(appInstall.isChrome){
-                    if(appInstall.isAndroid){
-                        win.location.href = getChromeIntent(option.appurl);
-                    }else{
-                        win.location.href = option.appurl;
-                    }
-                }else{
-                    getIntentIframe().src = option.appurl;
-                }
-            },
-            openH5:function(){
-                win.location.href = option.wxAndroidUrl;
-            }
-        };
-
-
-        function setOption(o){
-            angular.extend(option,o);
-        };
-
-        function open(){
-
-            if($rootScope.browser.v.weixin){
-                if(option.appurl == indexUrl){
-                    location.href = option.wxAndroidUrl;
-                    return;
-                }
-                confirmFactory(confirm);
-            }else{
-                if(($rootScope.browser.v.iPhone && $rootScope.browser.v.QQ) || ($rootScope.browser.v.webApp) || ($rootScope.browser.v.weibo)){
-                    //messageFactory({text:'该浏览器不支持，请在其他浏览器打开'});
-                    location.href = option.wxAndroidUrl;   //跳应用宝
-                }else{
-                    appInstall.open();
-                }
-            }
-        };
-
-        return function(){
-            return{
-                setOption : setOption,
-                open : open
-            }
-        }
-
-    }]);
-}());
-;
-/**
- * Created by chenmingkang on 16/3/4.
- *
- * czScrollDomHideListFactory   列表项
- * czScrollDomHideFnsFactory    操作列表项的
- */
-;(function(){
-    'use strict';
-
-    angular.module('cz-scroll-dom-hide',[]).factory('czScrollDomHideListFactory',["$timeout",function($timeout) {
-        function List(elm,data){
-            this.elment = elm;
-            //this.listData = {};
-        };
-
-        List.prototype.listData = {};
-
-        List.prototype.offsetHeight = function(){
-            return elment[0].offsetHeight;
-        };
-
-        List.prototype.addTargetData = function(name,data){
-            this.listData[name] = data;
-        };
-
-        List.prototype.removeListData = function(name){
-            delete this.listData[name];
-        };
-
-        List.prototype.removeAllListData = function(){
-            this.listData = {};
-        };
-
-        List.prototype.getListData = function(name){
-            return this.listData[name];
-        };
-        List.prototype.getAllListData = function(name){
-            return this.listData;
-        };
-        return function(elm,data){
-            return new List(elm,data)
-        };
-    }]).factory('czScrollDomHideFnsFactory',["$timeout","czScrollDomHideListFactory",function($timeout,czScrollDomHideListFactory) {
-        var listDataFn;
-
-        function init(elm,data,scope){
-            listDataFn = czScrollDomHideListFactory(elm,data);
-        };
-
-        function setElementHeight(elm){
-            elm.css({'min-height' : elm[0].clientHeight + 'px'});
-        }
-
-        function removeDomData(elm,data,scope,name){
-            if(scope.datas){
-                setElementHeight(elm);
-                listDataFn.addTargetData(name,data);
-                scope.datas = null;
-            }
-        };
-
-        function addDomData(scope,name){
-            var getData;
-            if(!scope.datas){
-                getData = listDataFn.getListData(name);
-                scope.datas = getData;
-                listDataFn.removeListData(name);
-            }
-        };
-
-        return {
-            init : init,
-            addDomData : addDomData,
-            removeDomData : removeDomData
-        }
-
-    }]).directive('czScrollDomHide',["$rootScope","$timeout","czScrollDomHideFnsFactory","throttleFactory","$window",function($rootScope,$timeout,czScrollDomHideFnsFactory,throttleFactory,$window) {
-        return {
-            restrict: 'EA',
-            scope:{
-                datas : '=czScrollDomData'
-            },
-            link : function(scope, elm, attrs) {
-                var $win = angular.element($window);
-                var time = $timeout(function(){
-                    var scopeWatch;
-                    var listDataName = attrs.czScrollDataName || attrs.czScrollDomData.replace(/\./g,"-");
-
-                    function bindScroll(offsetTop){
-                        if((window.scrollY > (offsetTop + elm[0].offsetHeight)) || (!(offsetTop < $rootScope.bodyInfo.height) && window.scrollY + 1000 < $rootScope.bodyInfo.height)){
-                            czScrollDomHideFnsFactory.removeDomData(elm,scope.datas,scope,listDataName);
-                        }else{
-                            czScrollDomHideFnsFactory.addDomData(scope,listDataName);
-                        }
-                    };
-                    scopeWatch = scope.$watch('datas',function(newData,lowData){
-                        if(newData){
-                            var offsetTop = elm[0].offsetTop;
-                            czScrollDomHideFnsFactory.init(elm,newData,scope);
-                            $win.on('scroll',function(){
-                                bindScroll(offsetTop);
-                            }).on('click',function(){
-                                bindScroll(offsetTop);
-                            }).on('touchend',function(){
-                                bindScroll(offsetTop);
-                            });
-                            scopeWatch();
-                        }
-                    });
-
-                    scope.$on('$destroy',function(){
-                        $timeout.cancel(time);
-                        $win.off('scroll',bindScroll);
-                    });
-
-                },0);
-            }
-        }
-    }]);
-}());;
-/**
- * Created by chenmingkang on 16/3/1.
- */
-;(function(){
-    'use strict';
-    angular.module('cz-share',[]).factory('shareFactory', ['$rootScope','messageFactory','partnerUrlFactory',function($rootScope,messageFactory,partnerUrlFactory) {
-        return function(option){
-            var o = {
-                title: '', // 分享标题
-                desc: '原来国外这么便宜！100%正品保障，抢先下载还能领券哦！', // 分享描述
-                link: location.href, // 分享链接
-                imgUrl:  partnerUrlFactory.bizChannel ? 'http://m.zhefengle.cn/img/partner/logo.png' : 'http://m.zhefengle.cn/img/logo.png', // 分享图标
-                type: '',
-                dataUrl: '',
-                success: function () {
-
-                },
-                cancel: function () {
-                    messageFactory({text:'已取消分享'});
-                    $scope.$apply();
-                }
-            };
-            angular.extend(o,option);
-
-            if($rootScope.browser.v.weixin){
-                wx.ready(function(){
-                    wx.onMenuShareAppMessage(o);
-                    wx.onMenuShareTimeline(o);
-                    wx.onMenuShareQQ(o);
-                    wx.onMenuShareWeibo(o);
-                });
-            }
-        };
-    }]);
-}());;
-/**
- * Created by chenmingkang on 16/3/1.
- *
- * sideslipLoadBindEvtFactory 负责绑定事件方法
- * sideslipLoadFactory        桥接sideslipLoadBindEvtFactory跟指令的方法
- */
-;(function(){
-    'use strict';
-
-    angular.module('cz-sideslip-load',[]).factory('sideslipLoadBindEvtFactory',[function(){
-        function bindEvt(elm,evtData,toTouchesFn){
-            return {
-                start : function(evt,event){
-                    evtData.touchStartX = evt.x;
-                    evtData.touchStartY = evt.y;
-                    toTouchesFn(elm,evt,'move');   //当点击一次的时候不会出发move事件，touchEndX没值，所以第一次负值
-                },
-                move : function(evt,event){
-                    toTouchesFn(elm,event,'move'); //调用move方法给他定位
-                    if(evtData.touchEndY - evtData.touchStartY > 100 || evtData.touchEndY - evtData.touchStartY < -100){ //如果上滑或者下滑 都100以上  那我就给他还原
-                        toTouchesFn(elm,event,'end'); //调用end方法还原
-                    }
-                },
-                end : function(evt,event,touchXTime){
-                    var absTouch = Math.abs(evtData.touchX);
-                    if(evtData.touchY < 80 && absTouch > evtData.aboutDistance){   //如果纵向80以上并且左右距离大于50
-                        touchXTime(evt,event);
-                    }else{
-                        toTouchesFn(elm,event,'end');
-                    }
-                }
-            };
-        }
-
-        return bindEvt;
-    }]).factory('sideslipLoadFactory',["$rootScope","$timeout","sideslipLoadBindEvtFactory",function($rootScope,$timeout,sideslipLoadBindEvtFactory){
-        var prevClass = 'prev-sides',
-            nextClass = 'next-sides';
-        var evtData = {};
-
-
-        function tarnsform(elm,model){
-            if($rootScope.browser.v.ios) {     //效果只能在ios上支持
-                if(model == 'tarnsform'){
-                    elm.css({
-                        '-webkit-transform': 'translate3d(' + evtData.touchX + 'px, 0px, 0px)',
-                        '-moz-transform': 'translate3d(' + evtData.touchX + 'px,, 0, 0)',
-                        '-ms-transform': 'translate3d(' + evtData.touchX + 'px,, 0, 0)',
-                        'transform': 'translate3d(' + evtData.touchX + 'px,, 0, 0)'
-                    });
-                }else{
-                    elm.css({
-                        '-webkit-transform': ''
-                    });
-                }
-            }
-        }
-
-        function sideslipLoadFn(scope,elm,attrs){
-            function init(){
-                angular.extend(evtData,{
-                    touchStartX : 0,   //开始X位置
-                    touchEndX : 0,     //结束X位置
-                    touchStartY : 0,   //开始Y位置
-                    touchEndY : 0,     //结束Y位置
-                    touchX : 0,        //移动中的X
-                    touchY : 0,        //移动中的Y
-                    aboutDistance : 80 || scope.aboutDistance       //滑动到多少距离让他加载下一页
-                });
-                return evtData;
-            }
-
-            function toTouches(elm,event,model){   //事件之后的回调
-                if(!event.touches ||  event.touches.length > 1){   //判断是否一根手指,不是的话定位给他回去
-                    tarnsform(elm,'remove');
-                    return;
-                }
-
-                if(model === 'start' && !elm.hasClass('sides')) {
-                    elm.addClass("sides");
-                }
-
-                if(model === 'move'){
-                    evtData.touchEndX = event.touches[0].clientX;
-                    evtData.touchEndY = event.touches[0].clientY;
-                    evtData.touchX = evtData.touchEndX - evtData.touchStartX;
-                    evtData.touchY = Math.abs(evtData.touchStartY - evtData.touchEndY);
-                    tarnsform(elm,"tarnsform");  //ios 里面效果
-                }
-
-                if(model === 'end'){
-                    tarnsform(elm,'remove');
-                    init();
-                }
-            }
-
-            function touchXTime(evt,event){   //事件结束执行的方法
-                var absTouch = Math.abs(parseInt(evtData.touchX));
-                $timeout(function(){
-                    if(absTouch < $rootScope.bodyInfo.width) {
-                        evtData.touchX = evtData.touchX < 0 ? evtData.touchX - 10 : evtData.touchX + 10;
-                        tarnsform(elm,'tarnsform');
-                        touchXTime(evt, event);
-                        return;
-                    }
-
-                    if(evtData.touchX > evtData.aboutDistance){    //横向滚动到80 在触发事件
-                        if(scope.$eval(attrs.sideslipLoad).prev){
-                            scope.$eval(attrs.sideslipLoad).prev();
-                            elm.addClass(prevClass);
-                        }
-                    }else{
-                        if(scope.$eval(attrs.sideslipLoad).next){
-                            scope.$eval(attrs.sideslipLoad).next();
-                            elm.addClass(nextClass);
-                        }
-                    }
-                    $timeout(function(){
-                        elm.removeClass(prevClass);
-                        elm.removeClass(nextClass);
-                    },300);
-                    toTouches(elm,event,'end');
-                },2);
-            }
-
-            init();
-
-            return {
-                toTouches : toTouches,
-                touchXTime : touchXTime,
-                bindEvtFn : sideslipLoadBindEvtFactory(elm,evtData,toTouches)
-            }
-        }
-
-        return sideslipLoadFn;
-    }]).directive('sideslipLoad', ['$swipe','$rootScope', '$timeout','sideslipLoadFactory',function($swipe,$rootScope, $timeout,sideslipLoadFactory) {
-
-        return {
-            restrict : 'EA',
-            scope : {
-                aboutDistance : '=',
-                sideslipLoad  : '&'
-            },
-            link : function(scope, elm, attrs) {
-                var sideslipLoadFn = sideslipLoadFactory(scope, elm, attrs);
-
-                $timeout(function(){
-                    scope.$on('$destroy', function(){
-                        elm.off();
-                    });
-
-                    $swipe.bind(elm, {
-                        start : sideslipLoadFn.bindEvtFn.start,
-                        move : sideslipLoadFn.bindEvtFn.move,
-                        end : function(evt,event){
-                            sideslipLoadFn.bindEvtFn.end(evt,event,sideslipLoadFn.touchXTime)
-                        },
-                        cancel:function(event){
-                            scope.$apply(function() {
-                                sideslipLoadFn.toTouches(elm,event,'end');
-                            });
-                        }
-                    });
-                },0);
-            }
-        }
-    }]);
-}());
-;
-/**
- * Created by chenmingkang on 16/3/1.
- */
-;(function(){
-    'use strict';
-    angular.module('cz-throttle',[]).factory("throttleFactory",['$rootScope','$timeout', function($rootScope,$timeout) {   //节点流，滚动事件之类多次会导致性功能低下；
-        return function(fn, threshhold, scope){
-            threshhold || (threshhold = 250);
-            var last,
-                deferTimer;
-            return function () {
-                var context = scope || this;
-
-                var now = +new Date,
-                    args = arguments;
-                if (last && now < last + threshhold) {
-                    // hold on to it
-                    $timeout.cancel(deferTimer);
-                    deferTimer = $timeout(function () {
-                        last = now;
-                        fn.apply(context, args);
-                    }, threshhold);
-                } else {
-                    last = now;
-                    fn.apply(context, args);
-                }
-            };
-        };
-    }]);
-}());;
-/**
- * Created by chenmingkang on 16/3/1.
- */
-;(function(){
-    'use strict';
-    angular.module('cz-to-load',[]).directive('topLoad',['$rootScope','$document','$window',function($rootScope,$document,$window) {
-        return function(scope, elm, attr) {
-            if($rootScope.browser.v.weixin){    //判断是否QQ浏览器
-                return;
-            }
-            var touchStart = 0;
-            var touchEnd = 0;
-            var touchStartX = 0;
-            var touchEndX = 0;
-            var time;
-            var scroll = window.scrollY;
-            var windowHeight = $window.innerHeight;
-            var upLoad = -50;     //上拉的距离到一定距离在显示下拉刷新
-            var unclaspLoad = -80;     //上拉的距离到一定距离在现实松开刷新
-            var elmTop = function(elm,start){
-                if(touchEnd< upLoad && start == 'move'){
-                    elm.css({
-                        'margin-top': -(touchEnd / 4) + 'px'
-                    });
-                    $document.find('body').css({
-                        'overflow': 'hidden',
-                        height: windowHeight + 'px',
-                        '-webkit-overflow-scrolling': 'hidden'
-                    })
-                }else{
-                    elm.css({
-                        'margin-top': 0
-                    });
-                    $document.find('body').css({
-                        'overflow-y':'auto',
-                        height:'auto',
-                        '-webkit-overflow-scrolling': 'touch'
-                    })
-                }
-            };
-            elm.bind('touchmove', function(evt) {
-                scope.$apply(function() {
-                    clearTimeout(time)
-                    var event = evt.changedTouches[0];
-                    scroll = window.scrollY;
-                    if(Math.abs(touchEndX) > 10){   //判断是否侧滑往下啦并且左右滑动，如果是的话，我就让他还原，否则左右还是可以促发下面事件
-                        if($rootScope.browser.v.ios){    //在跟左滑又滑一起用的时候有个bug
-                            elm.css({
-                                '-webkit-transform': ''
-                            })
-                        }
-                        return;
-                    }
-                    if(scroll == 0 && scope.asyns == false){   //滚动条是0   必须是数据返回回来之后在执行
-                        if(!touchStart){   //判断是不是第一次
-                            touchStart = event.pageY;
-                            touchStartX = event.pageX;
-                            return;
-                        }
-                        touchEnd = touchStart - event.pageY;
-                        touchEndX = touchStartX - event.pageX;
-                        if(touchEnd > 0){   //如果小于0 代表是往上拉了
-                            return;
-                        }
-                        if(parseInt(elm.css('margin-top')) > 0 && parseInt(elm.css('margin-top')) > upLoad){  //小于这个再给他拉回去
-                            scope.upmove = false;
-                            scope.loadmove = false;
-                            elm.css({
-                                'margin-top': -(touchEnd / 4) + 'px'
-                            });
-                        }
-                        if(touchEnd < upLoad) {   //到一定高度在给他下啦
-                            if (touchEnd > unclaspLoad) {
-                                scope.upmove = true;
-                                scope.loadmove = false;
-                            } else {
-                                scope.upmove = false;
-                                scope.loadmove = true;
-                            }
-                            elmTop(elm,'move');
-                        }
-                    }
-                });
-            });
-
-            elm.bind('touchend', function(evt) {
-                scope.$apply(function() {
-                    scroll = window.scrollY;
-                    scope.loadmove = false;
-                    scope.upmove = false;
-                    elmTop(elm,'end');
-                    if(scroll == 0 && scope.asyns == false) {
-                        if (touchEnd < 0 && touchEnd <= unclaspLoad) {   //滚动条是0   touchEnd下啦距离要下拉到70高度
-                            scope.$eval(attr.topLoad);
-                        }
-                    }
-                    touchStart = 0;
-                    touchEnd = 0;
-                    touchStartX = 0;
-                    touchEndX = 0;
-                });
-            });
-
-        };
-    }]);
-}());
-;
-/**
- * Created by chenmingkang on 16/3/1.
- */
-
-;(function(){
-    'use strict';
-
-    angular.module('cz-type-sort',[])
-        .directive('typeSort', ['$window', '$timeout','$compile',function($window, $timeout,$compile) {
-            function getEleUl(){
-                return document.getElementById('type-sort-text');
-            }
-            return {
-                restrict : 'EA',
-                replace : false,
-                link : function(scope, elm, attrs) {
-                    $timeout(function(){
-                        var itemChid;
-                        var typeDiv = document.getElementsByClassName("hot-title");
-                        var forTargetDiv = document.getElementById(elm.attr('for-target-id'));
-
-                        var template = '<div class="type-sort-text {{typeSortTexe ? \'show\' : \'\'}}" id="type-sort-text"><div class="bj"></div><h1 class="text">{{typeSortTexe}}</h1></div>';
-                        var getElm = getEleUl();
-                        if(!getElm){
-                            angular.element(document.getElementsByTagName('body')).append($compile(template)(scope));
-                            getElm = getEleUl();
-                            scope.$apply();
-                        }
-
-                        var move = function(evt,model){
-                            scope.$apply(function(){
-                                var offsetTop = parseInt(elm.attr('offset-top') || elm[0].offsetTop) || 0;
-                                var parOffsetTop = parseInt(elm.attr('par-offset-top')) || 0;
-                                var elmLi = elm.find("li");
-                                var evtY = 0;
-
-                                if(model == 'end'){
-                                    scope.typeSortTexe = '';
-                                    evt.preventDefault();
-                                    return false;
-                                }
-
-                                evtY = (evt.y || evt.touches[0].clientY) + parOffsetTop;  //toucheEnd的时候evt.y || evt.touches[0].clientY都不存在
-
-                                angular.forEach(elmLi,function(item,index){
-                                    if((evtY - offsetTop >= item.offsetTop) && evtY <= item.offsetTop + evtY){   //算出他距离顶部的距离＋上高度
-                                        itemChid = item;
-                                    }
-                                });
-                                console.log(elm)
-                                console.log(offsetTop)
-                                //if((evt.y || evt.touches[0]) < itemChid.offsetHeight + itemChid.offsetTop){
-                                angular.forEach(typeDiv,function(item,index){
-                                    if(item.textContent == itemChid.textContent){
-                                        if(item.offsetTop > 0 || index == 0){
-                                            if(forTargetDiv){
-                                                forTargetDiv.scrollTop = item.offsetTop
-                                            }else{
-                                                $window.scrollTo(0,item.offsetTop);
-                                            }
-                                        }
-                                        scope.typeSortTexe = itemChid.textContent;
-                                    }
-                                });
-                                //}
-                                evt.preventDefault();
-                            });
-                        };
-
-                        scope.$on('$destroy', function(){
-                            elm.off();
-                            angular.element(getElm).remove();
-                            getElm = null;
-                            scope.typeSortTexe = '';
-                        });
-                        elm.bind('touchstart', function(evt) {
-                            move(evt,'start')
-                        }).bind('click', function(evt) {
-                            move(evt,'start')
-                        }).bind('touchmove', function(evt) {
-                            move(evt,'move')
-                        }).bind('mousemove', function(evt) {
-                            move(evt,'move')
-                        }).bind('touchend', function(evt) {
-                            move(evt,'end')
-                        }).bind('mouseout', function(evt) {
-                            move(evt,'end')
-                        });
-                    },0)
-                }
-            }
-        }]);
-}());
-
-!function(){"use strict";angular.module("cz-back-top",[]).directive("backTop",["$rootScope","$window","throttleFactory",function(a,b,c){return{restrict:"EA",link:function(d,e,f){function g(){window.scrollY>a.bodyInfo.height?e.addClass("back-top-show"):e.removeClass("back-top-show")}var h=c(g);e.bind("touchstart",function(){b.scrollTo(0,0)}).bind("click",function(){b.scrollTo(0,0)}),angular.element(window).on("scroll",h)}}}])}(),function(){"use strict";angular.module("cz-bottom-scroll",[]).directive("bottomScroll",["$rootScope","$window","$timeout",function(a,b,c){var d;return{link:function(a,e,f){return b=angular.element(b),d=function(c){return b[0].scrollY>0&&b[0].scrollY+b[0].innerHeight+300>=e[0].offsetTop+e[0].clientHeight?a.$eval(f.bottomScroll):void 0},b.on("scroll",d),a.$on("$destroy",function(){return b.off("scroll",d)}),c(function(){return d()},0)}}}])}(),function(){"use strict";angular.module("cz-cache",[]).factory("cacheFactory",["$cacheFactory","$rootScope","$window","$timeout",function(a,b,c,d){function e(a){var c=a.scope||b.$new();b.cache&&c.$on("$destroy",function(){c.asyns&&(a.data.page&&a.data.page++,a.data.getData&&a.data.getData.page&&a.data.getData.page++),a.data.scrollTop=window.scrollY,g.put(a.name,a.data)})}function f(a){return g.get(a)}var g=function(){return a("myData")}();return{set:e,get:f,removeAll:g.removeAll}}])}(),function(){"use strict";angular.module("cz-confirm",[]).factory("confirmFactory",["$rootScope","$compile","$timeout",function(a,b,c){function d(a){angular.extend(i.confirm,a);var d='<div class="confirm-lay confirm-lay-show"><div class="confirm"><div class="confirm-bg" id="confirm-bg" ng-click="confirmBgClose()"></div><div class="confirm-main"><div class="confirm-text"><div class="confirm-text-title" ng-bind-html="confirm.textTitle"></div><div class="confirm-text" ng-bind-html="confirm.text"></div></div><div class="confirm-btn"><a href="javascript:;" ng-click="confirmClose()" class="confirm-btn-cancel">{{confirm.closeText}}</a><a href="javascript:;" ng-click="confirmGo()">{{confirm.goText}}</a></div></div></div></div>';h.append(b(d)(i)),e=f(),j.on("mousewheel",function(a){return a.preventDefault(),a.stopPropagation(),!1}),e.bind("touchmove",function(a){a.preventDefault()}),c(function(){l()},0)}var e,f=function(){var a=g.length?g[0]:document;return angular.element(a.getElementsByClassName("confirm-bg"))},g=function(){return document.getElementsByClassName("confirm-lay")}(),h=function(){return angular.element(document.getElementsByTagName("body"))}(),i=a.$new(),j=angular.element(window);i.confirm={textTitle:"",text:"",closeText:"取消",goText:"确定",option:{go:function(){},close:function(){}}};var k=function(){e.off(),j.off("mousewheel"),g[0]&&angular.element(g[0]).remove()},l=function(){var a=g[0].getElementsByClassName("confirm-main")[0];a.style.marginTop=-(a.clientHeight/2)+"px",a=null};return i.confirmGo=function(){k(),i.confirm.option.go&&i.confirm.option.go()},i.confirmBgClose=function(){k()},i.confirmClose=function(){k(),i.confirm.option.close&&i.confirm.option.close()},i.$on("$destroy",function(){k(),g=e=null}),function(a){d(a)}}])}(),function(){"use strict";var a="";angular.module("cz-content-for",[]).provider("czContentForConfig",function(){this.options={czYieldToCallback:function(){},czYieldHideBeforeCallback:function(){}},this.$get=function(){var a=this.options;return{getOptions:function(){return a}}},this.setOptions=function(a){angular.extend(this.options,a)}}).run(["Capture","$rootScope",function(b,c){c.$on("$stateChangeStart",function(c,d){a.split(".")[0]!=d.name.split(".")[0]&&b.resetAll(),a=d.name})}]).factory("Capture",["$compile","czContentForConfig",function(a,b){var c={};return{getConfigOption:b.getOptions(),resetAll:function(){for(var a in c)this.resetYielder(a)},resetYielder:function(a){var b=c[a];b.element.css("display","block"),this.setContentFor(a,b.defaultContent,b.defaultScope)},putYielder:function(a,b,d,e){var f={};f.name=a,f.element=b,f.defaultContent=e||"",f.defaultScope=d,c[a]=f},getYielder:function(a){return c[a]},removeYielder:function(a){delete c[a]},hideYielder:function(a){var b=this.getYielder(a);b.element.html("").css("display","none")},setContentFor:function(b,d,e){var f=c[b];f&&(f.element.html(d),a(f.element.contents())(e))}}}]).directive("czContentFor",["Capture",function(a){return{compile:function(b,c){var d=b.html();return(null===c.czDuplicate||void 0===c.czDuplicate)&&(b.html(""),b.remove()),function(b,c,e){a.setContentFor(e.czContentFor,d,b)}}}}]).directive("czYieldTo",["$compile","Capture",function(a,b){return{link:function(a,c,d){b.putYielder(d.czYieldTo,c,a,c.html())}}}]).directive("czYieldHide",["$compile","Capture",function(a,b){return{link:function(a,c,d){b.getConfigOption.czYieldHideBeforeCallback(a,c),b.hideYielder(d.czYieldHide)}}}])}(),function(){"use strict";angular.module("cz-cookie",[]).factory("cookieFactory",function(){return{setCookie:function(a,b,c,d){var e=new Date;e.setTime(e.getTime()+24*c*60*60*1e3);var f="expires="+e.toUTCString();document.cookie=a+"="+b+"; path=/;domain="+d+";"+f},getCookie:function(a){for(var b=a+"=",c=document.cookie.split(";"),d=0;d<c.length;d++){for(var e=c[d];" "==e.charAt(0);)e=e.substring(1);if(-1!=e.indexOf(b))return e.substring(b.length,e.length)}return""},clearCookie:function(a,b){this.setCookie(a,"",-1,b)}}})}(),function(){"use strict";angular.module("cz-countdown",[]).directive("countdown",["$rootScope","$window","$timeout","$document",function(a,b,c,d){return{restrict:"EA",scope:{countdownData:"="},link:function(a,b,c){var d,e=b.attr("countdown-end")||"商品已下架",f=b.attr("countdown-start")||"";a.$on("$destroy",function(){clearInterval(d)}),d=setInterval(function(){if(a.countdownData){var c=new Date(new Date(a.countdownData.replace(/-/g,"/")).getTime()-(new Date).getTime()),g=c/36e5/24,h=24*(g-Math.floor(g)),i=60*(h-Math.floor(h)),j=Math.floor(60*(i-Math.floor(i))),k=g>1?Math.floor(g)+"天":"",l=h>1?Math.floor(g)+"时":"";0>=g?(b.html(e),clearInterval(d)):b.html(f+k+l+Math.floor(i)+"分"+j+"秒")}},1e3)}}}])}(),function(){"use strict";angular.module("cz-mobile",["cz-for-scroll","cz-to-load","cz-bottom-scroll","cz-type-sort","cz-countdown","cz-sideslip-load","cz-back-top","cz-history","cz-form-validate","cz-drag-to","cz-mask","cz-content-for","cz-scroll-dom-hide","cz-message","cz-share","cz-confirm","cz-cache","cz-open-app","cz-cookie","cz-util"]),angular.module("cz-util",["cz-throttle"])}(),function(){"use strict";angular.module("cz-drag-to",[]).factory("dragMoveCssFactory",function(){function a(a,b){a.css({"-webkit-transform":"translate3d("+b+"px, 0, 0)","-moz-transform":"translate3d("+b+"px, 0, 0)","-ms-transform":"translate3d("+b+"px,, 0, 0)",transform:"translate3d("+b+"px,, 0, 0)"})}return{tarnsform:a}}).factory("dragTemplateFactory",function(){var a={templateItem:function(a){var b='<div class="drag-to-dismiss"><div ng-click="dragBgClick($event)" class="drag-to-bg"></div><div class="drag-buttons"><a href="javascript:;" class="success" style="line-height : '+a[0].offsetHeight+'px;" ng-repeat="item in dragOption.texts track by $index" ng-click="successClick($event,$index)">{{item}}</a></div></div>';return b},templateBg:function(){var a='<div class="drag-bg" ng-if="dragBgShow" ng-click="dragBgClick($event)"></div>';return a}};return a}).factory("dragBindFnFactory",["$timeout","$compile","$rootScope","dragMoveCssFactory",function(a,b,c,d){var e=function(a,b){var c=a[0].querySelector(".drag-to-dismiss"),e=c.offsetWidth;return c.style.right=-e+"px",{start:function(a,b){b.startX=a.x,b.startY=a.y},move:function(b,c){c.startX&&c.startY||this.start(b,c),c.moveX=b.x,c.moveY=b.y,c.totalY=c.moveY-c.totalY,c.totalX=-(c.moveX-c.startX)>e?-e:c.moveX-c.startX,d.tarnsform(a,c.totalX)},end:function(c,f){b.$apply(function(){c.startX=0,c.startY=0,c.totalX<0?(d.tarnsform(a,-e,a),f.dragBgShow=!0,a.addClass("drag-active")):(d.tarnsform(a,2),c={})})}}};return e}]).factory("dragFnFactory",["$timeout","$compile","$swipe","dragTemplateFactory","dragBindFnFactory","dragMoveCssFactory",function(a,b,c,d,e,f){function g(){return{startX:0,startY:0,moveX:0,moveY:0,totalX:0,totalY:0}}function h(a,b,c){angular.forEach(a.find("li"),function(a){var b=angular.element(a);f.tarnsform(b,2),b.removeClass("drag-active")}),c.dragBgShow=!1,j=g(),b.stopPropagation()}function i(f,h,i){function k(){var c=d.templateItem(f);f.css("position","relative").append(b(c)(h)),a(function(){l()},0)}function l(){var a=e(f,h);c.bind(f,{start:function(b,c){a.start(b,j)},move:function(b,c){a.move(b,j)},end:function(b,c){a.end(j,i)},cancel:function(a){j=g()}}),h.$on("$destroy",function(){f.off()})}return k()}var j=g();return{initBindEvt:i,closeBg:h}}]).directive("dragToLay",["$timeout","$compile","dragFnFactory","dragTemplateFactory",function(a,b,c,d){return{restrict:"EA",scope:{dragOption:"="},controller:["$element","$attrs","$scope",function(a,b,c){this.$scopePar=c,this.dragOption=c.dragOption,this.dragLayElm=a}],link:function(a,e,f){var g=d.templateBg();angular.element(document.getElementsByClassName("app")[0]).append(b(g)(a)),a.dragBgClick=function(b){c.closeBg(e,b,a)}}}}]).directive("dragToDismiss",["$timeout","dragFnFactory",function($timeout,dragFnFactory){return{restrict:"EA",require:"^?dragToLay",scope:!1,link:function(scope,elm,attrs,dragToLayController){$timeout(function(){var dragData=eval("("+attrs.dragData+")"),dragDiv=dragToLayController.dragLayElm;scope.dragOption=dragToLayController.dragOption,dragFnFactory.initBindEvt(elm,scope,dragToLayController.$scopePar),scope.successClick=function(a,b){dragFnFactory.closeBg(dragDiv,a,dragToLayController.$scopePar),scope.dragOption.callback[b](dragData)}},0)}}}])}(),function(){"use strict";angular.module("cz-for-scroll",[]).factory("forScrollListFactory",function(){function a(a){this.listData=a}return a.prototype.getFirstData=function(){return this.listData[0]},a.prototype.getLastData=function(){return this.listData[this.listData.length]},a.prototype.getData=function(){return this.listData},function(b){return new a(b)}}).directive("forScroll",["$timeout","forScrollListFactory",function(a,b){return{restrict:"EA",scope:{forScrollData:"=",forScrollTargetData:"="},link:function(b,c,d){a(function(){function a(){b[0].scrollHeight-(b[0].scrollTop+b[0].offsetHeight)<=0?b[0].scrollTop=0:b[0].scrollTop++}var b=(c[0].outerHTML,c.parent());setInterval(a,50)},0)}}}])}(),function(){"use strict";angular.module("cz-form-validate",[]).factory("validateFactory",["$compile",function(a){function b(b,c,d,e){function f(){var d=e[1],f=d.form.attr("name"),g=c.attr("name"),h=c.attr("validate"),i=h.replace(/:/g,","),j=i.substr(1,h.length-2).split(",");angular.forEach(j,function(d,e){e%2==0&&(k.$setValidity(d,!1),c.after(a('<div class="error" ng-show="'+f+"."+g+".$error."+d+" && "+f+'.formVaild">'+j[e+1]+"</div>")(b)))})}function g(a){var b=d.validateType;for(var c in a)c===b&&i(c,a[c]);d.equalTo&&(i("equalTo",a.equalTo),j("equalTo",a.equalTo))}function h(a,b,d){var f=e[0],g=d(b,c);b?f.$setValidity(a,g):f.$setValidity(a,!0)}function i(a,c){b.$watch(d.ngModel,function(b){h(a,b,c)})}function j(a,e){var f=angular.element(document.getElementById(d.equalTo));f.on("keyup",function(){b.$apply(function(){h(a,c.val(),e)})}),b.$on("$destroy",function(){f.off()})}var k=e[0];return{build:function(a){f(),g(a)}}}function c(a,c,e){return{addRule:function(a){for(var b in a)d[b]=a[b]},run:function(f){var g=b(a,f,c,e);g.build(d)}}}var d={};return c}]).run(["validateFactory",function(a){a().addRule(angular.validateAddMethod)}]).directive("formSubmit",function(){return{restrict:"EA",require:["^?formValidate"],controller:["$element","$attrs",function(a,b){this.formSubmit=a}],link:function(a,b,c,d){var e=d[0].form,f=e.attr("name");b.on("click",function(){a[f].$valid?(a[f].formVaild=!1,a.$eval(c.formSubmit)):a[f].formVaild=!0}),a.$on("$destroy",function(){b.off("click")})}}}).directive("formValidate",function(){return{restrict:"EA",require:["^?formSubmit"],controller:["$element","$attrs",function(a,b){this.form=a}],link:function(a,b,c){b.attr("novalidate",!0)}}}).directive("validate",["$compile","$timeout","validateFactory",function(a,b,c){return{restrict:"EA",require:["ngModel","^?formValidate"],link:function(a,b,d,e){c(a,d,e).run(b)}}}])}(),function(a){a.validateAddMethod={phone:function(a){var b=new RegExp(/^1[3578][0-9]{9}$/);return a&&b.test(a)},number:function(a){var b=new RegExp(/^[0-9]*$/);return a&&b.test(a)},equalTo:function(a,b){var c=function(){var a=b.attr("equal-to");return document.getElementById(a)}();return c.value==a}}}(angular),function(){"use strict";angular.module("cz-history",[]).provider("historyConfig",function(){this.options={validataUrl:[],validateErrorHref:"",cookieName:"",maxLengt:50,prefix:"#",prevEmpty:"/index"},this.$get=function(){var a=this.options;return{getOptions:function(){return a}}},this.setOptions=function(a){angular.extend(this.options,a)}}).run(["historyFactory",function(a){a.autoHash()}]).factory("historyFactory",["$rootScope","cookieFactory","historyConfig",function(a,b,c){function d(a){l.setSession(),setTimeout(function(){location.href=a||h.prefix+h.prevEmpty},0)}function e(){var a=h.prefix+i.pop(),b=!l.getCookie();if(j=!0,b&&i.length)for(var c=i.length;c>0;c--){if(!m.vaildate(a))return void d(a);a=h.prefix+i.pop()}d(a)}function f(){a.$on("$locationChangeStart",function(a,b,c){var d=m.oldEqualNew(b,c),f=c.split("#")[1],n=b.split("#")[1];return i=l.getPaths(),k||!m.vaildate(b)||l.getCookie()||(h.validateErrorHref!==f||j?n!=h.validateErrorHref&&(location.href=h.prefix+h.validateErrorHref):(e(),a.preventDefault())),j||d||h.validateErrorHref==f?(k=!1,void(j=!1)):void g(f)})}function g(a){var b=a||location.hash;i.length==h.maxLengt&&i.shift(),angular.forEach(i,function(a,c){a==b&&i.splice(c,1)}),i.push(b),l.setSession()}var h=c.getOptions(),i=[],j=!0,k=!0,l={getPaths:function(){var a=[],b=sessionStorage.getItem("b_paths");return b&&(a=b.split("[path]")),a},setSession:function(){sessionStorage.setItem("b_paths",i.join("[path]"))},getCookie:function(){return b.getCookie(h.cookieName)}},m={oldEqualNew:function(a,b){return decodeURIComponent(a)==decodeURIComponent(b)},vaildate:function(a){var b=(a||location.hash).split("#")[1],c=!1;return h.validataUrl.forEach(function(a){b.indexOf(a)>-1&&(c=!0)}),c}};return{autoHash:f,back:e}}]).directive("back",["$rootScope","historyFactory",function(a,b){return{restrict:"EA",link:function(a,c,d){a.$on("$destroy",function(){c.off("click")}),c.bind("click",function(){b.back(d.back)})}}}])}(),function(){"use strict";angular.module("cz-mask",[]).directive("mask",["$timeout",function(a){return{restrict:"EA",scope:{maskToggle:"="},link:function(b,c,d){var e,f=angular.element(window);a(function(){c.bind("touchmove",function(a){a.preventDefault()}),e=b.$watch("maskToggle",function(a,b){a?f.on("mousewheel",function(a){return a.preventDefault(),a.stopPropagation(),!1}):f.off("mousewheel")}),b.$on("$destroy",function(){c.off(),f.off("mousewheel"),e()})},0)}}}])}(),function(){"use strict";angular.module("cz-message",[]).factory("messageFactory",["$rootScope","$timeout",function(a,b){return function(b){var c={time:4e3,text:""};angular.extend(c,b);var d=a.$new(),e=function(){return document.getElementById("messageTop")}(),f='<div class="message-top" id="messageTop"><div class="message-main-lay"><div class="message-main"><div class="message-bg"></div><div class="message-text">'+c.text+"</div></div></div></div>",g=angular.element(f);e||angular.element(document.body).append(g[0]),setTimeout(function(){e=null,d.$destroy(),g.remove(),g=null},c.time)}}])}(),function(){"use strict";angular.module("cz-open-app",[]).factory("openAppFactory",["$rootScope","confirmFactory",function(a,b){function c(){if(!g){var a=document.createElement("iframe");a.style.cssText="display:none;width:0px;height:0px;",document.body.appendChild(a),g=a}return g}function d(a){return a}function e(a){angular.extend(j,a)}function f(){if(a.browser.v.weixin){if(j.appurl==h)return void(location.href=j.wxAndroidUrl);b(m)}else a.browser.v.iPhone&&a.browser.v.QQ||a.browser.v.webApp||a.browser.v.weibo?location.href=j.wxAndroidUrl:o.open()}var g,h="zhefengle:m.zhefengle.cn",i=a.$new(),j={},k=navigator.userAgent,l=window,m={text:"亲，请选择要去的地方",closeText:"去下载",goText:"去app",option:{close:function(){location.href=j.wxAndroidUrl},go:function(){var a=encodeURIComponent(j.appurl);location.href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa6ddfd2bf5f24af7&redirect_uri="+a+"&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect"}}},n=function(){j={appurl:h,wxAndroidUrl:"http://a.app.qq.com/o/simple.jsp?pkgname=com.vanwell.module.zhefengle.app",androidUrl:"http://7u2fm4.com1.z0.glb.clouddn.com/084131b4-dc0f-46e0-8bf6-b7cbc6779bda.apk"}};n(),i.$on("$destroy",function(){n()});var o={isChrome:k.match(/Chrome\/([\d.]+)/)||k.match(/CriOS\/([\d.]+)/),isAndroid:k.match(/(Android);?[\s\/]+([\d.]+)?/),timeout:500,open:function(){var a=Date.now();o.openApp(j.appurl),setTimeout(function(){Date.now()-a<o.timeout+100&&o.openH5()},o.timeout)},openApp:function(){o.isChrome?o.isAndroid?l.location.href=d(j.appurl):l.location.href=j.appurl:c().src=j.appurl},openH5:function(){l.location.href=j.wxAndroidUrl}};return function(){return{setOption:e,open:f}}}])}(),function(){"use strict";angular.module("cz-scroll-dom-hide",[]).factory("czScrollDomHideListFactory",["$timeout",function(a){function b(a,b){this.elment=a}return b.prototype.listData={},b.prototype.offsetHeight=function(){return elment[0].offsetHeight},b.prototype.addTargetData=function(a,b){this.listData[a]=b},b.prototype.removeListData=function(a){delete this.listData[a]},b.prototype.removeAllListData=function(){this.listData={}},b.prototype.getListData=function(a){return this.listData[a]},b.prototype.getAllListData=function(a){return this.listData},function(a,c){return new b(a,c)}}]).factory("czScrollDomHideFnsFactory",["$timeout","czScrollDomHideListFactory",function(a,b){function c(a,c,d){g=b(a,c)}function d(a){a.css({"min-height":a[0].clientHeight+"px"})}function e(a,b,c,e){c.datas&&(d(a),g.addTargetData(e,b),c.datas=null)}function f(a,b){var c;a.datas||(c=g.getListData(b),a.datas=c,g.removeListData(b))}var g;return{init:c,addDomData:f,removeDomData:e}}]).directive("czScrollDomHide",["$rootScope","$timeout","czScrollDomHideFnsFactory","throttleFactory","$window",function(a,b,c,d,e){return{restrict:"EA",scope:{datas:"=czScrollDomData"},link:function(d,f,g){var h=angular.element(e),i=b(function(){function e(b){window.scrollY>b+f[0].offsetHeight||!(b<a.bodyInfo.height)&&window.scrollY+1e3<a.bodyInfo.height?c.removeDomData(f,d.datas,d,k):c.addDomData(d,k)}var j,k=g.czScrollDataName||g.czScrollDomData.replace(/\./g,"-");j=d.$watch("datas",function(a,b){if(a){var g=f[0].offsetTop;c.init(f,a,d),h.on("scroll",function(){e(g)}).on("click",function(){e(g)}).on("touchend",function(){e(g)}),j()}}),d.$on("$destroy",function(){b.cancel(i),h.off("scroll",e)})},0)}}}])}(),function(){"use strict";angular.module("cz-share",[]).factory("shareFactory",["$rootScope","messageFactory","partnerUrlFactory",function(a,b,c){return function(d){var e={title:"",desc:"原来国外这么便宜！100%正品保障，抢先下载还能领券哦！",link:location.href,imgUrl:c.bizChannel?"http://m.zhefengle.cn/img/partner/logo.png":"http://m.zhefengle.cn/img/logo.png",type:"",dataUrl:"",success:function(){},cancel:function(){b({text:"已取消分享"}),$scope.$apply()}};angular.extend(e,d),a.browser.v.weixin&&wx.ready(function(){wx.onMenuShareAppMessage(e),wx.onMenuShareTimeline(e),wx.onMenuShareQQ(e),wx.onMenuShareWeibo(e)})}}])}(),function(){"use strict";angular.module("cz-sideslip-load",[]).factory("sideslipLoadBindEvtFactory",[function(){function a(a,b,c){return{start:function(d,e){b.touchStartX=d.x,b.touchStartY=d.y,c(a,d,"move")},move:function(d,e){c(a,e,"move"),(b.touchEndY-b.touchStartY>100||b.touchEndY-b.touchStartY<-100)&&c(a,e,"end")},end:function(d,e,f){var g=Math.abs(b.touchX);b.touchY<80&&g>b.aboutDistance?f(d,e):c(a,e,"end")}}}return a}]).factory("sideslipLoadFactory",["$rootScope","$timeout","sideslipLoadBindEvtFactory",function(a,b,c){function d(b,c){a.browser.v.ios&&("tarnsform"==c?b.css({"-webkit-transform":"translate3d("+h.touchX+"px, 0px, 0px)","-moz-transform":"translate3d("+h.touchX+"px,, 0, 0)","-ms-transform":"translate3d("+h.touchX+"px,, 0, 0)",transform:"translate3d("+h.touchX+"px,, 0, 0)"}):b.css({"-webkit-transform":""}))}function e(e,i,j){function k(){return angular.extend(h,{touchStartX:0,touchEndX:0,touchStartY:0,touchEndY:0,touchX:0,touchY:0,aboutDistance:80}),h}function l(a,b,c){return!b.touches||b.touches.length>1?void d(a,"remove"):("start"!==c||a.hasClass("sides")||a.addClass("sides"),"move"===c&&(h.touchEndX=b.touches[0].clientX,h.touchEndY=b.touches[0].clientY,h.touchX=h.touchEndX-h.touchStartX,h.touchY=Math.abs(h.touchStartY-h.touchEndY),d(a,"tarnsform")),void("end"===c&&(d(a,"remove"),k())))}function m(c,k){var n=Math.abs(parseInt(h.touchX));b(function(){return n<a.bodyInfo.width?(h.touchX=h.touchX<0?h.touchX-10:h.touchX+10,d(i,"tarnsform"),void m(c,k)):(h.touchX>h.aboutDistance?e.$eval(j.sideslipLoad).prev&&(e.$eval(j.sideslipLoad).prev(),i.addClass(f)):e.$eval(j.sideslipLoad).next&&(e.$eval(j.sideslipLoad).next(),i.addClass(g)),b(function(){i.removeClass(f),i.removeClass(g)},300),void l(i,k,"end"))},2)}return k(),{toTouches:l,touchXTime:m,bindEvtFn:c(i,h,l)}}var f="prev-sides",g="next-sides",h={};return e}]).directive("sideslipLoad",["$swipe","$rootScope","$timeout","sideslipLoadFactory",function(a,b,c,d){return{restrict:"EA",scope:{aboutDistance:"=",sideslipLoad:"&"},link:function(b,e,f){var g=d(b,e,f);c(function(){b.$on("$destroy",function(){e.off()}),a.bind(e,{start:g.bindEvtFn.start,move:g.bindEvtFn.move,end:function(a,b){g.bindEvtFn.end(a,b,g.touchXTime)},cancel:function(a){b.$apply(function(){g.toTouches(e,a,"end")})}})},0)}}}])}(),function(){"use strict";angular.module("cz-throttle",[]).factory("throttleFactory",["$rootScope","$timeout",function(a,b){return function(a,c,d){c||(c=250);var e,f;return function(){var g=d||this,h=+new Date,i=arguments;e&&e+c>h?(b.cancel(f),f=b(function(){e=h,a.apply(g,i)},c)):(e=h,a.apply(g,i))}}}])}(),function(){"use strict";angular.module("cz-to-load",[]).directive("topLoad",["$rootScope","$document","$window",function(a,b,c){return function(d,e,f){if(!a.browser.v.weixin){var g,h=0,i=0,j=0,k=0,l=window.scrollY,m=c.innerHeight,n=-50,o=-80,p=function(a,c){n>i&&"move"==c?(a.css({"margin-top":-(i/4)+"px"}),b.find("body").css({overflow:"hidden",height:m+"px","-webkit-overflow-scrolling":"hidden"})):(a.css({"margin-top":0}),b.find("body").css({"overflow-y":"auto",height:"auto","-webkit-overflow-scrolling":"touch"}))};e.bind("touchmove",function(b){d.$apply(function(){clearTimeout(g);var c=b.changedTouches[0];if(l=window.scrollY,Math.abs(k)>10)return void(a.browser.v.ios&&e.css({"-webkit-transform":""}));if(0==l&&0==d.asyns){if(!h)return h=c.pageY,void(j=c.pageX);if(i=h-c.pageY,k=j-c.pageX,i>0)return;parseInt(e.css("margin-top"))>0&&parseInt(e.css("margin-top"))>n&&(d.upmove=!1,d.loadmove=!1,e.css({"margin-top":-(i/4)+"px"})),n>i&&(i>o?(d.upmove=!0,d.loadmove=!1):(d.upmove=!1,d.loadmove=!0),p(e,"move"))}})}),e.bind("touchend",function(a){d.$apply(function(){l=window.scrollY,d.loadmove=!1,d.upmove=!1,p(e,"end"),0==l&&0==d.asyns&&0>i&&o>=i&&d.$eval(f.topLoad),h=0,i=0,j=0,k=0})})}}}])}(),function(){"use strict";angular.module("cz-type-sort",[]).directive("typeSort",["$window","$timeout","$compile",function(a,b,c){function d(){return document.getElementById("type-sort-text")}return{restrict:"EA",replace:!1,link:function(e,f,g){b(function(){var b,g=document.getElementsByClassName("hot-title"),h=document.getElementById(f.attr("for-target-id")),i='<div class="type-sort-text {{typeSortTexe ? \'show\' : \'\'}}" id="type-sort-text"><div class="bj"></div><h1 class="text">{{typeSortTexe}}</h1></div>',j=d();j||(angular.element(document.getElementsByTagName("body")).append(c(i)(e)),j=d(),e.$apply());var k=function(c,d){e.$apply(function(){var i=parseInt(f.attr("offset-top")||f[0].offsetTop)||0,j=parseInt(f.attr("par-offset-top"))||0,k=f.find("li"),l=0;return"end"==d?(e.typeSortTexe="",c.preventDefault(),!1):(l=(c.y||c.touches[0].clientY)+j,angular.forEach(k,function(a,c){l-i>=a.offsetTop&&l<=a.offsetTop+l&&(b=a)}),angular.forEach(g,function(c,d){c.textContent==b.textContent&&((c.offsetTop>0||0==d)&&(h?h.scrollTop=c.offsetTop:a.scrollTo(0,c.offsetTop)),e.typeSortTexe=b.textContent)}),void c.preventDefault())})};e.$on("$destroy",function(){f.off(),angular.element(j).remove(),j=null,e.typeSortTexe=""}),f.bind("touchstart",function(a){k(a,"start")}).bind("click",function(a){k(a,"start")}).bind("touchmove",function(a){k(a,"move")}).bind("mousemove",function(a){k(a,"move")}).bind("touchend",function(a){k(a,"end")}).bind("mouseout",function(a){k(a,"end")})},0)}}}])}();
+//    }
+!function(){"use strict";angular.module("cz-back-top",[]).directive("backTop",["$rootScope","$window","throttleFactory",function(t,e,n){return{restrict:"EA",link:function(o,r,i){function c(){window.scrollY>t.bodyInfo.height?r.addClass("back-top-show"):r.removeClass("back-top-show")}var a=n(c);r.bind("touchstart",function(){e.scrollTo(0,0)}).bind("click",function(){e.scrollTo(0,0)}),angular.element(window).on("scroll",a)}}}])}(),function(){"use strict";angular.module("cz-bottom-scroll",[]).directive("bottomScroll",["$rootScope","$window","$timeout",function(t,e,n){var o;return{link:function(t,r,i){return e=angular.element(e),o=function(n){return e[0].scrollY+e[0].innerHeight+300>=r[0].offsetTop+r[0].clientHeight?t.$eval(i.bottomScroll):void 0},e.on("scroll",o),t.$on("$destroy",function(){return e.off("scroll",o)}),n(function(){return o()},0)}}}])}(),function(){"use strict";angular.module("cz-cache",[]).factory("cacheFactory",["$cacheFactory","$rootScope","$window","$timeout",function(t,e,n,o){function r(t){var n=t.scope||e.$new();e.cache&&n.$on("$destroy",function(){n.asyns&&(t.data.page&&t.data.page++,t.data.getData&&t.data.getData.page&&t.data.getData.page++),t.data.scrollTop=window.scrollY,c.put(t.name,t.data)})}function i(t){return c.get(t)}var c=function(){return t("myData")}();return{set:r,get:i,removeAll:c.removeAll}}])}(),function(){"use strict";angular.module("cz-confirm",[]).factory("confirmFactory",["$rootScope","$compile","$timeout",function(t,e,n){function o(t){angular.extend(l.confirm,t);var o='<div class="confirm-lay confirm-lay-show"><div class="confirm"><div class="confirm-bg" id="confirm-bg" ng-click="confirmBgClose()"></div><div class="confirm-main"><div class="confirm-text"><div class="confirm-text-title" ng-bind-html="confirm.textTitle"></div><div class="confirm-text" ng-bind-html="confirm.text"></div></div><div class="confirm-btn"><a href="javascript:;" ng-click="confirmClose()" class="confirm-btn-cancel">{{confirm.closeText}}</a><a href="javascript:;" ng-click="confirmGo()">{{confirm.goText}}</a></div></div></div></div>';a.append(e(o)(l)),r=i(),u.on("mousewheel",function(t){return t.preventDefault(),t.stopPropagation(),!1}),r.bind("touchmove",function(t){t.preventDefault()}),n(function(){s()},0)}var r,i=function(){var t=c.length?c[0]:document;return angular.element(t.getElementsByClassName("confirm-bg"))},c=function(){return document.getElementsByClassName("confirm-lay")}(),a=function(){return angular.element(document.getElementsByTagName("body"))}(),l=t.$new(),u=angular.element(window);l.confirm={textTitle:"",text:"",closeText:"取消",goText:"确定",option:{go:function(){},close:function(){}}};var f=function(){r.off(),u.off("mousewheel"),c[0]&&angular.element(c[0]).remove()},s=function(){var t=c[0].getElementsByClassName("confirm-main")[0];t.style.marginTop=-(t.clientHeight/2)+"px",t=null};return l.confirmGo=function(){f(),l.confirm.option.go&&l.confirm.option.go()},l.confirmBgClose=function(){f()},l.confirmClose=function(){f(),l.confirm.option.close&&l.confirm.option.close()},l.$on("$destroy",function(){f(),c=r=null}),function(t){o(t)}}])}(),function(){"use strict";var t="";angular.module("cz-content-for",[]).provider("czContentForConfig",function(){this.options={czYieldToCallback:function(){},czYieldHideBeforeCallback:function(){}},this.$get=function(){var t=this.options;return{getOptions:function(){return t}}},this.setOptions=function(t){angular.extend(this.options,t)}}).run(["Capture","$rootScope",function(e,n){n.$on("$stateChangeStart",function(n,o){t.split(".")[0]!=o.name.split(".")[0]&&e.resetAll(),t=o.name})}]).factory("Capture",["$compile","czContentForConfig",function(t,e){var n={};return{getConfigOption:e.getOptions(),resetAll:function(){for(var t in n)this.resetYielder(t)},resetYielder:function(t){var e=n[t];e.element.css("display","block"),this.setContentFor(t,e.defaultContent,e.defaultScope)},putYielder:function(t,e,o,r){var i={};i.name=t,i.element=e,i.defaultContent=r||"",i.defaultScope=o,n[t]=i},getYielder:function(t){return n[t]},removeYielder:function(t){delete n[t]},hideYielder:function(t){var e=this.getYielder(t);e.element.html("").css("display","none")},setContentFor:function(e,o,r){var i=n[e];i&&(i.element.html(o),t(i.element.contents())(r))}}}]).directive("czContentFor",["Capture",function(t){return{compile:function(e,n){var o=e.html();return null!==n.czDuplicate&&void 0!==n.czDuplicate||(e.html(""),e.remove()),function(e,n,r){t.setContentFor(r.czContentFor,o,e)}}}}]).directive("czYieldTo",["$compile","Capture",function(t,e){return{link:function(t,n,o){e.putYielder(o.czYieldTo,n,t,n.html())}}}]).directive("czYieldHide",["$compile","Capture",function(t,e){return{link:function(t,n,o){e.getConfigOption.czYieldHideBeforeCallback(t,n),e.hideYielder(o.czYieldHide)}}}])}(),function(){"use strict";angular.module("cz-cookie",[]).factory("cookieFactory",function(){return{setCookie:function(t,e,n,o){var r=new Date;r.setTime(r.getTime()+24*n*60*60*1e3);var i="expires="+r.toUTCString();document.cookie=t+"="+e+"; path=/;domain="+o+";"+i},getCookie:function(t){for(var e=t+"=",n=document.cookie.split(";"),o=0;o<n.length;o++){for(var r=n[o];" "==r.charAt(0);)r=r.substring(1);if(-1!=r.indexOf(e))return r.substring(e.length,r.length)}return""},clearCookie:function(t,e){this.setCookie(t,"",-1,e)}}})}(),function(){"use strict";angular.module("cz-countdown",[]).directive("countdown",["$rootScope","$window","$timeout","$document",function(t,e,n,o){return{restrict:"EA",scope:{countdownData:"="},link:function(t,e,n){var o,r=e.attr("countdown-end")||"商品已下架",i=e.attr("countdown-start")||"";t.$on("$destroy",function(){clearInterval(o)}),o=setInterval(function(){if(t.countdownData){var n=new Date(new Date(t.countdownData.replace(/-/g,"/")).getTime()-(new Date).getTime()),c=n/36e5/24,a=24*(c-Math.floor(c)),l=60*(a-Math.floor(a)),u=Math.floor(60*(l-Math.floor(l))),f=c>1?Math.floor(c)+"天":"",s=a>1?Math.floor(c)+"时":"";0>=c?(e.html(r),clearInterval(o)):e.html(i+f+s+Math.floor(l)+"分"+u+"秒")}},1e3)}}}])}(),function(){"use strict";angular.module("cz-mobile",["cz-bottom-scroll","cz-countdown","cz-back-top","cz-form-validate","cz-mask","cz-content-for","cz-message","cz-share","cz-confirm","cz-cache","cz-cookie","cz-util"]).run(["$rootScope",function(t){function e(){return{width:document.body.clientWidth<750?document.body.clientWidth:750,height:document.documentElement.clientHeight>0?document.documentElement.clientHeight:window.innerHeight}}t.bodyInfo=e()}]),angular.module("cz-util",["cz-throttle"])}(),function(){"use strict";angular.module("cz-for-scroll",[]).factory("forScrollListFactory",function(){function t(t){this.listData=t}return t.prototype.getFirstData=function(){return this.listData[0]},t.prototype.getLastData=function(){return this.listData[this.listData.length]},t.prototype.getData=function(){return this.listData},function(e){return new t(e)}}).directive("forScroll",["$timeout","forScrollListFactory",function(t,e){return{restrict:"EA",scope:{forScrollData:"=",forScrollTargetData:"="},link:function(e,n,o){t(function(){function t(){e[0].scrollHeight-(e[0].scrollTop+e[0].offsetHeight)<=0?e[0].scrollTop=0:e[0].scrollTop++}var e=(n[0].outerHTML,n.parent());setInterval(t,50)},0)}}}])}(),function(){"use strict";angular.module("cz-mask",[]).directive("mask",["$timeout",function(t){return{restrict:"EA",scope:{maskToggle:"="},link:function(e,n,o){var r,i=angular.element(window);t(function(){n.bind("touchmove",function(t){t.preventDefault()}),r=e.$watch("maskToggle",function(t,e){t?i.on("mousewheel",function(t){return t.preventDefault(),t.stopPropagation(),!1}):i.off("mousewheel")}),e.$on("$destroy",function(){n.off(),i.off("mousewheel"),r()})},0)}}}])}(),function(){"use strict";angular.module("cz-message",[]).factory("messageFactory",["$rootScope","$timeout","$compile",function(t,e,n){var o=o||void 0,r=t.$new();return function(t){e(function(){var i={time:3e3,text:""};angular.extend(i,t);var c=function(){return document.getElementById("messageTop")}();if(r.messageText=i.text,!c){var a='<div class="message-top" id="messageTop" ng-show="messageText"><div class="message-main-lay"><div class="message-main"><div class="message-text">{{messageText}}</div></div></div></div>';angular.element(document.body).append(n(a)(r))}e.cancel(o),o=e(function(){c=null,r.messageText=""},i.time)},0)}}])}(),function(){"use strict";angular.module("cz-share",[]).factory("shareFactory",["$rootScope","messageFactory","partnerUrlFactory",function(t,e,n){return function(o){var r={title:"",desc:"原来国外这么便宜！100%正品保障，抢先下载还能领券哦！",link:location.href,imgUrl:n.bizChannel?"http://m.zhefengle.cn/img/partner/logo.png":"http://m.zhefengle.cn/img/logo.png",type:"",dataUrl:"",success:function(){},cancel:function(){e({text:"已取消分享"}),$scope.$apply()}};angular.extend(r,o),t.browser.v.weixin&&wx.ready(function(){wx.onMenuShareAppMessage(r),wx.onMenuShareTimeline(r),wx.onMenuShareQQ(r),wx.onMenuShareWeibo(r)})}}])}(),function(){"use strict";angular.module("cz-throttle",[]).factory("throttleFactory",["$rootScope","$timeout",function(t,e){return function(t,n,o){n||(n=250);var r,i;return function(){var c=o||this,a=+new Date,l=arguments;r&&r+n>a?(e.cancel(i),i=e(function(){r=a,t.apply(c,l)},n)):(r=a,t.apply(c,l))}}}])}(),function(){"use strict";angular.module("cz-form-validate",[]).provider("formValidateConfig",function(){this.options={errorClass:"",errorMessage:"tip"},this.$get=function(){var t=this.options;return{getOptions:function(){return angular.extend({},t)}}},this.setOptions=function(t){angular.extend(this.options,t)}}).factory("validateFactory",["$compile","formValidateConfig",function(t,e){function n(e,n,o,r){function c(){var c=r[1],a=c.form.attr("name"),l=o.name;if("tip"===i.errorMessage)c.formCrt.formValidateElmRule.push({elmName:l,rule:e.validate});else for(var u in e.validate)s.$setValidity(item,!1),n.after(t('<div class="error" ng-show="'+a+"."+l+".$error."+u+" && "+a+'.formVaild">'+e.validate[u]+"</div>")(e))}function a(t){var e=o.validateType;for(var n in t)n===e&&u(n,t[n]);o.equalTo&&(u("equalTo",t.equalTo),f("equalTo",t.equalTo))}function l(t,e,o){var i=r[0],c=o(e,n);e?i.$setValidity(t,c):i.$setValidity(t,!0)}function u(t,n){e.$parent.$watch(o.ngModel,function(e){l(t,e,n)})}function f(t,r){var i=angular.element(document.getElementById(o.equalTo));i.on("keyup",function(){e.$apply(function(){l(t,n.val(),r)})}),e.$on("$destroy",function(){i.off()})}var s=r[0];return{build:function(t){c(),a(t)}}}function o(t,e,o){return{addRule:function(t){for(var e in t)r[e]=t[e]},run:function(i){var c=n(t,i,e,o);c.build(r)}}}var r={},i=e.getOptions();return o}]).run(["validateFactory",function(t){t().addRule(angular.validateAddMethod)}]).directive("formSubmit",["messageFactory",function(t){return{restrict:"EA",require:["^?formValidate"],scope:{formSubmit:"&"},controller:["$element","$attrs",function(t,e){this.formSubmit=t}],link:function(e,n,o,r){var i=r[0].form,c=r[0].formCrt,a=i.attr("name");n.on("click",function(){if(console.log(c[a].$valid),c[a].$valid)c[a].formVaild=!1,e.formSubmit();else{for(var n=0;n<c.formValidateElmRule.length;n++){var o=c.formValidateElmRule[n],r=c[a][o.elmName].$valid;if(!r){var i=c[a][o.elmName].$error;for(var l in i)o.rule[l]&&t({text:o.rule[l]});return}}c[a].formVaild=!0}}),e.$on("$destroy",function(){n.off("click")})}}}]).directive("formValidate",function(){return{restrict:"EA",require:["^?formSubmit"],scope:!0,controller:["$scope","$element","$attrs",function(t,e,n){t.formValidateElmRule=[],this.formCrt=t,this.form=e}],link:function(t,e,n){e.attr("novalidate",!0)}}}).directive("validate",["$compile","$timeout","validateFactory",function(t,e,n){return{restrict:"EA",scope:{validateType:"@",validate:"="},require:["ngModel","^?formValidate"],link:function(t,e,o,r){n(t,o,r).run(e)}}}])}(),function(t){t.validateAddMethod={phone:function(t){var e=new RegExp(/^1[3578][0-9]{9}$/);return t&&e.test(t)},number:function(t){var e=new RegExp(/^[0-9]*$/);return t&&e.test(t)},price:function(t){var e=new RegExp(/^\d+(\.\d+)?$/);return t&&e.test(t)},priceUnZero:function(t){var e=new RegExp(/^\d+(\.\d+)?$/);return t&&e.test(t)&&t>0},equalTo:function(t,e){var n=function(){var t=e.attr("equal-to");return document.getElementById(t)}();return n.value==t},notChinese:function(t){var e=new RegExp(/[\u4e00-\u9fa5]+/);return t&&!e.test(t)}}}(angular);
 /**
  * Created by chenmingkang on 16/3/1.
  */
@@ -40940,27 +40201,55 @@ angular.module('angular-carousel.shifty', [])
     'use strict';
 // angular.validateAddMethod
 //
-    angular.module('cz-form-validate',[]).factory('validateFactory',['$compile',function($compile) {
+    angular.module('cz-form-validate',[]).provider('formValidateConfig', function() {
+        this.options = {
+            errorClass      : '',
+            errorMessage    : 'tip'
+        };
+        this.$get = function() {
+            var options = this.options;
+            return {
+                getOptions: function() {
+                    return angular.extend({},options);
+                }
+            };
+        };
+
+        this.setOptions = function(options) {
+            angular.extend(this.options, options);
+        };
+    }).factory('validateFactory',['$compile','formValidateConfig',function($compile,formValidateConfig) {
         var rule = {};
+        var opt = formValidateConfig.getOptions();
         function provide(scope,elm,attrs,controllers){
             var ngModelCtrl = controllers[0];
             function validate(){
                 var formCtrl = controllers[1];
                 var formName = formCtrl.form.attr("name");
-                var elmName = elm.attr("name");
-
+                var elmName = attrs.name;
                 /*转换前端传过来的校验规则*/
-                var rule = elm.attr('validate');
-                var ruleRpe = rule.replace(/:/g,",");
-                var ruleArray = ruleRpe.substr(1,rule.length-2).split(",");
 
-                angular.forEach(ruleArray,function(item,index){
-                    if(index % 2 == 0){
+                if(opt.errorMessage === 'tip'){     //表示使用消息提示那种错误消息
+                    formCtrl.formCrt.formValidateElmRule.push({
+                        elmName : elmName,
+                        rule : scope.validate
+                    });
+                }else{
+                    for(var n in scope.validate){
                         ngModelCtrl.$setValidity(item, false);
-                        elm.after($compile('<div class="error" ng-show="'+ formName +'.'+ elmName +'.$error.'+ item +' && '+ formName +'.formVaild">'+ ruleArray[index + 1] +'</div>')(scope))
+                        elm.after($compile('<div class="error" ng-show="'+ formName +'.'+ elmName +'.$error.'+ n +' && '+ formName +'.formVaild">'+ scope.validate[n] +'</div>')(scope))
                     }
-                });
-            };
+
+                    // var ruleRpe = rule.replace(/:/g,",");
+                    // var ruleArray = ruleRpe.substr(1,rule.length-2).split(",");
+                    // angular.forEach(ruleArray,function(item,index){
+                    //     if(index % 2 == 0){
+                    //         ngModelCtrl.$setValidity(item, false);
+                    //         elm.after($compile('<div class="error" ng-show="'+ formName +'.'+ elmName +'.$error.'+ item +' && '+ formName +'.formVaild">'+ ruleArray[index + 1] +'</div>')(scope))
+                    //     }
+                    // });
+                }
+            }
 
             function matchRule(rules){   //负责匹配校验规则
                 var valiDataType = attrs.validateType;/*校验数据类型*/
@@ -40975,7 +40264,7 @@ angular.module('angular-carousel.shifty', [])
                     injectRule('equalTo',rules['equalTo']);   //注入校验规则
                     equalTo('equalTo',rules['equalTo']);  //注入两端的监听
                 }
-            };
+            }
 
             function validateItem(validateName,newVal,callback){   //负责校验每个单独元素规则
                 var ngModelCtrl = controllers[0];
@@ -40988,10 +40277,10 @@ angular.module('angular-carousel.shifty', [])
             }
 
             function injectRule(validateName,callback){   //注入校验规则
-               scope.$watch(attrs.ngModel, function(newVal){
+               scope.$parent.$watch(attrs.ngModel, function(newVal){
                     validateItem(validateName,newVal,callback);
                 });
-            };
+            }
 
             function equalTo(validateName,callback){  //如密码,确定密码,两端绑定
                 var tarElm = angular.element(document.getElementById(attrs.equalTo));
@@ -41031,22 +40320,41 @@ angular.module('angular-carousel.shifty', [])
         return validateFns;
     }]).run(['validateFactory',function(validateFactory){
         validateFactory().addRule(angular.validateAddMethod);
-    }]).directive('formSubmit', function() {
+    }]).directive('formSubmit',['messageFactory',function(messageFactory) {
         return {
             restrict : 'EA',
             require: ['^?formValidate'],
+            scope : {
+                formSubmit : '&'
+            },
             controller: ['$element',"$attrs", function($element,$attrs) {
                 this.formSubmit = $element;
             }],
             link: function (scope, elm, attrs,formController) {
                 var form = formController[0].form;
+                var formCrt = formController[0].formCrt;
                 var formName = form.attr("name");
+
                 elm.on('click',function(){
-                    if(scope[formName].$valid){
-                        scope[formName].formVaild = false;
-                        scope.$eval(attrs.formSubmit);
+                    console.log(formCrt[formName].$valid)
+                    if(formCrt[formName].$valid){
+                        formCrt[formName].formVaild = false;
+                        scope.formSubmit();
                     }else{
-                        scope[formName].formVaild = true;
+                        for(var i = 0;i < formCrt.formValidateElmRule.length;i++){
+                            var item = formCrt.formValidateElmRule[i];
+                            var isValidTrue = formCrt[formName][item.elmName].$valid;
+                            if(!isValidTrue){
+                                var errorNameObj = formCrt[formName][item.elmName].$error;
+                                for(var n in errorNameObj){
+                                    if(item.rule[n]){
+                                        messageFactory({text : item.rule[n]})
+                                    }
+                                }
+                                return;
+                            }
+                        }
+                        formCrt[formName].formVaild = true;
                     }
                 });
 
@@ -41055,11 +40363,14 @@ angular.module('angular-carousel.shifty', [])
                 });
             }
         }
-    }).directive('formValidate', function() {
+    }]).directive('formValidate', function() {
         return {
             restrict: 'EA',
             require: ['^?formSubmit'],
-            controller: ['$element', "$attrs", function ($element, $attrs) {
+            scope : true,
+            controller: ['$scope','$element', "$attrs", function ($scope,$element, $attrs) {
+                $scope.formValidateElmRule = [];
+                this.formCrt = $scope;
                 this.form = $element;
             }],
             link : function(scope, elm, attrs) {
@@ -41069,9 +40380,13 @@ angular.module('angular-carousel.shifty', [])
     }).directive('validate', ['$compile','$timeout','validateFactory',function($compile,$timeout,validateFactory) {
         return {
             restrict : 'EA',
+            scope : {
+                validateType : '@',
+                validate : '='
+            },
             require: ['ngModel','^?formValidate'],
             link : function(scope, elm, attrs,controllers) {
-                validateFactory(scope,attrs,controllers).run(elm)
+                 validateFactory(scope,attrs,controllers).run(elm);
             }
         }
     }])
@@ -41106,12 +40421,24 @@ angular.module('angular-carousel.shifty', [])
             var res = new RegExp(/^[0-9]*$/);
             return newVal && res.test(newVal);
         },
+        price : function(newVal){
+            var res = new RegExp(/^\d+(\.\d+)?$/);
+            return newVal && res.test(newVal);
+        },
+        priceUnZero : function(newVal){
+            var res = new RegExp(/^\d+(\.\d+)?$/);
+            return newVal && res.test(newVal) && newVal > 0;
+        },
         equalTo : function(newVal,$elm){ //两端绑定
             var tarElm = function(){
                 var id = $elm.attr('equal-to');
                 return document.getElementById(id);
             }();
             return tarElm.value == newVal;
+        },
+        notChinese : function(newVal){
+            var res = new RegExp(/[\u4e00-\u9fa5]+/);
+            return newVal && !res.test(newVal);
         }
     };
 })(angular);

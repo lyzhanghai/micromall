@@ -1,82 +1,93 @@
 <div class="order-list shop-cart-lay">
-    <div class="shop-cart">
-        <ul>
-            <li bindonce ng-repeat="item in shopData track by $index">
-                <div class="item">
-                    <div class="checkbox-four">
-                        <label>
-                            <input class="iconfont icon-gouxuanjian"
-                                   type="checkbox" ng-disabled="item.disabled" ng-model="item.checkSelect"
-                                   ng-change="checkSelect(item,item)">
-                        </label>
-                    </div>
-                    <a href="{{prefix}}detail.html?goodsId={{item.goodsId}}" class="item-img">
-                        <div class="img-lay">
-                            <img lazy-img="{{item.image}}">
+    <article ng-if="shopData.length">
+        <div class="shop-cart">
+            <ul>
+                <li bindonce ng-repeat="item in shopData track by $index">
+                    <div class="item">
+                        <div class="checkbox-four">
+                            <label>
+                                <input class="iconfont icon-gouxuanjian"
+                                       type="checkbox" ng-disabled="item.disabled" ng-model="item.checkSelect"
+                                       ng-change="checkSelect(item,item)">
+                            </label>
                         </div>
-                    </a>
-                    <div class="item-info">
-                        <a href="{{prefix}}detail.html?goodsId={{item.goodsId}}" class="item-title">
-                            {{item.title}}
+                        <a href="{{prefix}}detail.html?goodsId={{item.goodsId}}" class="item-img">
+                            <div class="img-lay">
+                                <img lazy-img="{{item.image}}">
+                            </div>
                         </a>
-                        <div class="singular">
-                            <button class="iconfont icon-jian left" ng-disabled="item.disabled"
-                                    ng-click="upShopRedu(item,item)">
-                            </button>
-                            <input type="text" ng-disabled="item.disabled" ng-model="item.buyNumber"
-                                   ng-blur="upShopBlurNum(item)" ng-focus="upShopFocusNum(item)"
-                                   ng-change="upShopNum(item,item)" class="ng-pristine ng-untouched ng-valid">
-                            <button class="iconfont icon-jia right" ng-disabled="item.disabled"
-                                    ng-click="upShopPuls(item,item)">
-                            </button>
-                            <a href="javascript:;" class="delete" ng-click="deleteShop(item,$index)">
-                                <i class="iconfont icon-shanchu">
-                                </i>
+                        <div class="item-info">
+                            <a href="{{prefix}}detail.html?goodsId={{item.goodsId}}" class="item-title">
+                                {{item.title}}
                             </a>
+                            <div class="singular">
+                                <button class="iconfont icon-jian left" ng-disabled="item.disabled"
+                                        ng-click="upShopRedu(item,item)">
+                                </button>
+                                <input type="text" ng-disabled="item.disabled" ng-model="item.buyNumber"
+                                       ng-blur="upShopBlurNum(item)" ng-focus="upShopFocusNum(item)"
+                                       ng-change="upShopNum(item,item)" class="ng-pristine ng-untouched ng-valid">
+                                <button class="iconfont icon-jia right" ng-disabled="item.disabled"
+                                        ng-click="upShopPuls(item,item)">
+                                </button>
+                                <a href="javascript:;" class="delete" ng-click="deleteShop(item,$index)">
+                                    <i class="iconfont icon-shanchu">
+                                    </i>
+                                </a>
+                            </div>
                         </div>
+                        <div class="price">￥{{item.price}}</div>
                     </div>
-                    <div class="price">￥{{item.price}}</div>
-                </div>
-                <!--<div class="item-operate ng-hide" ng-show="item.showCountDown">-->
-                    <!--<i class="iconfont icon-daojishi">-->
-                    <!--</i>-->
-                      <!--<span>-->
-                        <!--剩余365天12小时41分钟-->
-                      <!--</span>-->
-                <!--</div>-->
-            </li>
-        </ul>
-        <div class="cart-all">
-           <span class="checkbox-four ">
-              <label>
-                  <input class="iconfont icon-gouxuanjian" type="checkbox" ng-model="allCheckSelect" ng-change="allSelect()">
-                <span>
-                  全选
+                    <!--<div class="item-operate ng-hide" ng-show="item.showCountDown">-->
+                        <!--<i class="iconfont icon-daojishi">-->
+                        <!--</i>-->
+                          <!--<span>-->
+                            <!--剩余365天12小时41分钟-->
+                          <!--</span>-->
+                    <!--</div>-->
+                </li>
+            </ul>
+            <div class="cart-all">
+               <span class="checkbox-four ">
+                  <label>
+                      <input class="iconfont icon-gouxuanjian" type="checkbox" ng-model="allCheckSelect" ng-change="allSelect()">
+                    <span>
+                      全选
+                    </span>
+                  </label>
+                   <!--<a href="javascript:;" ng-click="batchDelete()">批量删除</a>-->
                 </span>
-              </label>
-               <!--<a href="javascript:;" ng-click="batchDelete()">批量删除</a>-->
-            </span>
-            <span class="right">
-                共选择了<em>{{shopInfo.selectLength}}</em>件商品
-                <a href="javascript:;" class="hr1" ng-click="deleteAll()">全部清空</a>
-            </span>
-        </div>
-    </div>
-
-    <div class="fix-bottom fix-bottom-show">
-        <div class="shop-balance shop-pay-info">
-            <div class="fix-bm-al">
-                <div class="shop-info">
-                    合计:<em>￥{{shopInfo.total}}</em>
-                    <span>(不含运费)</span>
-                </div>
-                {{shopInfo.selectArray.length}}
-                <button class="submit" ng-disabled="!shopInfo.selectArray.length" ng-click="submit()">
-                    结算
-                </button>
+                <span class="right">
+                    共选择了<em>{{shopInfo.selectLength}}</em>件商品
+                    <a href="javascript:;" class="hr1" ng-click="deleteAll()">全部清空</a>
+                </span>
             </div>
         </div>
-    </div>
+
+        <div class="fix-bottom fix-bottom-show">
+            <div class="shop-balance shop-pay-info">
+                <div class="fix-bm-al">
+                    <div class="shop-info">
+                        合计:<em>￥{{shopInfo.total}}</em>
+                        <span>(不含运费)</span>
+                    </div>
+                    {{shopInfo.selectArray.length}}
+                    <button class="submit" ng-disabled="!shopInfo.selectArray.length" ng-click="submit()">
+                        结算
+                    </button>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <section ng-if="!shopData.length">
+        <div class="nothing">
+            <img src="resSatic/images/nothing.png" style="width: 60%;">
+            <div class="btns">
+                <a href="{{prefix}}indexMain.html">去逛下</a>
+            </div>
+        </div>
+    </section>
 </div>
 
 <style>

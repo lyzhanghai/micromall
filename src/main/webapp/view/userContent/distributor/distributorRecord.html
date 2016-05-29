@@ -1,8 +1,5 @@
 <div class="nav-tab">
-    <a href="javascript:;" style="width:25%;" class="active">全部</a>
-    <a href="javascript:;" style="width:25%;">已通过</a>
-    <a href="javascript:;" style="width:25%;">未通过</a>
-    <a href="javascript:;" style="width:25%;">审核中</a>
+    <a href="javascript:;" style="width:25%;" ng-class="{'active' : item.status == getData.status}" ng-repeat="item in tab track by $index" bindonce ng-click="selectTav(item.status)">{{item.name}}</a>
 </div>
 <div class="record-list">
     <ul>
