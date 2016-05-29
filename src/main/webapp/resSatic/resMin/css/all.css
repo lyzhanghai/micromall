@@ -1,3 +1,429 @@
+
+@font-face {font-family: "iconfont";
+  src: url('../font/iconfont.eot?t=1462627723'); /* IE9*/
+  src: url('../font/iconfont.eot?t=1462627723#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('../font/iconfont.woff?t=1462627723') format('woff'), /* chrome, firefox */
+  url('../font/iconfont.ttf?t=1462627723') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('../font/iconfont.svg?t=1462627723#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family:"iconfont" !important;
+  /*font-size:16px;*/
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-shangsanjiao:before { content: "\e627"; }
+.icon-xiaoxi:before { content: "\e60f"; }
+.icon-gushuzaliang:before { content: "\e600"; }
+.icon-shezhi:before { content: "\e610"; }
+.icon-yongjin:before { content: "\e611"; }
+.icon-weixin:before { content: "\e629"; }
+.icon-jia:before { content: "\e624"; }
+.icon-home:before { content: "\e602"; }
+.icon-gouxuanjian:before { content: "\e601"; }
+.icon-jian:before { content: "\e625"; }
+.icon-dingwei:before { content: "\e617"; }
+.icon-back:before { content: "\e604"; }
+.icon-fenxiao:before { content: "\e612"; }
+.icon-fenxiang:before { content: "\e605"; }
+.icon-difangtechan:before { content: "\e606"; }
+.icon-dingdan:before { content: "\e613"; }
+.icon-daishouhuo:before { content: "\e618"; }
+.icon-weixinpng:before { content: "\e623"; }
+.icon-weixuanzhong:before { content: "\e607"; }
+.icon-daishenhe:before { content: "\e61f"; }
+.icon-gouwuche:before { content: "\e608"; }
+.icon-shanchu:before { content: "\e619"; }
+.icon-iconfontyonghu13:before { content: "\e620"; }
+.icon-shoucang:before { content: "\e609"; }
+.icon-daifukuan:before { content: "\e61a"; }
+.icon-iconsvgtixianjilu:before { content: "\e614"; }
+.icon-help:before { content: "\e61b"; }
+.icon-fangdajing:before { content: "\e626"; }
+.icon-shuiguo:before { content: "\e60a"; }
+.icon-yiwanchengdingdan:before { content: "\e61c"; }
+.icon-daifahuo:before { content: "\e61d"; }
+.icon-cuxiao:before { content: "\e60b"; }
+.icon-tx:before { content: "\e621"; }
+.icon-tixian:before { content: "\e622"; }
+.icon-shipin:before { content: "\e60c"; }
+.icon-fenlei:before { content: "\e60d"; }
+.icon-tixian1:before { content: "\e615"; }
+.icon-shoudongtuiguang:before { content: "\e616"; }
+.icon-huidingbu:before { content: "\e60e"; }
+.icon-xiasanjiaoxiao:before { content: "\e628"; }
+.icon-qianjin:before { content: "\e61e"; }
+.icon-xiazai:before { content: "\e603"; }
+
+/**
+ * Created by chenmingkang on 16/3/28.
+ */
+/*返回顶部*/
+.back-top {
+  position: fixed;
+  bottom: 3.5rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.3rem;
+  line-height: 2rem;
+  z-index: 99999;
+  text-align: center;
+  display: none;
+}
+.back-top-bj {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(51, 51, 51, 0.3);
+  border-radius: 50%;
+}
+.back-top i {
+  color: #fff;
+  position: relative;
+  z-index: 999;
+  display: inline-block;
+}
+.back-bottom {
+  bottom: 1rem;
+}
+.back-top-show {
+  display: block;
+}
+/**
+ * Created by chenmingkang on 16/3/28.
+ */
+/*弹出框公用*/
+.confirm-lay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  display: none;
+}
+.confirm-lay .confirm {
+  position: relative;
+  max-width: 750px;
+  margin: 0 auto;
+  height: 100%;
+}
+.confirm-lay .confirm .confirm-bg {
+  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+}
+.confirm-lay .confirm .confirm-main {
+  z-index: 100;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -2.7rem 0 0 -6.7rem;
+  background: #fff;
+  width: 13.4rem;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  display: inline-block;
+}
+.confirm-lay .confirm .confirm-text {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  text-align: center;
+  color: #000;
+  padding: 0.5rem;
+}
+.confirm-lay .confirm .confirm-text-title {
+  font-size: 0.85rem;
+  line-height: 0.85rem;
+  margin-bottom: .5rem;
+}
+.confirm-lay .confirm .confirm-btn {
+  line-height: 2.3rem;
+  text-align: center;
+}
+.confirm-lay .confirm .confirm-btn a {
+  font-size: 0.75rem;
+  border-top: 1px solid #d9d9d9;
+  text-align: center;
+  display: inline-block;
+  width: 49%;
+  color: #ff6699;
+  box-sizing: border-box;
+}
+.confirm-lay .confirm .confirm-btn a:nth-of-type(2) {
+  border-left: 1px solid #d9d9d9;
+}
+.confirm-lay-show {
+  display: block;
+}
+.drag-to-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: none;
+}
+.drag-to-dismiss {
+  position: absolute;
+  right: -999px;
+  top: 0;
+  z-index: 9999;
+  text-align: right;
+}
+.drag-to-dismiss a {
+  display: inline-block;
+  width: 4rem;
+  height: 100%;
+  text-align: center;
+  font-size: 0.85rem;
+}
+.drag-to-dismiss a.success {
+  background: #e50039;
+  color: #fff;
+}
+.drag-list li {
+  position: relative;
+  z-index: 22;
+}
+.drag-list li.drag-active {
+  z-index: 99999;
+}
+.drag-list li.drag-active .drag-to-bg {
+  display: block;
+}
+.message-list li.drag-active .drag-to-dismiss {
+  width: 100%;
+  height: 100%;
+}
+.drag-buttons {
+  position: relative;
+  z-index: 999;
+  display: inline-block;
+}
+.drag-bg {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+}
+.drag-bg.drag-show {
+  display: block;
+}
+/**
+ * Created by chenmingkang on 16/3/28.
+ */
+/*信息提示公用*/
+.message-top {
+  position: fixed;
+  top: 1rem;
+  left: 0;
+  width: 100%;
+  z-index: 9999999;
+}
+.message-top .message-text {
+  color: #fff;
+  position: relative;
+  z-index: 9999;
+  display: inline-block;
+  background: #000;
+  max-width: 640px;
+  padding: .25rem 1rem;
+  word-break: break-all;
+  line-height: 1rem;
+}
+.message-top .message-main-lay {
+  text-align: center;
+  margin: 0 auto;
+  font-size: .8rem;
+}
+.message-top .message-main {
+  position: relative;
+}
+.message-show {
+  display: block;
+}
+input[type=range] {
+  width: 300px;
+}
+
+ul[rn-carousel] {
+  overflow: hidden;
+  padding: 0;
+  white-space: nowrap;
+  position: relative;
+  -webkit-perspective: 1000px;
+  -ms-perspective: 1000px;
+  perspective: 1000px;
+  -ms-touch-action: pan-y;
+  touch-action: pan-y;
+  min-height:135px;
+}
+
+ul[rn-carousel] > li {
+  color: black;
+  -webkit-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  backface-visibility: hidden;
+  overflow: visible;
+  vertical-align: top;
+  position: absolute;
+  left: 0;
+  right: 0;
+  white-space: normal;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+}
+
+/* prevent flickering when moving buffer */
+ul[rn-carousel-buffered] > li {
+  display: none;
+}
+ul[rn-carousel-buffered] > li img{width:100%;}
+
+ul[rn-carousel-transition="hexagon"] {
+  overflow: visible;
+}
+
+  /* indicators */
+.carousel-lay{
+  position: relative;
+}
+div.carousel-page{
+  position: absolute;
+  bottom : .5rem;
+  right: .5rem;
+  z-index: 999;
+  text-align: right;
+  background: rgba(0,0,0,.15);
+  border-radius: .5rem;
+  padding: .2rem .25rem;
+}
+div.rn-carousel-indicator span {
+  cursor: pointer;
+  color: #fff;
+  width: .6rem;
+  height: .6rem;
+  margin: 0 .25rem;
+  border-radius: 50%;
+  font-size: 0;
+  background: #fff;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+div.rn-carousel-indicator span.active {
+  background: #ffe800;
+}
+
+/* prev/next controls */
+.rn-carousel-control {
+  -webkit-transition: opacity 0.2s ease-out;
+  transition: opacity 0.2s ease-out;
+  font-size: 2rem;
+  position: absolute;
+  top: 40%;
+  opacity: 0.75;
+  cursor: pointer;
+}
+
+.rn-carousel-control:hover {
+  opacity: 1;
+}
+
+.rn-carousel-control.rn-carousel-control-prev {
+  left: 0.5em;
+}
+
+.rn-carousel-control.rn-carousel-control-prev:before {
+  content: "<";
+}
+
+.rn-carousel-control.rn-carousel-control-next {
+  right: 0.5em;
+}
+
+.rn-carousel-control.rn-carousel-control-next:before {
+  content: ">";
+}
+
+.ng-modal {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.ng-modal-overlay {
+  position: absolute;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  opacity: 0.8;
+}
+.ng-modal-dialog {
+  z-index: 10000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  background-color: #fff;
+  box-shadow: 4px 4px 80px #000;
+  -webkit-box-shadow: 4px 4px 80px #000;
+  -moz-box-shadow: 4px 4px 80px #000;
+  -ms-box-shadow: 4px 4px 80px #000;
+  -o-box-shadow: 4px 4px 80px #000;
+  padding: 10px;
+}
+.ng-modal-dialog-content {
+  overflow: hidden;
+  height: 100%;
+}
+.ng-modal-close {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  cursor: pointer;
+  font-size: 120%;
+  padding: 5px;
+  display: inline-block;
+}
+.ng-modal-close-x {
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+}
+.ng-modal-title {
+  font-weight: bold;
+  font-size: 20%;
+  display: block;
+  margin-bottom: 10px;
+  padding-bottom: 7px;
+  border-bottom: solid 1px #999;
+}
+
 @charset "utf-8";
 /* CSS Document */
 html,
@@ -2163,12 +2589,13 @@ button:disabled {
   border: none;
   height: 4rem;
   padding: .5rem;
-  font-size: .7rem;
   color: #444444;
+  font-size: .7rem;
 }
 .apply-efund .buttons button {
   float: left;
   background: none;
+  font-size: .7rem;
   width: 50%;
   border: 1px solid #eaeaea;
   border-bottom: none;
@@ -2922,7 +3349,8 @@ button:disabled {
   margin-bottom: 0;
 }
 .my-message li .message-title {
-  font-size: 1rem;
+  font-size: .8rem;
+  line-height: 1rem;
   font-weight: normal;
   padding-bottom: .5rem;
   margin-bottom: .5rem;
@@ -4140,430 +4568,4 @@ html {
 }
 .app {
   overflow-x: hidden;
-}
-
-
-@font-face {font-family: "iconfont";
-  src: url('../font/iconfont.eot?t=1462627723'); /* IE9*/
-  src: url('../font/iconfont.eot?t=1462627723#iefix') format('embedded-opentype'), /* IE6-IE8 */
-  url('../font/iconfont.woff?t=1462627723') format('woff'), /* chrome, firefox */
-  url('../font/iconfont.ttf?t=1462627723') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
-  url('../font/iconfont.svg?t=1462627723#iconfont') format('svg'); /* iOS 4.1- */
-}
-
-.iconfont {
-  font-family:"iconfont" !important;
-  /*font-size:16px;*/
-  font-style:normal;
-  -webkit-font-smoothing: antialiased;
-  -webkit-text-stroke-width: 0.2px;
-  -moz-osx-font-smoothing: grayscale;
-}
-.icon-shangsanjiao:before { content: "\e627"; }
-.icon-xiaoxi:before { content: "\e60f"; }
-.icon-gushuzaliang:before { content: "\e600"; }
-.icon-shezhi:before { content: "\e610"; }
-.icon-yongjin:before { content: "\e611"; }
-.icon-weixin:before { content: "\e629"; }
-.icon-jia:before { content: "\e624"; }
-.icon-home:before { content: "\e602"; }
-.icon-gouxuanjian:before { content: "\e601"; }
-.icon-jian:before { content: "\e625"; }
-.icon-dingwei:before { content: "\e617"; }
-.icon-back:before { content: "\e604"; }
-.icon-fenxiao:before { content: "\e612"; }
-.icon-fenxiang:before { content: "\e605"; }
-.icon-difangtechan:before { content: "\e606"; }
-.icon-dingdan:before { content: "\e613"; }
-.icon-daishouhuo:before { content: "\e618"; }
-.icon-weixinpng:before { content: "\e623"; }
-.icon-weixuanzhong:before { content: "\e607"; }
-.icon-daishenhe:before { content: "\e61f"; }
-.icon-gouwuche:before { content: "\e608"; }
-.icon-shanchu:before { content: "\e619"; }
-.icon-iconfontyonghu13:before { content: "\e620"; }
-.icon-shoucang:before { content: "\e609"; }
-.icon-daifukuan:before { content: "\e61a"; }
-.icon-iconsvgtixianjilu:before { content: "\e614"; }
-.icon-help:before { content: "\e61b"; }
-.icon-fangdajing:before { content: "\e626"; }
-.icon-shuiguo:before { content: "\e60a"; }
-.icon-yiwanchengdingdan:before { content: "\e61c"; }
-.icon-daifahuo:before { content: "\e61d"; }
-.icon-cuxiao:before { content: "\e60b"; }
-.icon-tx:before { content: "\e621"; }
-.icon-tixian:before { content: "\e622"; }
-.icon-shipin:before { content: "\e60c"; }
-.icon-fenlei:before { content: "\e60d"; }
-.icon-tixian1:before { content: "\e615"; }
-.icon-shoudongtuiguang:before { content: "\e616"; }
-.icon-huidingbu:before { content: "\e60e"; }
-.icon-xiasanjiaoxiao:before { content: "\e628"; }
-.icon-qianjin:before { content: "\e61e"; }
-.icon-xiazai:before { content: "\e603"; }
-
-/**
- * Created by chenmingkang on 16/3/28.
- */
-/*返回顶部*/
-.back-top {
-  position: fixed;
-  bottom: 3.5rem;
-  right: 1rem;
-  width: 2rem;
-  height: 2rem;
-  font-size: 1.3rem;
-  line-height: 2rem;
-  z-index: 99999;
-  text-align: center;
-  display: none;
-}
-.back-top-bj {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(51, 51, 51, 0.3);
-  border-radius: 50%;
-}
-.back-top i {
-  color: #fff;
-  position: relative;
-  z-index: 999;
-  display: inline-block;
-}
-.back-bottom {
-  bottom: 1rem;
-}
-.back-top-show {
-  display: block;
-}
-/**
- * Created by chenmingkang on 16/3/28.
- */
-/*弹出框公用*/
-.confirm-lay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10000;
-  display: none;
-}
-.confirm-lay .confirm {
-  position: relative;
-  max-width: 750px;
-  margin: 0 auto;
-  height: 100%;
-}
-.confirm-lay .confirm .confirm-bg {
-  background: rgba(0, 0, 0, 0.6);
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-}
-.confirm-lay .confirm .confirm-main {
-  z-index: 100;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin: -2.7rem 0 0 -6.7rem;
-  background: #fff;
-  width: 13.4rem;
-  -webkit-border-radius: 8px;
-  border-radius: 8px;
-  display: inline-block;
-}
-.confirm-lay .confirm .confirm-text {
-  font-size: 0.75rem;
-  line-height: 1rem;
-  text-align: center;
-  color: #000;
-  padding: 0.5rem;
-}
-.confirm-lay .confirm .confirm-text-title {
-  font-size: 0.85rem;
-  line-height: 0.85rem;
-  margin-bottom: .5rem;
-}
-.confirm-lay .confirm .confirm-btn {
-  line-height: 2.3rem;
-  text-align: center;
-}
-.confirm-lay .confirm .confirm-btn a {
-  font-size: 0.75rem;
-  border-top: 1px solid #d9d9d9;
-  text-align: center;
-  display: inline-block;
-  width: 49%;
-  color: #ff6699;
-  box-sizing: border-box;
-}
-.confirm-lay .confirm .confirm-btn a:nth-of-type(2) {
-  border-left: 1px solid #d9d9d9;
-}
-.confirm-lay-show {
-  display: block;
-}
-.drag-to-bg {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  display: none;
-}
-.drag-to-dismiss {
-  position: absolute;
-  right: -999px;
-  top: 0;
-  z-index: 9999;
-  text-align: right;
-}
-.drag-to-dismiss a {
-  display: inline-block;
-  width: 4rem;
-  height: 100%;
-  text-align: center;
-  font-size: 0.85rem;
-}
-.drag-to-dismiss a.success {
-  background: #e50039;
-  color: #fff;
-}
-.drag-list li {
-  position: relative;
-  z-index: 22;
-}
-.drag-list li.drag-active {
-  z-index: 99999;
-}
-.drag-list li.drag-active .drag-to-bg {
-  display: block;
-}
-.message-list li.drag-active .drag-to-dismiss {
-  width: 100%;
-  height: 100%;
-}
-.drag-buttons {
-  position: relative;
-  z-index: 999;
-  display: inline-block;
-}
-.drag-bg {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 9999;
-  width: 100%;
-  height: 100%;
-}
-.drag-bg.drag-show {
-  display: block;
-}
-/**
- * Created by chenmingkang on 16/3/28.
- */
-/*信息提示公用*/
-.message-top {
-  position: fixed;
-  top: 1rem;
-  left: 0;
-  width: 100%;
-  z-index: 9999999;
-}
-.message-top .message-text {
-  color: #fff;
-  position: relative;
-  z-index: 9999;
-  display: inline-block;
-  background: #000;
-  max-width: 640px;
-  padding: .25rem 1rem;
-  word-break: break-all;
-  line-height: 1rem;
-}
-.message-top .message-main-lay {
-  text-align: center;
-  margin: 0 auto;
-  font-size: .8rem;
-}
-.message-top .message-main {
-  position: relative;
-}
-.message-show {
-  display: block;
-}
-input[type=range] {
-  width: 300px;
-}
-
-ul[rn-carousel] {
-  overflow: hidden;
-  padding: 0;
-  white-space: nowrap;
-  position: relative;
-  -webkit-perspective: 1000px;
-  -ms-perspective: 1000px;
-  perspective: 1000px;
-  -ms-touch-action: pan-y;
-  touch-action: pan-y;
-  min-height:135px;
-}
-
-ul[rn-carousel] > li {
-  color: black;
-  -webkit-backface-visibility: hidden;
-  -ms-backface-visibility: hidden;
-  backface-visibility: hidden;
-  overflow: visible;
-  vertical-align: top;
-  position: absolute;
-  left: 0;
-  right: 0;
-  white-space: normal;
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-  width: 100%;
-  height: 100%;
-  display: inline-block;
-}
-
-/* prevent flickering when moving buffer */
-ul[rn-carousel-buffered] > li {
-  display: none;
-}
-ul[rn-carousel-buffered] > li img{width:100%;}
-
-ul[rn-carousel-transition="hexagon"] {
-  overflow: visible;
-}
-
-  /* indicators */
-.carousel-lay{
-  position: relative;
-}
-div.carousel-page{
-  position: absolute;
-  bottom : .5rem;
-  right: .5rem;
-  z-index: 999;
-  text-align: right;
-  background: rgba(0,0,0,.15);
-  border-radius: .5rem;
-  padding: .2rem .25rem;
-}
-div.rn-carousel-indicator span {
-  cursor: pointer;
-  color: #fff;
-  width: .6rem;
-  height: .6rem;
-  margin: 0 .25rem;
-  border-radius: 50%;
-  font-size: 0;
-  background: #fff;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-div.rn-carousel-indicator span.active {
-  background: #ffe800;
-}
-
-/* prev/next controls */
-.rn-carousel-control {
-  -webkit-transition: opacity 0.2s ease-out;
-  transition: opacity 0.2s ease-out;
-  font-size: 2rem;
-  position: absolute;
-  top: 40%;
-  opacity: 0.75;
-  cursor: pointer;
-}
-
-.rn-carousel-control:hover {
-  opacity: 1;
-}
-
-.rn-carousel-control.rn-carousel-control-prev {
-  left: 0.5em;
-}
-
-.rn-carousel-control.rn-carousel-control-prev:before {
-  content: "<";
-}
-
-.rn-carousel-control.rn-carousel-control-next {
-  right: 0.5em;
-}
-
-.rn-carousel-control.rn-carousel-control-next:before {
-  content: ">";
-}
-
-.ng-modal {
-  position: fixed;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-.ng-modal-overlay {
-  position: absolute;
-  z-index: 9999;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #000000;
-  opacity: 0.8;
-}
-.ng-modal-dialog {
-  z-index: 10000;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 50%;
-  transform: translate(-50%, -50%);
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  background-color: #fff;
-  box-shadow: 4px 4px 80px #000;
-  -webkit-box-shadow: 4px 4px 80px #000;
-  -moz-box-shadow: 4px 4px 80px #000;
-  -ms-box-shadow: 4px 4px 80px #000;
-  -o-box-shadow: 4px 4px 80px #000;
-  padding: 10px;
-}
-.ng-modal-dialog-content {
-  overflow: hidden;
-  height: 100%;
-}
-.ng-modal-close {
-  position: absolute;
-  top: 3px;
-  right: 5px;
-  cursor: pointer;
-  font-size: 120%;
-  padding: 5px;
-  display: inline-block;
-}
-.ng-modal-close-x {
-  font-weight: bold;
-  font-family: Arial, sans-serif;
-}
-.ng-modal-title {
-  font-weight: bold;
-  font-size: 20%;
-  display: block;
-  margin-bottom: 10px;
-  padding-bottom: 7px;
-  border-bottom: solid 1px #999;
 }

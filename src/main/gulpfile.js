@@ -76,10 +76,10 @@ var gulpFlieInitConfig = function(){
             var cssPath = static + 'css/';
             var cssMinPath = minPath + 'css/';
             gulp.src([
-                    cssPath + 'theme.css',
                     cssPath + 'iconfont.css',
                     jsWidgetPath + '**/**/**.css',
-                    jsLibsPath + '**/**/**.css'
+                    jsLibsPath + '**/**/**.css',
+                    cssPath + 'theme.css'
                 ])
                 .pipe(concat('all.css'))
                 .pipe(gulp.dest(cssMinPath))
