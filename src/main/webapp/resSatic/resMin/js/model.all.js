@@ -424,6 +424,114 @@ app.controller('htlistCrt',["$scope","$rootScope","$stateParams","htlistService"
 /**
  * Created by kangdaye on 16/5/15.
  */
+app.service('detailService',["$http", function($http) {
+    this.detailData = function (getData,callback) {
+        $http.get(servicePath + 'goods/details',{params:getData}).success(callback);
+    };
+
+    this.addFavorite = function (postData,callback) {
+        $http.post(servicePath + 'favorite/join',postData).success(callback);
+    };
+
+    this.addCart = function (postData,callback) {
+        $http.post(servicePath + 'cart/join',postData).success(callback);
+    };
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.factory('goodsListCacheFactory', function() {
+    return {
+        navTab : [
+            {name:'按销量',up:'volume_desc',dowm:'volume_asc'},
+            {name:'按价格',up:'price_desc',dowm:'price_asc'},
+            {name:'按上架',up:'time_desc',dowm:'time_asc'}
+        ],
+        category : [
+            {id:101,name:'大米杂粮'},
+            {id:102,name:'各地特产'},
+            {id:103,name:'手作食材'},
+            {id:104,name:'时令水果'},
+            {id:105,name:'特价促销'}
+        ]
+    }
+});
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.service('goodsListService',["$http", function($http) {
+    this.searchList = function (getData,callback) {
+        $http.get(servicePath + 'goods/search',{params : getData}).success(callback);
+    };
+
+    this.indexAdConfig = function (callback) {
+        $http.get(servicePath + 'index_ad_config',{}).success(callback);
+    };
+
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.controller('goodsListCtr',["$scope","$rootScope","$stateParams","goodsListCacheFactory","goodsListService", function($scope,$rootScope,$stateParams,goodsListCacheFactory,goodsListService) {
+   var empty = false;
+   var async = false;
+
+   $scope.bannerConfData = {};
+   $scope.tabData = goodsListCacheFactory.navTab;
+   $scope.category = goodsListCacheFactory.category;
+   $scope.listData = [];
+   $scope.getData = {
+      query : $stateParams.searchText,
+      categoryId : $stateParams.categoryId,
+      sort : 'volume_desc',
+      page : 1,
+      limit : 10
+   };
+
+   $scope.searchList = function () {
+      location.href = $rootScope.prefix + "goodsList.html?searchText="+ $scope.search;
+   };
+
+   goodsListService.indexAdConfig(function (data) {
+      $scope.bannerConfData = data.data.banner;
+   });
+
+   $scope.load = function(){
+      if(!empty && !async){
+         async = true;
+         goodsListService.searchList($scope.getData,function (data) {
+            if(data.data.length < $scope.getData.limit){
+               empty = true;
+            }
+            data.data.forEach(function(item){
+               $scope.listData.push(item);
+            });
+            async = false;
+            $scope.getData.page++;
+         });
+      }
+   };
+
+   $scope.tabFilter = function(up,dowm){
+      empty = false;
+      $scope.getData.page = 1;
+      $scope.listData = [];
+      if($scope.getData.sort == up){
+         $scope.getData.sort = dowm;
+      }else{
+         $scope.getData.sort = up;
+      }
+      $scope.load();
+   };
+
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
 app.service('htlistService',["$http", function($http) {
     this.list = function (getData,callback) {
         $http.get(servicePath + 'goods/search',{params : getData}).success(callback);
@@ -521,110 +629,21 @@ app.controller('detailCtr',["$scope","$rootScope","$stateParams","detailService"
 /**
  * Created by kangdaye on 16/5/15.
  */
-app.service('detailService',["$http", function($http) {
-    this.detailData = function (getData,callback) {
-        $http.get(servicePath + 'goods/details',{params:getData}).success(callback);
-    };
-
-    this.addFavorite = function (postData,callback) {
-        $http.post(servicePath + 'favorite/join',postData).success(callback);
-    };
-
-    this.addCart = function (postData,callback) {
-        $http.post(servicePath + 'cart/join',postData).success(callback);
-    };
-}]);
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.controller('goodsListCtr',["$scope","$rootScope","$stateParams","goodsListCacheFactory","goodsListService", function($scope,$rootScope,$stateParams,goodsListCacheFactory,goodsListService) {
-   var empty = false;
-   var async = false;
-
-   $scope.bannerConfData = {};
-   $scope.tabData = goodsListCacheFactory.navTab;
-   $scope.category = goodsListCacheFactory.category;
-   $scope.listData = [];
-   $scope.getData = {
-      query : $stateParams.searchText,
-      categoryId : $stateParams.categoryId,
-      sort : 'volume_desc',
-      page : 1,
-      limit : 10
-   };
-
-   $scope.searchList = function () {
-      location.href = $rootScope.prefix + "goodsList.html?searchText="+ $scope.search;
-   };
-
-   goodsListService.indexAdConfig(function (data) {
-      $scope.bannerConfData = data.data.banner;
-   });
-
-   $scope.load = function(){
-      if(!empty && !async){
-         async = true;
-         goodsListService.searchList($scope.getData,function (data) {
-            if(data.data.length < $scope.getData.limit){
-               empty = true;
-            }
-            data.data.forEach(function(item){
-               $scope.listData.push(item);
-            });
-            async = false;
-            $scope.getData.page++;
-         });
-      }
-   };
-
-   $scope.tabFilter = function(up,dowm){
-      empty = false;
-      $scope.getData.page = 1;
-      $scope.listData = [];
-      if($scope.getData.sort == up){
-         $scope.getData.sort = dowm;
-      }else{
-         $scope.getData.sort = up;
-      }
-      $scope.load();
-   };
-
-}]);
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.factory('goodsListCacheFactory', function() {
+app.factory('distributorCacheFactory', function() {
     return {
-        navTab : [
-            {name:'按销量',up:'volume_desc',dowm:'volume_asc'},
-            {name:'按价格',up:'price_desc',dowm:'price_asc'},
-            {name:'按上架',up:'time_desc',dowm:'time_asc'}
+        myDistributorNavTab : [
+            {name:'全部'},
+            {level:'lv1',name:'一级'},
+            {level:'lv2',name:'二级'}
         ],
-        category : [
-            {id:101,name:'大米杂粮'},
-            {id:102,name:'各地特产'},
-            {id:103,name:'手作食材'},
-            {id:104,name:'时令水果'},
-            {id:105,name:'特价促销'}
-        ]
+       recordTab : [
+           {name : '全部'},
+           {status : 'through',name : '已通过'},
+           {status : 'not_through',name : '未通过'},
+           {status : 'audit',name : '审核中'}
+       ]
     }
 });
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.service('goodsListService',["$http", function($http) {
-    this.searchList = function (getData,callback) {
-        $http.get(servicePath + 'goods/search',{params : getData}).success(callback);
-    };
-
-    this.indexAdConfig = function (callback) {
-        $http.get(servicePath + 'index_ad_config',{}).success(callback);
-    };
-
-}]);
 
 /**
  * Created by kangdaye on 16/5/15.
@@ -666,50 +685,6 @@ app.service('indexService',["$http", function($http) {
         $http.get(servicePath + 'goods/search',{params : getData}).success(callback);
     };
 }]);
-
-/**
- * Created by kangdaye on 16/5/20.
- */
-app.service('shopCartService',["$http", function($http) {
-    this.cartList = function (callback) {
-        $http.post(servicePath + 'cart/list').success(callback);
-    };
-
-    this.cartAdd = function (postData,callback) {
-        $http.post(servicePath + 'cart/join',postData).success(callback);
-    };
-
-    this.cartUpNum= function (postData,callback) {
-        $http.post(servicePath + 'cart/update_buyNumber',postData).success(callback);
-    };
-
-    this.cartDelete= function (postData,callback) {
-        $http.post(servicePath + 'cart/delete',postData).success(callback);
-    };
-
-    this.cartDeleteAll= function (callback) {
-        $http.post(servicePath + 'cart/delete_all').success(callback);
-    };
-}]);
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.factory('distributorCacheFactory', function() {
-    return {
-        myDistributorNavTab : [
-            {name:'全部'},
-            {level:'lv1',name:'一级'},
-            {level:'lv2',name:'二级'}
-        ],
-       recordTab : [
-           {name : '全部'},
-           {status : 'through',name : '已通过'},
-           {status : 'not_through',name : '未通过'},
-           {status : 'audit',name : '审核中'}
-       ]
-    }
-});
 
 /**
  * Created by chenmingkang on 15/7/14.
@@ -911,86 +886,27 @@ app.controller('shopCartCtr',["$scope","$rootScope","shopCartService","confirmFa
 }]);
 
 /**
- * Created by kangdaye on 16/5/24.
+ * Created by kangdaye on 16/5/20.
  */
-app.controller('createOrderCtr',["$scope","$rootScope","$stateParams","createOrderService",function($scope,$rootScope,$stateParams,createOrderService) {
-    $scope.createOrderData = {};
-    $scope.leaveMessage = '';
-
-    createOrderService.getCartGoods($stateParams,function(data){
-        $scope.createOrderData = data.data;
-        if(sessionStorage.selectAddress){
-            data.data.address = JSON.parse(sessionStorage.selectAddress);
-            sessionStorage.selectAddress = '';
-        }
-        if(data.data.address){
-            $scope.calculateFreight();
-        }
-    });
-    
-    $scope.calculateFreight = function(){
-        createOrderService.calculateFreight({
-            addressId : $scope.createOrderData.address.id,
-            settleId : $scope.createOrderData.settle.settleId
-        },function(data){
-            $scope.createOrderData.settle.freight = data.data.freight;
-            $scope.createOrderData.settle.totalAmount = data.data.totalAmount;
-        });
+app.service('shopCartService',["$http", function($http) {
+    this.cartList = function (callback) {
+        $http.post(servicePath + 'cart/list').success(callback);
     };
 
-    $scope.selectAddress = function(){
-        location.href = $rootScope.prefix + 'userContent/site/list.html?isSelectAddress=true';
+    this.cartAdd = function (postData,callback) {
+        $http.post(servicePath + 'cart/join',postData).success(callback);
     };
 
-    $scope.goPay = function(){
-        createOrderService.buy({
-            settleId : $scope.createOrderData.settle.settleId,
-            leaveMessage : $scope.leaveMessage
-        },function(data){
-            var getData = {
-                orderNo : data.data.orderNo,
-                price : data.data.amount
-            };
-            var goUrl = location.origin + $rootScope.prefix + 'order/pay.html?' + angular.param(getData);
-            location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa66a636535c987db&redirect_uri='+ encodeURIComponent(goUrl) +'&response_type=code&scope=snsapi_base&state=123#wechat_redirect';
-        });
-    }
-}]);
-
-/**
- * Created by kangdaye on 16/5/24.
- */
-app.service('createOrderService',["$http", function($http) {
-    this.getCartGoods = function (postData,callback) {
-        $http.post(servicePath + 'cart/settle',postData).success(callback);
+    this.cartUpNum= function (postData,callback) {
+        $http.post(servicePath + 'cart/update_buyNumber',postData).success(callback);
     };
 
-    this.calculateFreight = function (postData,callback) {
-        $http.post(servicePath + 'cart/settle/calculateFreight',postData).success(callback);
+    this.cartDelete= function (postData,callback) {
+        $http.post(servicePath + 'cart/delete',postData).success(callback);
     };
 
-    this.buy = function (postData,callback) {
-        $http.post(servicePath + 'cart/settle/buy',postData).success(callback);
-    };
-}]);
-
-/**
- * Created by kangdaye on 16/5/24.
- */
-app.controller('logisticCtr',["$scope","$stateParams","logisticsService",function($scope,$stateParams,logisticsService) {
-    logisticsService.logistics({
-        orderNo : $stateParams.orderNo
-    },function(data){
-        console.log(data);
-    });
-}]);
-
-/**
- * Created by kangdaye on 16/5/24.
- */
-app.service('logisticsService',["$http", function($http) {
-    this.logistics = function (postData,callback) {
-        $http.post(servicePath + 'my_orders/logistics',postData).success(callback);
+    this.cartDeleteAll= function (callback) {
+        $http.post(servicePath + 'cart/delete_all').success(callback);
     };
 }]);
 
@@ -1154,74 +1070,314 @@ app.service('myOrderListService',["$http", function($http) {
 
 }]);
 
-app.controller('payCtr',["$scope","$rootScope","$stateParams","payService",function($scope,$rootScope,$stateParams,payService) {
-    $scope.data = $stateParams;
-    // var orderNum = $stateParams.orderNum;
-    //
-    // $rootScope.loading = false;
-    //
-    // $scope.price = $stateParams.price;
-    // $scope.text = '';
-    // $scope.payOption = '';
-    //
-    //
-
-
-    // appId : "wxa66a636535c987db",     //公众号名称，由商户传入
-    //     timeStamp: datas.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-    //     nonceStr: datas.nonceStr, // 支付签名随机串，不长于 32 位
-    //     package: 'prepay_id=' + datas.prepay_id, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-    //     signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-    //     paySign: datas.paySign // 支付签名
-
-    function onBridgeReady(data){
-        WeixinJSBridge.invoke('getBrandWCPayRequest',data,function(res){
-                if(res.err_msg == "get_brand_wcpay_request:ok" || res.err_msg == "get_brand_wcpay_request:cancel" ) {  //如果付款成功或者取消付款都去订单详情页面
-                    location.href = $rootScope.prefix + 'order/myOrder/myOrderList.html?status=1';
-                }else{
-                    alert('发生未知错误');
-                }
-            }
-        );
-    }
-
-    function bindEvent(data){
-        if (typeof WeixinJSBridge == "undefined"){
-            if( document.addEventListener ){
-                document.addEventListener('WeixinJSBridgeReady', function(){
-                    onBridgeReady(data)
-                }, false);
-            }else if (document.attachEvent){
-                document.attachEvent('WeixinJSBridgeReady', function(){
-                    onBridgeReady(data)
-                });
-                document.attachEvent('onWeixinJSBridgeReady', function(){
-                    onBridgeReady(data)
-                });
-            }
-        }else{
-            onBridgeReady(data);
-        }
-    }
-
-    $scope.submit = function(){
-        alert(1)
-        payService.pay({
-            orderNo : $scope.data.orderNo
-        },function(data){
-            bindEvent(data.data)
-        });
-    };
-
-
-}]);
 /**
  * Created by kangdaye on 16/5/24.
  */
-app.service('payService',["$http", function($http) {
-    this.pay = function (postData,callback) {
-        $http.post(servicePath + 'order/pay',postData).success(callback);
+app.service('createOrderService',["$http", function($http) {
+    this.getCartGoods = function (postData,callback) {
+        $http.post(servicePath + 'cart/settle',postData).success(callback);
     };
+
+    this.calculateFreight = function (postData,callback) {
+        $http.post(servicePath + 'cart/settle/calculateFreight',postData).success(callback);
+    };
+
+    this.buy = function (postData,callback) {
+        $http.post(servicePath + 'cart/settle/buy',postData).success(callback);
+    };
+}]);
+
+/**
+ * Created by kangdaye on 16/5/24.
+ */
+app.controller('createOrderCtr',["$scope","$rootScope","$stateParams","createOrderService",function($scope,$rootScope,$stateParams,createOrderService) {
+    $scope.createOrderData = {};
+    $scope.leaveMessage = '';
+
+    createOrderService.getCartGoods($stateParams,function(data){
+        $scope.createOrderData = data.data;
+        if(sessionStorage.selectAddress){
+            data.data.address = JSON.parse(sessionStorage.selectAddress);
+            sessionStorage.selectAddress = '';
+        }
+        if(data.data.address){
+            $scope.calculateFreight();
+        }
+    });
+    
+    $scope.calculateFreight = function(){
+        createOrderService.calculateFreight({
+            addressId : $scope.createOrderData.address.id,
+            settleId : $scope.createOrderData.settle.settleId
+        },function(data){
+            $scope.createOrderData.settle.freight = data.data.freight;
+            $scope.createOrderData.settle.totalAmount = data.data.totalAmount;
+        });
+    };
+
+    $scope.selectAddress = function(){
+        location.href = $rootScope.prefix + 'userContent/site/list.html?isSelectAddress=true';
+    };
+
+    $scope.goPay = function(){
+        createOrderService.buy({
+            settleId : $scope.createOrderData.settle.settleId,
+            leaveMessage : $scope.leaveMessage
+        },function(data){
+            var getData = {
+                orderNo : data.data.orderNo,
+                price : data.data.amount
+            };
+            var goUrl = location.origin + $rootScope.prefix + 'order/pay.html?' + angular.param(getData);
+            location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa66a636535c987db&redirect_uri='+ encodeURIComponent(goUrl) +'&response_type=code&scope=snsapi_base&state=123#wechat_redirect';
+        });
+    }
+}]);
+
+/**
+ * Created by kangdaye on 16/5/24.
+ */
+app.controller('logisticCtr',["$scope","$stateParams","logisticsService",function($scope,$stateParams,logisticsService) {
+    logisticsService.logistics({
+        orderNo : $stateParams.orderNo
+    },function(data){
+        console.log(data);
+    });
+}]);
+
+/**
+ * Created by kangdaye on 16/5/20.
+ */
+app.service('identityService',["$http", function($http) {
+    this.certification = function (postData,callback) {
+        $http.post(servicePath + 'member/certification',postData).success(callback);
+    };
+}]);
+
+
+/**
+ * Created by kangdaye on 16/5/20.
+ */
+app.service('setInfoService',["$http", function($http) {
+    this.updateBasisinfo = function (postData,callback) {
+        $http.post(servicePath + 'member/update_basisinfo',postData).success(callback);
+    };
+}]);
+
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.controller('myMessageCtr',["$scope","$rootScope","myMessageService", function($scope,$rootScope,myMessageService) {
+    var getData = {
+        page : 1,
+        limit : 10
+    };
+    var async = false;
+
+    $scope.listData = [];
+
+    $scope.load = function(){
+        if(async){
+            return;
+        }
+        async = true;
+        myMessageService.list(getData,function(data){
+            data.data.forEach(function(item){
+                $scope.listData.push(item);
+            });
+            if(data.data.length >= getData.limit){
+                async = false;
+            }
+            getData.page++;
+        });
+    };
+
+    $scope.load();
+}]);
+
+/**
+ * Created by kangdaye on 16/5/20.
+ */
+app.service('myMessageService',["$http", function($http) {
+    this.list = function (postData,callback) {
+        $http.post(servicePath + 'message/list',postData).success(callback);
+    };
+}]);
+
+
+/**
+ * Created by kangdaye on 16/5/24.
+ */
+app.service('logisticsService',["$http", function($http) {
+    this.logistics = function (postData,callback) {
+        $http.post(servicePath + 'my_orders/logistics',postData).success(callback);
+    };
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.controller('userCollectCtr',["$scope","userCollectService","messageFactory", function($scope,userCollectService,messageFactory) {
+    $scope.listData = [];
+
+    userCollectService.favoriteList(function(data){
+        $scope.listData = data.data;
+    });
+
+    $scope.deleteItem = function(goodsId,index){
+        userCollectService.favoriteDeleteItem({
+            goodsId : goodsId
+        },function(){
+            $scope.listData.splice(index,1);
+            messageFactory({text : '删除成功'});
+        })
+    };
+
+    $scope.deleteAll = function(goodsId,index){
+        userCollectService.favoriteDeleteAll(function(){
+            $scope.listData = [];
+            messageFactory({text : '删除全部成功'});
+        })
+    }
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.controller('identityCtr',["$scope","$rootScope","Upload","messageFactory","identityService", function($scope,$rootScope,Upload,messageFactory,identityService) {
+    var watch;
+
+    $scope.isVlidate = !$scope.userInfoData.certifiedInfo || $scope.userInfoData.certifiedInfo.status == 9 || $scope.userInfoData.certifiedInfo.auditlog
+    $scope.getData = {};
+
+    $scope.upload = function (model,file) {
+        if($scope.isVlidate){
+            return;
+        }
+        Upload.upload({
+            url: servicePath + 'member/upload_certificate',
+            data: {file: file, 'username': $scope.username}
+        }).then(function (resp) {
+            if(model === 1){
+                $scope.getData.idCarImage1 = resp.data;
+            }else{
+                $scope.getData.idCarImage0 = resp.data;
+            }
+        });
+    };
+
+    $scope.submit = function(){
+        identityService.certification($scope.getData,function(){
+            messageFactory({text : '正在提交审核'});
+            $rootScope.userInfoData.certifiedInfo.status = 0;
+        });
+    };
+
+    watch = $scope.$watch('userInfoData.certifiedInfo',function(newVal){
+        if(newVal){
+            angular.extend($scope.getData,newVal);
+        }
+    });
+
+    $scope.$on('$destroy', function(){
+        watch();
+    });
+
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.controller('setInfoCtr',["$scope","$rootScope","$timeout","Upload","messageFactory","setInfoService", function($scope,$rootScope,$timeout,Upload,messageFactory,setInfoService) {
+    $scope.userInfo = {};
+    var watchUserInfoData = $scope.$watch('userInfoData',function(newVal){
+        if(newVal){
+            angular.extend($scope.userInfo,$rootScope.userInfoData);
+            console.log($scope.userInfo);
+        }
+    });
+
+    $scope.$on('$destroy', function(){
+        watchUserInfoData();
+    });
+
+    $scope.upload = function (file) {
+        Upload.upload({
+            url: servicePath + 'member/update_avatar',
+            data: {file: file, 'username': $scope.username}
+        }).then(function (resp) {
+            $scope.userInfo.avatar = resp.data;
+        });
+    };
+
+    $scope.submit = function(){
+        setInfoService.updateBasisinfo($scope.userInfo,function(){
+            $rootScope.userInfoData = angular.copy($scope.userInfo);
+        })
+    };
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.service('userCollectService',["$http", function($http) {
+    this.favoriteList = function (callback) {
+        $http.get(servicePath + 'favorite/list').success(callback);
+    };
+
+    this.favoriteDeleteItem = function (postData,callback) {
+        $http.post(servicePath + 'favorite/delete',postData).success(callback);
+    };
+
+    this.favoriteDeleteAll = function (callback) {
+        $http.post(servicePath + 'favorite/delete_all').success(callback);
+    };
+
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.factory('userInfoCacheFactory', function() {
+    return {
+        navTab : [
+            {id:1,name:'普通会员'},
+            {id:2,name:'分销会员'}
+        ],
+        orderState : [
+            {hrefStatus : 0,key : "waitPay",name : '待付款',icon : 'icon-daifukuan'},
+            {hrefStatus : 1,key : "waitDelivery",name : '待发货',icon : 'icon-daifahuo'},
+            {hrefStatus : 2,key : "waitReceive",name : '待收货',icon : 'icon-daishouhuo'},
+            {hrefStatus : 3,key : "complete",name : '已完成',icon : 'icon-yiwanchengdingdan'},
+            {hrefStatus : 4,key : "refund_closed",name : '退款/取消',icon : 'icon-tixian1'}
+        ]
+    }
+});
+
+app.service('userInfoService',["$http", function($http) {
+    this.userInfo = function (callback) {
+        $http.get(servicePath + 'member/userinfo').success(callback);
+    };
+
+    this.orderNum = function (callback) {
+        $http.get(servicePath + 'my_orders/statistics').success(callback);
+    };
+}]);
+
+app.controller('userInfoCtr',["$scope","userInfoCacheFactory","userInfoService", function($scope,userInfoCacheFactory,userInfoService) {
+    $scope.orderNum = {};
+    $scope.navTab = userInfoCacheFactory.navTab;
+    $scope.orderStateData = userInfoCacheFactory.orderState;
+
+    $scope.navTabClick = function(id){
+        $scope.navTabSelectId = id;
+    };
+
+    userInfoService.orderNum(function(data){
+        $scope.orderNum = data.data;
+    });
+    $scope.navTabClick($scope.navTab[0].id);
 }]);
 
 /**
@@ -1367,186 +1523,74 @@ app.service('myDistributorService',["$http", function($http) {
         $http.post(servicePath + 'distribution/lower_distributors_list',postData).success(callback);
     };
 }]);
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.controller('myMessageCtr',["$scope","$rootScope","myMessageService", function($scope,$rootScope,myMessageService) {
-    var getData = {
-        page : 1,
-        limit : 10
-    };
-    var async = false;
+app.controller('payCtr',["$scope","$rootScope","$stateParams","payService",function($scope,$rootScope,$stateParams,payService) {
+    $scope.data = $stateParams;
+    // var orderNum = $stateParams.orderNum;
+    //
+    // $rootScope.loading = false;
+    //
+    // $scope.price = $stateParams.price;
+    // $scope.text = '';
+    // $scope.payOption = '';
+    //
+    //
 
-    $scope.listData = [];
 
-    $scope.load = function(){
-        if(async){
-            return;
-        }
-        async = true;
-        myMessageService.list(getData,function(data){
-            data.data.forEach(function(item){
-                $scope.listData.push(item);
-            });
-            if(data.data.length >= getData.limit){
-                async = false;
+    // appId : "wxa66a636535c987db",     //公众号名称，由商户传入
+    //     timeStamp: datas.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+    //     nonceStr: datas.nonceStr, // 支付签名随机串，不长于 32 位
+    //     package: 'prepay_id=' + datas.prepay_id, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+    //     signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+    //     paySign: datas.paySign // 支付签名
+
+    function onBridgeReady(data){
+        WeixinJSBridge.invoke('getBrandWCPayRequest',data,function(res){
+                if(res.err_msg == "get_brand_wcpay_request:ok" || res.err_msg == "get_brand_wcpay_request:cancel" ) {  //如果付款成功或者取消付款都去订单详情页面
+                    location.href = $rootScope.prefix + 'order/myOrder/myOrderList.html?status=1';
+                }else{
+                    alert('发生未知错误');
+                }
             }
-            getData.page++;
-        });
-    };
-
-    $scope.load();
-}]);
-
-/**
- * Created by kangdaye on 16/5/20.
- */
-app.service('myMessageService',["$http", function($http) {
-    this.list = function (postData,callback) {
-        $http.post(servicePath + 'message/list',postData).success(callback);
-    };
-}]);
-
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.controller('identityCtr',["$scope","$rootScope","Upload","messageFactory","identityService", function($scope,$rootScope,Upload,messageFactory,identityService) {
-    var watch;
-
-    $scope.isVlidate = !$scope.userInfoData.certifiedInfo || $scope.userInfoData.certifiedInfo.status == 9 || $scope.userInfoData.certifiedInfo.auditlog
-    $scope.getData = {};
-
-    $scope.upload = function (model,file) {
-        if($scope.isVlidate){
-            return;
-        }
-        Upload.upload({
-            url: servicePath + 'member/upload_certificate',
-            data: {file: file, 'username': $scope.username}
-        }).then(function (resp) {
-            if(model === 1){
-                $scope.getData.idCarImage1 = resp.data;
-            }else{
-                $scope.getData.idCarImage0 = resp.data;
-            }
-        });
-    };
-
-    $scope.submit = function(){
-        identityService.certification($scope.getData,function(){
-            messageFactory({text : '正在提交审核'});
-            $rootScope.userInfoData.certifiedInfo.status = 0;
-        });
-    };
-
-    watch = $scope.$watch('userInfoData.certifiedInfo',function(newVal){
-        if(newVal){
-            angular.extend($scope.getData,newVal);
-        }
-    });
-
-    $scope.$on('$destroy', function(){
-        watch();
-    });
-
-}]);
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.controller('setInfoCtr',["$scope","$rootScope","$timeout","Upload","messageFactory","setInfoService", function($scope,$rootScope,$timeout,Upload,messageFactory,setInfoService) {
-    $scope.userInfo = {};
-    var watchUserInfoData = $scope.$watch('userInfoData',function(newVal){
-        if(newVal){
-            angular.extend($scope.userInfo,$rootScope.userInfoData);
-            console.log($scope.userInfo);
-        }
-    });
-
-    $scope.$on('$destroy', function(){
-        watchUserInfoData();
-    });
-
-    $scope.upload = function (file) {
-        Upload.upload({
-            url: servicePath + 'member/update_avatar',
-            data: {file: file, 'username': $scope.username}
-        }).then(function (resp) {
-            $scope.userInfo.avatar = resp.data;
-        });
-    };
-
-    $scope.submit = function(){
-        setInfoService.updateBasisinfo($scope.userInfo,function(){
-            $rootScope.userInfoData = angular.copy($scope.userInfo);
-        })
-    };
-}]);
-
-/**
- * Created by kangdaye on 16/5/20.
- */
-app.service('identityService',["$http", function($http) {
-    this.certification = function (postData,callback) {
-        $http.post(servicePath + 'member/certification',postData).success(callback);
-    };
-}]);
-
-
-/**
- * Created by kangdaye on 16/5/20.
- */
-app.service('setInfoService',["$http", function($http) {
-    this.updateBasisinfo = function (postData,callback) {
-        $http.post(servicePath + 'member/update_basisinfo',postData).success(callback);
-    };
-}]);
-
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.controller('userCollectCtr',["$scope","userCollectService","messageFactory", function($scope,userCollectService,messageFactory) {
-    $scope.listData = [];
-
-    userCollectService.favoriteList(function(data){
-        $scope.listData = data.data;
-    });
-
-    $scope.deleteItem = function(goodsId,index){
-        userCollectService.favoriteDeleteItem({
-            goodsId : goodsId
-        },function(){
-            $scope.listData.splice(index,1);
-            messageFactory({text : '删除成功'});
-        })
-    };
-
-    $scope.deleteAll = function(goodsId,index){
-        userCollectService.favoriteDeleteAll(function(){
-            $scope.listData = [];
-            messageFactory({text : '删除全部成功'});
-        })
+        );
     }
+
+    function bindEvent(data){
+        if (typeof WeixinJSBridge == "undefined"){
+            if( document.addEventListener ){
+                document.addEventListener('WeixinJSBridgeReady', function(){
+                    onBridgeReady(data)
+                }, false);
+            }else if (document.attachEvent){
+                document.attachEvent('WeixinJSBridgeReady', function(){
+                    onBridgeReady(data)
+                });
+                document.attachEvent('onWeixinJSBridgeReady', function(){
+                    onBridgeReady(data)
+                });
+            }
+        }else{
+            onBridgeReady(data);
+        }
+    }
+
+    $scope.submit = function(){
+        alert(1)
+        payService.pay({
+            orderNo : $scope.data.orderNo
+        },function(data){
+            bindEvent(data.data)
+        });
+    };
+
+
 }]);
-
 /**
- * Created by kangdaye on 16/5/15.
+ * Created by kangdaye on 16/5/24.
  */
-app.service('userCollectService',["$http", function($http) {
-    this.favoriteList = function (callback) {
-        $http.get(servicePath + 'favorite/list').success(callback);
+app.service('payService',["$http", function($http) {
+    this.pay = function (postData,callback) {
+        $http.post(servicePath + 'order/pay',postData).success(callback);
     };
-
-    this.favoriteDeleteItem = function (postData,callback) {
-        $http.post(servicePath + 'favorite/delete',postData).success(callback);
-    };
-
-    this.favoriteDeleteAll = function (callback) {
-        $http.post(servicePath + 'favorite/delete_all').success(callback);
-    };
-
 }]);
 
 /**
@@ -1660,49 +1704,5 @@ app.service('siteListService',["$http", function($http) {
 
     this.defaulAddress = function (postData,callback) {
         $http.post(servicePath + 'address/update',postData).success(callback);
-    };
-}]);
-
-app.controller('userInfoCtr',["$scope","userInfoCacheFactory","userInfoService", function($scope,userInfoCacheFactory,userInfoService) {
-    $scope.orderNum = {};
-    $scope.navTab = userInfoCacheFactory.navTab;
-    $scope.orderStateData = userInfoCacheFactory.orderState;
-
-    $scope.navTabClick = function(id){
-        $scope.navTabSelectId = id;
-    };
-
-    userInfoService.orderNum(function(data){
-        $scope.orderNum = data.data;
-    });
-    $scope.navTabClick($scope.navTab[0].id);
-}]);
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.factory('userInfoCacheFactory', function() {
-    return {
-        navTab : [
-            {id:1,name:'普通会员'},
-            {id:2,name:'分销会员'}
-        ],
-        orderState : [
-            {hrefStatus : 0,key : "waitPay",name : '待付款',icon : 'icon-daifukuan'},
-            {hrefStatus : 1,key : "waitDelivery",name : '待发货',icon : 'icon-daifahuo'},
-            {hrefStatus : 2,key : "waitReceive",name : '待收货',icon : 'icon-daishouhuo'},
-            {hrefStatus : 3,key : "complete",name : '已完成',icon : 'icon-yiwanchengdingdan'},
-            {hrefStatus : 4,key : "refund_closed",name : '退款/取消',icon : 'icon-tixian1'}
-        ]
-    }
-});
-
-app.service('userInfoService',["$http", function($http) {
-    this.userInfo = function (callback) {
-        $http.get(servicePath + 'member/userinfo').success(callback);
-    };
-
-    this.orderNum = function (callback) {
-        $http.get(servicePath + 'my_orders/statistics').success(callback);
     };
 }]);
