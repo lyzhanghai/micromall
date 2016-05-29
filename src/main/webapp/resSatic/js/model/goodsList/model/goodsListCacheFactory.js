@@ -1,7 +1,7 @@
 /**
  * Created by kangdaye on 16/5/15.
  */
-app.factory('goodsListCacheFactory', function($http) {
+app.factory('goodsListCacheFactory', function() {
     return {
         navTab : [
             {name:'按销量',up:'volume_desc',dowm:'volume_asc'},

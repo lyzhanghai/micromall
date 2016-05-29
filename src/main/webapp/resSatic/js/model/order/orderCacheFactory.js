@@ -1,7 +1,7 @@
 /**
  * Created by kangdaye on 16/5/15.
  */
-app.factory('orderCacheFactory', function($http) {
+app.factory('orderCacheFactory', function() {
     return {
         myOrderListNavTab : [
             {id:0,name:'待付款'},

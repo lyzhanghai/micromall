@@ -1,7 +1,7 @@
 /**
  * Created by kangdaye on 16/5/15.
  */
-app.factory('userInfoCacheFactory', function($http) {
+app.factory('userInfoCacheFactory', function() {
     return {
         navTab : [
             {id:1,name:'普通会员'},

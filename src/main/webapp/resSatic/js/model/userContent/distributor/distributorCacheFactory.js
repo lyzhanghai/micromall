@@ -1,7 +1,7 @@
 /**
  * Created by kangdaye on 16/5/15.
  */
-app.factory('distributorCacheFactory', function($http) {
+app.factory('distributorCacheFactory', function() {
     return {
         myDistributorNavTab : [
             {name:'全部'},
