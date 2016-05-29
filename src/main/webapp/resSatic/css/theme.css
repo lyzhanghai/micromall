@@ -429,7 +429,7 @@ a.transition:hover {
   border-bottom-color: transparent;
   height: 40px;
   width: 40px;
-  background: url("../img/loading.png");
+  background: url("../images/load.png");
   display: block;
   position: absolute;
   top: 50%;
