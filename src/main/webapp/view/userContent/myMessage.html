@@ -1,0 +1,9 @@
+<div class="my-message">
+    <ul bottom-scroll="load()">
+        <li ng-repeat="item in listData track by $index" bindonce>
+            <h1 class="message-title">{{::item.title}}</h1>
+            <p>{{::item.content}}</p>
+            <p class="create-time">{{::item.createTime}}</p>
+        </li>
+    </ul>
+</div>

@@ -33,4 +33,5 @@ app.controller('htlistCrt',["$scope","$rootScope","$stateParams","htlistService"
       $scope.load();
    };
 
+   $scope.load();
 }]);
