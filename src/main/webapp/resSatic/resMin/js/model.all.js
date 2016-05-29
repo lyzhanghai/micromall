@@ -280,7 +280,7 @@ if (browser.v.ios9) {
 
     var route = [
         {name : 'index', url: '/indexMain.html',templateUrl:'view/indexMain.html', controller: "indexCtr",tabSelectIndex : 1},
-        {name : 'goodsList', url: '/goodsList.html?:{searchText || categoryId}',templateUrl:'view/goodsList.html', controller: "goodsListCtr",tabSelectIndex : 2},
+        {name : 'goodsList', url: '/goodsList.html?:{searchText || categoryId}',templateUrl:'/view/goodsList.html', controller: "goodsListCtr",tabSelectIndex : 2},
         {name : 'detail', url: '/detail.html?:goodsId',templateUrl:'view/detail.html', controller: "detailCtr",tabSelectIndex : 2},
         {name : 'shopCart', url: '/shopCart.html',templateUrl:'view/shopCart.html', controller: "shopCartCtr",tabSelectIndex : 4},
         {name : 'userInfo/info', url: '/userContent/info.html',templateUrl:'view/userContent/info.html', controller: "userInfoCtr",tabSelectIndex : 3},
@@ -386,6 +386,15 @@ app.factory('orderCacheFactory', function($http) {
 /**
  * Created by kangdaye on 16/5/15.
  */
+app.service('htlistService',["$http", function($http) {
+    this.list = function (getData,callback) {
+        $http.get(servicePath + 'goods/search',{params : getData}).success(callback);
+    };
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
 app.controller('htlistCrt',["$scope","$rootScope","$stateParams","htlistService", function($scope,$rootScope,$stateParams,htlistService) {
    $scope.$parent.empty = false;
    $scope.$parent.async = false;
@@ -419,120 +428,6 @@ app.controller('htlistCrt',["$scope","$rootScope","$stateParams","htlistService"
    };
 
    $scope.load();
-}]);
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.service('htlistService',["$http", function($http) {
-    this.list = function (getData,callback) {
-        $http.get(servicePath + 'goods/search',{params : getData}).success(callback);
-    };
-}]);
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.controller('detailCtr',["$scope","$rootScope","$stateParams","detailService","messageFactory", function($scope,$rootScope,$stateParams,detailService,messageFactory) {
-   var defaultData = {
-      goodsId : $stateParams.goodsId
-   };
-   var async = false;
-
-   $scope.buyDialog = false;
-   $scope.detailData = {};
-   $scope.getData = angular.extend({buyNumber : 1,cart : false},defaultData);
-
-   detailService.detailData(defaultData,function (data) {
-      $scope.detailData = data.data;
-   });
-
-   $scope.addFavorite  = function(){
-      if(!async){
-         async = true;
-         detailService.addFavorite(defaultData,function (data) {
-            $scope.detailData.favorite = !$scope.detailData.favorite;
-            if($scope.detailData.favorite){
-               messageFactory({text : '收藏成功'});
-            }else {
-               messageFactory({text : '取消收藏'});
-            }
-            async = false;
-         });
-      }
-   };
-
-   $scope.numOption = function(model){      //＋＋＋＋  －－－－－
-      if(model == 'redu'){
-         if($scope.getData.buyNumber <= 0){
-            return;
-         }
-         $scope.getData.buyNumber--;
-      }else{
-         $scope.getData.buyNumber++;
-      }
-   };
-
-   $scope.shopChangeNum = function(){
-      var res = new RegExp(/^(\d)*$/);
-      if($scope.getData.buyNumber > $scope.detailData.inventory){    //是否比存量大
-         $scope.getData.buyNumber = $scope.detailData.inventory;
-      }
-
-      if(!res.test($scope.getData.buyNumber)){  //是否是数字
-         $scope.getData.buyNumber = 1;
-      }
-   };
-
-   $scope.shopBlurNum = function(){
-      $scope.getData.buyNumber = parseInt($scope.getData.buyNumber);
-      if($scope.getData.buyNumber <= 0 || !$scope.getData.buyNumber){
-         $scope.getData.buyNumber = 1;
-      }
-   };
-
-   $scope.buyDialogToggle = function(){
-      $scope.buyDialog = !$scope.buyDialog;
-   };
-
-   $scope.go = function(isAddCart){
-      $scope.getData.cart = isAddCart;
-      $scope.buyDialogToggle();
-   };
-
-   $scope.placeOrder = function(){
-      var getData = {
-         goodsIds : defaultData.goodsId,
-         buyNumber : $scope.getData.buyNumber,
-         cart : $scope.getData.cart
-      };
-
-      if(!$scope.getData.cart){
-         location.href = $rootScope.prefix + 'order/createOrder.html?' + angular.param(getData);
-      }else{
-         detailService.addCart($scope.getData,function (data) {
-            $scope.buyDialogToggle();
-            messageFactory({text : '加入购物车成功'});
-         });
-      }
-   };
-}]);
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.service('detailService',["$http", function($http) {
-    this.detailData = function (getData,callback) {
-        $http.get(servicePath + 'goods/details',{params:getData}).success(callback);
-    };
-
-    this.addFavorite = function (postData,callback) {
-        $http.post(servicePath + 'favorite/join',postData).success(callback);
-    };
-
-    this.addCart = function (postData,callback) {
-        $http.post(servicePath + 'cart/join',postData).success(callback);
-    };
 }]);
 
 /**
@@ -894,6 +789,111 @@ app.service('shopCartService',["$http", function($http) {
 /**
  * Created by kangdaye on 16/5/15.
  */
+app.controller('detailCtr',["$scope","$rootScope","$stateParams","detailService","messageFactory", function($scope,$rootScope,$stateParams,detailService,messageFactory) {
+   var defaultData = {
+      goodsId : $stateParams.goodsId
+   };
+   var async = false;
+
+   $scope.buyDialog = false;
+   $scope.detailData = {};
+   $scope.getData = angular.extend({buyNumber : 1,cart : false},defaultData);
+
+   detailService.detailData(defaultData,function (data) {
+      $scope.detailData = data.data;
+   });
+
+   $scope.addFavorite  = function(){
+      if(!async){
+         async = true;
+         detailService.addFavorite(defaultData,function (data) {
+            $scope.detailData.favorite = !$scope.detailData.favorite;
+            if($scope.detailData.favorite){
+               messageFactory({text : '收藏成功'});
+            }else {
+               messageFactory({text : '取消收藏'});
+            }
+            async = false;
+         });
+      }
+   };
+
+   $scope.numOption = function(model){      //＋＋＋＋  －－－－－
+      if(model == 'redu'){
+         if($scope.getData.buyNumber <= 0){
+            return;
+         }
+         $scope.getData.buyNumber--;
+      }else{
+         $scope.getData.buyNumber++;
+      }
+   };
+
+   $scope.shopChangeNum = function(){
+      var res = new RegExp(/^(\d)*$/);
+      if($scope.getData.buyNumber > $scope.detailData.inventory){    //是否比存量大
+         $scope.getData.buyNumber = $scope.detailData.inventory;
+      }
+
+      if(!res.test($scope.getData.buyNumber)){  //是否是数字
+         $scope.getData.buyNumber = 1;
+      }
+   };
+
+   $scope.shopBlurNum = function(){
+      $scope.getData.buyNumber = parseInt($scope.getData.buyNumber);
+      if($scope.getData.buyNumber <= 0 || !$scope.getData.buyNumber){
+         $scope.getData.buyNumber = 1;
+      }
+   };
+
+   $scope.buyDialogToggle = function(){
+      $scope.buyDialog = !$scope.buyDialog;
+   };
+
+   $scope.go = function(isAddCart){
+      $scope.getData.cart = isAddCart;
+      $scope.buyDialogToggle();
+   };
+
+   $scope.placeOrder = function(){
+      var getData = {
+         goodsIds : defaultData.goodsId,
+         buyNumber : $scope.getData.buyNumber,
+         cart : $scope.getData.cart
+      };
+
+      if(!$scope.getData.cart){
+         location.href = $rootScope.prefix + 'order/createOrder.html?' + angular.param(getData);
+      }else{
+         detailService.addCart($scope.getData,function (data) {
+            $scope.buyDialogToggle();
+            messageFactory({text : '加入购物车成功'});
+         });
+      }
+   };
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.service('detailService',["$http", function($http) {
+    this.detailData = function (getData,callback) {
+        $http.get(servicePath + 'goods/details',{params:getData}).success(callback);
+    };
+
+    this.addFavorite = function (postData,callback) {
+        $http.post(servicePath + 'favorite/join',postData).success(callback);
+    };
+
+    this.addCart = function (postData,callback) {
+        $http.post(servicePath + 'cart/join',postData).success(callback);
+    };
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
 app.factory('distributorCacheFactory', function($http) {
     return {
         myDistributorNavTab : [
@@ -977,21 +977,21 @@ app.service('createOrderService',["$http", function($http) {
 /**
  * Created by kangdaye on 16/5/24.
  */
-app.service('logisticsService',["$http", function($http) {
-    this.logistics = function (postData,callback) {
-        $http.post(servicePath + 'my_orders/logistics',postData).success(callback);
-    };
-}]);
-
-/**
- * Created by kangdaye on 16/5/24.
- */
 app.controller('logisticCtr',["$scope","$stateParams","logisticsService",function($scope,$stateParams,logisticsService) {
     logisticsService.logistics({
         orderNo : $stateParams.orderNo
     },function(data){
         console.log(data);
     });
+}]);
+
+/**
+ * Created by kangdaye on 16/5/24.
+ */
+app.service('logisticsService',["$http", function($http) {
+    this.logistics = function (postData,callback) {
+        $http.post(servicePath + 'my_orders/logistics',postData).success(callback);
+    };
 }]);
 
 /**
@@ -1368,6 +1368,16 @@ app.service('myDistributorService',["$http", function($http) {
     };
 }]);
 /**
+ * Created by kangdaye on 16/5/20.
+ */
+app.service('myMessageService',["$http", function($http) {
+    this.list = function (postData,callback) {
+        $http.post(servicePath + 'message/list',postData).success(callback);
+    };
+}]);
+
+
+/**
  * Created by kangdaye on 16/5/15.
  */
 app.controller('myMessageCtr',["$scope","$rootScope","myMessageService", function($scope,$rootScope,myMessageService) {
@@ -1397,16 +1407,6 @@ app.controller('myMessageCtr',["$scope","$rootScope","myMessageService", functio
 
     $scope.load();
 }]);
-
-/**
- * Created by kangdaye on 16/5/20.
- */
-app.service('myMessageService',["$http", function($http) {
-    this.list = function (postData,callback) {
-        $http.post(servicePath + 'message/list',postData).success(callback);
-    };
-}]);
-
 
 /**
  * Created by kangdaye on 16/5/15.
@@ -1621,6 +1621,24 @@ app.service('siteListService',["$http", function($http) {
 /**
  * Created by kangdaye on 16/5/15.
  */
+app.service('userCollectService',["$http", function($http) {
+    this.favoriteList = function (callback) {
+        $http.get(servicePath + 'favorite/list').success(callback);
+    };
+
+    this.favoriteDeleteItem = function (postData,callback) {
+        $http.post(servicePath + 'favorite/delete',postData).success(callback);
+    };
+
+    this.favoriteDeleteAll = function (callback) {
+        $http.post(servicePath + 'favorite/delete_all').success(callback);
+    };
+
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
 app.controller('userCollectCtr',["$scope","userCollectService","messageFactory", function($scope,userCollectService,messageFactory) {
     $scope.listData = [];
 
@@ -1643,39 +1661,6 @@ app.controller('userCollectCtr',["$scope","userCollectService","messageFactory",
             messageFactory({text : '删除全部成功'});
         })
     }
-}]);
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.service('userCollectService',["$http", function($http) {
-    this.favoriteList = function (callback) {
-        $http.get(servicePath + 'favorite/list').success(callback);
-    };
-
-    this.favoriteDeleteItem = function (postData,callback) {
-        $http.post(servicePath + 'favorite/delete',postData).success(callback);
-    };
-
-    this.favoriteDeleteAll = function (callback) {
-        $http.post(servicePath + 'favorite/delete_all').success(callback);
-    };
-
-}]);
-
-app.controller('userInfoCtr',["$scope","userInfoCacheFactory","userInfoService", function($scope,userInfoCacheFactory,userInfoService) {
-    $scope.orderNum = {};
-    $scope.navTab = userInfoCacheFactory.navTab;
-    $scope.orderStateData = userInfoCacheFactory.orderState;
-
-    $scope.navTabClick = function(id){
-        $scope.navTabSelectId = id;
-    };
-
-    userInfoService.orderNum(function(data){
-        $scope.orderNum = data.data;
-    });
-    $scope.navTabClick($scope.navTab[0].id);
 }]);
 
 /**
@@ -1705,4 +1690,19 @@ app.service('userInfoService',["$http", function($http) {
     this.orderNum = function (callback) {
         $http.get(servicePath + 'my_orders/statistics').success(callback);
     };
+}]);
+
+app.controller('userInfoCtr',["$scope","userInfoCacheFactory","userInfoService", function($scope,userInfoCacheFactory,userInfoService) {
+    $scope.orderNum = {};
+    $scope.navTab = userInfoCacheFactory.navTab;
+    $scope.orderStateData = userInfoCacheFactory.orderState;
+
+    $scope.navTabClick = function(id){
+        $scope.navTabSelectId = id;
+    };
+
+    userInfoService.orderNum(function(data){
+        $scope.orderNum = data.data;
+    });
+    $scope.navTabClick($scope.navTab[0].id);
 }]);
