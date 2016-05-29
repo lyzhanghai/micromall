@@ -668,6 +668,50 @@ app.service('indexService',["$http", function($http) {
 }]);
 
 /**
+ * Created by kangdaye on 16/5/20.
+ */
+app.service('shopCartService',["$http", function($http) {
+    this.cartList = function (callback) {
+        $http.post(servicePath + 'cart/list').success(callback);
+    };
+
+    this.cartAdd = function (postData,callback) {
+        $http.post(servicePath + 'cart/join',postData).success(callback);
+    };
+
+    this.cartUpNum= function (postData,callback) {
+        $http.post(servicePath + 'cart/update_buyNumber',postData).success(callback);
+    };
+
+    this.cartDelete= function (postData,callback) {
+        $http.post(servicePath + 'cart/delete',postData).success(callback);
+    };
+
+    this.cartDeleteAll= function (callback) {
+        $http.post(servicePath + 'cart/delete_all').success(callback);
+    };
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.factory('distributorCacheFactory', function() {
+    return {
+        myDistributorNavTab : [
+            {name:'全部'},
+            {level:'lv1',name:'一级'},
+            {level:'lv2',name:'二级'}
+        ],
+       recordTab : [
+           {name : '全部'},
+           {status : 'through',name : '已通过'},
+           {status : 'not_through',name : '未通过'},
+           {status : 'audit',name : '审核中'}
+       ]
+    }
+});
+
+/**
  * Created by chenmingkang on 15/7/14.
  */
 app.controller('shopCartCtr',["$scope","$rootScope","shopCartService","confirmFactory","messageFactory",function($scope,$rootScope,shopCartService,confirmFactory,messageFactory) {
@@ -865,50 +909,6 @@ app.controller('shopCartCtr',["$scope","$rootScope","shopCartService","confirmFa
     });
 
 }]);
-
-/**
- * Created by kangdaye on 16/5/20.
- */
-app.service('shopCartService',["$http", function($http) {
-    this.cartList = function (callback) {
-        $http.post(servicePath + 'cart/list').success(callback);
-    };
-
-    this.cartAdd = function (postData,callback) {
-        $http.post(servicePath + 'cart/join',postData).success(callback);
-    };
-
-    this.cartUpNum= function (postData,callback) {
-        $http.post(servicePath + 'cart/update_buyNumber',postData).success(callback);
-    };
-
-    this.cartDelete= function (postData,callback) {
-        $http.post(servicePath + 'cart/delete',postData).success(callback);
-    };
-
-    this.cartDeleteAll= function (callback) {
-        $http.post(servicePath + 'cart/delete_all').success(callback);
-    };
-}]);
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.factory('distributorCacheFactory', function() {
-    return {
-        myDistributorNavTab : [
-            {name:'全部'},
-            {level:'lv1',name:'一级'},
-            {level:'lv2',name:'二级'}
-        ],
-       recordTab : [
-           {name : '全部'},
-           {status : 'through',name : '已通过'},
-           {status : 'not_through',name : '未通过'},
-           {status : 'audit',name : '审核中'}
-       ]
-    }
-});
 
 /**
  * Created by kangdaye on 16/5/24.
@@ -1505,6 +1505,51 @@ app.service('setInfoService',["$http", function($http) {
 
 
 /**
+ * Created by kangdaye on 16/5/15.
+ */
+app.controller('userCollectCtr',["$scope","userCollectService","messageFactory", function($scope,userCollectService,messageFactory) {
+    $scope.listData = [];
+
+    userCollectService.favoriteList(function(data){
+        $scope.listData = data.data;
+    });
+
+    $scope.deleteItem = function(goodsId,index){
+        userCollectService.favoriteDeleteItem({
+            goodsId : goodsId
+        },function(){
+            $scope.listData.splice(index,1);
+            messageFactory({text : '删除成功'});
+        })
+    };
+
+    $scope.deleteAll = function(goodsId,index){
+        userCollectService.favoriteDeleteAll(function(){
+            $scope.listData = [];
+            messageFactory({text : '删除全部成功'});
+        })
+    }
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.service('userCollectService',["$http", function($http) {
+    this.favoriteList = function (callback) {
+        $http.get(servicePath + 'favorite/list').success(callback);
+    };
+
+    this.favoriteDeleteItem = function (postData,callback) {
+        $http.post(servicePath + 'favorite/delete',postData).success(callback);
+    };
+
+    this.favoriteDeleteAll = function (callback) {
+        $http.post(servicePath + 'favorite/delete_all').success(callback);
+    };
+
+}]);
+
+/**
  * Created by kangdaye on 16/5/20.
  */
 app.controller('siteAddEditCtr',["$scope","$stateParams","siteAddEditService","messageFactory", function($scope,$stateParams,siteAddEditService,messageFactory) {
@@ -1616,51 +1661,6 @@ app.service('siteListService',["$http", function($http) {
     this.defaulAddress = function (postData,callback) {
         $http.post(servicePath + 'address/update',postData).success(callback);
     };
-}]);
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.controller('userCollectCtr',["$scope","userCollectService","messageFactory", function($scope,userCollectService,messageFactory) {
-    $scope.listData = [];
-
-    userCollectService.favoriteList(function(data){
-        $scope.listData = data.data;
-    });
-
-    $scope.deleteItem = function(goodsId,index){
-        userCollectService.favoriteDeleteItem({
-            goodsId : goodsId
-        },function(){
-            $scope.listData.splice(index,1);
-            messageFactory({text : '删除成功'});
-        })
-    };
-
-    $scope.deleteAll = function(goodsId,index){
-        userCollectService.favoriteDeleteAll(function(){
-            $scope.listData = [];
-            messageFactory({text : '删除全部成功'});
-        })
-    }
-}]);
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.service('userCollectService',["$http", function($http) {
-    this.favoriteList = function (callback) {
-        $http.get(servicePath + 'favorite/list').success(callback);
-    };
-
-    this.favoriteDeleteItem = function (postData,callback) {
-        $http.post(servicePath + 'favorite/delete',postData).success(callback);
-    };
-
-    this.favoriteDeleteAll = function (callback) {
-        $http.post(servicePath + 'favorite/delete_all').success(callback);
-    };
-
 }]);
 
 app.controller('userInfoCtr',["$scope","userInfoCacheFactory","userInfoService", function($scope,userInfoCacheFactory,userInfoService) {
