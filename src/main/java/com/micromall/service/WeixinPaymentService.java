@@ -48,7 +48,7 @@ public class WeixinPaymentService {
 		}
 		reader.close();
 		ResponseEntity<String> responseEntity = HttpUtils
-				.executeRequest("https://api.mch.weixin.qq.com/pay/unifiedorder", builder.toString(), String.class);
+				.executePost("https://api.mch.weixin.qq.com/pay/unifiedorder", builder.toString(), String.class);
 		System.out.println(responseEntity.getBody());
 	}
 
@@ -156,7 +156,7 @@ public class WeixinPaymentService {
 		params.put("sign", _get_signature(params));
 
 		String request_content = XmlUtils.convertToXml(params, true);
-		ResponseEntity<String> responseEntity = HttpUtils.executeRequest(CommonEnvConstants.WEIXIN_UNIFIEDORDER_URL, request_content, String.class);
+		ResponseEntity<String> responseEntity = HttpUtils.executePost(CommonEnvConstants.WEIXIN_UNIFIEDORDER_URL, request_content, String.class);
 		if (responseEntity == null || responseEntity.getStatusCode() != HttpStatus.OK || StringUtils.isEmpty(responseEntity.getBody())) {
 			logger.error("[微信支付失败]:调用统一下单接口出错 | [订单号:{}, openid:{}, ip:{}] | [微信调用参数:{}] | [微信返回结果:{}]", order.getOrderNo(), openid, ip,
 					JSON.toJSONString(request_content), responseEntity != null ? responseEntity.getBody() : "没有返回结果");

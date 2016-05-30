@@ -119,7 +119,7 @@ public class MemberAuthenticationController {
 			String openid = null;
 			try {
 				org.springframework.http.ResponseEntity<String> responseEntity = HttpUtils
-						.executeRequest(CommonEnvConstants.WEIXIN_ACCESS_TOKEN_URL, _params, String.class);
+						.executePost(CommonEnvConstants.WEIXIN_ACCESS_TOKEN_URL, _params, String.class);
 				if (responseEntity.getStatusCode() == HttpStatus.OK && StringUtils.isNotEmpty(responseEntity.getBody())) {
 					JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
 					openid = jsonObject.getString("openid");
@@ -156,7 +156,7 @@ public class MemberAuthenticationController {
 					_params.put("lang", "zh_CN");
 					logger.info("微信请求参数：" + JSON.toJSONString(_params) + "  地址：" + CommonEnvConstants.WEIXIN_USERINFO_URL);
 					org.springframework.http.ResponseEntity<String> responseEntity = HttpUtils
-							.executeRequest(CommonEnvConstants.WEIXIN_USERINFO_URL, _params, String.class);
+							.executePost(CommonEnvConstants.WEIXIN_USERINFO_URL, _params, String.class);
 					if (responseEntity.getStatusCode() == HttpStatus.OK && StringUtils.isNotEmpty(responseEntity.getBody())) {
 						JSONObject jsonObject = JSON.parseObject(new String(responseEntity.getBody().getBytes(Charset.forName("utf-8"))));
 						member.setNickname(jsonObject.getString("nickname"));
