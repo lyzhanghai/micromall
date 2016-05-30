@@ -120,10 +120,10 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 
 	private LoginUser _getLoginUser(HttpServletRequest request) {
 		LoginUser loginUser = (LoginUser)request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY);
-//		boolean debugAuth = true;//loginUser == null && CommonEnvConstants.ENV.isDevEnv() && request.getParameterMap().containsKey("debugAuth");
-//		if (debugAuth) {
-//			loginUser = _MockLogin(request);
-//		}
+		boolean debugAuth = true;//loginUser == null && CommonEnvConstants.ENV.isDevEnv() && request.getParameterMap().containsKey("debugAuth");
+		if (debugAuth) {
+			loginUser = _MockLogin(request);
+		}
 		return loginUser;
 	}
 
