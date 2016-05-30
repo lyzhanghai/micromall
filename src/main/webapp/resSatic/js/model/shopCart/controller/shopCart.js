@@ -35,9 +35,9 @@ app.controller('shopCartCtr',["$scope","$rootScope","shopCartService","confirmFa
 
     var totalCount = function(model,num){    //算出总价格
         if (model == 'add') {
-            $scope.shopInfo.total = $scope.shopInfo.total + parseInt(num);
+            $scope.shopInfo.total = $scope.shopInfo.total + num;
         } else {
-            $scope.shopInfo.total = $scope.shopInfo.total - parseInt(num);
+            $scope.shopInfo.total = $scope.shopInfo.total - num;
         }
     };
 
@@ -129,7 +129,7 @@ app.controller('shopCartCtr',["$scope","$rootScope","shopCartService","confirmFa
         $scope.shopInfo.selectArray = [];
         $scope.shopInfo.total = 0;
         angular.forEach($scope.shopData,function(item,i){   //如果他长度等于一 那就把它父节点给清除了
-            if($scope.allCheckSelect){   //判断还没实效，全部选中
+            if($scope.allCheckSelect){   //全部选中
                 item.checkSelect = true;
                 $scope.shopInfo.selectLength++;
                 totalCount('add',item.price);
