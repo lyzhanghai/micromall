@@ -13,6 +13,7 @@ import com.micromall.web.resp.ResponseEntity;
 import com.micromall.web.security.annotation.Authentication;
 import com.micromall.web.security.entity.LoginUser;
 import com.micromall.web.security.entity.LoginUser.LoginType;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,10 +147,6 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 	}
 
 	private String _buildWeixinAuthorizeUrl(HttpServletRequest request) {
-		URLBuilder urlBuilder = URLBuilder.createBuilder(CommonEnvConstants.WEIXIN_AUTHORIZE_URL);
-		urlBuilder.param("appid", CommonEnvConstants.WEIXIN_APPID);
-		urlBuilder.param("response_type", "code");
-		urlBuilder.param("scope", CommonEnvConstants.WEIXIN_AUTH_SCOPE);
 		// 用户授权登陆成功后返回的原页面地址
 		String return_url = "";
 		if (request.getMethod().equals("GET")) {
@@ -158,8 +155,14 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 				return_url += "?" + request.getQueryString();
 			}
 		}
+		URLBuilder urlBuilder = URLBuilder.createBuilder(CommonEnvConstants.WEIXIN_AUTHORIZE_URL);
+		urlBuilder.param("appid", CommonEnvConstants.WEIXIN_APPID);
 		urlBuilder.param("redirect_uri",
 				URLBuilder.createBuilder(CommonEnvConstants.WEIXIN_AUTH_CALLBACK_URL, false).param("return_url", return_url).build());
+		urlBuilder.param("response_type", "code");
+		urlBuilder.param("scope", CommonEnvConstants.WEIXIN_AUTH_SCOPE);
+		urlBuilder.param("state", RandomStringUtils.randomAlphabetic(32));
+
 		return urlBuilder.build();
 	}
 
