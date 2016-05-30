@@ -1,6 +1,7 @@
 CREATE TABLE `properties` (
   `name` varchar(90) NOT NULL COMMENT '配置Key',
   `content` text NOT NULL COMMENT '配置Value',
+  `descr` varchar(255) NULL COMMENT '备注',
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='配置信息';
 

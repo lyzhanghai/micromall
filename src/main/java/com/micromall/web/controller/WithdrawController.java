@@ -38,11 +38,11 @@ public class WithdrawController extends BasisController {
 	 */
 	@RequestMapping(value = "/withdraw/apply")
 	public ResponseEntity<?> apply(int amount) {
-		if (amount < CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MIN_AMOUNT) {
-			return ResponseEntity.Failure("提现金额不得低于" + CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MIN_AMOUNT + "元");
+		if (amount < CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MIN_AMOUNT()) {
+			return ResponseEntity.Failure("提现金额不得低于" + CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MIN_AMOUNT() + "元");
 		}
-		if (amount > CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MAX_AMOUNT) {
-			return ResponseEntity.Failure("提现金额不得大于" + CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MAX_AMOUNT + "元");
+		if (amount > CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MAX_AMOUNT()) {
+			return ResponseEntity.Failure("提现金额不得大于" + CommonEnvConstants.WITHDRAW_APPLY_SINGLE_MAX_AMOUNT() + "元");
 		}
 		String channel = "WECHAT";
 		if (StringUtils.isEmpty(channel)) {
@@ -51,8 +51,8 @@ public class WithdrawController extends BasisController {
 		if (!WithdrawChannels.support(channel)) {
 			return ResponseEntity.Failure("提现渠道不支持或不存在");
 		}
-		if (StringUtils.isNotEmpty(CommonEnvConstants.WITHDRAW_APPLY_ALLOW_TIME_INTERVAL)) {
-			JSONObject jsonObject = JSON.parseObject(CommonEnvConstants.WITHDRAW_APPLY_ALLOW_TIME_INTERVAL);
+		if (StringUtils.isNotEmpty(CommonEnvConstants.WITHDRAW_APPLY_ALLOW_TIME_INTERVAL())) {
+			JSONObject jsonObject = JSON.parseObject(CommonEnvConstants.WITHDRAW_APPLY_ALLOW_TIME_INTERVAL());
 			Calendar calendar = Calendar.getInstance();
 			int _now_day = calendar.get(Calendar.DAY_OF_MONTH);
 			int _now_week = calendar.get(Calendar.DAY_OF_WEEK);

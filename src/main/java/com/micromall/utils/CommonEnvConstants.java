@@ -1,5 +1,7 @@
 package com.micromall.utils;
 
+import com.micromall.service.PropertiesService;
+
 import java.math.BigDecimal;
 
 /**
@@ -11,9 +13,7 @@ import java.math.BigDecimal;
 public final class CommonEnvConstants {
 
 	/* 运行环境 */
-	public static final Environment ENV               = new Environment(PropertyConfigurerUtils.getString("app.environment"));
-	/* 开发模式下模拟登录用户id */
-	public static final int         DEBUG_AUTH_USERID = Integer.valueOf(PropertyConfigurerUtils.getString("debug.auth.userid"));
+	public static final Environment ENV = new Environment(PropertyConfigurerUtils.getString("app.environment"));
 
 	/**
 	 * =============== 微信授权/登录配置 ===============
@@ -106,29 +106,49 @@ public final class CommonEnvConstants {
 	/*全局分页查询每页最大记录数*/
 	public static final int GLOBAL_PERPAGE_MAX_LIMIT_SIZE = Integer.valueOf(PropertyConfigurerUtils.getString("global.perpage.max_limit_size"));
 
+	// --------------------------------------------------------动态配置
+
 	/*可申请提现时间区间*/
-	public static final String     WITHDRAW_APPLY_ALLOW_TIME_INTERVAL  = PropertyConfigurerUtils.getString("withdraw.apply.allow.time_interval");
+	public static String WITHDRAW_APPLY_ALLOW_TIME_INTERVAL() {
+		return PropertiesService.getInstance().getString("withdraw.apply.allow.time_interval");
+	}
+
 	/*单次提现最小金额限制*/
-	public static final int        WITHDRAW_APPLY_SINGLE_MIN_AMOUNT    = Integer
-			.valueOf(PropertyConfigurerUtils.getString("withdraw.apply.single.min_amount"));
+	public static int WITHDRAW_APPLY_SINGLE_MIN_AMOUNT() {return PropertiesService.getInstance().getInteger("withdraw.apply.single.min_amount");}
+
 	/*单次提现最大金额限制*/
-	public static final int        WITHDRAW_APPLY_SINGLE_MAX_AMOUNT    = Integer
-			.valueOf(PropertyConfigurerUtils.getString("withdraw.apply.single.max_amount"));
+	public static int WITHDRAW_APPLY_SINGLE_MAX_AMOUNT() {return PropertiesService.getInstance().getInteger("withdraw.apply.single.max_amount");}
+
 	/*订单未支付超时自动关闭时间, 单位：分钟*/
-	public static final int        ORDER_NOTPAY_TIMEOUT_CLOSE_TIME     = Integer
-			.valueOf(PropertyConfigurerUtils.getString("order.notpay.timeout.close_time"));
+	public static int ORDER_NOTPAY_TIMEOUT_CLOSE_TIME() {return PropertiesService.getInstance().getInteger("order.notpay.timeout.close_time");}
+
 	/*订单物流已收货超时自动确认收货时间, 单位：天*/
-	public static final int        ORDER_TIMEOUT_CONFIRM_DELIVERY_TIME = Integer
-			.valueOf(PropertyConfigurerUtils.getString("order.timeout.confirm_delivery_time"));
+	public static int ORDER_TIMEOUT_CONFIRM_DELIVERY_TIME() {
+		return PropertiesService.getInstance().getInteger("order.timeout.confirm_delivery_time");
+	}
+
 	/*订单退货申请有效时间, 单位：天*/
-	public static final int        ORDER_REFUND_APPLY_VALID_TIME       = Integer
-			.valueOf(PropertyConfigurerUtils.getString("order.refund_apply.valid_time"));
+	public static int ORDER_REFUND_APPLY_VALID_TIME() {
+		return PropertiesService.getInstance().getInteger("order.refund_apply.valid_time");
+	}
+
 	/*一级分销商佣金分成比例*/
-	public static final BigDecimal COMMISSION_DIVIDED_PROPORTION_LV1   = new BigDecimal(
-			PropertyConfigurerUtils.getString("commission.divided.proportion.lv1"));
+	public static BigDecimal COMMISSION_DIVIDED_PROPORTION_LV1() {
+		return new BigDecimal(PropertiesService.getInstance().getString("commission.divided.proportion.lv1"));
+	}
+
 	/*二级分销商佣金分成比例*/
-	public static final BigDecimal COMMISSION_DIVIDED_PROPORTION_LV2   = new BigDecimal(
-			PropertyConfigurerUtils.getString("commission.divided.proportion.lv2"));
+	public static BigDecimal COMMISSION_DIVIDED_PROPORTION_LV2() {
+		return new BigDecimal(PropertiesService.getInstance().getString("commission.divided.proportion.lv2"));
+	}
+
+	/* 是否开启调试模式 */
+	public static boolean DEBUG_AUTH() {
+		return PropertiesService.getInstance().getBoolean("debug.auth");
+	}
+
+	/* 开发模式下模拟登录用户id */
+	public static int DEBUG_AUTH_USERID() {return PropertiesService.getInstance().getInteger("debug.auth.userid");}
 
 	public static class Environment {
 
