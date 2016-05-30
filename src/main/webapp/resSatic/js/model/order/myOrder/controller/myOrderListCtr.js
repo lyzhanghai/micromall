@@ -1,7 +1,7 @@
 /**
  * Created by kangdaye on 16/5/24.
  */
-app.controller('myOrderListCtr',["$scope","$rootScope","$stateParams","myOrderListService","orderCacheFactory","confirmFactory","messageFactory",function($scope,$rootScope,$stateParams,myOrderListService,orderCacheFactory,confirmFactory,messageFactory) {
+app.controller('myOrderListCtr',["$scope","$rootScope","$stateParams","myOrderListService","orderCacheFactory","confirmFactory","authorFactory","messageFactory",function($scope,$rootScope,$stateParams,myOrderListService,orderCacheFactory,confirmFactory,authorFactory,messageFactory) {
     var empty = false;
      $scope.applyEfundMoadl = false;
     $scope.getData = {
@@ -65,6 +65,16 @@ app.controller('myOrderListCtr',["$scope","$rootScope","$stateParams","myOrderLi
                         $scope.listData.splice(index,1);
                     });
                 }
+            }
+        });
+    };
+
+    $scope.goPay = function(item){
+        authorFactory({
+            href : 'order/pay.html',
+            data : {
+                orderNo : item.orderNo,
+                price : item.totalAmount
             }
         });
     };
