@@ -4,13 +4,13 @@
             可提现日期：每周周一的08：00-20:00
         </div>
 
-        <form class="draw-form">
+        <form class="draw-form" name="drawForm" form-validate>
             <div class="sum">
                 <label>
                     <span>
                         提现金额：
                     </span>
-                    <input name="cash" ng-model="getData.amount" placeholder="请输入提现金额">
+                    <input name="cash" ng-model="getData.amount" validate-type="number" validate='{"required":"请输入金额","number":"输入金额不对"}' required placeholder="您最大可提现金额为{{userInfoData.commission}}" ng-disabled="!userInfoData.commission">
                 </label>
             </div>
             <div class="pay-lay">
@@ -30,7 +30,7 @@
             </div>
 
             <div class="base-input-lay submit2">
-                <button class="submit submit-margin" ng-click="submit()">
+                <button class="submit submit-margin" form-submit="submit()" ng-disabled="!userInfoData.commission">
                     提现
                 </button>
             </div>

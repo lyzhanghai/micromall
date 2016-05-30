@@ -175,6 +175,7 @@ app.controller('shopCartCtr',["$scope","$rootScope","shopCartService","confirmFa
                         $scope.allCheckSelect = false;
                         $scope.shopInfo.total = 0;
                         $scope.shopInfo.selectArray = [];
+                        $scope.shopData = [];
                     });
                 }
             }
