@@ -7,23 +7,28 @@
         <form class="draw-form">
             <div class="sum">
                 <label>
-                <span>
-                    提现金额：
-                </span>
+                    <span>
+                        提现金额：
+                    </span>
                     <input name="cash" ng-model="getData.amount" placeholder="最多可提现5862.60元">
                 </label>
             </div>
-            <!--<div class="tit2">-->
-                <!--物流详情-->
-            <!--</div>-->
-            <!--<div class="">-->
-                <!--<label>-->
-                    <!--<i></i>-->
-                    <!--<div>-->
-                        <!--<p>选择微信账户进行收款</p>-->
-                    <!--</div>-->
-                <!--</label>-->
-            <!--</div>-->
+            <div class="pay-lay">
+                <div class="tit2">提现至</div>
+                <ul>
+                    <li>
+                        <label class="checkbox-four">
+                            <i class="iconfont icon-weixin"></i>
+                            <div class="item">
+                                <div class="item-title">微信</div>
+                                <p>选择微信账户进行收款</p>
+                            </div>
+                            <input class="iconfont icon-gouxuanjian" type="radio" name="pay" value="wx" checked>
+                        </label>
+                    </li>
+                </ul>
+            </div>
+
             <div class="base-input-lay submit2">
                 <button class="submit submit-margin" ng-click="submit()">
                     提现

@@ -7,44 +7,54 @@
 <div class="examine-state examine-success" ng-if="userInfoData.certifiedInfo.status == 1">
     您的资料已经审核通过，如有变更请重新更新资料提交审核！
 </div>
-<form name="setInfoForm" class="form-info-main set-info-main" ng-if="!userInfoData.certifiedInfo || userInfoData.certifiedInfo.status == 9 || userInfoData.certifiedInfo.auditlog">
+<form name="setInfoForm" class="form-info-main set-info-main" form-validate>
     <div class="set-info-lay">
         <div class="add-title">
             身份信息（提现佣金必备）
         </div>
-        <div class="info-lay error-right">
+        <div class="info-lay">
             <div class="info-name error-label">
                 <span class="info-text-name">
                     手机:
                 </span>
                 <div class="set-input">
-                    <input type="text" name="phone" placeholder="请输入手机号码" ng-model="getData.phone">
+                    <input type="text" name="phone" placeholder="请输入手机号码" ng-model="getData.phone" ng-disabled="isVlidate" validate='{"required":"手机号码不能为空"}' required>
                 </div>
             </div>
         </div>
-        <div class="info-lay error-right">
+        <div class="info-lay">
+            <label class="info-name error-label">
+              <span class="info-text-name">
+                微信号:
+              </span>
+                <div class="set-input">
+                    <input type="text" name="userName1" placeholder="请输入微信号方便提现" ng-model="getData.name1" ng-disabled="isVlidate" validate='{"required":"微信号不能为空"}' required>
+                </div>
+            </label>
+        </div>
+        <div class="info-lay">
             <label class="info-name error-label">
               <span class="info-text-name">
                 姓名:
               </span>
                 <div class="set-input">
-                    <input type="text" name="userName" placeholder="姓名" ng-model="getData.name">
+                    <input type="text" name="userName" placeholder="姓名" ng-model="getData.name" ng-disabled="isVlidate" validate='{"required":"姓名不能为空"}' required>
                 </div>
             </label>
         </div>
-        <div class="info-lay error-right">
+        <div class="info-lay">
             <label class="info-name error-label">
               <span class="info-text-name">
                 身份证:
               </span>
                 <div class="set-input">
-                    <input type="text" name="userName" placeholder="身份证" ng-model="getData.idCarNo">
+                    <input type="text" name="userName" placeholder="身份证" ng-model="getData.idCarNo" ng-disabled="isVlidate" validate='{"required":"身份证不能为空"}' required>
                 </div>
             </label>
         </div>
         <div class="add-identity">
             <div class="identity-main">
-                <div class="left" ngf-select="upload(1,$file)" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+                <div class="left" ngf-select="upload(1,$file)" ngf-select ng-model="file" name="file1" ngf-pattern="'image/*'"
                      ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
                      ngf-resize="{width: 100, height: 100}">
                     <a href="javascript:;">
@@ -54,8 +64,10 @@
                     <p>
                         身份证正面
                     </p>
+                    <input class="hidden" name="idCarImage1" ng-model="getData.idCarImage1" validate='{"required":"请上传身份证正面"}' required>
                 </div>
-                <div class="right" ngf-select="upload(2,$file)" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+
+                <div class="right" ngf-select="upload(2,$file)" ngf-select ng-model="file" name="file2" ngf-pattern="'image/*'"
                      ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
                      ngf-resize="{width: 100, height: 100}">
                     <a href="javascript:;">
@@ -65,13 +77,14 @@
                     <p>
                         身份证背面
                     </p>
+                    <input class="hidden" name="idCarImage0" ng-model="getData.idCarImage0" validate='{"required":"请上传身份证背面"}' required>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="base-input-lay submit2">
-        <button class="submit submit-margin" ng-click="submit()">
+    <div class="base-input-lay submit2" ng-if="!isVlidate">
+        <button class="submit submit-margin" form-submit="submit()">
             保&nbsp;&nbsp;存
         </button>
     </div>

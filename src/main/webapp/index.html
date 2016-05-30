@@ -16,16 +16,16 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="format-detection" content="address=no">
     <meta name="apple-mobile-web-app-status-bar-style" content="yes"/>
-    <meta name="description" content="原来国外这么便宜！100%正品保障，抢先下载还能领券哦！" />
+    <meta name="description" content="" />
     <meta property="qc:admins" content="713116756205656745636" />
 
-    <link rel="shortcut icon" href="{{partner == '折疯了' ? 'img/favicon.ico' : 'img/partner/favicon.ico' }}" type="image/x-icon" />
+    <!--<link rel="stylesheet" href="resSatic/css/iconfont.css"/>-->
+    <!--<link rel="stylesheet" href="resSatic/js/widget/czMobile/src/css/base.css"/>-->
+    <!--<link rel="stylesheet" href="resSatic/js/libs/carousel/angular-carousel.css"/>-->
+    <!--<link rel="stylesheet" href="resSatic/js/libs/modal/ng-modal.css"/>-->
+    <!--<link rel="stylesheet" href="resSatic/css/theme.css"/>-->
 
-    <link rel="stylesheet" href="resSatic/css/iconfont.css"/>
-    <link rel="stylesheet" href="resSatic/js/widget/czMobile/src/css/base.css"/>
-    <link rel="stylesheet" href="resSatic/js/libs/carousel/angular-carousel.css"/>
-    <link rel="stylesheet" href="resSatic/js/libs/modal/ng-modal.css"/>
-    <link rel="stylesheet" href="resSatic/css/theme.css"/>
+    <link rel="stylesheet" href="resSatic/resMin/css/all.min.css"/>
 </head>
 <body>
     <div class="app-state" id="app-state">
@@ -35,8 +35,8 @@
             <div class="fix-bottom-main">
                 <a href="{{prefix}}indexMain.html" ng-class="{'active' : targetScope == 1}"><i class="iconfont icon-home"></i><p>首页</p></a>
                 <a href="{{prefix}}goodsList.html"  ng-class="{'active' : targetScope == 2}"><i class="iconfont icon-fenlei"></i><p>商品</p></a>
-                <a href="{{prefix}}userContent/info.html"  ng-class="{'active' : targetScope == 3}"><i class="iconfont icon-xiazai"></i><p>我的</p></a>
-                <a href="{{prefix}}shopCart.html" class=""><i class="iconfont icon-gouwuche"></i><p>购物车</p></a>
+                <a href="{{prefix}}userContent/info.html" ng-class="{'active' : targetScope == 3}"><i class="iconfont icon-xiazai"></i><p>我的</p></a>
+                <a href="{{prefix}}shopCart.html" ng-class="{'active' : targetScope == 4}"><i class="iconfont icon-gouwuche"></i><p>购物车</p></a>
             </div>
         </div>
     </div>
@@ -52,118 +52,117 @@
 
     <div ng-include="'view/common/load.html'"></div>
 </body>
-<script src="resSatic/js/httpPath.js"></script>
-<script src="resSatic/js/widget/bodySize.js"></script>
-<script src="resSatic/js/libs/weixinjs.js"></script>
-<script src="resSatic/js/libs/angular.js"></script>
-<script src="resSatic/js/libs/carousel/angular-carousel.js"></script>
-<script src="resSatic/js/libs/angular-date-binder.js"></script>
-<script src="resSatic/js/libs/angular-lazy-img.js"></script>
-<script src="resSatic/js/libs/angular-sanitize.js"></script>
-<script src="resSatic/js/libs/angular-touch.js"></script>
-<script src="resSatic/js/libs/angular-ui-router.js"></script>
-<script src="resSatic/js/libs/ng-file-upload-all.js"></script>
-<script src="resSatic/js/libs/modal/ng-modal.js"></script>
+<!--<script src="resSatic/js/httpPath.js"></script>-->
+<!--<script src="resSatic/js/widget/bodySize.js"></script>-->
+<!--<script src="resSatic/js/libs/weixinjs.js"></script>-->
+<!--<script src="resSatic/js/libs/angular.js"></script>-->
+<!--<script src="resSatic/js/libs/carousel/angular-carousel.js"></script>-->
+<!--<script src="resSatic/js/libs/angular-date-binder.js"></script>-->
+<!--<script src="resSatic/js/libs/angular-lazy-img.js"></script>-->
+<!--<script src="resSatic/js/libs/angular-sanitize.js"></script>-->
+<!--<script src="resSatic/js/libs/angular-touch.js"></script>-->
+<!--<script src="resSatic/js/libs/angular-ui-router.js"></script>-->
+<!--<script src="resSatic/js/libs/ng-file-upload-all.js"></script>-->
+<!--<script src="resSatic/js/libs/modal/ng-modal.js"></script>-->
 
-<script src="resSatic/js/libs/areaSelect/china-area-selector.js"></script>
-<script src="resSatic/js/libs/areaSelect/templates.js"></script>
-<script src="resSatic/js/libs/bindonce.js"></script>
-<script src="resSatic/js/libs/fastclick.js"></script>
-<script src="resSatic/js/libs/weixinjs.js"></script>
+<!--<script src="resSatic/js/libs/areaSelect/china-area-selector.js"></script>-->
+<!--<script src="resSatic/js/libs/areaSelect/templates.js"></script>-->
+<!--<script src="resSatic/js/libs/bindonce.js"></script>-->
+<!--<script src="resSatic/js/libs/fastclick.js"></script>-->
+<!--<script src="resSatic/js/libs/weixinjs.js"></script>-->
 
-<script src="resSatic/js/widget/util.js"></script>
-<script src="resSatic/js/widget/browser.js"></script>
-<script src="resSatic/js/widget/czMobile/src/js/czMobile.all.js"></script>
-
-
-<script src="resSatic/js/app.js"></script>
-<script src="resSatic/js/run/route.js"></script>
-<script src="resSatic/js/run/run.js"></script>
-<script src="resSatic/js/run/httpResponse.js"></script>
-<script src="resSatic/js/run/ios9RouteStart.js"></script>
-
-<script src="resSatic/js/controller.js"></script>
-<script src="resSatic/js/directive.js"></script>
+<!--<script src="resSatic/js/widget/util.js"></script>-->
+<!--<script src="resSatic/js/widget/browser.js"></script>-->
+<!--<script src="resSatic/js/widget/czMobile/src/js/czMobile.all.js"></script>-->
 
 
-<script src="resSatic/js/model/common/controller/htlistCtr.js"></script>
-<script src="resSatic/js/model/common/model/htlistService.js"></script>
+<!--<script src="resSatic/js/app.js"></script>-->
+<!--<script src="resSatic/js/run/route.js"></script>-->
+<!--<script src="resSatic/js/run/run.js"></script>-->
+<!--<script src="resSatic/js/run/httpResponse.js"></script>-->
+<!--<script src="resSatic/js/run/ios9RouteStart.js"></script>-->
 
-<script src="resSatic/js/model/index/controller/indexCtr.js"></script>
-<script src="resSatic/js/model/index/model/indexService.js"></script>
-
-<script src="resSatic/js/model/goodsList/controller/goodsListCtr.js"></script>
-<script src="resSatic/js/model/goodsList/model/goodsListService.js"></script>
-<script src="resSatic/js/model/goodsList/model/goodsListCacheFactory.js"></script>
-
-
-<script src="resSatic/js/model/detail/controller/detailCtr.js"></script>
-<script src="resSatic/js/model/detail/model/detailService.js"></script>
-
-<script src="resSatic/js/model/detail/controller/detailCtr.js"></script>
-<script src="resSatic/js/model/detail/model/detailService.js"></script>
-
-<script src="resSatic/js/model/shopCart/controller/shopCart.js"></script>
-<script src="resSatic/js/model/shopCart/model/shopCartService.js"></script>
+<!--<script src="resSatic/js/controller.js"></script>-->
+<!--<script src="resSatic/js/directive.js"></script>-->
 
 
-<script src="resSatic/js/model/userContent/userInfo/controller/userInfoCtr.js"></script>
-<script src="resSatic/js/model/userContent/userInfo/model/userInfoService.js"></script>
-<script src="resSatic/js/model/userContent/userInfo/model/userInfoCacheFactory.js"></script>
+<!--<script src="resSatic/js/model/common/controller/htlistCtr.js"></script>-->
+<!--<script src="resSatic/js/model/common/model/htlistService.js"></script>-->
 
-<script src="resSatic/js/model/userContent/myMessage/controller/myMessageCtr.js"></script>
-<script src="resSatic/js/model/userContent/myMessage/model/myMessageService.js"></script>
+<!--<script src="resSatic/js/model/index/controller/indexCtr.js"></script>-->
+<!--<script src="resSatic/js/model/index/model/indexService.js"></script>-->
 
-
-<script src="resSatic/js/model/userContent/userCollect/controller/userCollectCtr.js"></script>
-<script src="resSatic/js/model/userContent/userCollect/model/userCollectService.js"></script>
-
-<script src="resSatic/js/model/userContent/setUp/controller/setInfoCtr.js"></script>
-<script src="resSatic/js/model/userContent/setUp/model/setInfoService.js"></script>
-
-<script src="resSatic/js/model/userContent/setUp/controller/identityCtr.js"></script>
-<script src="resSatic/js/model/userContent/setUp/model/identityService.js"></script>
-
-<script src="resSatic/js/model/userContent/site/controller/siteListCtr.js"></script>
-<script src="resSatic/js/model/userContent/site/model/siteListService.js"></script>
-<script src="resSatic/js/model/userContent/site/controller/siteAddEditCtr.js"></script>
-<script src="resSatic/js/model/userContent/site/model/siteAddEditService.js"></script>
+<!--<script src="resSatic/js/model/goodsList/controller/goodsListCtr.js"></script>-->
+<!--<script src="resSatic/js/model/goodsList/model/goodsListService.js"></script>-->
+<!--<script src="resSatic/js/model/goodsList/model/goodsListCacheFactory.js"></script>-->
 
 
-<script src="resSatic/js/model/userContent/distributor/controller/myDistributorCtr.js"></script>
-<script src="resSatic/js/model/userContent/distributor/model/myDistributorService.js"></script>
+<!--<script src="resSatic/js/model/detail/controller/detailCtr.js"></script>-->
+<!--<script src="resSatic/js/model/detail/model/detailService.js"></script>-->
 
-<script src="resSatic/js/model/userContent/distributor/controller/distributorOrderCtr.js"></script>
-<script src="resSatic/js/model/userContent/distributor/model/distributorOrderService.js"></script>
+<!--<script src="resSatic/js/model/detail/controller/detailCtr.js"></script>-->
+<!--<script src="resSatic/js/model/detail/model/detailService.js"></script>-->
 
-<script src="resSatic/js/model/userContent/distributor/controller/distributorDrawCtr.js"></script>
-<script src="resSatic/js/model/userContent/distributor/model/distributorDrawService.js"></script>
-
-<script src="resSatic/js/model/userContent/distributor/controller/distributorRecordCtr.js"></script>
-<script src="resSatic/js/model/userContent/distributor/model/distributorRecordService.js"></script>
-
-<script src="resSatic/js/model/userContent/distributor/distributorCacheFactory.js"></script>
+<!--<script src="resSatic/js/model/shopCart/controller/shopCart.js"></script>-->
+<!--<script src="resSatic/js/model/shopCart/model/shopCartService.js"></script>-->
 
 
-<script src="resSatic/js/model/order/createOrder/controller/createOrderCtr.js"></script>
-<script src="resSatic/js/model/order/createOrder/model/createOrderService.js"></script>
+<!--<script src="resSatic/js/model/userContent/userInfo/controller/userInfoCtr.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/userInfo/model/userInfoService.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/userInfo/model/userInfoCacheFactory.js"></script>-->
 
-<script src="resSatic/js/model/order/pay/controller/payCtr.js"></script>
-<script src="resSatic/js/model/order/pay/model/payService.js"></script>
+<!--<script src="resSatic/js/model/userContent/myMessage/controller/myMessageCtr.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/myMessage/model/myMessageService.js"></script>-->
 
-<script src="resSatic/js/model/order/myOrder/controller/myOrderListCtr.js"></script>
-<script src="resSatic/js/model/order/myOrder/model/myOrderListService.js"></script>
 
-<script src="resSatic/js/model/order/myOrder/controller/myOrderDetailCtr.js"></script>
-<script src="resSatic/js/model/order/myOrder/model/myOrderDetailService.js"></script>
+<!--<script src="resSatic/js/model/userContent/userCollect/controller/userCollectCtr.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/userCollect/model/userCollectService.js"></script>-->
 
-<script src="resSatic/js/model/order/logistic/controller/logisticCtr.js"></script>
-<script src="resSatic/js/model/order/logistic/model/logisticService.js"></script>
+<!--<script src="resSatic/js/model/userContent/setUp/controller/setInfoCtr.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/setUp/model/setInfoService.js"></script>-->
 
-<script src="resSatic/js/model/order/orderCacheFactory.js"></script>
+<!--<script src="resSatic/js/model/userContent/setUp/controller/identityCtr.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/setUp/model/identityService.js"></script>-->
 
-<!--<script src="resMin/js/libs/libs.all.js"></script>-->
-<!--<script src="resMin/js/model.all.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/site/controller/siteListCtr.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/site/model/siteListService.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/site/controller/siteAddEditCtr.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/site/model/siteAddEditService.js"></script>-->
 
+
+<!--<script src="resSatic/js/model/userContent/distributor/controller/myDistributorCtr.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/distributor/model/myDistributorService.js"></script>-->
+
+<!--<script src="resSatic/js/model/userContent/distributor/controller/distributorOrderCtr.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/distributor/model/distributorOrderService.js"></script>-->
+
+<!--<script src="resSatic/js/model/userContent/distributor/controller/distributorDrawCtr.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/distributor/model/distributorDrawService.js"></script>-->
+
+<!--<script src="resSatic/js/model/userContent/distributor/controller/distributorRecordCtr.js"></script>-->
+<!--<script src="resSatic/js/model/userContent/distributor/model/distributorRecordService.js"></script>-->
+
+<!--<script src="resSatic/js/model/userContent/distributor/distributorCacheFactory.js"></script>-->
+
+
+<!--<script src="resSatic/js/model/order/createOrder/controller/createOrderCtr.js"></script>-->
+<!--<script src="resSatic/js/model/order/createOrder/model/createOrderService.js"></script>-->
+
+<!--<script src="resSatic/js/model/order/pay/controller/payCtr.js"></script>-->
+<!--<script src="resSatic/js/model/order/pay/model/payService.js"></script>-->
+
+<!--<script src="resSatic/js/model/order/myOrder/controller/myOrderListCtr.js"></script>-->
+<!--<script src="resSatic/js/model/order/myOrder/model/myOrderListService.js"></script>-->
+
+<!--<script src="resSatic/js/model/order/myOrder/controller/myOrderDetailCtr.js"></script>-->
+<!--<script src="resSatic/js/model/order/myOrder/model/myOrderDetailService.js"></script>-->
+
+<!--<script src="resSatic/js/model/order/logistic/controller/logisticCtr.js"></script>-->
+<!--<script src="resSatic/js/model/order/logistic/model/logisticService.js"></script>-->
+
+<!--<script src="resSatic/js/model/order/orderCacheFactory.js"></script>-->
+
+<script src="resSatic/resMin/js/libs/libs.all.min.js"></script>
+<script src="resSatic/resMin/js/model.all.min.js"></script>
 
 </html>

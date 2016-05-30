@@ -21,7 +21,7 @@ app.controller('payCtr',["$scope","$rootScope","$stateParams","payService",funct
     function onBridgeReady(data){
         WeixinJSBridge.invoke('getBrandWCPayRequest',data,function(res){
                 if(res.err_msg == "get_brand_wcpay_request:ok" || res.err_msg == "get_brand_wcpay_request:cancel" ) {  //如果付款成功或者取消付款都去订单详情页面
-                    //location.href = $rootScope.prefix + 'order/statusDetail&' + orderNum;
+                    location.href = $rootScope.prefix + 'order/myOrder/myOrderList.html?status=1';
                 }else{
                     alert('发生未知错误');
                 }

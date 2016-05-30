@@ -2,9 +2,15 @@
  * Created by kangdaye on 16/5/15.
  */
 app.controller('identityCtr',["$scope","$rootScope","Upload","messageFactory","identityService", function($scope,$rootScope,Upload,messageFactory,identityService) {
+    var watch;
+
+    $scope.isVlidate = !$scope.userInfoData.certifiedInfo || $scope.userInfoData.certifiedInfo.status == 9 || $scope.userInfoData.certifiedInfo.auditlog
     $scope.getData = {};
 
     $scope.upload = function (model,file) {
+        if($scope.isVlidate){
+            return;
+        }
         Upload.upload({
             url: servicePath + 'member/upload_certificate',
             data: {file: file, 'username': $scope.username}
@@ -23,4 +29,15 @@ app.controller('identityCtr',["$scope","$rootScope","Upload","messageFactory","i
             $rootScope.userInfoData.certifiedInfo.status = 0;
         });
     };
+
+    watch = $scope.$watch('userInfoData.certifiedInfo',function(newVal){
+        if(newVal){
+            angular.extend($scope.getData,newVal);
+        }
+    });
+
+    $scope.$on('$destroy', function(){
+        watch();
+    });
+
 }]);

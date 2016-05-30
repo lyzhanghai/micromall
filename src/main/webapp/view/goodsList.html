@@ -1,14 +1,16 @@
 <div class="tab-htlist">
     <form class="index-search" ng-submit="searchList()">
-        <img src="resSatic/images/logo.png" class="index-logo"/>
-        <input class="index-search-text" placeholder="搜索全部商品" ng-model="search">
-            <!-- <i class="iconzfl icon-sousuo"></i> -->
+        <div class="index-search-main">
+            <img src="resSatic/images/logo.png" class="index-logo"/>
+            <input class="index-search-text" placeholder="搜索全部商品" ng-model="search">
+            <i class="search-icon iconfont icon-fangdajing"></i>
+        </div>
     </form>
     <div class="index-tab">
         <a ng-class="{'active' : item.id == getData.categoryId}" href="{{prefix}}goodsList.html?categoryId={{item.id}}" ng-repeat="item in category track by $index">{{item.name}}</a>
     </div>
     <div class="carousel-lay">
-        <ul rn-carousel rn-carousel-index="carouselIndex6" rn-carousel-buffered style="height:8.25rem;">
+        <ul rn-carousel rn-carousel-index="carouselIndex6" rn-carousel-auto-slide=6 rn-carousel-buffered style="height:8.25rem;">
             <li bindonce ng-repeat="slide in bannerConfData track by $index">
                 <a >
                     <img ng-src="{{::slide.image}}">

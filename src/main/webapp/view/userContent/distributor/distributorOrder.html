@@ -50,7 +50,7 @@
         </a>
     </div>
     <div class="distributor-water">
-        <div class="nav-tab">
+        <div class="nav-tab" style="height: 2.55rem;">
             <a href="javascript:;" ng-class="{'active' : tabSelectId === item.id}" ng-click="distributorListToggle(item.id)" ng-repeat="item in tab track by $index">{{::item.name}}</a>
         </div>
         <div class="panel-list user-list-lay">
@@ -83,14 +83,6 @@
                     <a href="javascript:;">
                         <span>已完成订单</span>
                         <em class="right gray">￥{{distributorTabList.complete}}</em>
-                    </a>
-                </div>
-            </div>
-            <div class="section">
-                <div class="wrapper">
-                    <a href="javascript:;">
-                        <span>已退款订单</span>
-                        <em class="right gray">￥{{distributorTabList.refund}}</em>
                     </a>
                 </div>
             </div>

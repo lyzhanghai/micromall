@@ -10,8 +10,8 @@ var templateCache = require('gulp-angular-templatecache');
 
 
 var gulpFlieInitConfig = function(){
-    var minPath = './webapp/resMin/',
-        static = './webapp/';
+    var minPath = './webapp/resSatic/resMin/',
+        static = './webapp/resSatic/';
 
     var jsPath = static + 'js/';
     var jsLibsPath = jsPath + 'libs/';
@@ -25,7 +25,7 @@ var gulpFlieInitConfig = function(){
         jsLibsPath + 'angular.js',
         jsLibsPath + '**/**.js',
 
-        '!' + jsWidgetPath + 'czMobile/{dist,gruntfile.js,GruntFile.js}',
+        '!' + jsWidgetPath + 'czMobile/{dist,GulpFile.js,GruntFile.js}',
         jsWidgetPath + '**/*.js',
         jsWidgetPath + 'czMobile/src/js/czMobile.all.js'
     ];
@@ -76,10 +76,10 @@ var gulpFlieInitConfig = function(){
             var cssPath = static + 'css/';
             var cssMinPath = minPath + 'css/';
             gulp.src([
-                    cssPath + 'theme.css',
                     cssPath + 'iconfont.css',
                     jsWidgetPath + '**/**/**.css',
-                    jsLibsPath + '**/**/**.css'
+                    jsLibsPath + '**/**/**.css',
+                    cssPath + 'theme.css'
                 ])
                 .pipe(concat('all.css'))
                 .pipe(gulp.dest(cssMinPath))
@@ -89,7 +89,8 @@ var gulpFlieInitConfig = function(){
         },
         copy : function(){
             var jsMinLibsPath = jsMinPath + 'libs/';
-            // gulp.src(static + 'images/**/**').pipe(gulp.dest(minPath + 'images'));
+            gulp.src(static + 'images/**/**').pipe(gulp.dest(minPath + 'images'));
+            gulp.src(static + 'font/**').pipe(gulp.dest(minPath + 'font'));
             gulp.src(jsLibsPath + 'imgJsLibs/**/**').pipe(gulp.dest(jsMinLibsPath + 'imgJsLibs'));
         }
     }
