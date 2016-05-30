@@ -36,7 +36,7 @@ app.factory('authHttpResponseInterceptor',['$q','$location','$rootScope','$injec
         response: function(response){
             var messageFn = $injector.get('messageFactory');
 
-            if (typeof response.data === 'object') {
+            if (typeof response.data === 'object' && response.data.code) {
                 switch (response.data.code){
                     case -1:
                         messageFn({text:'请登录'});
@@ -44,6 +44,7 @@ app.factory('authHttpResponseInterceptor',['$q','$location','$rootScope','$injec
                         break;
                     case 1:
                         messageFn({text: response.data.msg});
+                        break;
                 }
                 resFn();
                 return $q.reject(response);
