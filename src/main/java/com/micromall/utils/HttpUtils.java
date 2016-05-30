@@ -1,9 +1,12 @@
 package com.micromall.utils;
 
+import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -19,7 +22,6 @@ import org.springframework.web.client.RestTemplate;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -39,56 +41,83 @@ public class HttpUtils {
 		rest.setMessageConverters(messageConverters);
 	}
 
-	public static <T> ResponseEntity<T> executeRequest(String url, String content, Class<T> clazz) {
-		// 执行请求
+	public static <T> ResponseEntity<T> executePost(String url, String content, Class<T> clazz) {
 		ResponseEntity<T> responseEntity = null;
 		try {
-			// 执行请求
 			responseEntity = rest.postForEntity(url, content, clazz);
 		} catch (HttpClientErrorException e) {
-			responseEntity = new ResponseEntity<T>(null, e.getResponseHeaders(), e.getStatusCode());
+			responseEntity = new ResponseEntity<>(null, e.getResponseHeaders(), e.getStatusCode());
 		} catch (Exception e) {
 			logger.warn("请求出错: URL [{}]", url, e);
 		}
 		return responseEntity;
 	}
 
-	public static <T> ResponseEntity<T> executeRequest(String url, Map<String, String> params, Class<T> clazz) {
-		return executeRequest(url, params, null, clazz);
+	public static <T> ResponseEntity<T> executePost(String url, Map<String, String> params, Class<T> clazz) {
+		return execute(Method.POST, new ChainMap<>("Content-Type", "text/plain;charset=UTF-8"), url, params, null, clazz);
 	}
 
-	public static <T> ResponseEntity<T> executeRequest(String url, Map<String, String> params, Map<String, File> fileParams, Class<T> clazz) {
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		headers.add("Content-Type", "text/plain;charset=UTF-8");
+	public static <T> ResponseEntity<T> execute(Method method, Map<String, String> headers, String url, Map<String, String> params,
+			Map<String, File> fileParams, Class<T> clazz) {
 
-		if (params == null) {
-			params = new HashMap<String, String>();
-		}
-		// 设置请求参数
-		MultiValueMap<String, Object> _params = new LinkedMultiValueMap<String, Object>();
-		for (Entry<String, String> entry : params.entrySet()) {
-			_params.add(entry.getKey(), new HttpEntity<String>(entry.getValue() != null ? entry.getValue() : "", headers));
+		if (MapUtils.isNotEmpty(fileParams) && method != Method.POST) {
+			throw new UnsupportedOperationException("GET 请求不支持文件上传.");
 		}
 
-		// 上传文件
-		if (fileParams != null) {
-			for (String name : fileParams.keySet()) {
-				_params.add(name, new FileSystemResource(fileParams.get(name)));
+		ResponseEntity<T> responseEntity = null;
+		if (Method.GET == method) {
+			URLBuilder builder = URLBuilder.createBuilder(url, params);
+			url = builder.build();
+
+			HttpHeaders _headers = new HttpHeaders();
+			if (MapUtils.isNotEmpty(headers)) {
+				for (String key : headers.keySet()) {
+					_headers.add(key, headers.get(key));
+				}
+			}
+
+			logger.debug("Execute get request: URL [{}]", url);
+			try {
+				responseEntity = rest.exchange(url, HttpMethod.GET, new HttpEntity<>(_headers), clazz);
+			} catch (HttpClientErrorException e) {
+				responseEntity = new ResponseEntity<T>(null, e.getResponseHeaders(), e.getStatusCode());
+			} catch (Exception e) {
+				logger.warn("请求出错: URL [{}]", url, e);
+			}
+		} else {
+			MultiValueMap<String, String> _headers = new LinkedMultiValueMap<String, String>();
+			if (MapUtils.isNotEmpty(headers)) {
+				for (String key : headers.keySet()) {
+					_headers.add(key, headers.get(key));
+				}
+			}
+
+			// 设置请求参数
+			MultiValueMap<String, Object> _params = new LinkedMultiValueMap<>();
+			for (Entry<String, String> entry : params.entrySet()) {
+				_params.add(entry.getKey(), new HttpEntity<>(entry.getValue() != null ? entry.getValue() : "", _headers));
+			}
+
+			// 上传文件
+			if (fileParams != null) {
+				for (String name : fileParams.keySet()) {
+					_params.add(name, new FileSystemResource(fileParams.get(name)));
+				}
+			}
+			logger.debug("Execute post request: URL [{}], 参数 [{}]", url, _params);
+			try {
+				responseEntity = rest.postForEntity(url, _params, clazz);
+			} catch (HttpClientErrorException e) {
+				responseEntity = new ResponseEntity<T>(null, e.getResponseHeaders(), e.getStatusCode());
+			} catch (Exception e) {
+				logger.warn("请求出错: URL [{}]", url, e);
 			}
 		}
-		logger.debug("ExecuteRequest: URL [{}], 参数 [{}]", url, _params);
-
-		// 执行请求
-		ResponseEntity<T> responseEntity = null;
-		try {
-			// 执行请求
-			responseEntity = rest.postForEntity(url, _params, clazz);
-		} catch (HttpClientErrorException e) {
-			responseEntity = new ResponseEntity<T>(null, e.getResponseHeaders(), e.getStatusCode());
-		} catch (Exception e) {
-			logger.warn("请求出错: URL [{}]", url, e);
-		}
 		return responseEntity;
+	}
+
+	public enum Method {
+		POST, GET
 	}
 
 }
