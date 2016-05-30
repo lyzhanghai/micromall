@@ -21,7 +21,7 @@
     <ul>
         <li ng-repeat="childItem in item.goodsList track by $index" bindonce>
             <div class="item-lay">
-                <a href="#/detail&amp;2531191" class="item-img">
+                <a href="{{prefix}}detail.html?goodsId={{childItem.goodsId}}" class="item-img">
                     <div class="img-lay">
                         <img lazy-img="{{::childItem.image}}">
                     </div>
@@ -53,7 +53,7 @@
             <button class="close" ng-click="orderClose(item.orderNo,$index)">
               取消订单
             </button>
-            <button ng-click="goPay(item.orderNo,$index)">
+            <button ng-click="goPay(item)">
               付款
             </button>
           </div>

@@ -1,7 +1,7 @@
 /**
  * Created by kangdaye on 16/5/24.
  */
-app.controller('myOrderDetailCtr',["$scope","$rootScope","$stateParams","myOrderDetailService","confirmFactory","messageFactory",function($scope,$rootScope,$stateParams,myOrderDetailService,confirmFactory,messageFactory) {
+app.controller('myOrderDetailCtr',["$scope","$rootScope","$stateParams","myOrderDetailService","confirmFactory","authorFactory","messageFactory",function($scope,$rootScope,$stateParams,myOrderDetailService,confirmFactory,authorFactory,messageFactory) {
     var defaultData = {
         orderNo : $stateParams.orderNo
     };
@@ -11,6 +11,16 @@ app.controller('myOrderDetailCtr',["$scope","$rootScope","$stateParams","myOrder
     myOrderDetailService.detail(defaultData,function(data){
         $scope.orderDetail = data.data;
     });
+
+    $scope.goPay = function(item){
+        authorFactory({
+            href : 'order/pay.html',
+            data : {
+                orderNo : $scope.orderDetail.item.orderNo,
+                price : $scope.orderDetail.totalAmount
+            }
+        });
+    };
 
     $scope.confirmDelivery = function(){
         confirmFactory({

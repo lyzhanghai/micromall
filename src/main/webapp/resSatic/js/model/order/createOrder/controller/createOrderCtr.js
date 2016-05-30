@@ -1,7 +1,7 @@
 /**
  * Created by kangdaye on 16/5/24.
  */
-app.controller('createOrderCtr',["$scope","$rootScope","$stateParams","createOrderService",function($scope,$rootScope,$stateParams,createOrderService) {
+app.controller('createOrderCtr',["$scope","$rootScope","$stateParams","authorFactory","createOrderService",function($scope,$rootScope,$stateParams,authorFactory,createOrderService) {
     $scope.createOrderData = {};
     $scope.leaveMessage = '';
 
@@ -35,12 +35,13 @@ app.controller('createOrderCtr',["$scope","$rootScope","$stateParams","createOrd
             settleId : $scope.createOrderData.settle.settleId,
             leaveMessage : $scope.leaveMessage
         },function(data){
-            var getData = {
-                orderNo : data.data.orderNo,
-                price : data.data.amount
-            };
-            var goUrl = location.origin + $rootScope.prefix + 'order/pay.html?' + angular.param(getData);
-            location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa66a636535c987db&redirect_uri='+ encodeURIComponent(goUrl) +'&response_type=code&scope=snsapi_base&state=123#wechat_redirect';
+            authorFactory({
+                href : 'order/pay.html',
+                data : {
+                    orderNo : data.data.orderNo,
+                    price : data.data.amount
+                }
+            });
         });
     }
 }]);

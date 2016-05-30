@@ -7,7 +7,7 @@
                         <div class="top-bg"></div>
                         <div class="top-info-lay">
                             <div class="top-info">
-                              <span>{{createOrderData.address.consigneeName}}</span>
+                              <span>{{createOrderData.address.consigneeName || '去新增地址'}}</span>
                               <span>{{createOrderData.address.consigneePhone}}</span>
                             </div>
                             <p>{{createOrderData.address.province + createOrderData.address.city + createOrderData.address.county + createOrderData.address.detailedAddress}}</p>
