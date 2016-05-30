@@ -87,11 +87,17 @@ public class MyOrdersController extends BasisController {
 		if (order.getStatus() < OrderStatus.待收货) {
 			return ResponseEntity.Failure("订单还未发货");
 		}
+		Map<String, Object> data = Maps.newHashMap();
+		List<Map<String, String>> records = Lists.newArrayList();
+		data.put("deliveryCompany", order.getDeliveryCompany());
+		data.put("deliveryTime", order.getDeliveryTime());
+		data.put("records", records);
 
-		List<Map<String, String>> data = Lists.newArrayList();
 		if ("-1".equals(order.getDeliveryCode())) {
+			data.put("deliveryNumber", "无");
 			// data.add(new ChainMap<>("time", jo.getString("time")).append("text", jo.getString("context")));
 		} else {
+			data.put("deliveryNumber", order.getDeliveryNumber());
 			Map<String, String> headers = Maps.newHashMap();
 			headers.put("Host", "m.kuaidi100.com");
 			headers.put("Pragma", "no-cache");
@@ -115,26 +121,28 @@ public class MyOrdersController extends BasisController {
 			if (responseEntity == null || responseEntity.getStatusCode() != HttpStatus.OK) {
 				logger.error("查询订单物流信息失败, 订单号:{}, 查询参数:{}, 物流查询结果:{}", orderNo, JSON.toJSONString(params),
 						responseEntity != null ? responseEntity.toString() : "null");
-			}
-			try {
-				JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
-				if ("200".equals(jsonObject.getString("status"))) {
-					JSONArray jsonArray = jsonObject.getJSONArray("data");
-					for (int i = 0; i < jsonArray.size(); i++) {
-						JSONObject jo = jsonArray.getJSONObject(i);
-						data.add(new ChainMap<>("time", jo.getString("time")).append("text", jo.getString("context")));
+				data.put("errorMsg", "获取物流信息失败");
+			} else {
+				try {
+					JSONObject jsonObject = JSON.parseObject(responseEntity.getBody());
+					if ("200".equals(jsonObject.getString("status"))) {
+						JSONArray jsonArray = jsonObject.getJSONArray("data");
+						for (int i = 0; i < jsonArray.size(); i++) {
+							JSONObject jo = jsonArray.getJSONObject(i);
+							records.add(new ChainMap<>("time", jo.getString("time")).append("text", jo.getString("context")));
+						}
+					} else {
+						logger.error("查询订单物流信息失败, 订单号:{}, 查询参数:{}, 物流查询结果:{}", orderNo, JSON.toJSONString(params), responseEntity.getBody());
+						data.put("errorMsg", "获取物流信息失败");
 					}
-				} else {
-					logger.error("查询订单物流信息失败, 订单号:{}, 查询参数:{}, 物流查询结果:{}", orderNo, JSON.toJSONString(params), responseEntity.getBody());
-					return ResponseEntity.Failure("获取物流信息失败");
+				} catch (Exception e) {
+					logger.error("查询订单物流信息失败, 订单号:{}, 查询参数:{}, 物流查询结果:{}", orderNo, JSON.toJSONString(params), responseEntity.getBody(), e);
+					data.put("errorMsg", "获取物流信息失败");
 				}
-			} catch (Exception e) {
-				logger.error("查询订单物流信息失败, 订单号:{}, 查询参数:{}, 物流查询结果:{}", orderNo, JSON.toJSONString(params), responseEntity.getBody(), e);
-				return ResponseEntity.Failure("获取物流信息失败");
 			}
 		}
 
-		return ResponseEntity.Success(data);
+		return ResponseEntity.Success(records);
 	}
 
 	/**
