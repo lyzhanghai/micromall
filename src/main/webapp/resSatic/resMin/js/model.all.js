@@ -185,14 +185,16 @@ app.factory('authHttpResponseInterceptor',['$q','$location','$rootScope','$injec
         },
         response: function(response){
             var messageFn = $injector.get('messageFactory');
-            if (typeof response.data === 'object' && response.status != 200) {
+
+            if (typeof response.data === 'object' && response.data.code) {
                 switch (response.data.code){
-                    case '-1':
+                    case -1:
                         messageFn({text:'请登录'});
                         location.href = response.data.data;
                         break;
-                    case '1':
+                    case 1:
                         messageFn({text: response.data.msg});
+                        break;
                 }
                 resFn();
                 return $q.reject(response);
@@ -1405,6 +1407,16 @@ app.service('myDistributorService',["$http", function($http) {
     };
 }]);
 /**
+ * Created by kangdaye on 16/5/20.
+ */
+app.service('myMessageService',["$http", function($http) {
+    this.list = function (postData,callback) {
+        $http.post(servicePath + 'message/list',postData).success(callback);
+    };
+}]);
+
+
+/**
  * Created by kangdaye on 16/5/15.
  */
 app.controller('myMessageCtr',["$scope","$rootScope","myMessageService", function($scope,$rootScope,myMessageService) {
@@ -1438,9 +1450,19 @@ app.controller('myMessageCtr',["$scope","$rootScope","myMessageService", functio
 /**
  * Created by kangdaye on 16/5/20.
  */
-app.service('myMessageService',["$http", function($http) {
-    this.list = function (postData,callback) {
-        $http.post(servicePath + 'message/list',postData).success(callback);
+app.service('identityService',["$http", function($http) {
+    this.certification = function (postData,callback) {
+        $http.post(servicePath + 'member/certification',postData).success(callback);
+    };
+}]);
+
+
+/**
+ * Created by kangdaye on 16/5/20.
+ */
+app.service('setInfoService',["$http", function($http) {
+    this.updateBasisinfo = function (postData,callback) {
+        $http.post(servicePath + 'member/update_basisinfo',postData).success(callback);
     };
 }]);
 
@@ -1524,26 +1546,6 @@ app.controller('setInfoCtr',["$scope","$rootScope","$timeout","Upload","messageF
 /**
  * Created by kangdaye on 16/5/20.
  */
-app.service('identityService',["$http", function($http) {
-    this.certification = function (postData,callback) {
-        $http.post(servicePath + 'member/certification',postData).success(callback);
-    };
-}]);
-
-
-/**
- * Created by kangdaye on 16/5/20.
- */
-app.service('setInfoService',["$http", function($http) {
-    this.updateBasisinfo = function (postData,callback) {
-        $http.post(servicePath + 'member/update_basisinfo',postData).success(callback);
-    };
-}]);
-
-
-/**
- * Created by kangdaye on 16/5/20.
- */
 app.controller('siteAddEditCtr',["$scope","$stateParams","siteAddEditService","messageFactory", function($scope,$stateParams,siteAddEditService,messageFactory) {
     var id = $stateParams.id;
 
@@ -1607,7 +1609,7 @@ app.controller('siteListCtr',["$scope","$stateParams","siteListService","message
             window.history.back();
             return;
         }
-        if(!item.defaul){
+        if(item.defaul){
             return;
         }
         siteListService.defaulAddress(item,function(){
@@ -1700,21 +1702,6 @@ app.service('userCollectService',["$http", function($http) {
 
 }]);
 
-app.controller('userInfoCtr',["$scope","userInfoCacheFactory","userInfoService", function($scope,userInfoCacheFactory,userInfoService) {
-    $scope.orderNum = {};
-    $scope.navTab = userInfoCacheFactory.navTab;
-    $scope.orderStateData = userInfoCacheFactory.orderState;
-
-    $scope.navTabClick = function(id){
-        $scope.navTabSelectId = id;
-    };
-
-    userInfoService.orderNum(function(data){
-        $scope.orderNum = data.data;
-    });
-    $scope.navTabClick($scope.navTab[0].id);
-}]);
-
 /**
  * Created by kangdaye on 16/5/15.
  */
@@ -1742,4 +1729,19 @@ app.service('userInfoService',["$http", function($http) {
     this.orderNum = function (callback) {
         $http.get(servicePath + 'my_orders/statistics').success(callback);
     };
+}]);
+
+app.controller('userInfoCtr',["$scope","userInfoCacheFactory","userInfoService", function($scope,userInfoCacheFactory,userInfoService) {
+    $scope.orderNum = {};
+    $scope.navTab = userInfoCacheFactory.navTab;
+    $scope.orderStateData = userInfoCacheFactory.orderState;
+
+    $scope.navTabClick = function(id){
+        $scope.navTabSelectId = id;
+    };
+
+    userInfoService.orderNum(function(data){
+        $scope.orderNum = data.data;
+    });
+    $scope.navTabClick($scope.navTab[0].id);
 }]);
