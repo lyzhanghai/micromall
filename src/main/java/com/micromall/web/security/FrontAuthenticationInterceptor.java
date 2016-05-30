@@ -120,10 +120,9 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 
 	private LoginUser _getLoginUser(HttpServletRequest request) {
 		LoginUser loginUser = (LoginUser)request.getSession().getAttribute(CommonEnvConstants.LOGIN_SESSION_KEY);
-//		boolean debugAuth = true;//loginUser == null && CommonEnvConstants.ENV.isDevEnv() && request.getParameterMap().containsKey("debugAuth");
-//		if (debugAuth) {
-//			loginUser = _MockLogin(request);
-//		}
+		if (CommonEnvConstants.DEBUG_AUTH() && CommonEnvConstants.ENV.isDevEnv()) {
+			loginUser = _MockLogin(request);
+		}
 		return loginUser;
 	}
 
@@ -141,7 +140,7 @@ public class FrontAuthenticationInterceptor extends AbstractBaseInterceptor {
 
 	private LoginUser _MockLogin(HttpServletRequest request) {
 		Member member = new Member();
-		member.setId(CommonEnvConstants.DEBUG_AUTH_USERID);
+		member.setId(CommonEnvConstants.DEBUG_AUTH_USERID());
 		LoginUser loginUser = LoginUser.create(LoginType.Mock, member, request);
 		return loginUser;
 	}

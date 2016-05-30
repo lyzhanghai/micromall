@@ -117,7 +117,7 @@ public class OrderService {
 		if (status == OrderStatus.已收货) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(confirmDeliveryTime);
-			calendar.add(Calendar.DATE, CommonEnvConstants.ORDER_REFUND_APPLY_VALID_TIME);
+			calendar.add(Calendar.DATE, CommonEnvConstants.ORDER_REFUND_APPLY_VALID_TIME());
 			if (calendar.getTime().getTime() <= new Date().getTime()) {
 				return false;
 			}
@@ -153,7 +153,7 @@ public class OrderService {
 		order.setCreateTime(new Date());
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(order.getCreateTime());
-		calendar.add(Calendar.MINUTE, CommonEnvConstants.ORDER_NOTPAY_TIMEOUT_CLOSE_TIME);
+		calendar.add(Calendar.MINUTE, CommonEnvConstants.ORDER_NOTPAY_TIMEOUT_CLOSE_TIME());
 		order.setTimeoutCloseTime(calendar.getTime());
 		orderMapper.insert(order);
 
@@ -284,7 +284,7 @@ public class OrderService {
 					return;
 				}
 
-				BigDecimal commission = orderAmount.multiply(CommonEnvConstants.COMMISSION_DIVIDED_PROPORTION_LV1).setScale(2, BigDecimal
+				BigDecimal commission = orderAmount.multiply(CommonEnvConstants.COMMISSION_DIVIDED_PROPORTION_LV1()).setScale(2, BigDecimal
 						.ROUND_DOWN);
 				CommissionRecord commissionRecord = new CommissionRecord();
 				commissionRecord.setUid(lv1.getId());
@@ -304,7 +304,7 @@ public class OrderService {
 						return;
 					}
 
-					commission = orderAmount.multiply(CommonEnvConstants.COMMISSION_DIVIDED_PROPORTION_LV2).setScale(2, BigDecimal.ROUND_DOWN);
+					commission = orderAmount.multiply(CommonEnvConstants.COMMISSION_DIVIDED_PROPORTION_LV2()).setScale(2, BigDecimal.ROUND_DOWN);
 					commissionRecord = new CommissionRecord();
 					commissionRecord.setUid(lv2.getId());
 					commissionRecord.setLowerUid(uid);

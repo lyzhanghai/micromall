@@ -139,7 +139,7 @@ public class InsertController {
 			order.setCreateTime(new Date());
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(order.getCreateTime());
-			calendar.add(Calendar.MINUTE, CommonEnvConstants.ORDER_NOTPAY_TIMEOUT_CLOSE_TIME);
+			calendar.add(Calendar.MINUTE, CommonEnvConstants.ORDER_NOTPAY_TIMEOUT_CLOSE_TIME());
 			order.setTimeoutCloseTime(calendar.getTime());
 
 			switch (random.nextInt(6)) {
