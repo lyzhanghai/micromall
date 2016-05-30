@@ -185,13 +185,14 @@ app.factory('authHttpResponseInterceptor',['$q','$location','$rootScope','$injec
         },
         response: function(response){
             var messageFn = $injector.get('messageFactory');
-            if (typeof response.data === 'object' && response.status != 200) {
+
+            if (typeof response.data === 'object') {
                 switch (response.data.code){
-                    case '-1':
+                    case -1:
                         messageFn({text:'请登录'});
                         location.href = response.data.data;
                         break;
-                    case '1':
+                    case 1:
                         messageFn({text: response.data.msg});
                 }
                 resFn();
@@ -391,21 +392,47 @@ app.factory('orderCacheFactory', function() {
 /**
  * Created by kangdaye on 16/5/15.
  */
-app.service('detailService',["$http", function($http) {
-    this.detailData = function (getData,callback) {
-        $http.get(servicePath + 'goods/details',{params:getData}).success(callback);
-    };
+app.controller('htlistCrt',["$scope","$rootScope","$stateParams","htlistService", function($scope,$rootScope,$stateParams,htlistService) {
+   $scope.$parent.empty = false;
+   $scope.$parent.async = false;
+   $scope.$parent.listData = [];
 
-    this.addFavorite = function (postData,callback) {
-        $http.post(servicePath + 'favorite/join',postData).success(callback);
-    };
+   $scope.load = function(){
+      if(!$scope.empty && !$scope.async){
+         $scope.async = true;
+         htlistService.list($scope.getData,function (data) {
+            if(data.data.length < $scope.getData.limit){
+               $scope.empty = true;
+            }
+            data.data.forEach(function(item){
+               $scope.listData.push(item);
+            });
+            $scope.async = false;
+            $scope.getData.page++;
+         });
+      }
+   };
 
-    this.deleteFavorite = function (postData,callback) {
-        $http.post(servicePath + 'favorite/delete',postData).success(callback);
-    };
+   $scope.tabFilter = function(up,dowm){
+      $scope.empty = false;
+      $scope.getData.page = 1;
+      if($scope.getData.sort == up){
+         $scope.getData.sort = dowm;
+      }else{
+         $scope.getData.sort = up;
+      }
+      $scope.load();
+   };
 
-    this.addCart = function (postData,callback) {
-        $http.post(servicePath + 'cart/join',postData).success(callback);
+   $scope.load();
+}]);
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.service('htlistService',["$http", function($http) {
+    this.list = function (getData,callback) {
+        $http.get(servicePath + 'goods/search',{params : getData}).success(callback);
     };
 }]);
 
@@ -505,47 +532,21 @@ app.controller('detailCtr',["$scope","$rootScope","$stateParams","detailService"
 /**
  * Created by kangdaye on 16/5/15.
  */
-app.controller('htlistCrt',["$scope","$rootScope","$stateParams","htlistService", function($scope,$rootScope,$stateParams,htlistService) {
-   $scope.$parent.empty = false;
-   $scope.$parent.async = false;
-   $scope.$parent.listData = [];
+app.service('detailService',["$http", function($http) {
+    this.detailData = function (getData,callback) {
+        $http.get(servicePath + 'goods/details',{params:getData}).success(callback);
+    };
 
-   $scope.load = function(){
-      if(!$scope.empty && !$scope.async){
-         $scope.async = true;
-         htlistService.list($scope.getData,function (data) {
-            if(data.data.length < $scope.getData.limit){
-               $scope.empty = true;
-            }
-            data.data.forEach(function(item){
-               $scope.listData.push(item);
-            });
-            $scope.async = false;
-            $scope.getData.page++;
-         });
-      }
-   };
+    this.addFavorite = function (postData,callback) {
+        $http.post(servicePath + 'favorite/join',postData).success(callback);
+    };
 
-   $scope.tabFilter = function(up,dowm){
-      $scope.empty = false;
-      $scope.getData.page = 1;
-      if($scope.getData.sort == up){
-         $scope.getData.sort = dowm;
-      }else{
-         $scope.getData.sort = up;
-      }
-      $scope.load();
-   };
+    this.deleteFavorite = function (postData,callback) {
+        $http.post(servicePath + 'favorite/delete',postData).success(callback);
+    };
 
-   $scope.load();
-}]);
-
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.service('htlistService',["$http", function($http) {
-    this.list = function (getData,callback) {
-        $http.get(servicePath + 'goods/search',{params : getData}).success(callback);
+    this.addCart = function (postData,callback) {
+        $http.post(servicePath + 'cart/join',postData).success(callback);
     };
 }]);
 
@@ -928,6 +929,23 @@ app.factory('distributorCacheFactory', function() {
 /**
  * Created by kangdaye on 16/5/24.
  */
+app.service('createOrderService',["$http", function($http) {
+    this.getCartGoods = function (postData,callback) {
+        $http.post(servicePath + 'cart/settle',postData).success(callback);
+    };
+
+    this.calculateFreight = function (postData,callback) {
+        $http.post(servicePath + 'cart/settle/calculateFreight',postData).success(callback);
+    };
+
+    this.buy = function (postData,callback) {
+        $http.post(servicePath + 'cart/settle/buy',postData).success(callback);
+    };
+}]);
+
+/**
+ * Created by kangdaye on 16/5/24.
+ */
 app.controller('createOrderCtr',["$scope","$rootScope","$stateParams","authorFactory","createOrderService",function($scope,$rootScope,$stateParams,authorFactory,createOrderService) {
     $scope.createOrderData = {};
     $scope.leaveMessage = '';
@@ -971,23 +989,6 @@ app.controller('createOrderCtr',["$scope","$rootScope","$stateParams","authorFac
             });
         });
     }
-}]);
-
-/**
- * Created by kangdaye on 16/5/24.
- */
-app.service('createOrderService',["$http", function($http) {
-    this.getCartGoods = function (postData,callback) {
-        $http.post(servicePath + 'cart/settle',postData).success(callback);
-    };
-
-    this.calculateFreight = function (postData,callback) {
-        $http.post(servicePath + 'cart/settle/calculateFreight',postData).success(callback);
-    };
-
-    this.buy = function (postData,callback) {
-        $http.post(servicePath + 'cart/settle/buy',postData).success(callback);
-    };
 }]);
 
 /**
@@ -1192,6 +1193,15 @@ app.service('myOrderListService',["$http", function($http) {
 
 }]);
 
+/**
+ * Created by kangdaye on 16/5/24.
+ */
+app.service('payService',["$http", function($http) {
+    this.pay = function (postData,callback) {
+        $http.post(servicePath + 'order/pay',postData).success(callback);
+    };
+}]);
+
 app.controller('payCtr',["$scope","$rootScope","$stateParams","payService",function($scope,$rootScope,$stateParams,payService) {
     $scope.data = $stateParams;
     // var orderNum = $stateParams.orderNum;
@@ -1253,12 +1263,44 @@ app.controller('payCtr',["$scope","$rootScope","$stateParams","payService",funct
 
 }]);
 /**
- * Created by kangdaye on 16/5/24.
+ * Created by kangdaye on 16/5/20.
  */
-app.service('payService',["$http", function($http) {
-    this.pay = function (postData,callback) {
-        $http.post(servicePath + 'order/pay',postData).success(callback);
+app.service('myMessageService',["$http", function($http) {
+    this.list = function (postData,callback) {
+        $http.post(servicePath + 'message/list',postData).success(callback);
     };
+}]);
+
+
+/**
+ * Created by kangdaye on 16/5/15.
+ */
+app.controller('myMessageCtr',["$scope","$rootScope","myMessageService", function($scope,$rootScope,myMessageService) {
+    var getData = {
+        page : 1,
+        limit : 10
+    };
+    var async = false;
+
+    $scope.listData = [];
+
+    $scope.load = function(){
+        if(async){
+            return;
+        }
+        async = true;
+        myMessageService.list(getData,function(data){
+            data.data.forEach(function(item){
+                $scope.listData.push(item);
+            });
+            if(data.data.length >= getData.limit){
+                async = false;
+            }
+            getData.page++;
+        });
+    };
+
+    $scope.load();
 }]);
 
 /**
@@ -1404,47 +1446,6 @@ app.service('myDistributorService',["$http", function($http) {
         $http.post(servicePath + 'distribution/lower_distributors_list',postData).success(callback);
     };
 }]);
-/**
- * Created by kangdaye on 16/5/15.
- */
-app.controller('myMessageCtr',["$scope","$rootScope","myMessageService", function($scope,$rootScope,myMessageService) {
-    var getData = {
-        page : 1,
-        limit : 10
-    };
-    var async = false;
-
-    $scope.listData = [];
-
-    $scope.load = function(){
-        if(async){
-            return;
-        }
-        async = true;
-        myMessageService.list(getData,function(data){
-            data.data.forEach(function(item){
-                $scope.listData.push(item);
-            });
-            if(data.data.length >= getData.limit){
-                async = false;
-            }
-            getData.page++;
-        });
-    };
-
-    $scope.load();
-}]);
-
-/**
- * Created by kangdaye on 16/5/20.
- */
-app.service('myMessageService',["$http", function($http) {
-    this.list = function (postData,callback) {
-        $http.post(servicePath + 'message/list',postData).success(callback);
-    };
-}]);
-
-
 /**
  * Created by kangdaye on 16/5/15.
  */
@@ -1607,7 +1608,7 @@ app.controller('siteListCtr',["$scope","$stateParams","siteListService","message
             window.history.back();
             return;
         }
-        if(!item.defaul){
+        if(item.defaul){
             return;
         }
         siteListService.defaulAddress(item,function(){
