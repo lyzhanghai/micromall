@@ -4,7 +4,7 @@
 app.controller('identityCtr',["$scope","$rootScope","Upload","messageFactory","identityService", function($scope,$rootScope,Upload,messageFactory,identityService) {
     var watch;
 
-    $scope.isVlidate = !$scope.userInfoData.certifiedInfo || $scope.userInfoData.certifiedInfo.status == 9 || $scope.userInfoData.certifiedInfo.auditlog
+    $scope.isVlidate = !$rootScope.userInfoData.certifiedInfo || $rootScope.userInfoData.certifiedInfo.status == 9 || $rootScope.userInfoData.certifiedInfo.auditlog
     $scope.getData = {};
 
     $scope.upload = function (model,file) {

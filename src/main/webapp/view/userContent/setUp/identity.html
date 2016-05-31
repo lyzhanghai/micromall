@@ -1,7 +1,7 @@
-<div class="examine-state" ng-if="!userInfoData.certifiedInfo || userInfoData.certifiedInfo.status == 9 || userInfoData.certifiedInfo.auditlog">
+<div class="examine-state" ng-if="isVlidate">
     您的资料还未完善或者审核失败，请继续完善您的信息！
 </div>
-<div class="examine-state in-examine" ng-if="!userInfoData.certifiedInfo.status">
+<div class="examine-state in-examine" ng-if="userInfoData.certifiedInfo && !userInfoData.certifiedInfo.status">
     您的资料还在审核中，请耐心等待！
 </div>
 <div class="examine-state examine-success" ng-if="userInfoData.certifiedInfo.status == 1">
