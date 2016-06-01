@@ -23,7 +23,7 @@ app.controller('siteListCtr',["$scope","$stateParams","siteListService","message
             window.history.back();
             return;
         }
-        if(item.defaul){
+        if(!item.defaul){
             return;
         }
         siteListService.defaulAddress(item,function(){
